@@ -18,7 +18,7 @@
 }
 
 #bookmarks-bar {
-  height: 48px;
+  height: 188px;
   background: var(--bookmarks-bg);
   border-bottom: 1px solid var(--bookmarks-border);
   display: flex;
