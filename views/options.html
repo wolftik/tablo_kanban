@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Настройки — Tablo Kanban</title>
+  <link rel="stylesheet" href="../css/options.css">
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>Настройки Tablo Kanban</h1>
+    </header>
+
+    <nav id="settings-tabs">
+      <button class="tab-btn active" data-tab="columns">Колонки</button>
+      <button class="tab-btn" data-tab="appearance">Внешний вид</button>
+      <button class="tab-btn" data-tab="bookmarks">Закладки</button>
+      <button class="tab-btn" data-tab="about">О расширении</button>
+    </nav>
+
+    <main>
+      <!-- Columns Tab -->
+      <div id="tab-columns" class="tab-content active">
+        <div id="columns-list"></div>
+        <button id="add-column-option" class="btn-primary">Добавить колонку</button>
+      </div>
+
+      <!-- Appearance Tab -->
+      <div id="tab-appearance" class="tab-content">
+        <div class="setting-group">
+          <h3>Тема</h3>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="theme" value="light">
+              <span>Светлая</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="theme" value="dark">
+              <span>Тёмная</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="theme" value="system">
+              <span>Системная</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="setting-group">
+          <h3>Размер карточек</h3>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="card-size" value="compact">
+              <span>Компактный</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="card-size" value="standard">
+              <span>Стандартный</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="card-size" value="large">
+              <span>Большой</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bookmarks Tab -->
+      <div id="tab-bookmarks" class="tab-content">
+        <div class="setting-group">
+          <h3>Папки закладок для отображения</h3>
+          <div id="bookmark-folders-list"></div>
+        </div>
+
+        <div class="setting-group">
+          <h3>Показывать favicon</h3>
+          <label class="switch-label">
+            <input type="checkbox" id="show-favicon-option">
+            <span class="switch"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- About Tab -->
+      <div id="tab-about" class="tab-content">
+        <div class="setting-group">
+          <h3>Tablo Kanban</h3>
+          <p>Версия 1.0.0</p>
+          <p>Панель закладок и канбан-доска для новой вкладки Chrome.</p>
+          <p>Настройки хранятся локально в вашем браузере.</p>
+        </div>
+      </div>
+    </main>
+
+    <footer>
+      <button id="save-options" class="btn-primary">Сохранить</button>
+    </footer>
+  </div>
+
+  <script src="../js/storage.js"></script>
+  <script src="../js/utils.js"></script>
+  <script src="../js/options.js"></script>
+</body>
+</html>
