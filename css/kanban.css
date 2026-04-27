@@ -27,7 +27,7 @@
 }
 
 #kanban-board {
-  height: calc(100vh - 229px);
+  height: calc(100vh - 285px);
   display: flex;
   padding: 12px;
   gap: 12px;

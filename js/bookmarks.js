@@ -2,6 +2,7 @@ const BookmarksManager = {
   _displayedBookmarks: [],
   _chromeBookmarks: [],
 
+
   async loadDisplayedBookmarks() {
     this._displayedBookmarks = await Storage.get('bookmarks_display') || [];
     return this._displayedBookmarks;
@@ -69,6 +70,7 @@ const BookmarksManager = {
 
   renderBookmarks(container, bookmarks) {
     container.innerHTML = '';
+    const TOTAL_SLOTS = 24;
 
     for (const bm of bookmarks) {
       const a = document.createElement('a');
@@ -85,8 +87,10 @@ const BookmarksManager = {
       } catch {
         hostname = 'unknown';
       }
-      favicon.src = `chrome://favicon/${hostname}`;
-      favicon.onerror = () => { favicon.style.display = 'none'; };
+      favicon.src = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+      favicon.onerror = () => {
+        favicon.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';
+      };
 
       const titleEl = document.createElement('span');
       titleEl.className = 'bookmark-title';
@@ -108,7 +112,27 @@ const BookmarksManager = {
       a.appendChild(deleteBtn);
       container.appendChild(a);
     }
+
+    const remainingSlots = TOTAL_SLOTS - bookmarks.length;
+    for (let i = 0; i < remainingSlots; i++) {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'bookmark-placeholder';
+      placeholder.innerHTML = `
+        <span class="placeholder-icon">+</span>
+        <span>Добавить сайт</span>
+      `;
+      placeholder.addEventListener('click', () => {
+        const modal = document.getElementById('add-bookmark-modal');
+        const urlInput = document.getElementById('bookmark-url');
+        if (modal && urlInput) {
+          modal.style.display = 'flex';
+          urlInput.focus();
+        }
+      });
+      container.appendChild(placeholder);
+    }
   },
+
 
   async render() {
     const container = document.getElementById('bookmarks-container');
