@@ -247,6 +247,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     await Storage.set('settings', settings);
+    await Storage.set('kanban_columns', columns);
 
     const btn = document.getElementById('save-options');
     const originalText = btn.textContent;

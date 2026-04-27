@@ -64,11 +64,11 @@ const Storage = {
 
   getDefaultColumns() {
     return [
-      { id: this.generateId(), title: 'Backlog', color: '#94a3b8', order: 0 },
-      { id: this.generateId(), title: 'To Do', color: '#6366f1', order: 1 },
-      { id: this.generateId(), title: 'In Progress', color: '#f59e0b', order: 2 },
-      { id: this.generateId(), title: 'Review', color: '#8b5cf6', order: 3 },
-      { id: this.generateId(), title: 'Done', color: '#22c55e', order: 4 },
+      { id: this.generateId(), title: 'Backlog', color: '#94a3b8', order: 0, cards: [] },
+      { id: this.generateId(), title: 'To Do', color: '#6366f1', order: 1, cards: [] },
+      { id: this.generateId(), title: 'In Progress', color: '#f59e0b', order: 2, cards: [] },
+      { id: this.generateId(), title: 'Review', color: '#8b5cf6', order: 3, cards: [] },
+      { id: this.generateId(), title: 'Done', color: '#22c55e', order: 4, cards: [] },
     ];
   },
 

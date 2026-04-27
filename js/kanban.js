@@ -6,21 +6,23 @@ const KanbanBoard = {
   _draggedColumn: null,
 
   async init() {
-    this._columns = await Storage.get('kanban_columns') || Storage.getDefaultColumns();
+    const settings = await Storage.get('settings') || Storage.getDefaultSettings();
+    this._columns = settings.columns || Storage.getDefaultColumns();
+    this._columns.forEach(col => col.cards = col.cards || []);
     this._renderBoard();
     this._bindEvents();
   },
 
   async save() {
     this._columns.forEach((col, i) => { col.order = i; });
-    await Storage.set('kanban_columns', this._columns);
+    const settings = await Storage.get('settings') || Storage.getDefaultSettings();
+    settings.columns = this._columns;
+    await Storage.set('settings', settings);
   },
 
   _getCardsForColumn(columnId) {
-    return this._columns
-      .find(c => c.id === columnId)
-      .cards
-      .sort((a, b) => (a.order || 0) - (b.order || 0));
+    const col = this._columns.find(c => c.id === columnId);
+    return (col?.cards || []).sort((a, b) => (a.order || 0) - (b.order || 0));
   },
 
   _renderBoard() {
@@ -46,7 +48,6 @@ const KanbanBoard = {
     const colEl = document.createElement('div');
     colEl.className = 'kanban-column';
     colEl.dataset.columnId = col.id;
-    colEl.draggable = true;
 
     const header = document.createElement('div');
     header.className = 'column-header';
@@ -393,7 +394,7 @@ const KanbanBoard = {
     const description = document.getElementById('card-desc-input').value.trim();
     const priority = document.getElementById('card-priority-select').value;
 
-    if (this._editingCard && !this._editingCard._isTemporary) {
+    if (this._editingCard && this._editingCard.id) {
       const col = this._columns.find(c => c.id === this._editingColumnId);
       if (col) {
         const card = col.cards.find(c => c.id === this._editingCard.id);
