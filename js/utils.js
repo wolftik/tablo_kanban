@@ -23,3 +23,16 @@ function getCardDragAfterElement(container, y) {
     return closest;
   }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
 }
+
+function getBookmarkDragAfterElement(container, y) {
+  const items = [...container.querySelectorAll('.bookmark-item:not(.dragging), .bookmark-placeholder')];
+  if (items.length === 0) return null;
+  return items.reduce((closest, child) => {
+    const box = child.getBoundingClientRect();
+    const offset = y - box.top - box.height / 2;
+    if (offset < 0 && offset > closest.offset) {
+      return { offset: offset, element: child };
+    }
+    return closest;
+  }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+}

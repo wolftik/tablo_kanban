@@ -75,6 +75,8 @@ const BookmarksManager = {
     for (const bm of bookmarks) {
       const a = document.createElement('a');
       a.className = 'bookmark-item';
+      a.draggable = true;
+      a.dataset.bookmarkId = bm.id;
       a.href = bm.url;
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
@@ -131,6 +133,74 @@ const BookmarksManager = {
       });
       container.appendChild(placeholder);
     }
+
+    this._bindBookmarkDragDrop(container);
+  },
+
+  _bindBookmarkDragDrop(container) {
+    const bookmarkItems = container.querySelectorAll('.bookmark-item');
+
+    bookmarkItems.forEach(item => {
+      item.addEventListener('dragstart', (e) => {
+        item.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', item.dataset.bookmarkId);
+      });
+
+      item.addEventListener('dragend', () => {
+        item.classList.remove('dragging');
+        container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+      });
+    });
+
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+
+      const afterElement = getBookmarkDragAfterElement(container, e.clientY);
+      const dragging = container.querySelector('.bookmark-item.dragging');
+      if (!dragging) return;
+
+      container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+      if (afterElement != null) {
+        afterElement.classList.add('drag-over');
+      }
+
+      if (afterElement == null) {
+        container.appendChild(dragging);
+      } else {
+        container.insertBefore(dragging, afterElement);
+      }
+    });
+
+    container.addEventListener('dragleave', (e) => {
+      if (!container.contains(e.relatedTarget)) {
+        container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+      }
+    });
+
+    container.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      const dragging = container.querySelector('.bookmark-item.dragging');
+      if (!dragging) return;
+
+      const bookmarkId = dragging.dataset.bookmarkId;
+      const afterElement = getBookmarkDragAfterElement(container, e.clientY);
+
+      const newOrder = [];
+      const bookmarkItems = container.querySelectorAll('.bookmark-item');
+      bookmarkItems.forEach(item => {
+        newOrder.push({
+          id: item.dataset.bookmarkId,
+          url: item.href,
+          title: item.querySelector('.bookmark-title').textContent
+        });
+      });
+
+      await this.saveDisplayedBookmarks(newOrder);
+      this._displayedBookmarks = newOrder;
+      container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    });
   },
 
 

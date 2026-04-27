@@ -108,6 +108,16 @@
   background: #ef4444;
 }
 
+.bookmark-item.dragging {
+  opacity: 0.5;
+  transform: scale(0.95);
+}
+
+.bookmark-item.drag-over {
+  border: 2px dashed #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+}
+
 .bookmark-placeholder {
   display: flex;
   flex-direction: column;
@@ -130,6 +140,12 @@
   border-color: var(--add-btn-bg);
   color: var(--add-btn-bg);
   background: rgba(99,102,241,0.05);
+}
+
+.bookmark-placeholder.drag-over {
+  border-color: #6366f1;
+  background: rgba(99, 102, 241, 0.1);
+  color: #6366f1;
 }
 
 .bookmark-placeholder .placeholder-icon {
