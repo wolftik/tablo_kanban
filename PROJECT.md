@@ -4,8 +4,8 @@
 
 Create a Google Chrome extension (Manifest V3) called "Tablo Kanban". It replaces the new tab page with a 20/80 split layout:
 
-- **Top 20%**: A bookmarks bar displaying Chrome bookmarks and user-added URLs.
-- **Bottom 80%**: A fully functional Kanban board (Backlog, To Do, In Progress, Review, Done).
+- **Top section**: A bookmarks bar (220px) displaying Chrome bookmarks and user-added URLs, supporting folders/subfolders and favicons.
+- **Bottom section**: A fully functional Kanban board (Backlog, To Do, In Progress, Review, Done).
 - **Settings page**: To manage columns, appearance (theme, card size), and bookmark visibility.
 
 ## Instructions
@@ -17,13 +17,14 @@ Create a Google Chrome extension (Manifest V3) called "Tablo Kanban". It replace
 - **Theming**: Support Light, Dark, and System themes using CSS custom properties.
 - Default columns: Backlog, To Do, In Progress, Review, Done.
 - **Card priorities**: Low, Medium, High, Urgent with color-coded priority bars and badges.
-- **Column customization**: Users can change column colors and reorder columns.
+- **Column customization**: Users can change column colors (color picker), add color indicators, and reorder columns.
+- **Bookmarks**: Support for bookmark folders/subfolders with dropdown menus, delete buttons on hover, and favicon display.
 - **UI language**: Russian.
 
 ## Discoveries
 
 - The `Storage` utility successfully abstracts both `chrome.storage.sync` and `localStorage`.
-- The layout strictly separates the bookmarks bar (`height: 48px`) and the kanban board (`height: calc(100vh - 48px)`).
+- The layout strictly separates the bookmarks bar (`height: 220px`) and the kanban board (`height: calc(100vh - 285px)`).
 - Drag helper utilities (`getDragAfterElement`, `getCardDragAfterElement`) were extracted to `js/utils.js` to avoid code duplication between kanban.js and options.js.
 - Card priority levels (low, medium, high, urgent) are rendered with color-coded priority bars on card edges and badges in the card meta.
 - Column color indicators are displayed as colored dots in column headers.
