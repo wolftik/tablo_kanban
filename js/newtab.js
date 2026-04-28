@@ -17,6 +17,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (addBmBtn && addBmModal) {
     addBmBtn.addEventListener('click', () => {
+      // Убрать активный класс у всех плейсхолдеров
+      const container = document.getElementById('bookmarks-container');
+      if (container) {
+        container.querySelectorAll('.bookmark-placeholder.active').forEach(p => p.classList.remove('active'));
+      }
+      // Сбросить позицию
+      delete addBmModal.dataset.targetIndex;
       addBmModal.style.display = 'flex';
       bmUrlInput.focus();
     });
@@ -25,6 +32,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       addBmModal.style.display = 'none';
       bmUrlInput.value = '';
       bmTitleInput.value = '';
+      delete addBmModal.dataset.targetIndex;
     });
 
     bmSaveBtn.addEventListener('click', async () => {
@@ -34,11 +42,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!/^https?:\/\//i.test(url)) {
         url = 'https://' + url;
       }
-      await BookmarksManager.addDisplayedBookmark(url, title || new URL(url).hostname);
+      
+      const targetIndex = addBmModal.dataset.targetIndex ? parseInt(addBmModal.dataset.targetIndex) : null;
+          await BookmarksManager.addDisplayedBookmark(url, title || new URL(url).hostname, targetIndex);
       await BookmarksManager.render();
       addBmModal.style.display = 'none';
       bmUrlInput.value = '';
       bmTitleInput.value = '';
+      delete addBmModal.dataset.targetIndex;
+      
+      // Убрать активный класс у всех плейсхолдеров
+      const container = document.getElementById('bookmarks-container');
+      if (container) {
+        container.querySelectorAll('.bookmark-placeholder.active').forEach(p => p.classList.remove('active'));
+      }
     });
 
     bmUrlInput.addEventListener('keydown', (e) => {
@@ -51,6 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         addBmModal.style.display = 'none';
         bmUrlInput.value = '';
         bmTitleInput.value = '';
+        delete addBmModal.dataset.targetIndex;
       }
     });
   }

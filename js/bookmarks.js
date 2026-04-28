@@ -13,9 +13,14 @@ const BookmarksManager = {
     await Storage.set('bookmarks_display', bookmarks);
   },
 
-  async addDisplayedBookmark(url, title) {
+  async addDisplayedBookmark(url, title, position = null) {
     if (!this._displayedBookmarks.find(b => b.url === url)) {
-      this._displayedBookmarks.push({ id: Storage.generateId(), url, title: title || url });
+      const newBookmark = { id: Storage.generateId(), url, title: title || url };
+      if (position !== null && position >= 0 && position <= this._displayedBookmarks.length) {
+        this._displayedBookmarks.splice(position, 0, newBookmark);
+      } else {
+        this._displayedBookmarks.push(newBookmark);
+      }
       await this.saveDisplayedBookmarks(this._displayedBookmarks);
     }
     return this._displayedBookmarks;
@@ -119,6 +124,7 @@ const BookmarksManager = {
     for (let i = 0; i < remainingSlots; i++) {
       const placeholder = document.createElement('div');
       placeholder.className = 'bookmark-placeholder';
+      placeholder.dataset.index = bookmarks.length + i; // Позиция в сетке
       placeholder.innerHTML = `
         <span class="placeholder-icon">+</span>
         <span>Добавить сайт</span>
@@ -127,6 +133,11 @@ const BookmarksManager = {
         const modal = document.getElementById('add-bookmark-modal');
         const urlInput = document.getElementById('bookmark-url');
         if (modal && urlInput) {
+          // Убрать активный класс у других плейсхолдеров
+          container.querySelectorAll('.bookmark-placeholder.active').forEach(p => p.classList.remove('active'));
+          // Добавить активный класс текущему плейсхолдеру
+          placeholder.classList.add('active');
+          modal.dataset.targetIndex = placeholder.dataset.index; // Сохраняем позицию
           modal.style.display = 'flex';
           urlInput.focus();
         }
@@ -158,18 +169,11 @@ const BookmarksManager = {
       e.dataTransfer.dropEffect = 'move';
 
       const afterElement = getBookmarkDragAfterElement(container, e.clientY);
-      const dragging = container.querySelector('.bookmark-item.dragging');
-      if (!dragging) return;
-
+      
+      // Только визуальная подсветка, без изменения DOM
       container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
       if (afterElement != null) {
         afterElement.classList.add('drag-over');
-      }
-
-      if (afterElement == null) {
-        container.appendChild(dragging);
-      } else {
-        container.insertBefore(dragging, afterElement);
       }
     });
 
@@ -187,6 +191,14 @@ const BookmarksManager = {
       const bookmarkId = dragging.dataset.bookmarkId;
       const afterElement = getBookmarkDragAfterElement(container, e.clientY);
 
+      // Переместить элемент перед сохранением
+      if (afterElement == null) {
+        container.appendChild(dragging);
+      } else {
+        container.insertBefore(dragging, afterElement);
+      }
+
+      // Формировать newOrder из обновленного DOM
       const newOrder = [];
       const bookmarkItems = container.querySelectorAll('.bookmark-item');
       bookmarkItems.forEach(item => {
@@ -199,6 +211,8 @@ const BookmarksManager = {
 
       await this.saveDisplayedBookmarks(newOrder);
       this._displayedBookmarks = newOrder;
+      this.renderBookmarks(container, this._displayedBookmarks); // Немедленный рендер
+      
       container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
     });
   },
