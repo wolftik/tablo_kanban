@@ -285,8 +285,7 @@ const KanbanBoard = {
 
   _updateFilterDropdowns() {
     const assigneeSelect = document.getElementById('filter-assignee');
-    const tagsSelect = document.getElementById('filter-tags');
-    if (!assigneeSelect || !tagsSelect) return;
+    if (!assigneeSelect) return;
 
     const allCards = this._columns.flatMap(col => col.cards || []);
     const assignees = new Set();
@@ -304,17 +303,89 @@ const KanbanBoard = {
       assigneeSelect.appendChild(opt);
     }
 
-    const currentTags = tagsSelect.value || [];
-    tagsSelect.innerHTML = '<option value="">Все теги</option>';
-    if (this._settings && this._settings.tags) {
-      for (const tag of this._settings.tags) {
-        const opt = document.createElement('option');
-        opt.value = tag.id;
-        opt.textContent = tag.name;
-        if (currentTags.includes(tag.id)) opt.selected = true;
-        tagsSelect.appendChild(opt);
-      }
+    this._renderTagsDropdown();
+    this._renderTagsChips();
+  },
+
+  _renderTagsDropdown() {
+    const listEl = document.getElementById('filter-tags-list');
+    const labelEl = document.getElementById('filter-tags-label');
+    if (!listEl || !labelEl) return;
+
+    listEl.innerHTML = '';
+    const allTags = this._settings?.tags || [];
+
+    if (allTags.length === 0) {
+      listEl.innerHTML = '<div class="filter-tag-item" style="cursor:default;opacity:0.5">Нет тегов</div>';
+      this._updateTagsLabel(labelEl);
+      return;
     }
+
+    for (const tag of allTags) {
+      const item = document.createElement('div');
+      item.className = 'filter-tag-item' + (this._filterState.tags.includes(tag.id) ? ' selected' : '');
+      item.dataset.tagId = tag.id;
+      item.innerHTML = `
+        <span class="filter-tag-checkbox"></span>
+        <span class="filter-tag-color" style="background:${tag.color}"></span>
+        <span class="filter-tag-name">${tag.name}</span>
+      `;
+      item.addEventListener('click', () => this._toggleTagFilter(tag.id));
+      listEl.appendChild(item);
+    }
+
+    this._updateTagsLabel(labelEl);
+  },
+
+  _updateTagsLabel(labelEl) {
+    if (this._filterState.tags.length > 0) {
+      labelEl.textContent = `${this._filterState.tags.length} выбрано`;
+    } else {
+      labelEl.textContent = 'Все теги';
+    }
+  },
+
+  _renderTagsChips() {
+    const chipsEl = document.getElementById('filter-tags-chips');
+    if (!chipsEl) return;
+    chipsEl.innerHTML = '';
+
+    const allTags = this._settings?.tags || [];
+    for (const tagId of this._filterState.tags) {
+      const tag = allTags.find(t => t.id === tagId);
+      if (!tag) continue;
+
+      const chip = document.createElement('span');
+      chip.className = 'filter-tag-chip';
+      chip.style.background = tag.color + '22';
+      chip.style.color = tag.color;
+      chip.style.border = `1px solid ${tag.color}55`;
+      chip.innerHTML = `
+        <span class="filter-tag-name">${tag.name}</span>
+        <span class="filter-tag-chip-remove" title="Удалить фильтр">&#10005;</span>
+      `;
+      chip.querySelector('.filter-tag-chip-remove').addEventListener('click', (e) => {
+        e.stopPropagation();
+        this._removeTagFilter(tagId);
+      });
+      chipsEl.appendChild(chip);
+    }
+  },
+
+  _toggleTagFilter(tagId) {
+    const tags = this._filterState.tags;
+    const index = tags.indexOf(tagId);
+    if (index >= 0) {
+      tags.splice(index, 1);
+    } else {
+      tags.push(tagId);
+    }
+    this._applyFilters();
+  },
+
+  _removeTagFilter(tagId) {
+    this._filterState.tags = this._filterState.tags.filter(t => t !== tagId);
+    this._applyFilters();
   },
 
   _updateClearButton() {
@@ -327,9 +398,10 @@ const KanbanBoard = {
   _applyFilters() {
     this._filterState.search = document.getElementById('filter-search').value.trim();
     this._filterState.assignee = document.getElementById('filter-assignee').value;
-    this._filterState.tags = Array.from(document.getElementById('filter-tags').selectedOptions).map(o => o.value);
     this._renderBoard();
     this._updateClearButton();
+    this._renderTagsDropdown();
+    this._renderTagsChips();
     this.save();
   },
 
@@ -337,14 +409,8 @@ const KanbanBoard = {
     this._filterState = { search: '', assignee: '', tags: [] };
     const searchInput = document.getElementById('filter-search');
     const assigneeSelect = document.getElementById('filter-assignee');
-    const tagsSelect = document.getElementById('filter-tags');
     if (searchInput) searchInput.value = '';
     if (assigneeSelect) assigneeSelect.value = '';
-    if (tagsSelect) {
-      for (const opt of tagsSelect.options) {
-        opt.selected = false;
-      }
-    }
     this._renderBoard();
     this._updateFilterDropdowns();
     this._updateClearButton();
@@ -747,7 +813,6 @@ const KanbanBoard = {
 
     const filterSearch = document.getElementById('filter-search');
     const filterAssignee = document.getElementById('filter-assignee');
-    const filterTags = document.getElementById('filter-tags');
     const filterClear = document.getElementById('filter-clear');
 
     if (filterSearch) {
@@ -756,11 +821,33 @@ const KanbanBoard = {
     if (filterAssignee) {
       filterAssignee.addEventListener('change', () => this._applyFilters());
     }
-    if (filterTags) {
-      filterTags.addEventListener('change', () => this._applyFilters());
-    }
     if (filterClear) {
       filterClear.addEventListener('click', () => this._clearFilters());
     }
+
+    // Tags dropdown toggle
+    const tagsLabel = document.getElementById('filter-tags-label');
+    if (tagsLabel) {
+      tagsLabel.addEventListener('click', () => {
+        const dropdown = document.getElementById('filter-tags-dropdown');
+        if (!dropdown) return;
+        const isVisible = dropdown.style.display === 'block';
+        dropdown.style.display = isVisible ? 'none' : 'block';
+        tagsLabel.classList.toggle('active', !isVisible);
+        if (!isVisible) {
+          this._renderTagsDropdown();
+        }
+      });
+    }
+
+    // Close tags dropdown on outside click
+    document.addEventListener('click', (e) => {
+      const dropdown = document.getElementById('filter-tags-dropdown');
+      const label = document.getElementById('filter-tags-label');
+      if (dropdown && label && !dropdown.contains(e.target) && !label.contains(e.target)) {
+        dropdown.style.display = 'none';
+        label.classList.remove('active');
+      }
+    });
   }
 };

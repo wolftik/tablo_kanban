@@ -34,11 +34,15 @@
       <select id="filter-assignee" class="filter-select">
         <option value="">Все исполнители</option>
       </select>
-      <select id="filter-tags" class="filter-select" multiple>
-        <option value="">Все теги</option>
-      </select>
+      <div id="filter-tags-wrapper" class="filter-tags-wrapper">
+        <span id="filter-tags-label" class="filter-tags-label">Все теги</span>
+        <div id="filter-tags-dropdown" class="filter-tags-dropdown" style="display:none">
+          <div id="filter-tags-list" class="filter-tags-list"></div>
+        </div>
+      </div>
       <button id="filter-clear" class="filter-clear-btn" title="Очистить фильтры">&#10005;</button>
     </div>
+    <div id="filter-tags-chips" class="filter-tags-chips"></div>
     <div id="kanban-board"></div>
 
     <!-- Edit Card Modal -->
