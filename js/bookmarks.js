@@ -75,7 +75,7 @@ const BookmarksManager = {
 
   renderBookmarks(container, bookmarks) {
     container.innerHTML = '';
-    const TOTAL_SLOTS = 24;
+    const TOTAL_SLOTS = 22;
 
     for (const bm of bookmarks) {
       const a = document.createElement('a');

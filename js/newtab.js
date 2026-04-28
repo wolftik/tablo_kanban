@@ -75,6 +75,80 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   await KanbanBoard.init();
 
+  // Manage performers button
+  const managePerformersBtn = document.getElementById('manage-performers-btn');
+  if (managePerformersBtn) {
+    managePerformersBtn.addEventListener('click', () => KanbanBoard._openManagePerformersModal());
+  }
+
+  // Manage tags button
+  const manageTagsBtn = document.getElementById('manage-tags-btn');
+  if (manageTagsBtn) {
+    manageTagsBtn.addEventListener('click', () => KanbanBoard._openManageTagsModal());
+  }
+
+  // Performers modal handlers
+  const performersCancel = document.getElementById('performers-cancel');
+  if (performersCancel) {
+    performersCancel.addEventListener('click', () => {
+      document.getElementById('manage-performers-modal').style.display = 'none';
+    });
+  }
+
+  const performerAddBtn = document.getElementById('performer-add-btn');
+  if (performerAddBtn) {
+    performerAddBtn.addEventListener('click', () => KanbanBoard._addPerformer());
+  }
+
+  const performersModal = document.getElementById('manage-performers-modal');
+  if (performersModal) {
+    performersModal.addEventListener('click', (e) => {
+      if (e.target === performersModal) {
+        performersModal.style.display = 'none';
+      }
+    });
+  }
+
+  // Tags modal handlers
+  const tagsCancel = document.getElementById('manage-tags-cancel');
+  if (tagsCancel) {
+    tagsCancel.addEventListener('click', () => {
+      document.getElementById('manage-tags-modal').style.display = 'none';
+    });
+  }
+
+  const tagNameInput = document.getElementById('tag-name-input');
+  const tagColorInput = document.getElementById('tag-color-input');
+  const tagAddBtn = document.getElementById('tag-add-btn');
+  if (tagAddBtn) {
+    tagAddBtn.addEventListener('click', () => KanbanBoard._addTag());
+  }
+  if (tagNameInput) {
+    tagNameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') tagAddBtn.click();
+    });
+  }
+
+  const tagsModal = document.getElementById('manage-tags-modal');
+  if (tagsModal) {
+    tagsModal.addEventListener('click', (e) => {
+      if (e.target === tagsModal) {
+        tagsModal.style.display = 'none';
+      }
+    });
+  }
+
+  // Tag color picker changes in manage tags modal
+  document.addEventListener('input', (e) => {
+    if (e.target.classList.contains('tag-color-picker')) {
+      const item = e.target.closest('.manage-tag-item');
+      if (item) {
+        const dot = item.querySelector('.tag-color-dot');
+        if (dot) dot.style.background = e.target.value;
+      }
+    }
+  });
+
   document.addEventListener('keydown', (e) => {
     if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
       e.preventDefault();

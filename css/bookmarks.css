@@ -18,22 +18,177 @@
 }
 
 #bookmarks-bar {
-  height: 220px;
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  height: auto;
+  min-height: 220px;
   background: var(--bookmarks-bg);
   border-bottom: 1px solid var(--bookmarks-border);
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 8px;
   padding: 12px;
-  overflow: hidden;
+  overflow: visible;
   flex-shrink: 0;
 }
 
 #bookmarks-container {
-  display: contents;
-  height: 100%;
-  width: 100%;
+  flex: 0 0 auto;
+  width: fit-content;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(11, 120px);
+  grid-template-rows: repeat(2, 100px);
+  gap: 8px;
+}
+
+#buttons-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+#manage-performers-btn,
+#manage-tags-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border: 1px solid var(--bookmarks-border);
+  border-radius: 8px;
+  background: var(--card-bg, #fff);
+  color: var(--bookmark-text);
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  font-family: inherit;
+}
+
+#manage-performers-btn:hover,
+#manage-tags-btn:hover {
+  background: var(--bookmark-hover-bg);
+  border-color: #6366f1;
+  color: #6366f1;
+}
+
+.btn-icon {
+  font-size: 16px;
+}
+
+.performer-input-row,
+.tag-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.performer-input-row input[type="text"],
+.tag-input-row input[type="text"] {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--bookmarks-border);
+  border-radius: 6px;
+  background: var(--bookmarks-bg);
+  color: var(--bookmark-text);
+  font-size: 13px;
+}
+
+.performer-input-row input[type="color"],
+.tag-input-row input[type="color"] {
+  width: 36px;
+  height: 36px;
+  border: none;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 6px;
+}
+
+.performer-input-row button,
+.tag-input-row button {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--bookmarks-border);
+  border-radius: 6px;
+  background: #6366f1;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+#performers-list,
+#manage-tags-list {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.performer-item,
+.manage-tag-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  background: var(--bookmarks-bg);
+  border: 1px solid var(--bookmarks-border);
+}
+
+.performer-item .performer-color-dot,
+.manage-tag-item .tag-color-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.performer-item .performer-name,
+.manage-tag-item .tag-name {
+  flex: 1;
+  font-size: 13px;
+  color: var(--bookmark-text);
+}
+
+.performer-item .performer-edit,
+.manage-tag-item .tag-edit {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.performer-item .performer-delete,
+.manage-tag-item .tag-delete {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: #fee2e2;
+  color: #ef4444;
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+[data-theme="dark"] .performer-item .performer-delete,
+[data-theme="dark"] .manage-tag-item .tag-delete {
+  background: rgba(239,68,68,0.2);
+}
+
+.performer-item .performer-delete:hover,
+.manage-tag-item .tag-delete:hover {
+  background: #fecaca;
+}
+
+[data-theme="dark"] .performer-item .performer-delete:hover,
+[data-theme="dark"] .manage-tag-item .tag-delete:hover {
+  background: rgba(239,68,68,0.3);
 }
 
 .bookmark-item {

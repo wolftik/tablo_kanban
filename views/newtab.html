@@ -12,7 +12,16 @@
     <!-- Bookmarks Bar -->
     <div id="bookmarks-bar">
       <div id="bookmarks-container" class="bookmarks-grid"></div>
-      <button id="add-bookmark-btn" title="Добавить закладку">+</button>
+      <div id="buttons-wrapper">
+        <button id="manage-performers-btn" title="Управление исполнителями">
+          <span class="btn-icon">&#128100;</span>
+          <span class="btn-text">Исполнители</span>
+        </button>
+        <button id="manage-tags-btn" title="Управление тегами">
+          <span class="btn-icon">&#127991;</span>
+          <span class="btn-text">Теги</span>
+        </button>
+      </div>
     </div>
 
     <!-- Add Bookmark Modal -->
@@ -58,7 +67,9 @@
         <h3 id="modal-title">Задача</h3>
         <input type="text" id="card-title-input" placeholder="Название задачи">
         <textarea id="card-desc-input" placeholder="Описание" rows="3"></textarea>
-        <input type="text" id="card-assignee-input" placeholder="Исполнитель">
+        <select id="card-assignee-select">
+          <option value="">Не назначен</option>
+        </select>
         <div id="card-tags-container">
           <span class="tags-label">Теги:</span>
           <div id="card-tags-selector"></div>
@@ -74,6 +85,38 @@
           <button id="card-delete-btn" class="btn-danger" style="margin-right:auto">Удалить</button>
           <button id="card-cancel">Отмена</button>
           <button id="card-save">Сохранить</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manage Performers Modal -->
+    <div id="manage-performers-modal" class="modal-overlay" style="display:none">
+      <div class="modal" style="min-width:400px">
+        <h3>Исполнители</h3>
+        <div class="performer-input-row">
+          <input type="text" id="performer-name-input" placeholder="Имя исполнителя">
+          <input type="color" id="performer-color-input" value="#6366f1">
+          <button id="performer-add-btn">+</button>
+        </div>
+        <div id="performers-list"></div>
+        <div class="modal-actions">
+          <button id="performers-cancel">Закрыть</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Manage Tags Modal -->
+    <div id="manage-tags-modal" class="modal-overlay" style="display:none">
+      <div class="modal" style="min-width:400px">
+        <h3>Теги</h3>
+        <div class="tag-input-row">
+          <input type="text" id="tag-name-input" placeholder="Название тега">
+          <input type="color" id="tag-color-input" value="#6366f1">
+          <button id="tag-add-btn">+</button>
+        </div>
+        <div id="manage-tags-list"></div>
+        <div class="modal-actions">
+          <button id="manage-tags-cancel">Закрыть</button>
         </div>
       </div>
     </div>

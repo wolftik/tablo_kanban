@@ -80,12 +80,21 @@ const Storage = {
     ];
   },
 
+  getDefaultPerformers() {
+    return [
+      { id: this.generateId(), name: 'Иванов И.И.', color: '#6366f1' },
+      { id: this.generateId(), name: 'Петров П.П.', color: '#22c55e' },
+      { id: this.generateId(), name: 'Сидоров С.С.', color: '#f59e0b' },
+    ];
+  },
+
   getDefaultSettings() {
     return {
       theme: 'system',
       cardSize: 'standard',
       showFavicon: true,
       visibleBookmarks: [],
+      performers: this.getDefaultPerformers(),
       tags: this.getDefaultTags(),
       kanbanFilter: {},
       columns: this.getDefaultColumns(),

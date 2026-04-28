@@ -696,8 +696,8 @@
   margin: 0;
 }
 
-/* Card modal assignee input */
-#card-assignee-input {
+/* Card modal assignee select */
+#card-assignee-select {
   width: 100%;
   padding: 8px 12px;
   border: 1px solid var(--border);
@@ -706,10 +706,11 @@
   color: var(--card-text);
   font-size: 13px;
   outline: none;
+  cursor: pointer;
   transition: border-color 0.15s;
 }
 
-#card-assignee-input:focus {
+#card-assignee-select:focus {
   border-color: #6366f1;
 }
 

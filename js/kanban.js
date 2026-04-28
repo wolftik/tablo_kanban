@@ -290,19 +290,14 @@ const KanbanBoard = {
     const assigneeSelect = document.getElementById('filter-assignee');
     if (!assigneeSelect) return;
 
-    const allCards = this._columns.flatMap(col => col.cards || []);
-    const assignees = new Set();
-    for (const card of allCards) {
-      if (card.assignee) assignees.add(card.assignee);
-    }
-
+    const performers = this._settings?.performers || [];
     const currentAssignee = assigneeSelect.value;
     assigneeSelect.innerHTML = '<option value="">Все исполнители</option>';
-    for (const a of assignees) {
+    for (const performer of performers) {
       const opt = document.createElement('option');
-      opt.value = a;
-      opt.textContent = a;
-      if (a === currentAssignee) opt.selected = true;
+      opt.value = performer.name;
+      opt.textContent = performer.name;
+      if (performer.name === currentAssignee) opt.selected = true;
       assigneeSelect.appendChild(opt);
     }
 
@@ -589,7 +584,7 @@ const KanbanBoard = {
     document.getElementById('modal-title').textContent = 'Новая задача';
     document.getElementById('card-title-input').value = '';
     document.getElementById('card-desc-input').value = '';
-    document.getElementById('card-assignee-input').value = '';
+    this._populateAssigneeSelect('');
     document.getElementById('card-priority-select').value = '';
     document.getElementById('card-delete-btn').style.display = 'none';
     this._populateTagSelector([]);
@@ -604,7 +599,7 @@ const KanbanBoard = {
     document.getElementById('modal-title').textContent = 'Редактировать задачу';
     document.getElementById('card-title-input').value = card.title || '';
     document.getElementById('card-desc-input').value = card.description || '';
-    document.getElementById('card-assignee-input').value = card.assignee || '';
+    this._populateAssigneeSelect(card.assignee || '');
     document.getElementById('card-priority-select').value = card.priority || '';
     document.getElementById('card-delete-btn').style.display = 'inline-block';
     this._populateTagSelector(card.tags || []);
@@ -644,13 +639,27 @@ const KanbanBoard = {
     }
   },
 
+  _populateAssigneeSelect(selectedValue) {
+    const select = document.getElementById('card-assignee-select');
+    if (!select) return;
+    select.innerHTML = '<option value="">Не назначен</option>';
+    const performers = this._settings?.performers || [];
+    for (const performer of performers) {
+      const opt = document.createElement('option');
+      opt.value = performer.name;
+      opt.textContent = performer.name;
+      if (performer.name === selectedValue) opt.selected = true;
+      select.appendChild(opt);
+    }
+  },
+
   _saveCard() {
     const title = document.getElementById('card-title-input').value.trim();
     if (!title) return;
 
     const description = document.getElementById('card-desc-input').value.trim();
     const priority = document.getElementById('card-priority-select').value;
-    const assignee = document.getElementById('card-assignee-input').value.trim();
+    const assignee = document.getElementById('card-assignee-select').value;
 
     const selectedTags = Array.from(document.querySelectorAll('#card-tags-selector input[type="checkbox"]:checked')).map(cb => cb.value);
 
@@ -859,5 +868,163 @@ const KanbanBoard = {
         label.classList.remove('active');
       }
     });
+  },
+
+  async _openManagePerformersModal() {
+    const modal = document.getElementById('manage-performers-modal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    this._renderPerformersList();
+  },
+
+  _renderPerformersList() {
+    const list = document.getElementById('performers-list');
+    if (!list) return;
+    list.innerHTML = '';
+    const performers = this._settings?.performers || [];
+    for (const performer of performers) {
+      const item = document.createElement('div');
+      item.className = 'performer-item';
+      item.dataset.id = performer.id;
+      item.innerHTML = `
+        <span class="performer-color-dot" style="background:${performer.color}"></span>
+        <span class="performer-name">${performer.name}</span>
+        <button class="performer-edit" title="Редактировать">&#9998;</button>
+        <button class="performer-delete" title="Удалить">&#10005;</button>
+      `;
+      const editBtn = item.querySelector('.performer-edit');
+      editBtn.addEventListener('click', () => this._editPerformer(performer));
+      const deleteBtn = item.querySelector('.performer-delete');
+      deleteBtn.addEventListener('click', () => this._deletePerformer(performer.id));
+      list.appendChild(item);
+    }
+  },
+
+  async _editPerformer(performer) {
+    const newName = prompt('Имя исполнителя:', performer.name);
+    if (!newName || newName.trim() === '') return;
+    const newColor = prompt('Цвет (hex):', performer.color);
+    if (!newColor) return;
+    const performers = this._settings?.performers || [];
+    const p = performers.find(x => x.id === performer.id);
+    if (p) {
+      p.name = newName.trim();
+      p.color = newColor.trim();
+    }
+    await this._savePerformers();
+  },
+
+  async _deletePerformer(id) {
+    const performers = this._settings?.performers || [];
+    const performer = performers.find(x => x.id === id);
+    if (!performer) return;
+    const allCards = this._columns.flatMap(col => col.cards || []);
+    const usedByCards = allCards.filter(c => c.assignee === performer.name);
+    if (usedByCards.length > 0) {
+      if (!confirm(`Исполнитель "${performer.name}" используется в ${usedByCards.length} задачах.\nВсе ссылки будут удалены. Продолжить?`)) return;
+    }
+    this._settings.performers = performers.filter(x => x.id !== id);
+    for (const card of usedByCards) {
+      card.assignee = '';
+    }
+    await this._savePerformers();
+  },
+
+  async _addPerformer() {
+    const nameInput = document.getElementById('performer-name-input');
+    const colorInput = document.getElementById('performer-color-input');
+    if (!nameInput || !colorInput) return;
+    const name = nameInput.value.trim();
+    if (!name) return;
+    const color = colorInput.value;
+    if (!this._settings.performers) this._settings.performers = [];
+    this._settings.performers.push({
+      id: Storage.generateId(),
+      name: name,
+      color: color
+    });
+    nameInput.value = '';
+    await this._savePerformers();
+  },
+
+  async _savePerformers() {
+    await Storage.set('settings', this._settings);
+    this._renderPerformersList();
+    this._updateFilterDropdowns();
+    this._renderBoard();
+  },
+
+  async _openManageTagsModal() {
+    const modal = document.getElementById('manage-tags-modal');
+    if (!modal) return;
+    modal.style.display = 'flex';
+    this._renderTagsList();
+  },
+
+  _renderTagsList() {
+    const list = document.getElementById('manage-tags-list');
+    if (!list) return;
+    list.innerHTML = '';
+    const tags = this._settings?.tags || [];
+    for (const tag of tags) {
+      const item = document.createElement('div');
+      item.className = 'manage-tag-item';
+      item.dataset.id = tag.id;
+      item.innerHTML = `
+        <span class="tag-color-dot" style="background:${tag.color}"></span>
+        <span class="tag-name">${tag.name}</span>
+        <input type="color" class="tag-color-picker" value="${tag.color}" title="Цвет">
+        <button class="tag-delete" title="Удалить">&#10005;</button>
+      `;
+      const colorPicker = item.querySelector('.tag-color-picker');
+      colorPicker.addEventListener('input', (e) => {
+        e.stopPropagation();
+        const dot = item.querySelector('.tag-color-dot');
+        dot.style.background = e.target.value;
+      });
+      const deleteBtn = item.querySelector('.tag-delete');
+      deleteBtn.addEventListener('click', () => this._deleteTag(tag.id));
+      list.appendChild(item);
+    }
+  },
+
+  async _deleteTag(id) {
+    const tags = this._settings?.tags || [];
+    const tag = tags.find(x => x.id === id);
+    if (!tag) return;
+    const allCards = this._columns.flatMap(col => col.cards || []);
+    const usedByCards = allCards.filter(c => c.tags && c.tags.includes(id));
+    if (usedByCards.length > 0) {
+      if (!confirm(`Тег "${tag.name}" используется в ${usedByCards.length} задачах.\nВсе ссылки будут удалены. Продолжить?`)) return;
+    }
+    this._settings.tags = tags.filter(x => x.id !== id);
+    for (const card of usedByCards) {
+      card.tags = (card.tags || []).filter(t => t !== id);
+    }
+    await this._saveTags();
+  },
+
+  async _addTag() {
+    const nameInput = document.getElementById('tag-name-input');
+    const colorInput = document.getElementById('tag-color-input');
+    if (!nameInput || !colorInput) return;
+    const name = nameInput.value.trim();
+    if (!name) return;
+    const color = colorInput.value;
+    if (!this._settings.tags) this._settings.tags = [];
+    this._settings.tags.push({
+      id: Storage.generateId(),
+      name: name,
+      color: color
+    });
+    nameInput.value = '';
+    await this._saveTags();
+  },
+
+  async _saveTags() {
+    await Storage.set('settings', this._settings);
+    this._renderTagsList();
+    this._updateFilterDropdowns();
+    this._renderBoard();
   }
 };
