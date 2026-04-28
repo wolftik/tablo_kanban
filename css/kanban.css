@@ -35,7 +35,7 @@
 }
 
 #kanban-board {
-  height: calc(100vh - 285px);
+  height: calc(100vh - 322px);
   display: flex;
   padding: 12px;
   gap: 12px;
@@ -368,6 +368,7 @@
   gap: 6px;
   padding: 4px 12px;
   flex-shrink: 0;
+  background: var(--board-bg);
 }
 
 .filter-input {
@@ -568,7 +569,7 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  padding: 2px 12px 6px;
+  padding: 0px 12px 1px;
   flex-wrap: wrap;
   flex-shrink: 0;
 }
