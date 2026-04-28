@@ -588,6 +588,7 @@ const KanbanBoard = {
     document.getElementById('card-priority-select').value = '';
     document.getElementById('card-delete-btn').style.display = 'none';
     this._populateTagSelector([]);
+    this._closeTagsDropdown();
     document.getElementById('edit-card-modal').style.display = 'flex';
     setTimeout(() => document.getElementById('card-title-input').focus(), 50);
   },
@@ -603,6 +604,7 @@ const KanbanBoard = {
     document.getElementById('card-priority-select').value = card.priority || '';
     document.getElementById('card-delete-btn').style.display = 'inline-block';
     this._populateTagSelector(card.tags || []);
+    this._closeTagsDropdown();
     document.getElementById('edit-card-modal').style.display = 'flex';
   },
 
@@ -617,26 +619,92 @@ const KanbanBoard = {
     if (!container) return;
     container.innerHTML = '';
     const tags = this._settings?.tags || [];
+    if (tags.length === 0) {
+      container.innerHTML = '<div class="card-tags-empty">Нет тегов</div>';
+      this._updateTagsDisplay();
+      return;
+    }
     for (const tag of tags) {
       const label = document.createElement('label');
-      label.className = 'tag-checkbox-label';
+      label.className = 'card-tag-option';
+      label.dataset.tagId = tag.id;
       const cb = document.createElement('input');
       cb.type = 'checkbox';
       cb.value = tag.id;
       cb.checked = selectedTagIds.includes(tag.id);
       const dot = document.createElement('span');
-      dot.style.display = 'inline-block';
-      dot.style.width = '8px';
-      dot.style.height = '8px';
-      dot.style.borderRadius = '50%';
+      dot.className = 'card-tag-dot';
       dot.style.background = tag.color;
       const span = document.createElement('span');
+      span.className = 'card-tag-name';
       span.textContent = tag.name;
       label.appendChild(cb);
       label.appendChild(dot);
       label.appendChild(span);
+      cb.addEventListener('change', () => {
+        this._updateTagsDisplay();
+      });
       container.appendChild(label);
     }
+    this._updateTagsDisplay();
+  },
+
+  _updateTagsDisplay() {
+    const display = document.getElementById('card-tags-display');
+    const selectedContainer = document.getElementById('card-tags-selected');
+    if (!display) return;
+    display.innerHTML = '';
+    selectedContainer.innerHTML = '';
+    const checkboxes = document.querySelectorAll('#card-tags-selector input[type="checkbox"]');
+    const checkedBoxes = Array.from(checkboxes).filter(cb => cb.checked);
+    if (checkedBoxes.length === 0) {
+      const placeholder = document.createElement('span');
+      placeholder.className = 'tags-placeholder';
+      placeholder.textContent = 'Все теги';
+      display.appendChild(placeholder);
+      return;
+    }
+    const tags = this._settings?.tags || [];
+    for (const cb of checkedBoxes) {
+      const tag = tags.find(t => t.id === cb.value);
+      if (!tag) continue;
+      const badge = document.createElement('span');
+      badge.className = 'card-selected-tag';
+      badge.style.background = tag.color;
+      badge.innerHTML = `<span class="card-selected-tag-name">${tag.name}</span><span class="card-remove-tag" data-tag-id="${tag.id}" title="Удалить тег">&times;</span>`;
+      const removeBtn = badge.querySelector('.card-remove-tag');
+      removeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        cb.checked = false;
+        this._updateTagsDisplay();
+      });
+      display.appendChild(badge);
+      const dropdownBadge = badge.cloneNode(true);
+      dropdownBadge.querySelector('.card-remove-tag').addEventListener('click', (e) => {
+        e.stopPropagation();
+        cb.checked = false;
+        this._updateTagsDisplay();
+      });
+      selectedContainer.appendChild(dropdownBadge);
+    }
+  },
+
+  _toggleTagsDropdown() {
+    const wrapper = document.getElementById('card-tags-dropdown-wrapper');
+    const dropdown = document.getElementById('card-tags-dropdown');
+    if (!wrapper || !dropdown) return;
+    const isActive = wrapper.classList.contains('active');
+    wrapper.classList.toggle('active', !isActive);
+    dropdown.classList.toggle('active', !isActive);
+  },
+
+  _closeTagsDropdown() {
+    const wrapper = document.getElementById('card-tags-dropdown-wrapper');
+    const dropdown = document.getElementById('card-tags-dropdown');
+    if (wrapper) wrapper.classList.remove('active');
+    if (dropdown) dropdown.classList.remove('active');
+    const selected = document.getElementById('card-tags-selected');
+    if (selected) selected.innerHTML = '';
   },
 
   _populateAssigneeSelect(selectedValue) {
@@ -661,7 +729,7 @@ const KanbanBoard = {
     const priority = document.getElementById('card-priority-select').value;
     const assignee = document.getElementById('card-assignee-select').value;
 
-    const selectedTags = Array.from(document.querySelectorAll('#card-tags-selector input[type="checkbox"]:checked')).map(cb => cb.value);
+    const selectedTags = Array.from(document.querySelectorAll('.card-tag-option input[type="checkbox"]:checked')).map(cb => cb.value);
 
     if (this._editingCard && this._editingCard.id) {
       const col = this._columns.find(c => c.id === this._editingColumnId);
@@ -868,6 +936,34 @@ const KanbanBoard = {
         label.classList.remove('active');
       }
     });
+
+    // Card tags dropdown toggle
+    const tagsDisplay = document.getElementById('card-tags-display');
+    if (tagsDisplay) {
+      tagsDisplay.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this._toggleTagsDropdown();
+      });
+    }
+
+    // Card tags clear button
+    const tagsClearBtn = document.getElementById('tags-dropdown-clear');
+    if (tagsClearBtn) {
+      tagsClearBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const checkboxes = document.querySelectorAll('.card-tag-option input[type="checkbox"]');
+        checkboxes.forEach(cb => cb.checked = false);
+        this._updateTagsDisplay();
+      });
+    }
+
+    // Close card tags dropdown on outside click
+    document.addEventListener('click', (e) => {
+      const wrapper = document.getElementById('card-tags-dropdown-wrapper');
+      if (wrapper && wrapper.classList.contains('active') && !wrapper.contains(e.target)) {
+        this._closeTagsDropdown();
+      }
+    });
   },
 
   async _openManagePerformersModal() {
@@ -970,10 +1066,12 @@ const KanbanBoard = {
       const item = document.createElement('div');
       item.className = 'manage-tag-item';
       item.dataset.id = tag.id;
+      item.dataset.editing = 'false';
       item.innerHTML = `
         <span class="tag-color-dot" style="background:${tag.color}"></span>
-        <span class="tag-name">${tag.name}</span>
+        <span class="tag-name" title="Нажмите для редактирования">${tag.name}</span>
         <input type="color" class="tag-color-picker" value="${tag.color}" title="Цвет">
+        <button class="tag-edit" title="Редактировать">&#9998;</button>
         <button class="tag-delete" title="Удалить">&#10005;</button>
       `;
       const colorPicker = item.querySelector('.tag-color-picker');
@@ -982,10 +1080,106 @@ const KanbanBoard = {
         const dot = item.querySelector('.tag-color-dot');
         dot.style.background = e.target.value;
       });
+      colorPicker.addEventListener('change', (e) => {
+        e.stopPropagation();
+        tag.color = e.target.value;
+        this._saveTags();
+      });
       const deleteBtn = item.querySelector('.tag-delete');
       deleteBtn.addEventListener('click', () => this._deleteTag(tag.id));
+      const editBtn = item.querySelector('.tag-edit');
+      const nameSpan = item.querySelector('.tag-name');
+      nameSpan.addEventListener('click', () => this._enterEditMode(item, tag));
+      editBtn.addEventListener('click', () => this._enterEditMode(item, tag));
       list.appendChild(item);
     }
+  },
+
+  _enterEditMode(item, tag) {
+    item.dataset.editing = 'true';
+    const nameSpan = item.querySelector('.tag-name');
+    const colorPicker = item.querySelector('.tag-color-picker');
+    nameSpan.style.display = 'none';
+    colorPicker.style.display = 'none';
+    let nameInput = item.querySelector('.tag-name-input');
+    if (!nameInput) {
+      nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.className = 'tag-name-input';
+      nameInput.maxLength = 22;
+      nameInput.value = tag.name;
+      item.insertBefore(nameInput, colorPicker);
+    }
+    nameInput.style.display = 'block';
+    nameInput.value = tag.name;
+    nameInput.focus();
+    nameInput.select();
+    const saveBtn = document.createElement('button');
+    saveBtn.className = 'tag-save';
+    saveBtn.title = 'Сохранить';
+    saveBtn.innerHTML = '&#10003;';
+    saveBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this._saveEdit(item, tag);
+    });
+    const cancelBtn = document.createElement('button');
+    cancelBtn.className = 'tag-cancel';
+    cancelBtn.title = 'Отмена';
+    cancelBtn.innerHTML = '&#10007;';
+    cancelBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this._cancelEdit(item, tag);
+    });
+    let deleteBtn = item.querySelector('.tag-delete');
+    item.insertBefore(saveBtn, cancelBtn);
+    item.insertBefore(cancelBtn, deleteBtn);
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        this._saveEdit(item, tag);
+      } else if (e.key === 'Escape') {
+        e.preventDefault();
+        this._cancelEdit(item, tag);
+      }
+    });
+    nameInput.addEventListener('blur', () => {
+      if (item.dataset.editing === 'true') {
+        const name = nameInput.value.trim();
+        if (name && name.length <= 22) {
+          tag.name = name;
+          tag.color = item.querySelector('.tag-color-picker').value;
+          this._saveTags();
+        } else {
+          this._cancelEdit(item, tag);
+        }
+      }
+    });
+    item.appendChild(saveBtn);
+    item.appendChild(cancelBtn);
+  },
+
+  _saveEdit(item, tag) {
+    const nameInput = item.querySelector('.tag-name-input');
+    const name = nameInput.value.trim();
+    if (!name || name.length > 22) return;
+    tag.name = name;
+    tag.color = item.querySelector('.tag-color-picker').value;
+    this._saveTags();
+  },
+
+  _cancelEdit(item, tag) {
+    item.dataset.editing = 'false';
+    const nameSpan = item.querySelector('.tag-name');
+    const colorPicker = item.querySelector('.tag-color-picker');
+    const saveBtn = item.querySelector('.tag-save');
+    const cancelBtn = item.querySelector('.tag-cancel');
+    const nameInput = item.querySelector('.tag-name-input');
+    if (saveBtn) saveBtn.remove();
+    if (cancelBtn) cancelBtn.remove();
+    nameSpan.style.display = 'inline';
+    colorPicker.style.display = 'inline-block';
+    if (nameInput) nameInput.style.display = 'none';
+    nameSpan.textContent = tag.name;
   },
 
   async _deleteTag(id) {

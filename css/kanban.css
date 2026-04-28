@@ -669,31 +669,209 @@
   display: block;
 }
 
-#card-tags-selector {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
+#card-tags-dropdown-wrapper {
+  position: relative;
+  width: 100%;
 }
 
-.tag-checkbox-label {
-  display: inline-flex;
+.tags-display {
+  padding: 6px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-input, #ffffff);
+  color: var(--card-text);
+  font-size: 13px;
+  cursor: pointer;
+  min-height: 36px;
+  display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 4px;
-  padding: 3px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  cursor: pointer;
-  transition: opacity 0.15s;
+  transition: border-color 0.15s;
   user-select: none;
 }
 
-.tag-checkbox-label:hover {
-  opacity: 0.8;
+.tags-display:hover {
+  border-color: #6366f1;
 }
 
-.tag-checkbox-label input[type="checkbox"] {
-  accent-color: var(--primary, #6366f1);
+.tags-display.active {
+  border-color: #6366f1;
+}
+
+.tags-placeholder {
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+.card-selected-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  color: #ffffff;
+  white-space: nowrap;
+  cursor: default;
+}
+
+.card-selected-tag .card-selected-tag-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100px;
+}
+
+.card-selected-tag .card-remove-tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  font-size: 11px;
+  line-height: 1;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.3);
+  color: #fff;
+}
+
+.card-selected-tag .card-remove-tag:hover {
+  opacity: 1;
+}
+
+.tags-dropdown {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  background: var(--bg-input, #ffffff);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 200;
+  overflow: hidden;
+}
+
+.tags-dropdown.active {
+  display: block;
+}
+
+.card-tags-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--card-text);
+  background: var(--bg-input, #ffffff);
+}
+
+.card-tags-selected {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-input, #ffffff);
+  max-height: 56px;
+  overflow-y: auto;
+}
+
+.card-tags-selected:empty {
+  display: none;
+}
+
+.tags-dropdown-clear {
+  padding: 2px 10px;
+  border: 1px solid #fecaca;
+  border-radius: 4px;
+  background: #fee2e2;
+  color: #ef4444;
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+
+.tags-dropdown-clear:hover {
+  background: #fecaca;
+}
+
+[data-theme="dark"] .tags-dropdown-clear {
+  background: rgba(239,68,68,0.2);
+  border-color: rgba(239,68,68,0.3);
+  color: #f87171;
+}
+
+[data-theme="dark"] .tags-dropdown-clear:hover {
+  background: rgba(239,68,68,0.3);
+}
+
+.tags-dropdown-list {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.card-tag-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--card-text);
+  transition: background 0.1s;
+  user-select: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.card-tag-option:hover {
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.card-tag-option input[type="checkbox"] {
+  accent-color: #6366f1;
   margin: 0;
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.card-tag-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.card-tag-name {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-tags-empty {
+  padding: 16px;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 13px;
 }
 
 /* Card modal assignee select */

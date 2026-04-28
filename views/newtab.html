@@ -72,7 +72,19 @@
         </select>
         <div id="card-tags-container">
           <span class="tags-label">Теги:</span>
-          <div id="card-tags-selector"></div>
+          <div id="card-tags-dropdown-wrapper">
+            <div id="card-tags-display" class="tags-display" title="Выбрать теги">
+              <span class="tags-placeholder">Все теги</span>
+            </div>
+            <div id="card-tags-dropdown" class="tags-dropdown">
+              <div class="card-tags-dropdown-header">
+                <span>Выберите теги</span>
+                <button id="tags-dropdown-clear" class="tags-dropdown-clear" title="Очистить">Очистить</button>
+              </div>
+              <div id="card-tags-selected" class="card-tags-selected"></div>
+              <div id="card-tags-selector" class="tags-dropdown-list"></div>
+            </div>
+          </div>
         </div>
         <select id="card-priority-select">
           <option value="">Без приоритета</option>
