@@ -30,9 +30,15 @@
 
     <!-- Kanban Board -->
     <div id="kanban-filter">
-      <input type="text" id="filter-search" placeholder="Поиск задач..." class="filter-input">
       <select id="filter-assignee" class="filter-select">
         <option value="">Все исполнители</option>
+      </select>
+      <select id="filter-priority" class="filter-select">
+        <option value="">Все приоритеты</option>
+        <option value="low">Низкий</option>
+        <option value="medium">Средний</option>
+        <option value="high">Высокий</option>
+        <option value="urgent">Срочный</option>
       </select>
       <div id="filter-tags-wrapper" class="filter-tags-wrapper">
         <span id="filter-tags-label" class="filter-tags-label">Все теги</span>
@@ -40,6 +46,7 @@
           <div id="filter-tags-list" class="filter-tags-list"></div>
         </div>
       </div>
+      <input type="text" id="filter-search" placeholder="Поиск задач..." class="filter-input">
       <button id="filter-clear" class="filter-clear-btn" title="Очистить фильтры">&#10005;</button>
     </div>
     <div id="filter-tags-chips" class="filter-tags-chips"></div>

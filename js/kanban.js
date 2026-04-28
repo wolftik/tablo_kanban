@@ -4,14 +4,14 @@ const KanbanBoard = {
   _editingColumnId: null,
   _draggedCard: null,
   _draggedColumn: null,
-  _filterState: { search: '', assignee: '', tags: [] },
+  _filterState: { search: '', priority: '', assignee: '', tags: [] },
   _settings: null,
 
   async init() {
     this._settings = await Storage.get('settings') || Storage.getDefaultSettings();
     this._columns = this._settings.columns || Storage.getDefaultColumns();
     this._columns.forEach(col => col.cards = col.cards || []);
-    this._filterState = this._settings.kanbanFilter || { search: '', assignee: '', tags: [] };
+    this._filterState = this._settings.kanbanFilter || { search: '', priority: '', assignee: '', tags: [] };
     this._renderBoard();
     this._bindEvents();
     this._updateFilterDropdowns();
@@ -43,6 +43,9 @@ const KanbanBoard = {
             !(card.assignee || '').toLowerCase().includes(search)) {
           return false;
         }
+      }
+      if (f.priority && (card.priority || '') !== f.priority) {
+        return false;
       }
       if (f.assignee && (card.assignee || '') !== f.assignee) {
         return false;
@@ -391,12 +394,13 @@ const KanbanBoard = {
   _updateClearButton() {
     const btn = document.getElementById('filter-clear');
     if (!btn) return;
-    const hasFilters = this._filterState.search || this._filterState.assignee || this._filterState.tags.length > 0;
+    const hasFilters = this._filterState.search || this._filterState.priority || this._filterState.assignee || this._filterState.tags.length > 0;
     btn.classList.toggle('visible', hasFilters);
   },
 
   _applyFilters() {
     this._filterState.search = document.getElementById('filter-search').value.trim();
+    this._filterState.priority = document.getElementById('filter-priority').value;
     this._filterState.assignee = document.getElementById('filter-assignee').value;
     this._renderBoard();
     this._updateClearButton();
@@ -406,10 +410,12 @@ const KanbanBoard = {
   },
 
   _clearFilters() {
-    this._filterState = { search: '', assignee: '', tags: [] };
+    this._filterState = { search: '', priority: '', assignee: '', tags: [] };
     const searchInput = document.getElementById('filter-search');
+    const prioritySelect = document.getElementById('filter-priority');
     const assigneeSelect = document.getElementById('filter-assignee');
     if (searchInput) searchInput.value = '';
+    if (prioritySelect) prioritySelect.value = '';
     if (assigneeSelect) assigneeSelect.value = '';
     this._renderBoard();
     this._updateFilterDropdowns();
@@ -812,11 +818,15 @@ const KanbanBoard = {
     });
 
     const filterSearch = document.getElementById('filter-search');
+    const filterPriority = document.getElementById('filter-priority');
     const filterAssignee = document.getElementById('filter-assignee');
     const filterClear = document.getElementById('filter-clear');
 
     if (filterSearch) {
       filterSearch.addEventListener('input', () => this._applyFilters());
+    }
+    if (filterPriority) {
+      filterPriority.addEventListener('change', () => this._applyFilters());
     }
     if (filterAssignee) {
       filterAssignee.addEventListener('change', () => this._applyFilters());

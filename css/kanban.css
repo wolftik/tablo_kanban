@@ -14,6 +14,10 @@
   --priority-high: #f97316;
   --priority-urgent: #ef4444;
   --bookmarks-border: #e2e8f0;
+  --border: #e2e8f0;
+  --bg-input: #ffffff;
+  --bg-card: #ffffff;
+  --text: #1e293b;
 }
 
 [data-theme="dark"] {
@@ -24,6 +28,10 @@
   --card-shadow: 0 1px 3px rgba(0,0,0,0.3);
   --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.4);
   --drop-highlight: rgba(99, 102, 241, 0.25);
+  --border: #334155;
+  --bg-input: #1e293b;
+  --bg-card: #1e293b;
+  --text: #f1f5f9;
 }
 
 #kanban-board {
