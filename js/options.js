@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', async () => {
   let settings = await Storage.get('settings') || Storage.getDefaultSettings();
   let columns = settings.columns || Storage.getDefaultColumns();
+  let tags = settings.tags || Storage.getDefaultTags();
   let bookmarkFolders = [];
 
   await loadChromeBookmarks();
 
   setupTabs();
   renderColumnsList();
+  renderTagsList();
   renderBookmarkFolders();
   loadSettingsUI();
 
@@ -107,6 +109,62 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     setupColumnReorder(list);
   }
+
+  function renderTagsList() {
+    const list = document.getElementById('tags-list');
+    if (!list) return;
+
+    list.innerHTML = '';
+
+    tags.forEach((tag, index) => {
+      const item = document.createElement('div');
+      item.className = 'tag-option-item';
+
+      const color = document.createElement('input');
+      color.type = 'color';
+      color.value = tag.color || '#6366f1';
+      color.className = 'tag-color';
+
+      const name = document.createElement('input');
+      name.type = 'text';
+      name.value = tag.name;
+      name.className = 'tag-name';
+      name.placeholder = 'Название тега';
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'tag-delete-btn';
+      deleteBtn.innerHTML = '&times;';
+      deleteBtn.addEventListener('click', () => {
+        tags = tags.filter(t => t.id !== tag.id);
+        renderTagsList();
+      });
+
+      item.appendChild(color);
+      item.appendChild(name);
+      item.appendChild(deleteBtn);
+      list.appendChild(item);
+
+      const updateTag = () => {
+        const found = tags.find(t => t.id === tag.id);
+        if (found) {
+          found.name = name.value;
+          found.color = color.value;
+        }
+      };
+
+      name.addEventListener('blur', updateTag);
+      color.addEventListener('input', updateTag);
+    });
+  }
+
+  document.getElementById('add-tag-option').addEventListener('click', () => {
+    tags.push({
+      id: Storage.generateId(),
+      name: 'Новый тег',
+      color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')
+    });
+    renderTagsList();
+  });
 
   function setupColumnReorder(list) {
     let draggedItem = null;
@@ -243,6 +301,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       cardSize: cardSize,
       showFavicon: showFavicon,
       visibleBookmarks: visibleIds,
+      tags: tags,
       columns: columns
     };
 

@@ -72,12 +72,22 @@ const Storage = {
     ];
   },
 
+  getDefaultTags() {
+    return [
+      { id: this.generateId(), name: 'Bug', color: '#ef4444' },
+      { id: this.generateId(), name: 'Feature', color: '#3b82f6' },
+      { id: this.generateId(), name: 'Enhancement', color: '#8b5cf6' },
+    ];
+  },
+
   getDefaultSettings() {
     return {
       theme: 'system',
       cardSize: 'standard',
       showFavicon: true,
       visibleBookmarks: [],
+      tags: this.getDefaultTags(),
+      kanbanFilter: {},
       columns: this.getDefaultColumns(),
     };
   },

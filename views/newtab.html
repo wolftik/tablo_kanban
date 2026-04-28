@@ -29,6 +29,16 @@
     </div>
 
     <!-- Kanban Board -->
+    <div id="kanban-filter">
+      <input type="text" id="filter-search" placeholder="Поиск задач..." class="filter-input">
+      <select id="filter-assignee" class="filter-select">
+        <option value="">Все исполнители</option>
+      </select>
+      <select id="filter-tags" class="filter-select" multiple>
+        <option value="">Все теги</option>
+      </select>
+      <button id="filter-clear" class="filter-clear-btn" title="Очистить фильтры">&#10005;</button>
+    </div>
     <div id="kanban-board"></div>
 
     <!-- Edit Card Modal -->
@@ -37,6 +47,11 @@
         <h3 id="modal-title">Задача</h3>
         <input type="text" id="card-title-input" placeholder="Название задачи">
         <textarea id="card-desc-input" placeholder="Описание" rows="3"></textarea>
+        <input type="text" id="card-assignee-input" placeholder="Исполнитель">
+        <div id="card-tags-container">
+          <span class="tags-label">Теги:</span>
+          <div id="card-tags-selector"></div>
+        </div>
         <select id="card-priority-select">
           <option value="">Без приоритета</option>
           <option value="low">Низкий</option>

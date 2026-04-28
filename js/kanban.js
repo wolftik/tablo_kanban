@@ -4,25 +4,68 @@ const KanbanBoard = {
   _editingColumnId: null,
   _draggedCard: null,
   _draggedColumn: null,
+  _filterState: { search: '', assignee: '', tags: [] },
+  _settings: null,
 
   async init() {
-    const settings = await Storage.get('settings') || Storage.getDefaultSettings();
-    this._columns = settings.columns || Storage.getDefaultColumns();
+    this._settings = await Storage.get('settings') || Storage.getDefaultSettings();
+    this._columns = this._settings.columns || Storage.getDefaultColumns();
     this._columns.forEach(col => col.cards = col.cards || []);
+    this._filterState = this._settings.kanbanFilter || { search: '', assignee: '', tags: [] };
     this._renderBoard();
     this._bindEvents();
+    this._updateFilterDropdowns();
+    this._updateClearButton();
   },
 
   async save() {
     this._columns.forEach((col, i) => { col.order = i; });
     const settings = await Storage.get('settings') || Storage.getDefaultSettings();
     settings.columns = this._columns;
+    settings.kanbanFilter = this._filterState;
     await Storage.set('settings', settings);
+    this._settings = settings;
   },
 
   _getCardsForColumn(columnId) {
     const col = this._columns.find(c => c.id === columnId);
     return (col?.cards || []).sort((a, b) => (a.order || 0) - (b.order || 0));
+  },
+
+  _getFilteredCardsForColumn(columnId) {
+    const cards = this._getCardsForColumn(columnId);
+    const f = this._filterState;
+    return cards.filter(card => {
+      if (f.search) {
+        const search = f.search.toLowerCase();
+        if (!card.title.toLowerCase().includes(search) &&
+            !(card.description || '').toLowerCase().includes(search) &&
+            !(card.assignee || '').toLowerCase().includes(search)) {
+          return false;
+        }
+      }
+      if (f.assignee && (card.assignee || '') !== f.assignee) {
+        return false;
+      }
+      if (f.tags && f.tags.length > 0) {
+        const cardTags = card.tags || [];
+        if (!f.tags.some(t => cardTags.includes(t))) {
+          return false;
+        }
+      }
+      return true;
+    });
+  },
+
+  _updateColumnCounts() {
+    document.querySelectorAll('.kanban-column').forEach(colEl => {
+      const colId = colEl.dataset.columnId;
+      const cards = this._getFilteredCardsForColumn(colId);
+      const countEl = colEl.querySelector('.column-count');
+      if (countEl) {
+        countEl.textContent = cards.length;
+      }
+    });
   },
 
   _renderBoard() {
@@ -36,6 +79,8 @@ const KanbanBoard = {
     for (const col of sorted) {
       board.appendChild(this._createColumnElement(col));
     }
+
+    this._updateColumnCounts();
 
     const addColBtn = document.createElement('button');
     addColBtn.className = 'add-column-btn';
@@ -106,7 +151,7 @@ const KanbanBoard = {
     cardsContainer.className = 'column-cards';
     cardsContainer.dataset.columnId = col.id;
 
-    const cards = this._getCardsForColumn(col.id);
+    const cards = this._getFilteredCardsForColumn(col.id);
     for (const card of cards) {
       cardsContainer.appendChild(this._createCardElement(card, col.id));
     }
@@ -171,6 +216,33 @@ const KanbanBoard = {
 
     cardEl.appendChild(meta);
 
+    if (card.assignee) {
+      const assigneeEl = document.createElement('div');
+      assigneeEl.className = 'card-assignee';
+      const initial = card.assignee.charAt(0).toUpperCase();
+      const avatar = document.createElement('span');
+      avatar.className = 'assignee-avatar';
+      avatar.style.background = this._hashToColor(card.assignee);
+      avatar.textContent = initial;
+      avatar.title = card.assignee;
+      assigneeEl.appendChild(avatar);
+      cardEl.appendChild(assigneeEl);
+    }
+
+    if (card.tags && card.tags.length > 0) {
+      const tagsContainer = document.createElement('div');
+      tagsContainer.className = 'card-tags';
+      const tags = this._getTagsForDisplay(card.tags);
+      for (const tag of tags) {
+        const badge = document.createElement('span');
+        badge.className = 'tag-badge';
+        badge.textContent = tag.name;
+        badge.style.background = tag.color;
+        tagsContainer.appendChild(badge);
+      }
+      cardEl.appendChild(tagsContainer);
+    }
+
     cardEl.addEventListener('click', () => this._openEditCardModal(card, columnId));
 
     this._bindCardDrag(cardEl);
@@ -195,6 +267,88 @@ const KanbanBoard = {
       document.querySelectorAll('.drop-placeholder').forEach(p => p.remove());
       document.querySelectorAll('.drag-over-card').forEach(c => c.classList.remove('drag-over-card'));
     });
+  },
+
+  _hashToColor(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const h = Math.abs(hash) % 360;
+    return `hsl(${h}, 65%, 55%)`;
+  },
+
+  _getTagsForDisplay(tagIds) {
+    if (!this._settings || !this._settings.tags) return [];
+    return tagIds.map(id => this._settings.tags.find(t => t.id === id)).filter(Boolean);
+  },
+
+  _updateFilterDropdowns() {
+    const assigneeSelect = document.getElementById('filter-assignee');
+    const tagsSelect = document.getElementById('filter-tags');
+    if (!assigneeSelect || !tagsSelect) return;
+
+    const allCards = this._columns.flatMap(col => col.cards || []);
+    const assignees = new Set();
+    for (const card of allCards) {
+      if (card.assignee) assignees.add(card.assignee);
+    }
+
+    const currentAssignee = assigneeSelect.value;
+    assigneeSelect.innerHTML = '<option value="">Все исполнители</option>';
+    for (const a of assignees) {
+      const opt = document.createElement('option');
+      opt.value = a;
+      opt.textContent = a;
+      if (a === currentAssignee) opt.selected = true;
+      assigneeSelect.appendChild(opt);
+    }
+
+    const currentTags = tagsSelect.value || [];
+    tagsSelect.innerHTML = '<option value="">Все теги</option>';
+    if (this._settings && this._settings.tags) {
+      for (const tag of this._settings.tags) {
+        const opt = document.createElement('option');
+        opt.value = tag.id;
+        opt.textContent = tag.name;
+        if (currentTags.includes(tag.id)) opt.selected = true;
+        tagsSelect.appendChild(opt);
+      }
+    }
+  },
+
+  _updateClearButton() {
+    const btn = document.getElementById('filter-clear');
+    if (!btn) return;
+    const hasFilters = this._filterState.search || this._filterState.assignee || this._filterState.tags.length > 0;
+    btn.classList.toggle('visible', hasFilters);
+  },
+
+  _applyFilters() {
+    this._filterState.search = document.getElementById('filter-search').value.trim();
+    this._filterState.assignee = document.getElementById('filter-assignee').value;
+    this._filterState.tags = Array.from(document.getElementById('filter-tags').selectedOptions).map(o => o.value);
+    this._renderBoard();
+    this._updateClearButton();
+    this.save();
+  },
+
+  _clearFilters() {
+    this._filterState = { search: '', assignee: '', tags: [] };
+    const searchInput = document.getElementById('filter-search');
+    const assigneeSelect = document.getElementById('filter-assignee');
+    const tagsSelect = document.getElementById('filter-tags');
+    if (searchInput) searchInput.value = '';
+    if (assigneeSelect) assigneeSelect.value = '';
+    if (tagsSelect) {
+      for (const opt of tagsSelect.options) {
+        opt.selected = false;
+      }
+    }
+    this._renderBoard();
+    this._updateFilterDropdowns();
+    this._updateClearButton();
+    this.save();
   },
 
   _bindColumnDragDrop(colEl, cardsContainer, columnId) {
@@ -358,26 +512,30 @@ const KanbanBoard = {
   },
 
   _openNewCardModal(columnId) {
-    this._editingCard = { title: '', description: '', priority: '', columnId: columnId };
+    this._editingCard = { title: '', description: '', priority: '', columnId: columnId, assignee: '', tags: [] };
     this._editingColumnId = columnId;
     document.getElementById('modal-title').textContent = 'Новая задача';
     document.getElementById('card-title-input').value = '';
     document.getElementById('card-desc-input').value = '';
+    document.getElementById('card-assignee-input').value = '';
     document.getElementById('card-priority-select').value = '';
     document.getElementById('card-delete-btn').style.display = 'none';
+    this._populateTagSelector([]);
     document.getElementById('edit-card-modal').style.display = 'flex';
     setTimeout(() => document.getElementById('card-title-input').focus(), 50);
   },
 
   _openEditCardModal(card, columnId) {
     if (card._isTemporary) return;
-    this._editingCard = { ...card };
+    this._editingCard = { ...card, tags: card.tags ? [...card.tags] : [] };
     this._editingColumnId = columnId;
     document.getElementById('modal-title').textContent = 'Редактировать задачу';
     document.getElementById('card-title-input').value = card.title || '';
     document.getElementById('card-desc-input').value = card.description || '';
+    document.getElementById('card-assignee-input').value = card.assignee || '';
     document.getElementById('card-priority-select').value = card.priority || '';
     document.getElementById('card-delete-btn').style.display = 'inline-block';
+    this._populateTagSelector(card.tags || []);
     document.getElementById('edit-card-modal').style.display = 'flex';
   },
 
@@ -387,12 +545,42 @@ const KanbanBoard = {
     this._editingColumnId = null;
   },
 
+  _populateTagSelector(selectedTagIds) {
+    const container = document.getElementById('card-tags-selector');
+    if (!container) return;
+    container.innerHTML = '';
+    const tags = this._settings?.tags || [];
+    for (const tag of tags) {
+      const label = document.createElement('label');
+      label.className = 'tag-checkbox-label';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.value = tag.id;
+      cb.checked = selectedTagIds.includes(tag.id);
+      const dot = document.createElement('span');
+      dot.style.display = 'inline-block';
+      dot.style.width = '8px';
+      dot.style.height = '8px';
+      dot.style.borderRadius = '50%';
+      dot.style.background = tag.color;
+      const span = document.createElement('span');
+      span.textContent = tag.name;
+      label.appendChild(cb);
+      label.appendChild(dot);
+      label.appendChild(span);
+      container.appendChild(label);
+    }
+  },
+
   _saveCard() {
     const title = document.getElementById('card-title-input').value.trim();
     if (!title) return;
 
     const description = document.getElementById('card-desc-input').value.trim();
     const priority = document.getElementById('card-priority-select').value;
+    const assignee = document.getElementById('card-assignee-input').value.trim();
+
+    const selectedTags = Array.from(document.querySelectorAll('#card-tags-selector input[type="checkbox"]:checked')).map(cb => cb.value);
 
     if (this._editingCard && this._editingCard.id) {
       const col = this._columns.find(c => c.id === this._editingColumnId);
@@ -402,6 +590,8 @@ const KanbanBoard = {
           card.title = title;
           card.description = description;
           card.priority = priority;
+          card.assignee = assignee;
+          card.tags = selectedTags;
           card.updatedAt = Date.now();
         }
       }
@@ -413,6 +603,8 @@ const KanbanBoard = {
           title: title,
           description: description,
           priority: priority,
+          assignee: assignee,
+          tags: selectedTags,
           order: col.cards.length,
           createdAt: Date.now(),
           updatedAt: Date.now()
@@ -422,6 +614,7 @@ const KanbanBoard = {
 
     this._closeModal();
     this._renderBoard();
+    this._updateFilterDropdowns();
     this.save();
   },
 
@@ -551,5 +744,23 @@ const KanbanBoard = {
         this._closeModal();
       }
     });
+
+    const filterSearch = document.getElementById('filter-search');
+    const filterAssignee = document.getElementById('filter-assignee');
+    const filterTags = document.getElementById('filter-tags');
+    const filterClear = document.getElementById('filter-clear');
+
+    if (filterSearch) {
+      filterSearch.addEventListener('input', () => this._applyFilters());
+    }
+    if (filterAssignee) {
+      filterAssignee.addEventListener('change', () => this._applyFilters());
+    }
+    if (filterTags) {
+      filterTags.addEventListener('change', () => this._applyFilters());
+    }
+    if (filterClear) {
+      filterClear.addEventListener('click', () => this._clearFilters());
+    }
   }
 };

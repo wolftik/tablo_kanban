@@ -74,6 +74,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   await KanbanBoard.init();
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+      e.preventDefault();
+      const filterSearch = document.getElementById('filter-search');
+      if (filterSearch) filterSearch.focus();
+    }
+    if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
+      const active = document.activeElement;
+      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT')) {
+        return;
+      }
+      e.preventDefault();
+      const filterSearch = document.getElementById('filter-search');
+      if (filterSearch) filterSearch.focus();
+    }
+    if (e.key === 'Escape') {
+      const filterSearch = document.getElementById('filter-search');
+      if (filterSearch && document.activeElement === filterSearch) {
+        const filterClear = document.getElementById('filter-clear');
+        if (filterClear && filterClear.classList.contains('visible')) {
+          filterClear.click();
+          filterSearch.blur();
+        }
+      }
+    }
+  });
 });
 
 function applyTheme(theme) {
