@@ -202,37 +202,30 @@ const BookmarksManager = {
       const dragging = container.querySelector('.bookmark-item.dragging');
       if (!dragging) return;
 
-      const bookmarkId = dragging.dataset.bookmarkId;
       const targetSlot = this._getSlotFromCoordinates(container, e.clientX, e.clientY);
 
-      // Переместить DOM-элемент в целевой слот
-      if (targetSlot !== null && targetSlot < container.children.length) {
-        const targetEl = container.children[targetSlot];
-        if (targetEl !== dragging) {
-          container.insertBefore(dragging, targetEl);
-        }
-      } else {
+      if (targetSlot === null) {
+        container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        return;
+      }
+
+      const targetEl = container.children[targetSlot];
+      
+      if (targetEl && targetEl !== dragging) {
+        container.insertBefore(dragging, targetEl);
+      } else if (!targetEl) {
         container.appendChild(dragging);
       }
 
-      // Формировать newOrder из обновленного DOM с сохранением позиций
-      const newOrder = [];
       const items = container.querySelectorAll('.bookmark-item');
-      items.forEach(item => {
-        newOrder.push({
+      const sparseArray = new Array(22).fill(null);
+      
+      items.forEach((item, index) => {
+        sparseArray[index] = {
           id: item.dataset.bookmarkId,
           url: item.href,
           title: item.querySelector('.bookmark-title').textContent
-        });
-      });
-
-      // Восстанавливаем sparse-массив с правильными индексами
-      const sparseArray = new Array(22).fill(null);
-      items.forEach((item, domIndex) => {
-        const bm = newOrder.find(b => b.id === item.dataset.bookmarkId);
-        if (bm) {
-          sparseArray[domIndex] = bm;
-        }
+        };
       });
 
       await this.saveDisplayedBookmarks(sparseArray);
@@ -244,29 +237,26 @@ const BookmarksManager = {
   },
 
   _getSlotFromCoordinates(container, x, y) {
-    const gridStyle = container.style;
-    const colsMatch = gridStyle.getPropertyValue('grid-template-columns');
-    const rowsMatch = gridStyle.getPropertyValue('grid-template-rows');
+    const children = Array.from(container.children);
+    if (children.length === 0) return 0;
     
-    const colDefs = colsMatch ? colsMatch.trim().split(/\s+/) : [];
-    const rowDefs = rowsMatch ? rowsMatch.trim().split(/\s+/) : [];
+    let closestSlot = null;
+    let minDistance = Infinity;
     
-    const colWidth = colDefs.length > 0 ? parseInt(colDefs[0]) + 8 : 128;
-    const rowHeight = rowDefs.length > 0 ? parseInt(rowDefs[0]) + 8 : 108;
+    for (let i = 0; i < children.length; i++) {
+      const rect = children[i].getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      
+      const distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
+      
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestSlot = i;
+      }
+    }
     
-    const rect = container.getBoundingClientRect();
-    const relX = x - rect.left;
-    const relY = y - rect.top;
-    
-    const colIndex = Math.floor(relX / colWidth);
-    const rowIndex = Math.floor(relY / rowHeight);
-    
-    const totalCols = colDefs.length || 11;
-    
-    if (rowIndex < 0 || colIndex < 0) return null;
-    
-    const slot = rowIndex * totalCols + colIndex;
-    return slot;
+    return closestSlot;
   },
 
 

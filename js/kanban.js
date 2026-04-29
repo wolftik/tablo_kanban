@@ -424,7 +424,10 @@ const KanbanBoard = {
       e.dataTransfer.dropEffect = 'move';
 
       const afterElement = this._getDragAfterElement(cardsContainer, e.clientY);
-      const placeholder = document.querySelector('.drop-placeholder') || this._createPlaceholder();
+      let placeholder = cardsContainer.querySelector('.drop-placeholder');
+      if (!placeholder) {
+        placeholder = this._createPlaceholder();
+      }
       if (afterElement == null) {
         cardsContainer.appendChild(placeholder);
       } else {
@@ -434,7 +437,8 @@ const KanbanBoard = {
 
     cardsContainer.addEventListener('dragleave', (e) => {
       if (!cardsContainer.contains(e.relatedTarget)) {
-        cardsContainer.querySelectorAll('.drop-placeholder').forEach(p => p.remove());
+        const placeholder = cardsContainer.querySelector('.drop-placeholder');
+        if (placeholder) placeholder.remove();
       }
     });
 
@@ -491,7 +495,17 @@ const KanbanBoard = {
   },
 
   _getDragAfterElement(container, y) {
-    return getCardDragAfterElement(container, y);
+    const draggableElements = [...container.querySelectorAll('.kanban-card:not(.dragging)')];
+
+    return draggableElements.reduce((closest, child) => {
+      const box = child.getBoundingClientRect();
+      const offset = y - box.top - box.height / 2;
+      if (offset < 0 && offset > closest.offset) {
+        return { offset: offset, element: child };
+      } else {
+        return closest;
+      }
+    }, { offset: Number.NEGATIVE_INFINITY }).element;
   },
 
   _createPlaceholder() {
@@ -542,20 +556,26 @@ const KanbanBoard = {
     const cardIndex = col.cards.findIndex(c => c.id === cardId);
     if (cardIndex === -1) return;
 
-    const [card] = col.cards.splice(cardIndex, 1);
-
     const placeholder = document.querySelector('.kanban-column[data-column-id="' + columnId + '"] .drop-placeholder');
     if (!placeholder) {
-      col.cards.splice(cardIndex, 0, card);
       return;
     }
+
+    const card = col.cards[cardIndex];
 
     const prevSibling = placeholder.previousElementSibling;
     let newIndex;
     if (prevSibling && prevSibling.classList.contains('kanban-card')) {
       const prevCardId = prevSibling.dataset.cardId;
-      const prevIndex = col.cards.findIndex(c => c.id === prevCardId);
-      newIndex = prevIndex !== -1 ? prevIndex + 1 : col.cards.length;
+      let prevIndex = col.cards.findIndex(c => c.id === prevCardId);
+      if (prevIndex === -1) {
+        newIndex = col.cards.length;
+      } else {
+        newIndex = prevIndex + 1;
+        if (cardIndex < prevIndex) {
+          newIndex = prevIndex;
+        }
+      }
     } else {
       const firstVisible = placeholder.parentElement.querySelector('.kanban-card');
       if (firstVisible) {
@@ -567,6 +587,7 @@ const KanbanBoard = {
       }
     }
 
+    col.cards.splice(cardIndex, 1);
     col.cards.splice(newIndex, 0, card);
   },
 
