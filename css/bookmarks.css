@@ -360,7 +360,7 @@
   font-weight: 500;
 }
 
-.bookmark-item .bookmark-delete {
+.bookmark-item .bookmark-menu-btn {
   position: absolute;
   top: 4px;
   right: 4px;
@@ -374,20 +374,70 @@
   color: #fff;
   cursor: pointer;
   border-radius: 50%;
-  font-size: 16px;
+  font-size: 14px;
   line-height: 1;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0;
 }
 
-.bookmark-item:hover .bookmark-delete {
+.bookmark-item:hover .bookmark-menu-btn {
   visibility: visible;
   opacity: 1;
 }
 
-.bookmark-item .bookmark-delete:hover {
-  background: #ef4444;
+.bookmark-item .bookmark-menu-btn:hover {
+  background: #6366f1;
+}
+
+.bookmark-context-menu {
+  position: absolute;
+  background: var(--bookmarks-bg, #f8fafc);
+  border: 1px solid var(--bookmarks-border, #e2e8f0);
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  padding: 4px;
+  min-width: 140px;
+  z-index: 10000;
+  display: none;
+}
+
+.bookmark-context-menu.show {
+  display: block;
+}
+
+.bookmark-context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--bookmark-text, #1e293b);
+  transition: background 0.15s;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-family: inherit;
+}
+
+.bookmark-context-menu-item:hover {
+  background: var(--bookmark-hover-bg, #e2e8f0);
+}
+
+.bookmark-context-menu-item.delete {
+  color: #ef4444;
+}
+
+.bookmark-context-menu-item.delete:hover {
+  background: #fee2e2;
+}
+
+[data-theme="dark"] .bookmark-context-menu-item.delete:hover {
+  background: rgba(239,68,68,0.2);
 }
 
 .bookmark-item.dragging {
@@ -580,4 +630,12 @@
 
 .btn-danger:hover {
   background: #fecaca !important;
+}
+
+#bookmark-edit-modal {
+  display: none;
+}
+
+#bookmark-edit-modal .modal {
+  min-width: 360px;
 }

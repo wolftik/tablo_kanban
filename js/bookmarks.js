@@ -119,20 +119,18 @@ const BookmarksManager = {
         titleEl.className = 'bookmark-title';
         titleEl.textContent = bm.title;
 
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'bookmark-delete';
-        deleteBtn.innerHTML = '&times;';
-        deleteBtn.addEventListener('click', (e) => {
+        const menuBtn = document.createElement('button');
+        menuBtn.className = 'bookmark-menu-btn';
+        menuBtn.innerHTML = '&#8942;';
+        menuBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          this.removeDisplayedBookmark(bm.id).then(() => {
-            this.renderBookmarks(container, this._displayedBookmarks);
-          });
+          this.showContextMenu(e.clientX, e.clientY, bm, container);
         });
 
         a.appendChild(favicon);
         a.appendChild(titleEl);
-        a.appendChild(deleteBtn);
+        a.appendChild(menuBtn);
         container.appendChild(a);
       } else {
         const placeholder = document.createElement('div');
@@ -158,6 +156,127 @@ const BookmarksManager = {
     }
 
     this._bindBookmarkDragDrop(container);
+  },
+
+  showContextMenu(x, y, bookmark, container) {
+    let menu = document.getElementById('bookmark-context-menu');
+    if (!menu) {
+      menu = document.createElement('div');
+      menu.id = 'bookmark-context-menu';
+      menu.className = 'bookmark-context-menu';
+      menu.innerHTML = `
+        <button class="bookmark-context-menu-item edit">
+          <span>&#9998;</span>
+          <span>Редактировать</span>
+        </button>
+        <button class="bookmark-context-menu-item delete">
+          <span>&#128465;</span>
+          <span>Удалить</span>
+        </button>
+      `;
+      document.body.appendChild(menu);
+    }
+
+    this._currentContextMenuBookmark = bookmark;
+    this._currentContextMenuContainer = container;
+
+    menu.style.left = x + 'px';
+    menu.style.top = y + 'px';
+    menu.classList.add('show');
+
+    const editBtn = menu.querySelector('.edit');
+    const deleteBtn = menu.querySelector('.delete');
+
+    editBtn.onclick = (e) => {
+      e.stopPropagation();
+      this.hideContextMenu();
+      this.openEditModal(bookmark);
+    };
+
+    deleteBtn.onclick = (e) => {
+      e.stopPropagation();
+      this.hideContextMenu();
+      this.removeDisplayedBookmark(bookmark.id).then(() => {
+        this.renderBookmarks(container, this._displayedBookmarks);
+      });
+    };
+
+    this._closeMenuOnOutsideClick = (e) => {
+      if (!menu.contains(e.target)) {
+        this.hideContextMenu();
+      }
+    };
+
+    setTimeout(() => {
+      document.addEventListener('click', this._closeMenuOnOutsideClick);
+    }, 100);
+  },
+
+  hideContextMenu() {
+    const menu = document.getElementById('bookmark-context-menu');
+    if (menu) {
+      menu.classList.remove('show');
+    }
+    if (this._closeMenuOnOutsideClick) {
+      document.removeEventListener('click', this._closeMenuOnOutsideClick);
+      this._closeMenuOnOutsideClick = null;
+    }
+  },
+
+  openEditModal(bookmark) {
+    let modal = document.getElementById('bookmark-edit-modal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'bookmark-edit-modal';
+      modal.className = 'modal-overlay';
+      modal.innerHTML = `
+        <div class="modal">
+          <h3>Редактировать закладку</h3>
+          <input type="text" id="bookmark-edit-url" placeholder="URL">
+          <input type="text" id="bookmark-edit-title" placeholder="Название">
+          <div class="modal-actions">
+            <button id="bookmark-edit-cancel">Отмена</button>
+            <button id="bookmark-edit-save">Сохранить</button>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      const cancelBtn = modal.querySelector('#bookmark-edit-cancel');
+      cancelBtn.onclick = () => {
+        modal.style.display = 'none';
+      };
+
+      const saveBtn = modal.querySelector('#bookmark-edit-save');
+      saveBtn.onclick = () => {
+        const newUrl = document.getElementById('bookmark-edit-url').value;
+        const newTitle = document.getElementById('bookmark-edit-title').value;
+        if (newUrl && this._currentContextMenuBookmark) {
+          const index = this._displayedBookmarks.findIndex(b => b && b.id === this._currentContextMenuBookmark.id);
+          if (index !== -1) {
+            this._displayedBookmarks[index] = {
+              ...this._displayedBookmarks[index],
+              url: newUrl,
+              title: newTitle || newUrl
+            };
+            this.saveDisplayedBookmarks(this._displayedBookmarks).then(() => {
+              this.renderBookmarks(this._currentContextMenuContainer, this._displayedBookmarks);
+              modal.style.display = 'none';
+            });
+          }
+        }
+      };
+
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+
+    document.getElementById('bookmark-edit-url').value = bookmark.url;
+    document.getElementById('bookmark-edit-title').value = bookmark.title;
+    modal.style.display = 'flex';
   },
 
   _bindBookmarkDragDrop(container) {
@@ -293,3 +412,9 @@ const BookmarksManager = {
     this.renderBookmarks(container, bookmarksToRender);
   }
 };
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    BookmarksManager.hideContextMenu();
+  }
+});
