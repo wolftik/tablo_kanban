@@ -153,8 +153,7 @@
   color: var(--bookmark-text);
 }
 
-.performer-item .performer-edit,
-.manage-tag-item .tag-edit {
+.performer-item .performer-edit {
   width: 24px;
   height: 24px;
   border: none;
@@ -235,26 +234,7 @@
   box-shadow: 0 0 0 2px rgba(59,130,246,0.2);
 }
 
-.manage-tag-item .tag-edit {
-  width: 24px;
-  height: 24px;
-  border: none;
-  background: transparent;
-  color: #64748b;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
-  transition: background 0.15s, color 0.15s;
-}
 
-.manage-tag-item .tag-edit:hover {
-  background: #e0e7ff;
-  color: #4338ca;
-}
-
-[data-theme="dark"] .manage-tag-item .tag-edit:hover {
-  background: rgba(99,102,241,0.2);
-}
 
 .manage-tag-item .tag-save {
   width: 24px;

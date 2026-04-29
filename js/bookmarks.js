@@ -126,7 +126,7 @@ const BookmarksManager = {
       placeholder.className = 'bookmark-placeholder';
       placeholder.dataset.index = bookmarks.length + i; // Позиция в сетке
       placeholder.innerHTML = `
-        <span class="placeholder-icon">+</span>
+        <span class="placeholder-icon">⁂</span>
         <span>Добавить сайт</span>
       `;
       placeholder.addEventListener('click', () => {

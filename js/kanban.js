@@ -1071,7 +1071,6 @@ const KanbanBoard = {
         <span class="tag-color-dot" style="background:${tag.color}"></span>
         <span class="tag-name" title="Нажмите для редактирования">${tag.name}</span>
         <input type="color" class="tag-color-picker" value="${tag.color}" title="Цвет">
-        <button class="tag-edit" title="Редактировать">&#9998;</button>
         <button class="tag-delete" title="Удалить">&#10005;</button>
       `;
       const colorPicker = item.querySelector('.tag-color-picker');
@@ -1087,10 +1086,8 @@ const KanbanBoard = {
       });
       const deleteBtn = item.querySelector('.tag-delete');
       deleteBtn.addEventListener('click', () => this._deleteTag(tag.id));
-      const editBtn = item.querySelector('.tag-edit');
       const nameSpan = item.querySelector('.tag-name');
       nameSpan.addEventListener('click', () => this._enterEditMode(item, tag));
-      editBtn.addEventListener('click', () => this._enterEditMode(item, tag));
       list.appendChild(item);
     }
   },
@@ -1125,14 +1122,14 @@ const KanbanBoard = {
     const cancelBtn = document.createElement('button');
     cancelBtn.className = 'tag-cancel';
     cancelBtn.title = 'Отмена';
-    cancelBtn.innerHTML = '&#10007;';
+    cancelBtn.innerHTML = '&#9675;';
     cancelBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       this._cancelEdit(item, tag);
     });
     let deleteBtn = item.querySelector('.tag-delete');
-    item.insertBefore(saveBtn, cancelBtn);
     item.insertBefore(cancelBtn, deleteBtn);
+    item.insertBefore(saveBtn, cancelBtn);
     nameInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
         e.preventDefault();
@@ -1154,8 +1151,6 @@ const KanbanBoard = {
         }
       }
     });
-    item.appendChild(saveBtn);
-    item.appendChild(cancelBtn);
   },
 
   _saveEdit(item, tag) {
