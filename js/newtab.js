@@ -15,18 +15,22 @@ document.addEventListener('DOMContentLoaded', async () => {
   const bmSaveBtn = document.getElementById('bookmark-save');
   const bmCancelBtn = document.getElementById('bookmark-cancel');
 
-  if (addBmBtn && addBmModal) {
-    addBmBtn.addEventListener('click', () => {
-      // Убрать активный класс у всех плейсхолдеров
-      const container = document.getElementById('bookmarks-container');
-      if (container) {
-        container.querySelectorAll('.bookmark-placeholder.active').forEach(p => p.classList.remove('active'));
-      }
-      // Сбросить позицию
-      delete addBmModal.dataset.targetIndex;
-      addBmModal.style.display = 'flex';
-      bmUrlInput.focus();
-    });
+  // Modal event bindings (always execute)
+  if (addBmModal) {
+    // Only bind the "add via button" if the button exists
+    if (addBmBtn) {
+      addBmBtn.addEventListener('click', () => {
+        // Убрать активный класс у всех плейсхолдеров
+        const container = document.getElementById('bookmarks-container');
+        if (container) {
+          container.querySelectorAll('.bookmark-placeholder.active').forEach(p => p.classList.remove('active'));
+        }
+        // Сбросить позицию
+        delete addBmModal.dataset.targetIndex;
+        addBmModal.style.display = 'flex';
+        bmUrlInput.focus();
+      });
+    }
 
     bmCancelBtn.addEventListener('click', () => {
       addBmModal.style.display = 'none';
