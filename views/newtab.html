@@ -65,34 +65,36 @@
     <div id="edit-card-modal" class="modal-overlay" style="display:none">
       <div class="modal">
         <h3 id="modal-title">Задача</h3>
-        <input type="text" id="card-title-input" placeholder="Название задачи">
-        <textarea id="card-desc-input" placeholder="Описание" rows="3"></textarea>
-        <select id="card-assignee-select">
-          <option value="">Не назначен</option>
-        </select>
-        <div id="card-tags-container">
-          <span class="tags-label">Теги:</span>
-          <div id="card-tags-dropdown-wrapper">
-            <div id="card-tags-display" class="tags-display" title="Выбрать теги">
-              <span class="tags-placeholder">Все теги</span>
-            </div>
-            <div id="card-tags-dropdown" class="tags-dropdown">
-              <div class="card-tags-dropdown-header">
-                <span>Выберите теги</span>
-                <button id="tags-dropdown-clear" class="tags-dropdown-clear" title="Очистить">Очистить</button>
-              </div>
-              <div id="card-tags-selected" class="card-tags-selected"></div>
-              <div id="card-tags-selector" class="tags-dropdown-list"></div>
-            </div>
-          </div>
-        </div>
-        <select id="card-priority-select">
-          <option value="">Без приоритета</option>
-          <option value="low">Низкий</option>
-          <option value="medium">Средний</option>
-          <option value="high">Высокий</option>
-          <option value="urgent">Срочный</option>
-        </select>
+        <input type="text" id="card-title-input" placeholder="Название задачи" maxlength="200">
+<textarea id="card-desc-input" placeholder="Описание" rows="3" maxlength="1000"></textarea>
+         <span class="tags-label">Исполнитель:</span>
+         <select id="card-assignee-select">
+           <option value="">Не назначен</option>
+         </select>
+         <div id="card-tags-container">
+           <span class="tags-label">Теги:</span>
+           <div id="card-tags-dropdown-wrapper">
+             <div id="card-tags-display" class="tags-display" title="Выбрать теги">
+               <span class="tags-placeholder">Все теги</span>
+             </div>
+             <div id="card-tags-dropdown" class="tags-dropdown">
+               <div class="card-tags-dropdown-header">
+                 <span>Выберите теги</span>
+                 <button id="tags-dropdown-clear" class="tags-dropdown-clear" title="Очистить">Очистить</button>
+               </div>
+               <div id="card-tags-selected" class="card-tags-selected"></div>
+               <div id="card-tags-selector" class="tags-dropdown-list"></div>
+             </div>
+           </div>
+         </div>
+         <span class="tags-label">Приоритет:</span>
+         <select id="card-priority-select">
+           <option value="">Без приоритета</option>
+           <option value="low">Низкий</option>
+           <option value="medium">Средний</option>
+           <option value="high">Высокий</option>
+           <option value="urgent">Срочный</option>
+         </select>
         <div class="modal-actions">
           <button id="card-delete-btn" class="btn-danger" style="margin-right:auto">Удалить</button>
           <button id="card-cancel">Отмена</button>
