@@ -278,7 +278,9 @@ const KanbanBoard = {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
     }
     const h = Math.abs(hash) % 360;
-    return `hsl(${h}, 65%, 55%)`;
+    const s = 55 + (Math.abs(hash >> 8) % 20);
+    const l = 50 + (Math.abs(hash >> 4) % 10);
+    return `hsl(${h}, ${s}%, ${l}%)`;
   },
 
   _getTagsForDisplay(tagIds) {
@@ -319,19 +321,30 @@ const KanbanBoard = {
       return;
     }
 
+    const fragment = document.createDocumentFragment();
+
     for (const tag of allTags) {
       const item = document.createElement('div');
       item.className = 'filter-tag-item' + (this._filterState.tags.includes(tag.id) ? ' selected' : '');
       item.dataset.tagId = tag.id;
-      item.innerHTML = `
-        <span class="filter-tag-checkbox"></span>
-        <span class="filter-tag-color" style="background:${tag.color}"></span>
-        <span class="filter-tag-name">${tag.name}</span>
-      `;
+
+      const checkbox = document.createElement('span');
+      checkbox.className = 'filter-tag-checkbox';
+      const colorDot = document.createElement('span');
+      colorDot.className = 'filter-tag-color';
+      colorDot.style.background = tag.color;
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'filter-tag-name';
+      nameSpan.textContent = tag.name;
+
+      item.appendChild(checkbox);
+      item.appendChild(colorDot);
+      item.appendChild(nameSpan);
       item.addEventListener('click', () => this._toggleTagFilter(tag.id));
-      listEl.appendChild(item);
+      fragment.appendChild(item);
     }
 
+    listEl.appendChild(fragment);
     this._updateTagsLabel(labelEl);
   },
 
@@ -359,7 +372,7 @@ const KanbanBoard = {
       chip.style.color = tag.color;
       chip.style.border = `1px solid ${tag.color}55`;
       chip.innerHTML = `
-        <span class="filter-tag-name">${tag.name}</span>
+        <span class="filter-tag-name">${escapeHtml(tag.name)}</span>
         <span class="filter-tag-chip-remove" title="Удалить фильтр">&#10005;</span>
       `;
       chip.querySelector('.filter-tag-chip-remove').addEventListener('click', (e) => {
@@ -495,17 +508,7 @@ const KanbanBoard = {
   },
 
   _getDragAfterElement(container, y) {
-    const draggableElements = [...container.querySelectorAll('.kanban-card:not(.dragging)')];
-
-    return draggableElements.reduce((closest, child) => {
-      const box = child.getBoundingClientRect();
-      const offset = y - box.top - box.height / 2;
-      if (offset < 0 && offset > closest.offset) {
-        return { offset: offset, element: child };
-      } else {
-        return closest;
-      }
-    }, { offset: Number.NEGATIVE_INFINITY }).element;
+    return getCardDragAfterElement(container, y);
   },
 
   _createPlaceholder() {
@@ -727,7 +730,7 @@ const KanbanBoard = {
       const badge = document.createElement('span');
       badge.className = 'card-selected-tag';
       badge.style.background = tag.color;
-      badge.innerHTML = `<span class="card-selected-tag-name">${tag.name}</span><span class="card-remove-tag" data-tag-id="${tag.id}" title="Удалить тег">&times;</span>`;
+      badge.innerHTML = `<span class="card-selected-tag-name">${escapeHtml(tag.name)}</span><span class="card-remove-tag" data-tag-id="${tag.id}" title="Удалить тег">&times;</span>`;
       const removeBtn = badge.querySelector('.card-remove-tag');
       removeBtn.addEventListener('click', (e) => {
         e.stopPropagation();

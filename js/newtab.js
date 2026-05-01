@@ -46,9 +46,18 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (!/^https?:\/\//i.test(url)) {
         url = 'https://' + url;
       }
+
+      let displayTitle = title;
+      if (!displayTitle) {
+        try {
+          displayTitle = new URL(url).hostname;
+        } catch {
+          displayTitle = url;
+        }
+      }
       
       const targetIndex = addBmModal.dataset.targetIndex ? parseInt(addBmModal.dataset.targetIndex) : null;
-          await BookmarksManager.addDisplayedBookmark(url, title || new URL(url).hostname, targetIndex);
+          await BookmarksManager.addDisplayedBookmark(url, displayTitle, targetIndex);
       await BookmarksManager.render();
       addBmModal.style.display = 'none';
       bmUrlInput.value = '';

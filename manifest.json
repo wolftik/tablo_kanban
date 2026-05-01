@@ -3,8 +3,10 @@
   "name": "Tablo Kanban",
   "version": "1.0.0",
   "description": "Bookmarks bar and Kanban board as new tab page",
+  "chrome_url_overrides": {
+    "newtab": "views/newtab.html"
+  },
   "action": {
-    "default_popup": "views/newtab.html",
     "default_title": "Открыть Tablo Kanban"
   },
   "permissions": [

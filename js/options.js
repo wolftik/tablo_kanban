@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const dragHandle = document.createElement('span');
       dragHandle.className = 'col-drag-handle';
-      dragHandle.textContent = '&#9776;';
+      dragHandle.textContent = '\u2630';
 
       const color = document.createElement('input');
       color.type = 'color';
@@ -302,11 +302,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       showFavicon: showFavicon,
       visibleBookmarks: visibleIds,
       tags: tags,
-      columns: columns
+      columns: columns,
+      performers: settings.performers || Storage.getDefaultPerformers(),
+      kanbanFilter: settings.kanbanFilter || {}
     };
 
     await Storage.set('settings', settings);
-    await Storage.set('kanban_columns', columns);
 
     const btn = document.getElementById('save-options');
     const originalText = btn.textContent;

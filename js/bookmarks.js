@@ -1,3 +1,5 @@
+const BOOKMARK_SLOTS = 22;
+
 const BookmarksManager = {
   _displayedBookmarks: [],
   _chromeBookmarks: [],
@@ -16,7 +18,7 @@ const BookmarksManager = {
   async addDisplayedBookmark(url, title, position = null) {
     if (!this._displayedBookmarks.find(b => b && b.url === url)) {
       const newBookmark = { id: Storage.generateId(), url, title: title || url };
-      if (position !== null && position >= 0 && position < 22 && !this._displayedBookmarks[position]) {
+      if (position !== null && position >= 0 && position < BOOKMARK_SLOTS && !this._displayedBookmarks[position]) {
         this._displayedBookmarks[position] = newBookmark;
       } else {
         // Найти первый пустой слот
@@ -81,7 +83,6 @@ const BookmarksManager = {
 
   renderBookmarks(container, bookmarks) {
     container.innerHTML = '';
-    const TOTAL_SLOTS = 22;
 
     // Создаём карту позиций: индекс слота -> закладка
     const bookmarkMap = new Map();
@@ -91,7 +92,7 @@ const BookmarksManager = {
       }
     }
 
-    for (let i = 0; i < TOTAL_SLOTS; i++) {
+    for (let i = 0; i < BOOKMARK_SLOTS; i++) {
       if (bookmarkMap.has(i)) {
         const bm = bookmarkMap.get(i);
         const a = document.createElement('a');
@@ -337,7 +338,7 @@ const BookmarksManager = {
       }
 
       const items = container.querySelectorAll('.bookmark-item');
-      const sparseArray = new Array(22).fill(null);
+      const sparseArray = new Array(BOOKMARK_SLOTS).fill(null);
       
       items.forEach((item, index) => {
         sparseArray[index] = {
@@ -390,7 +391,7 @@ const BookmarksManager = {
 
     // Создаём карту позиций для пользовательских закладок
     const bookmarksToRender = [];
-    for (let i = 0; i < 22; i++) {
+    for (let i = 0; i < BOOKMARK_SLOTS; i++) {
       bookmarksToRender[i] = this._displayedBookmarks[i] || null;
     }
 
@@ -401,7 +402,7 @@ const BookmarksManager = {
       const visibleBookmarks = allBookmarks.filter(bm => visibleIds.includes(bm.id));
 
       let vi = 0;
-      for (let i = 0; i < 22; i++) {
+      for (let i = 0; i < BOOKMARK_SLOTS; i++) {
         if (bookmarksToRender[i] === null && vi < visibleBookmarks.length) {
           bookmarksToRender[i] = visibleBookmarks[vi++];
         }

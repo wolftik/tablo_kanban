@@ -36,7 +36,7 @@ Create a Google Chrome extension (Manifest V3) called "Tablo Kanban". It replace
 
 ## Accomplished
 
-- **Created**: `manifest.json` (MV3, newtab override, permissions, action).
+- **Created**: `manifest.json` (MV3, `chrome_url_overrides.newtab`, permissions, action).
 - **Created**: `icons/icon16.svg`, `icons/icon48.svg`, `icons/icon128.svg`.
 - **Created**: `views/newtab.html` (HTML structure for the app, modals).
 - **Created**: `views/options.html` (Settings UI with 4 tabs: Columns, Appearance, Bookmarks, About).
@@ -77,3 +77,15 @@ js/
 ```
 
 All files are complete and the extension is ready to load in Chrome (`chrome://extensions/` → Load unpacked).
+
+### Fixed Issues (May 2026)
+
+- **Fixed**: Added `chrome_url_overrides.newtab` to `manifest.json` — the extension now actually replaces the new tab page.
+- **Fixed**: Options page save no longer drops `performers` and `kanbanFilter` from settings.
+- **Fixed**: XSS vulnerabilities — tag/ bookmark names are escaped before innerHTML insertion.
+- **Fixed**: Removed duplicate `_getDragAfterElement` in `kanban.js` (now delegates to `getCardDragAfterElement` from `utils.js`).
+- **Fixed**: Extracted `BOOKMARK_SLOTS = 22` as module-level constant in `bookmarks.js`, replacing scattered magic numbers.
+- **Fixed**: Drag handle in options page now uses Unicode `\u2630` instead of HTML entity via `textContent`.
+- **Fixed**: `_hashToColor` now varies both saturation and lightness for better color distribution.
+- **Fixed**: URL parsing in bookmark save modal is wrapped in try-catch to prevent crashes on invalid URLs.
+- **Added**: `escapeHtml()` utility function in `utils.js` for safe HTML interpolation.

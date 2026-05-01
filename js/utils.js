@@ -1,3 +1,9 @@
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 function getDragAfterElement(container, y) {
   const elements = [...container.querySelectorAll('.column-option-item:not([style*="opacity: 0.5"])')];
   if (elements.length === 0) return null;
