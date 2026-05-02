@@ -122,7 +122,7 @@ const I18n = (() => {
       'options.saved': 'Сохранено!',
       'options.about.version': 'Версия 1.0.0',
       'options.about.desc': 'Панель закладок и канбан-доска для новой вкладки Chrome.',
-      'options.about.storage': 'Настройки хранятся в chrome.storage.sync (синхронизация между устройствами), данные доски — в chrome.storage.local.',
+      'options.about.storage': 'Данные доски хранятся локально в chrome.storage.local. Настройки и ключи API — в chrome.storage.sync (синхронизация между устройствами). Данные доски синхронизируются через выбранного провайдера (Google Drive или Яндекс.Диск).',
       'options.support.title': 'Поддержать проект',
       'options.support.desc': 'Если расширение вам полезно, вы можете поддержать его развитие:',
 
@@ -263,7 +263,7 @@ const I18n = (() => {
       'options.saved': 'Saved!',
       'options.about.version': 'Version 1.0.0',
       'options.about.desc': 'Bookmarks bar and Kanban board for your Chrome new tab page.',
-      'options.about.storage': 'Settings are stored in chrome.storage.sync (sync across devices), board data in chrome.storage.local.',
+      'options.about.storage': 'Board data is stored locally in chrome.storage.local. Settings and API keys are in chrome.storage.sync (synced across devices). Board data is synced via a chosen provider (Google Drive or Yandex Disk).',
       'options.support.title': 'Support the Project',
       'options.support.desc': 'If you find this extension useful, you can support its development:',
 
@@ -404,7 +404,7 @@ const I18n = (() => {
       'options.saved': '已保存！',
       'options.about.version': '版本 1.0.0',
       'options.about.desc': '适用于 Chrome 新标签页的书签栏和看板面板。',
-      'options.about.storage': '设置存储在 chrome.storage.sync（跨设备同步），看板数据存储在 chrome.storage.local。',
+      'options.about.storage': '看板数据存储在 chrome.storage.local。设置和 API 密钥存储在 chrome.storage.sync（跨设备同步）。看板数据通过所选提供商（Google Drive 或 Yandex Disk）同步。',
       'options.support.title': '支持项目',
       'options.support.desc': '如果您觉得此扩展有用，可以支持其开发：',
 

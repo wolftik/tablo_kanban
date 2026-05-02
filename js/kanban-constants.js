@@ -27,8 +27,6 @@ const KanbanConstants = {
   ],
 
   DEFAULT_PERFORMERS: [
-    { id: generateId(), name: 'Иванов И.И.', color: '#6366f1' },
-    { id: generateId(), name: 'Петров П.П.', color: '#22c55e' },
-    { id: generateId(), name: 'Сидоров С.С.', color: '#f59e0b' }
+    { id: generateId(), name: 'Akiko I.N.', color: '#6366f1' },
   ]
 };
