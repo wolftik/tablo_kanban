@@ -180,14 +180,6 @@ header h1 {
   margin-bottom: 8px;
 }
 
-.column-option-item .col-color {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  border: 2px solid var(--border);
-  flex-shrink: 0;
-}
-
 .column-option-item input[type="text"] {
   flex: 1;
   padding: 6px 10px;
@@ -260,33 +252,6 @@ header h1 {
 
 .column-option-item.dragging {
   opacity: 0.5;
-}
-
-/* Bookmark folders */
-.folder-check-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.15s;
-}
-
-.folder-check-item:hover {
-  background: var(--hover);
-}
-
-.folder-check-item input[type="checkbox"] {
-  accent-color: var(--primary);
-}
-
-.folder-check-item .folder-icon {
-  font-size: 16px;
-}
-
-.folder-check-item .folder-name {
-  font-size: 14px;
 }
 
 /* Donate buttons */

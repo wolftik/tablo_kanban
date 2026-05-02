@@ -62,16 +62,8 @@ const KanbanBoard = (() => {
 
   function _getDefaultSettings() {
     return Object.assign(getDefaultSettings(), {
-      performers: [
-        { id: generateId(), name: 'Иванов И.И.', color: '#6366f1' },
-        { id: generateId(), name: 'Петров П.П.', color: '#22c55e' },
-        { id: generateId(), name: 'Сидоров С.С.', color: '#f59e0b' }
-      ],
-      tags: [
-        { id: generateId(), name: 'Bug', color: '#ef4444' },
-        { id: generateId(), name: 'Feature', color: '#3b82f6' },
-        { id: generateId(), name: 'Enhancement', color: '#8b5cf6' }
-      ],
+      performers: KanbanConstants.DEFAULT_PERFORMERS.map(p => ({ ...p, id: generateId() })),
+      tags: KanbanConstants.DEFAULT_TAGS.map(t => ({ ...t, id: generateId() })),
       columns: _createDefaultColumns()
     });
   }
@@ -220,7 +212,6 @@ const KanbanBoard = (() => {
       cardEl.classList.remove('dragging');
       _draggedCard = null;
       document.querySelectorAll('.drop-placeholder').forEach(p => p.remove());
-      document.querySelectorAll('.drag-over-card').forEach(c => c.classList.remove('drag-over-card'));
     });
   }
 
@@ -229,7 +220,7 @@ const KanbanBoard = (() => {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
 
-      const afterElement = getCardDragAfterElement(cardsContainer, e.clientY);
+      const afterElement = getDragAfterElement(cardsContainer, e.clientY, '.kanban-card:not(.dragging)');
       let placeholder = cardsContainer.querySelector('.drop-placeholder');
       if (!placeholder) {
         placeholder = KanbanCard.createPlaceholder();

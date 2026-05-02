@@ -219,10 +219,6 @@
   box-shadow: 0 8px 25px rgba(0,0,0,0.2);
 }
 
-.kanban-card.drag-over-card {
-  border-top: 2px solid #6366f1;
-}
-
 .card-priority-bar {
   position: absolute;
   left: 0;

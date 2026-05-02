@@ -10,7 +10,7 @@ Create a Google Chrome extension (Manifest V3) called "Tablo Kanban". It replace
 js/
   storage-sync.js          # chrome.storage.sync + localStorage fallback (settings, bookmarks_display)
   storage-local.js         # chrome.storage.local + localStorage fallback (kanban data)
-  kanban-constants.js      # Shared constants (priorities, default columns, storage key)
+  kanban-constants.js      # Shared constants (priorities, default columns/tags/performers, storage key)
   kanban-filter.js         # Filter state management (search, priority, assignee, tags)
   kanban-card.js           # Card DOM creation and helpers
   kanban.js                # Kanban board core (IIFE module)
@@ -19,7 +19,7 @@ js/
   widget-system.js         # Widget registration and lifecycle system
   newtab.js                # Entry point for newtab.html
   options.js               # Entry point for options.html
-  utils.js                 # Shared utilities (escapeHtml, drag helpers)
+  utils.js                 # Shared utilities (escapeHtml, drag helpers, generateId, theme)
 ```
 
 ### Module Pattern
@@ -97,5 +97,10 @@ Dynamically created elements call `I18n.t()` at creation time. They do NOT use `
 - Window.open replaced with safe a.click() for bookmark navigation
 - CSS custom properties for bookmark grid dimensions
 - Added Columns tab to settings page with drag-and-drop reorder
-- Removed unused code (getBookmarkDragAfterElement, dead CSS)
+- Removed unused code (getBookmarkDragAfterElement, getCardDragAfterElement, dead CSS)
+- Default tags/performers data centralized in `kanban-constants.js` (eliminated duplication across `kanban.js` and `options.js`)
+- Consolidated `getDragAfterElement` and `getCardDragAfterElement` into single parameterized function
+- Removed dead CSS: `.col-color`, `.folder-check-item`, `.folder-icon`, `.folder-name`, `.drag-over-card`
+- Removed orphaned JS removal of `.drag-over-card` class
+- Consolidated duplicate Escape keydown handler: `BookmarksContextMenu.hide()` moved from `bookmarks.js` to `newtab.js`
 - Widgets zone prepared in HTML/CSS for future expansion

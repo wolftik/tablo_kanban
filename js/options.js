@@ -28,19 +28,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   function _getDefaultTags() {
-    return [
-      { id: generateId(), name: 'Bug', color: '#ef4444' },
-      { id: generateId(), name: 'Feature', color: '#3b82f6' },
-      { id: generateId(), name: 'Enhancement', color: '#8b5cf6' }
-    ];
+    return KanbanConstants.DEFAULT_TAGS.map(t => ({ ...t, id: generateId() }));
   }
 
   function _getDefaultPerformers() {
-    return [
-      { id: generateId(), name: 'Иванов И.И.', color: '#6366f1' },
-      { id: generateId(), name: 'Петров П.П.', color: '#22c55e' },
-      { id: generateId(), name: 'Сидоров С.С.', color: '#f59e0b' }
-    ];
+    return KanbanConstants.DEFAULT_PERFORMERS.map(p => ({ ...p, id: generateId() }));
   }
 
   function _getDefaultColumns() {
@@ -283,7 +275,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     list.addEventListener('dragover', (e) => {
       e.preventDefault();
-      const afterElement = getDragAfterElement(list, e.clientY);
+      const afterElement = getDragAfterElement(list, e.clientY, '.column-option-item:not(.dragging)');
       const dragging = list.querySelector('.dragging');
       if (!dragging) return;
       if (afterElement == null) {

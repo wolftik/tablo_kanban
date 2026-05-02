@@ -53,6 +53,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (filterSearch) filterSearch.focus();
     }
     if (e.key === 'Escape') {
+      BookmarksContextMenu.hide();
       const filterSearch = document.getElementById('filter-search');
       if (filterSearch && document.activeElement === filterSearch) {
         const filterClear = document.getElementById('filter-clear');

@@ -6,23 +6,10 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
-function getDragAfterElement(container, y) {
-  const elements = [...container.querySelectorAll('.column-option-item:not(.dragging)')];
+function getDragAfterElement(container, y, selector) {
+  const elements = [...container.querySelectorAll(selector)];
   if (elements.length === 0) return null;
   return elements.reduce((closest, child) => {
-    const box = child.getBoundingClientRect();
-    const offset = y - box.top - box.height / 2;
-    if (offset < 0 && offset > closest.offset) {
-      return { offset, element: child };
-    }
-    return closest;
-  }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
-}
-
-function getCardDragAfterElement(container, y) {
-  const cards = [...container.querySelectorAll('.kanban-card:not(.dragging)')];
-  if (cards.length === 0) return null;
-  return cards.reduce((closest, child) => {
     const box = child.getBoundingClientRect();
     const offset = y - box.top - box.height / 2;
     if (offset < 0 && offset > closest.offset) {
