@@ -1,7 +1,7 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  let settings = await StorageSync.get('settings') || _getDefaultSettings();
+  let settings = await StorageSync.get('settings') || getDefaultSettings();
   let tags = settings.tags || _getDefaultTags();
   let performers = settings.performers || _getDefaultPerformers();
   let authors = settings.authors || [];
@@ -24,48 +24,30 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   }
 
-  function _getDefaultSettings() {
-    return {
-      theme: 'system',
-      cardSize: 'standard',
-      showFavicon: true,
-      visibleBookmarks: [],
-      performers: _getDefaultPerformers(),
-      tags: _getDefaultTags(),
-      authors: [],
-      columns: _getDefaultColumns(),
-      kanbanFilter: {}
-    };
-  }
-
   function _getDefaultTags() {
     return [
-      { id: _generateId(), name: 'Bug', color: '#ef4444' },
-      { id: _generateId(), name: 'Feature', color: '#3b82f6' },
-      { id: _generateId(), name: 'Enhancement', color: '#8b5cf6' }
+      { id: generateId(), name: 'Bug', color: '#ef4444' },
+      { id: generateId(), name: 'Feature', color: '#3b82f6' },
+      { id: generateId(), name: 'Enhancement', color: '#8b5cf6' }
     ];
   }
 
   function _getDefaultPerformers() {
     return [
-      { id: _generateId(), name: 'Иванов И.И.', color: '#6366f1' },
-      { id: _generateId(), name: 'Петров П.П.', color: '#22c55e' },
-      { id: _generateId(), name: 'Сидоров С.С.', color: '#f59e0b' }
+      { id: generateId(), name: 'Иванов И.И.', color: '#6366f1' },
+      { id: generateId(), name: 'Петров П.П.', color: '#22c55e' },
+      { id: generateId(), name: 'Сидоров С.С.', color: '#f59e0b' }
     ];
   }
 
   function _getDefaultColumns() {
     return KanbanConstants.DEFAULT_COLUMNS.map((c, i) => ({
-      id: _generateId(),
+      id: generateId(),
       title: c.title,
       color: c.color,
       order: i,
       cards: []
     }));
-  }
-
-  function _generateId() {
-    return crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substr(2);
   }
 
   // ===== Tags tab =====
@@ -115,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('add-tag-option').addEventListener('click', () => {
     tags.push({
-      id: _generateId(),
+      id: generateId(),
       name: 'Новый тег',
       color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')
     });
@@ -169,7 +151,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('add-performer-option').addEventListener('click', () => {
     performers.push({
-      id: _generateId(),
+      id: generateId(),
       name: 'Новый исполнитель',
       color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')
     });
@@ -215,7 +197,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderAuthorsList();
 
   document.getElementById('add-author-option').addEventListener('click', () => {
-    authors.push({ id: _generateId(), name: 'Новый автор' });
+    authors.push({ id: generateId(), name: 'Новый автор' });
     renderAuthorsList();
   });
 
@@ -328,7 +310,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   document.getElementById('add-column-option').addEventListener('click', () => {
     columns.push({
-      id: _generateId(),
+      id: generateId(),
       title: 'Новая колонка',
       color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
       order: columns.length,
@@ -352,6 +334,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   loadSettingsUI();
+  applyTheme(settings.theme);
 
   // ===== Save =====
   document.getElementById('save-options').addEventListener('click', async () => {
@@ -371,6 +354,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     await StorageSync.set('settings', settings);
+    applyTheme(theme);
 
     const btn = document.getElementById('save-options');
     const originalText = btn.textContent;

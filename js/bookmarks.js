@@ -3,8 +3,11 @@
 const BOOKMARK_SLOTS = 22;
 const BOOKMARK_GRID_COLUMNS = 11;
 
+moduleGuard('StorageSync');
+moduleGuard('StorageLocal');
 const BookmarksManager = (() => {
   let _displayedBookmarks = [];
+  let _responsiveObserver = null;
 
   async function loadDisplayedBookmarks() {
     _displayedBookmarks = await StorageSync.get('bookmarks_display') || [];
@@ -39,10 +42,6 @@ const BookmarksManager = (() => {
     return _displayedBookmarks;
   }
 
-  function generateId() {
-    return crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substr(2);
-  }
-
   function getDisplayedBookmarks() {
     return _displayedBookmarks;
   }
@@ -53,9 +52,33 @@ const BookmarksManager = (() => {
 
   let _dragDropInitialized = false;
 
+  function _initResponsive(container) {
+    if (_responsiveObserver) _responsiveObserver.disconnect();
+    _responsiveObserver = new ResizeObserver(() => {
+      _updateDensityClass(container);
+    });
+    _responsiveObserver.observe(container);
+    _updateDensityClass(container);
+  }
+
+  function _updateDensityClass(container) {
+    if (!container || !container.isConnected) return;
+    const firstSlot = container.querySelector('.bookmark-slot');
+    if (!firstSlot) return;
+    const slotWidth = firstSlot.offsetWidth;
+    container.classList.remove('compact', 'minimal');
+    if (slotWidth < 80) {
+      container.classList.add('minimal');
+    } else if (slotWidth < 100) {
+      container.classList.add('compact');
+    }
+  }
+
   async function render() {
     const container = document.getElementById('bookmarks-container');
     if (!container) return;
+
+    _initResponsive(container);
 
     if (!_dragDropInitialized) {
       _initDragDrop(container);
@@ -64,7 +87,7 @@ const BookmarksManager = (() => {
 
     await loadDisplayedBookmarks();
 
-    const settings = await StorageSync.get('settings') || _getDefaultSettings();
+    const settings = await StorageSync.get('settings') || getDefaultSettings();
     const visibleIds = settings.visibleBookmarks || [];
 
     const bookmarksToRender = [];
@@ -86,19 +109,6 @@ const BookmarksManager = (() => {
     }
 
     _renderBookmarks(container, bookmarksToRender);
-  }
-
-  function _getDefaultSettings() {
-    return {
-      theme: 'system',
-      cardSize: 'standard',
-      showFavicon: true,
-      visibleBookmarks: [],
-      performers: [],
-      tags: [],
-      authors: [],
-      kanbanFilter: {}
-    };
   }
 
   function _getAllChromeBookmarks() {
@@ -349,7 +359,8 @@ const BookmarksManager = (() => {
     let minColDist = Infinity;
     for (let i = rowStart; i < rowEnd; i++) {
       const rect = children[i].getBoundingClientRect();
-      const dist = Math.abs(x - (rect.left + rect.width / 2));
+      const elementCenter = rect.left + rect.width / 2;
+      const dist = Math.abs(x - elementCenter);
       if (dist < minColDist) {
         minColDist = dist;
         col = i - rowStart;

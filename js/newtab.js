@@ -1,7 +1,7 @@
 'use strict';
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const settings = await StorageSync.get('settings') || _getDefaultSettings();
+  const settings = await StorageSync.get('settings') || getDefaultSettings();
 
   applyTheme(settings.theme || 'system');
 
@@ -119,24 +119,4 @@ function _initBookmarkModal() {
   });
 }
 
-function _getDefaultSettings() {
-  return {
-    theme: 'system',
-    cardSize: 'standard',
-    showFavicon: true,
-    visibleBookmarks: [],
-    performers: [],
-    tags: [],
-    authors: [],
-    kanbanFilter: {}
-  };
-}
 
-function applyTheme(theme) {
-  if (!theme || theme === 'system') {
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
-  } else {
-    document.documentElement.setAttribute('data-theme', theme);
-  }
-}

@@ -1,5 +1,10 @@
 'use strict';
 
+moduleGuard('StorageSync');
+moduleGuard('StorageLocal');
+moduleGuard('KanbanConstants');
+moduleGuard('KanbanFilter');
+moduleGuard('KanbanCard');
 const KanbanBoard = (() => {
   let _columns = [];
   let _settings = null;
@@ -9,7 +14,7 @@ const KanbanBoard = (() => {
   let _draggedColumn = null;
 
   async function init() {
-    _settings = await StorageSync.get('settings') || _getDefaultSettings();
+    _settings = await StorageSync.get('settings') || getDefaultSettings();
     const saved = await StorageLocal.get(KanbanConstants.STORAGE_KEY);
     _columns = saved && saved.columns ? saved.columns : _createDefaultColumns();
     _columns.forEach(col => col.cards = col.cards || []);
@@ -29,8 +34,7 @@ const KanbanBoard = (() => {
     _columns.forEach((col, i) => { col.order = i; });
     await StorageLocal.set(KanbanConstants.STORAGE_KEY, { columns: _columns });
 
-    const settings = await StorageSync.get('settings') || _getDefaultSettings();
-    settings.columns = _columns;
+    const settings = await StorageSync.get('settings') || getDefaultSettings();
     settings.kanbanFilter = KanbanFilter.toJSON();
     settings.theme = _settings?.theme || settings.theme;
     settings.cardSize = _settings?.cardSize || settings.cardSize;
@@ -57,11 +61,7 @@ const KanbanBoard = (() => {
   }
 
   function _getDefaultSettings() {
-    return {
-      theme: 'system',
-      cardSize: 'standard',
-      showFavicon: true,
-      visibleBookmarks: [],
+    return Object.assign(getDefaultSettings(), {
       performers: [
         { id: generateId(), name: 'Иванов И.И.', color: '#6366f1' },
         { id: generateId(), name: 'Петров П.П.', color: '#22c55e' },
@@ -72,14 +72,8 @@ const KanbanBoard = (() => {
         { id: generateId(), name: 'Feature', color: '#3b82f6' },
         { id: generateId(), name: 'Enhancement', color: '#8b5cf6' }
       ],
-      authors: [],
-      kanbanFilter: {},
       columns: _createDefaultColumns()
-    };
-  }
-
-  function generateId() {
-    return crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substr(2);
+    });
   }
 
   function _createDefaultColumns() {

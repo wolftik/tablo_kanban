@@ -1,6 +1,7 @@
 'use strict';
 
 const KanbanCard = (() => {
+  moduleGuard('StorageSync');
   function create(card, columnId, settings) {
     const cardEl = document.createElement('div');
     cardEl.className = 'kanban-card';

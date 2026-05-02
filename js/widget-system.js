@@ -1,6 +1,7 @@
 'use strict';
 
 const WidgetSystem = (() => {
+  moduleGuard('StorageSync');
   const _widgets = new Map();
   let _initialized = false;
 
@@ -25,13 +26,5 @@ const WidgetSystem = (() => {
     }
   }
 
-  function getWidget(name) {
-    return _widgets.get(name) || null;
-  }
-
-  function getAll() {
-    return Array.from(_widgets.keys());
-  }
-
-  return { register, initAll, getWidget, getAll };
+  return { register, initAll };
 })();

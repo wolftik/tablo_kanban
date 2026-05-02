@@ -8,7 +8,6 @@
   --add-btn-hover: #4f46e5;
   --add-btn-color: #fff;
   --bookmark-grid-columns: 11;
-  --bookmark-slot-width: 120px;
   --bookmark-slot-height: 100px;
 }
 
@@ -49,14 +48,13 @@
 }
 
 #bookmarks-container {
-  flex: 0 0 auto;
-  width: fit-content;
+  flex: 1 1 auto;
+  min-width: 0;
   display: grid;
-  grid-template-columns: repeat(var(--bookmark-grid-columns), var(--bookmark-slot-width));
+  grid-template-columns: repeat(var(--bookmark-grid-columns), minmax(60px, 120px));
   grid-template-rows: repeat(2, var(--bookmark-slot-height));
   gap: 8px;
   overflow-x: auto;
-  max-width: 100%;
   overflow-y: hidden;
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
@@ -387,37 +385,30 @@
   color: #6366f1;
 }
 
-@media (max-width: 900px) {
-  :root {
-    --bookmark-slot-width: 80px;
-    --bookmark-slot-height: 72px;
-  }
-  #bookmarks-container {
-    gap: 4px;
-  }
-  .bookmark-slot .favicon {
-    width: 32px; height: 32px;
-  }
-  .bookmark-title {
-    font-size: 11px;
-  }
+#bookmarks-container.compact .bookmark-slot .bookmark-title {
+  display: none;
+}
+#bookmarks-container.compact .bookmark-slot .placeholder-text {
+  display: none;
+}
+#bookmarks-container.compact .bookmark-slot .favicon {
+  width: 32px;
+  height: 32px;
+}
+
+#bookmarks-container.minimal .bookmark-slot .bookmark-title {
+  display: none;
+}
+#bookmarks-container.minimal .bookmark-slot .placeholder-text {
+  display: none;
+}
+#bookmarks-container.minimal .bookmark-slot .favicon {
+  width: 24px;
+  height: 24px;
 }
 
 @media (max-width: 600px) {
-  :root {
-    --bookmark-slot-width: 60px;
-    --bookmark-slot-height: 56px;
-  }
   #bookmarks-container {
     gap: 2px;
-  }
-  .bookmark-slot .favicon {
-    width: 24px; height: 24px;
-  }
-  .bookmark-slot .bookmark-title {
-    display: none;
-  }
-  .bookmark-slot.empty .placeholder-text {
-    display: none;
   }
 }

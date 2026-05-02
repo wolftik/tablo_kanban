@@ -31,3 +31,35 @@ function getCardDragAfterElement(container, y) {
     return closest;
   }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
 }
+
+function generateId() {
+  return crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+function getDefaultSettings() {
+  return {
+    theme: 'system',
+    cardSize: 'standard',
+    showFavicon: true,
+    visibleBookmarks: [],
+    performers: [],
+    tags: [],
+    authors: [],
+    kanbanFilter: {}
+  };
+}
+
+function applyTheme(theme) {
+  if (!theme || theme === 'system') {
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+  } else {
+    document.documentElement.setAttribute('data-theme', theme);
+  }
+}
+
+function moduleGuard(depName) {
+  if (typeof window[depName] === 'undefined') {
+    console.error(`[Tablo] Missing dependency: ${depName}. Check script load order.`);
+  }
+}

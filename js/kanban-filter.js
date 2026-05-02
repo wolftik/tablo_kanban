@@ -1,6 +1,7 @@
 'use strict';
 
 const KanbanFilter = (() => {
+  moduleGuard('StorageSync');
   let _state = { search: '', priority: '', assignee: '', tags: [] };
   let _onChange = null;
 

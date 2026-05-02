@@ -353,14 +353,6 @@
   flex-shrink: 0;
 }
 
-/* Column color picker in edit mode */
-.column-color-picker-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-}
-
 /* Filter bar */
 #kanban-filter {
   display: flex;
@@ -954,25 +946,6 @@
 
 #tags-list {
   margin-bottom: 16px;
-}
-
-.column-color-picker-row input[type="color"] {
-  width: 28px;
-  height: 28px;
-  border: none;
-  border-radius: 50%;
-  cursor: pointer;
-  padding: 0;
-  background: none;
-}
-
-.column-color-picker-row input[type="color"]::-webkit-color-swatch-wrapper {
-  padding: 2px;
-}
-
-.column-color-picker-row input[type="color"]::-webkit-color-swatch {
-  border: 2px solid rgba(0,0,0,0.1);
-  border-radius: 50%;
 }
 
 @media (max-width: 800px) {

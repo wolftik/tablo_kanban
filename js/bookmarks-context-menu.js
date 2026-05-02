@@ -1,6 +1,7 @@
 'use strict';
 
 const BookmarksContextMenu = (() => {
+  moduleGuard('BookmarksManager');
   let _currentBookmark = null;
   let _currentContainer = null;
   let _closeHandler = null;
@@ -55,7 +56,7 @@ const BookmarksContextMenu = (() => {
     setTimeout(() => {
       document.addEventListener('click', _closeHandler);
       window.addEventListener('resize', _closeHandler);
-      window.addEventListener('scroll', _closeHandler, { passive: true, once: true });
+      window.addEventListener('scroll', _closeHandler, { passive: true });
     }, 0);
   }
 
