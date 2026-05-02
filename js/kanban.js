@@ -87,7 +87,7 @@ const KanbanBoard = (() => {
 
   function _getCardsForColumn(columnId) {
     const col = _columns.find(c => c.id === columnId);
-    return (col?.cards || []).sort((a, b) => (a.order || 0) - (b.order || 0));
+    return col?.cards || [];
   }
 
   function _updateColumnCounts() {
@@ -110,6 +110,7 @@ const KanbanBoard = (() => {
     }
 
     _updateColumnCounts();
+    _bindColumnHeaderDrag();
 
     const addColBtn = document.createElement('button');
     addColBtn.className = 'add-column-btn';
@@ -211,6 +212,7 @@ const KanbanBoard = (() => {
       cardEl.classList.add('dragging');
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', cardEl.dataset.cardId);
+      e.dataTransfer.setDragImage(cardEl, e.offsetX, e.offsetY);
     });
 
     cardEl.addEventListener('dragend', () => {
@@ -316,47 +318,35 @@ const KanbanBoard = (() => {
     }
 
     toCol.cards.splice(insertIndex, 0, card);
+
+    toCol.cards.forEach((c, i) => { c.order = i; });
   }
 
   function _reorderCardInColumn(columnId, cardId) {
     const col = _columns.find(c => c.id === columnId);
     if (!col) return;
 
-    const cardIndex = col.cards.findIndex(c => c.id === cardId);
-    if (cardIndex === -1) return;
-
     const placeholder = document.querySelector('.kanban-column[data-column-id="' + columnId + '"] .drop-placeholder');
     if (!placeholder) return;
 
-    const card = col.cards[cardIndex];
-
     const prevSibling = placeholder.previousElementSibling;
-    let newIndex;
+    let insertIndex;
     if (prevSibling && prevSibling.classList.contains('kanban-card')) {
       const prevCardId = prevSibling.dataset.cardId;
       const prevIndex = col.cards.findIndex(c => c.id === prevCardId);
-      if (prevIndex === -1) {
-        newIndex = col.cards.length;
-      } else {
-        if (cardIndex < prevIndex) {
-          newIndex = prevIndex;
-        } else {
-          newIndex = prevIndex + 1;
-        }
-      }
+      insertIndex = prevIndex !== -1 ? prevIndex + 1 : col.cards.length;
     } else {
-      const firstVisible = placeholder.parentElement.querySelector('.kanban-card');
-      if (firstVisible) {
-        const firstCardId = firstVisible.dataset.cardId;
-        const firstIndex = col.cards.findIndex(c => c.id === firstCardId);
-        newIndex = firstIndex !== -1 ? firstIndex : 0;
-      } else {
-        newIndex = 0;
-      }
+      insertIndex = 0;
     }
 
-    col.cards.splice(cardIndex, 1);
-    col.cards.splice(newIndex, 0, card);
+    const cardIndex = col.cards.findIndex(c => c.id === cardId);
+    if (cardIndex === -1) return;
+    const [card] = col.cards.splice(cardIndex, 1);
+
+    const adjustedIndex = cardIndex < insertIndex ? insertIndex - 1 : insertIndex;
+    col.cards.splice(adjustedIndex, 0, card);
+
+    col.cards.forEach((c, i) => { c.order = i; });
   }
 
   function _bindColumnReorder(board) {
@@ -400,7 +390,11 @@ const KanbanBoard = (() => {
       save();
       _draggedColumn = null;
     });
+  }
 
+  function _bindColumnHeaderDrag() {
+    const board = document.getElementById('kanban-board');
+    if (!board) return;
     board.querySelectorAll('.kanban-column .column-header').forEach(header => {
       header.addEventListener('dragstart', (e) => {
         const colEl = header.closest('.kanban-column');
@@ -841,8 +835,7 @@ const KanbanBoard = (() => {
   }
 
   function _bindEvents() {
-    const board = document.getElementById('kanban-board');
-    if (board) _bindColumnReorder(board);
+    _bindColumnReorder(document.getElementById('kanban-board'));
 
     document.getElementById('card-save').addEventListener('click', () => _saveCard());
     document.getElementById('card-cancel').addEventListener('click', () => _closeModal());
