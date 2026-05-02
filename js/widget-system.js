@@ -53,6 +53,7 @@ const ClockWidget = {
     el.innerHTML = '<div class="clock-time">--:--</div><div class="clock-date">---</div>';
     zone.appendChild(el);
     zone.classList.add('active');
+    zone.dataset.enabled = 'true';
 
     const update = () => {
       const now = new Date();
@@ -112,6 +113,7 @@ const WeatherWidget = {
     this._el.innerHTML = `<div class="weather-loading">${I18n.t('weather.loading')}</div>`;
     zone.prepend(this._el);
     zone.classList.add('active');
+    zone.dataset.enabled = 'true';
 
     this._fetchAndRender(settings);
     this._interval = setInterval(() => this._fetchAndRender(null), 3600000);

@@ -9,6 +9,7 @@ moduleGuard('StorageLocal');
 const BookmarksManager = (() => {
   let _displayedBookmarks = [];
   let _responsiveObserver = null;
+  let _widgetsForcedHidden = false;
 
   async function loadDisplayedBookmarks() {
     _displayedBookmarks = await StorageSync.get('bookmarks_display') || [];
@@ -56,14 +57,41 @@ const BookmarksManager = (() => {
   function _initResponsive(container) {
     if (_responsiveObserver) _responsiveObserver.disconnect();
     _responsiveObserver = new ResizeObserver(() => {
-      _updateDensityClass(container);
+      _updateResponsiveLayout(container);
     });
     _responsiveObserver.observe(container);
-    _updateDensityClass(container);
+    _updateResponsiveLayout(container);
   }
 
-  function _updateDensityClass(container) {
+  function _updateResponsiveLayout(container) {
     if (!container || !container.isConnected) return;
+
+    const widgetsZone = document.getElementById('widgets-zone');
+
+    if (widgetsZone && widgetsZone.dataset.enabled === 'true') {
+      const children = Array.from(container.children);
+      if (children.length > 0) {
+        const lastRect = children[children.length - 1].getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const lastRight = lastRect.left + lastRect.width;
+        const overflowed = lastRight > containerRect.right + 2;
+
+        if (overflowed) {
+          widgetsZone.classList.remove('active');
+          _widgetsForcedHidden = true;
+        } else if (_widgetsForcedHidden) {
+          const firstSlot = container.querySelector('.bookmark-slot');
+          const slotWidth = firstSlot ? firstSlot.offsetWidth : 0;
+          if (slotWidth >= 80) {
+            widgetsZone.classList.add('active');
+            _widgetsForcedHidden = false;
+          }
+        }
+      } else {
+        widgetsZone.classList.add('active');
+      }
+    }
+
     const firstSlot = container.querySelector('.bookmark-slot');
     if (!firstSlot) return;
     const slotWidth = firstSlot.offsetWidth;
