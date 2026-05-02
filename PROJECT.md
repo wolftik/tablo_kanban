@@ -49,6 +49,47 @@ The `WidgetSystem` provides a lifecycle for future widgets (weather, clock, curr
 - Card sizes: Compact, Standard, Large
 - Settings page with tabs (Columns, Tags, Performers, Authors, Appearance)
 
+## Internationalization (i18n)
+
+### Module Structure
+`js/i18n.js` — IIFE module exposing `I18n` global with:
+- `init()` — async, loads saved language from storage, applies translations to DOM
+- `t(key, args)` — returns translated string for current language, supports `{placeholder}` interpolation
+- `getLang()` / `setLang(locale)` — get/set current language, saves to storage
+- `applyTranslations()` — re-scans DOM for `data-i18n`, `data-i18n-placeholder`, `data-i18n-title` attributes
+- `localeToBCP47(lang)` — maps `'ru'`→`'ru-RU'`, `'en'`→`'en-US'`, `'zh'`→`'zh-CN'`
+
+### Supported Languages
+- Russian (`ru`) — default, backward compatible
+- English (`en`)
+- Simplified Chinese (`zh` / 简体中文)
+
+### Translation Keys
+All translations live in `LOCALES` object inside `js/i18n.js`. ~65 keys organized by domain:
+- `bookmark.*`, `filter.*`, `priority.*`, `tags.*`, `modal.*`, `column.*`, `card.*`, `settings.*`, `options.*`
+
+### How to Add a New Language
+1. Add a new locale object to `LOCALES` in `js/i18n.js`
+2. Add all ~65 translation keys
+3. Add `<option>` to the language selector in `views/options.html`
+4. Add BCP-47 mapping in `localeToBCP47()`
+
+### Script Load Order
+`i18n.js` must load **first** — before `utils.js` — in both HTML files:
+```html
+<script src="../js/i18n.js"></script>
+<script src="../js/utils.js"></script>
+```
+
+### DOM Translation Attributes
+- `data-i18n="key"` — translates `textContent`
+- `data-i18n-placeholder="key"` — translates `placeholder` attribute
+- `data-i18n-title="key"` — translates `title` attribute
+- `data-i18n-args='{"count":5}'` — interpolation arguments (optional)
+
+### Dynamic Strings in JS
+Dynamically created elements call `I18n.t()` at creation time. They do NOT use `data-i18n` attributes. Confirm dialogs call `I18n.t()` before the blocking `confirm()` call.
+
 ## Fixed Issues (May 2026)
 - Modular architecture: separated storage, kanban components, bookmark modules
 - chrome.storage.local for board data (avoids sync quota limits)

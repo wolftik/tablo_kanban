@@ -3,80 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Настройки — Tablo Kanban</title>
+  <title data-i18n="options.title">Настройки — Tablo Kanban</title>
   <link rel="stylesheet" href="../css/options.css">
 </head>
 <body>
   <div id="app">
     <header>
-      <h1>Настройки Tablo Kanban</h1>
+      <h1 data-i18n="options.title">Настройки Tablo Kanban</h1>
     </header>
 
     <nav id="settings-tabs">
-      <button class="tab-btn active" data-tab="columns">Колонки</button>
-      <button class="tab-btn" data-tab="tags">Теги</button>
-      <button class="tab-btn" data-tab="performers">Исполнители</button>
-      <button class="tab-btn" data-tab="authors">Авторы</button>
-      <button class="tab-btn" data-tab="appearance">Настройки</button>
-      <button class="tab-btn" data-tab="about">О расширении</button>
+      <button class="tab-btn active" data-tab="columns" data-i18n="options.tab.columns">Колонки</button>
+      <button class="tab-btn" data-tab="tags" data-i18n="options.tab.tags">Теги</button>
+      <button class="tab-btn" data-tab="performers" data-i18n="options.tab.performers">Исполнители</button>
+      <button class="tab-btn" data-tab="authors" data-i18n="options.tab.authors">Авторы</button>
+      <button class="tab-btn" data-tab="appearance" data-i18n="options.tab.appearance">Настройки</button>
+      <button class="tab-btn" data-tab="about" data-i18n="options.tab.about">О расширении</button>
     </nav>
 
     <main>
       <!-- Columns Tab -->
       <div id="tab-columns" class="tab-content active">
         <div class="setting-group">
-          <h3>Колонки доски</h3>
-          <p>Перетаскивайте для изменения порядка. Для удаления нажмите &times;.</p>
+          <h3 data-i18n="options.columns.title">Колонки доски</h3>
+          <p data-i18n="options.columns.desc">Перетаскивайте для изменения порядка. Для удаления нажмите &times;.</p>
           <div id="columns-list"></div>
-          <button id="add-column-option" class="btn-primary">Добавить колонку</button>
+          <button id="add-column-option" class="btn-primary" data-i18n="options.columns.add">Добавить колонку</button>
         </div>
       </div>
 
       <!-- Tags Tab -->
       <div id="tab-tags" class="tab-content">
         <div class="setting-group">
-          <h3>Теги</h3>
+          <h3 data-i18n="options.tags.title">Теги</h3>
           <div id="tags-list"></div>
-          <button id="add-tag-option" class="btn-primary">Добавить тег</button>
+          <button id="add-tag-option" class="btn-primary" data-i18n="options.tags.add">Добавить тег</button>
         </div>
       </div>
 
       <!-- Performers Tab -->
       <div id="tab-performers" class="tab-content">
         <div class="setting-group">
-          <h3>Исполнители</h3>
+          <h3 data-i18n="options.performers.title">Исполнители</h3>
           <div id="performers-list"></div>
-          <button id="add-performer-option" class="btn-primary">Добавить исполнителя</button>
+          <button id="add-performer-option" class="btn-primary" data-i18n="options.performers.add">Добавить исполнителя</button>
         </div>
       </div>
 
       <!-- Authors Tab -->
       <div id="tab-authors" class="tab-content">
         <div class="setting-group">
-          <h3>Авторы</h3>
+          <h3 data-i18n="options.authors.title">Авторы</h3>
           <div id="authors-list"></div>
-          <button id="add-author-option" class="btn-primary">Добавить автора</button>
+          <button id="add-author-option" class="btn-primary" data-i18n="options.authors.add">Добавить автора</button>
         </div>
       </div>
 
       <!-- Appearance Tab -->
       <div id="tab-appearance" class="tab-content">
         <div class="setting-group">
-          <h3>Тема</h3>
+          <h3 data-i18n="options.appearance.theme">Тема</h3>
           <div class="radio-group">
             <label class="radio-label">
               <input type="radio" name="theme" value="light">
-              <span>Светлая</span>
+              <span data-i18n="options.appearance.light">Светлая</span>
             </label>
             <label class="radio-label">
               <input type="radio" name="theme" value="dark">
-              <span>Тёмная</span>
+              <span data-i18n="options.appearance.dark">Тёмная</span>
             </label>
             <label class="radio-label">
               <input type="radio" name="theme" value="system">
-              <span>Системная</span>
+              <span data-i18n="options.appearance.system">Системная</span>
             </label>
           </div>
+        </div>
+
+        <div class="setting-group">
+          <h3 data-i18n="options.appearance.language">Язык</h3>
+          <select id="language-select">
+            <option value="ru">Русский</option>
+            <option value="en">English</option>
+            <option value="zh">简体中文</option>
+          </select>
         </div>
 
       </div>
@@ -84,14 +93,14 @@
       <!-- About Tab -->
       <div id="tab-about" class="tab-content">
         <div class="setting-group">
-          <h3>Tablo Kanban</h3>
-          <p>Версия 1.0.0</p>
-          <p>Панель закладок и канбан-доска для новой вкладки Chrome.</p>
-          <p>Настройки хранятся в <strong>chrome.storage.sync</strong> (синхронизация между устройствами), данные доски — в <strong>chrome.storage.local</strong>.</p>
+          <h3 data-i18n="app.name">Tablo Kanban</h3>
+          <p data-i18n="options.about.version">Версия 1.0.0</p>
+          <p data-i18n="options.about.desc">Панель закладок и канбан-доска для новой вкладки Chrome.</p>
+          <p data-i18n="options.about.storage">Настройки хранятся в <strong>chrome.storage.sync</strong> (синхронизация между устройствами), данные доски — в <strong>chrome.storage.local</strong>.</p>
         </div>
         <div class="setting-group">
-          <h3>Поддержать проект</h3>
-          <p>Если расширение вам полезно, вы можете поддержать его развитие:</p>
+          <h3 data-i18n="options.support.title">Поддержать проект</h3>
+          <p data-i18n="options.support.desc">Если расширение вам полезно, вы можете поддержать его развитие:</p>
           <div class="donate-buttons">
             <a href="https://www.tinkoff.ru/rm/r_puImGsHvgn.CFkhtsUvVy/yJeVo62164" class="donate-btn" target="_blank" rel="noopener">
               <span class="donate-icon">💳</span>
@@ -114,10 +123,11 @@
     </main>
 
     <footer>
-      <button id="save-options" class="btn-primary">Сохранить</button>
+      <button id="save-options" class="btn-primary" data-i18n="options.save">Сохранить</button>
     </footer>
   </div>
 
+  <script src="../js/i18n.js"></script>
   <script src="../js/utils.js"></script>
   <script src="../js/storage-sync.js"></script>
   <script src="../js/storage-local.js"></script>

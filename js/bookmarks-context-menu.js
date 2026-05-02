@@ -1,5 +1,7 @@
 'use strict';
 
+moduleGuard('I18n');
+
 const BookmarksContextMenu = (() => {
   moduleGuard('BookmarksManager');
   let _currentBookmark = null;
@@ -18,11 +20,11 @@ const BookmarksContextMenu = (() => {
       menu.innerHTML = `
         <button class="bookmark-context-menu-item edit">
           <span>&#9998;</span>
-          <span>Редактировать</span>
+          <span>${I18n.t('bookmark.context.edit')}</span>
         </button>
         <button class="bookmark-context-menu-item delete">
           <span>&#128465;</span>
-          <span>Удалить</span>
+          <span>${I18n.t('bookmark.context.delete')}</span>
         </button>
       `;
       document.body.appendChild(menu);

@@ -1,5 +1,7 @@
 'use strict';
 
+moduleGuard('I18n');
+
 const KanbanCard = (() => {
   moduleGuard('StorageSync');
   function create(card, columnId, settings) {
@@ -34,14 +36,14 @@ const KanbanCard = (() => {
       const dateEl = document.createElement('span');
       dateEl.className = 'card-date';
       const d = new Date(card.createdAt);
-      dateEl.textContent = d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
+      dateEl.textContent = d.toLocaleDateString(I18n.localeToBCP47(I18n.getLang()), { day: '2-digit', month: '2-digit' });
       meta.appendChild(dateEl);
     }
 
-    if (card.priority && KanbanConstants.PRIORITY_LABELS[card.priority]) {
+    if (card.priority) {
       const badge = document.createElement('span');
       badge.className = 'card-priority-badge priority-' + card.priority;
-      badge.textContent = KanbanConstants.PRIORITY_LABELS[card.priority];
+      badge.textContent = KanbanConstants.getPriorityLabel(card.priority);
       meta.appendChild(badge);
     }
 

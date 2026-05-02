@@ -1,12 +1,11 @@
 'use strict';
 
+moduleGuard('I18n');
+
 const KanbanConstants = {
-  PRIORITY_LABELS: Object.freeze({
-    low: 'Низкий',
-    medium: 'Средний',
-    high: 'Высокий',
-    urgent: 'Срочный'
-  }),
+  getPriorityLabel(key) {
+    return I18n.t('priority.' + key);
+  },
 
   PRIORITIES: Object.freeze(['low', 'medium', 'high', 'urgent']),
 

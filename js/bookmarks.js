@@ -3,6 +3,7 @@
 const BOOKMARK_SLOTS = 22;
 const BOOKMARK_GRID_COLUMNS = 11;
 
+moduleGuard('I18n');
 moduleGuard('StorageSync');
 moduleGuard('StorageLocal');
 const BookmarksManager = (() => {
@@ -194,7 +195,7 @@ const BookmarksManager = (() => {
         slot.classList.add('empty');
         slot.innerHTML = `
           <span class="placeholder-icon">⁂</span>
-          <span class="placeholder-text">Добавить сайт</span>
+          <span class="placeholder-text">${I18n.t('card.placeholder.add.site')}</span>
         `;
         slot.addEventListener('click', (e) => {
           if (e.target.closest('.bookmark-menu-btn')) return;
@@ -298,12 +299,12 @@ const BookmarksManager = (() => {
       modal.style.display = 'none';
       modal.innerHTML = `
         <div class="modal">
-          <h3>Редактировать закладку</h3>
-          <input type="text" id="bookmark-edit-url" placeholder="URL">
-          <input type="text" id="bookmark-edit-title" placeholder="Название">
+          <h3>${I18n.t('bookmark.edit.title')}</h3>
+          <input type="text" id="bookmark-edit-url" placeholder="${I18n.t('bookmark.edit.url.placeholder')}">
+          <input type="text" id="bookmark-edit-title" placeholder="${I18n.t('bookmark.edit.title.placeholder')}">
           <div class="modal-actions">
-            <button id="bookmark-edit-cancel">Отмена</button>
-            <button id="bookmark-edit-save">Сохранить</button>
+            <button id="bookmark-edit-cancel">${I18n.t('bookmark.cancel')}</button>
+            <button id="bookmark-edit-save">${I18n.t('bookmark.save')}</button>
           </div>
         </div>
       `;

@@ -39,6 +39,7 @@ function generateId() {
 function getDefaultSettings() {
   return {
     theme: 'system',
+    language: 'ru',
     showFavicon: true,
     visibleBookmarks: [],
     performers: [],

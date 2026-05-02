@@ -1,5 +1,6 @@
 'use strict';
 
+moduleGuard('I18n');
 moduleGuard('StorageSync');
 moduleGuard('StorageLocal');
 moduleGuard('KanbanConstants');
@@ -114,7 +115,7 @@ const KanbanBoard = (() => {
 
     const addColBtn = document.createElement('button');
     addColBtn.className = 'add-column-btn';
-    addColBtn.textContent = '+ Добавить колонку';
+    addColBtn.textContent = I18n.t('column.add.column');
     addColBtn.addEventListener('click', () => _addColumn());
     board.appendChild(addColBtn);
   }
@@ -155,7 +156,7 @@ const KanbanBoard = (() => {
     const editBtn = document.createElement('button');
     editBtn.className = 'column-action-btn';
     editBtn.innerHTML = '&#9998;';
-    editBtn.title = 'Редактировать';
+    editBtn.title = I18n.t('column.edit');
     editBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       _editColumn(col.id);
@@ -164,7 +165,7 @@ const KanbanBoard = (() => {
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'column-action-btn delete';
     deleteBtn.innerHTML = '&times;';
-    deleteBtn.title = 'Удалить';
+    deleteBtn.title = I18n.t('column.delete');
     deleteBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       _deleteColumn(col.id);
@@ -191,7 +192,7 @@ const KanbanBoard = (() => {
 
     const addCardBtn = document.createElement('button');
     addCardBtn.className = 'column-add-card';
-    addCardBtn.textContent = '+ Добавить задачу';
+    addCardBtn.textContent = I18n.t('column.add.card');
     addCardBtn.addEventListener('click', () => _openNewCardModal(col.id));
 
     colEl.appendChild(header);
@@ -416,14 +417,14 @@ const KanbanBoard = (() => {
   function _openNewCardModal(columnId) {
     _editingCard = { title: '', description: '', priority: '', columnId, assignee: '', author: '', tags: [] };
     _editingColumnId = columnId;
-    _populateModal('Новая задача', columnId, null);
+    _populateModal(I18n.t('modal.new.task'), columnId, null);
   }
 
   function _openEditCardModal(card, columnId) {
     if (card._isTemporary) return;
     _editingCard = { ...card, tags: card.tags ? [...card.tags] : [] };
     _editingColumnId = columnId;
-    _populateModal('Редактировать задачу', columnId, card);
+    _populateModal(I18n.t('modal.edit.task'), columnId, card);
   }
 
   function _populateModal(titleText, columnId, card) {
@@ -452,7 +453,7 @@ const KanbanBoard = (() => {
     container.innerHTML = '';
     const tags = _settings?.tags || [];
     if (tags.length === 0) {
-      container.innerHTML = '<div class="card-tags-empty">Нет тегов</div>';
+      container.innerHTML = '<div class="card-tags-empty">' + I18n.t('column.no.tags') + '</div>';
       _updateTagsDisplay();
       return;
     }
@@ -490,7 +491,7 @@ const KanbanBoard = (() => {
     if (checkedBoxes.length === 0) {
       const placeholder = document.createElement('span');
       placeholder.className = 'tags-placeholder';
-      placeholder.textContent = 'Все теги';
+      placeholder.textContent = I18n.t('card.tags.placeholder');
       display.appendChild(placeholder);
       return;
     }
@@ -501,7 +502,7 @@ const KanbanBoard = (() => {
       const badge = document.createElement('span');
       badge.className = 'card-selected-tag';
       badge.style.background = tag.color;
-      badge.innerHTML = `<span class="card-selected-tag-name">${escapeHtml(tag.name)}</span><span class="card-remove-tag" data-tag-id="${tag.id}" title="Удалить тег">&times;</span>`;
+      badge.innerHTML = `<span class="card-selected-tag-name">${escapeHtml(tag.name)}</span><span class="card-remove-tag" data-tag-id="${tag.id}" title="${I18n.t('card.tags.remove.title')}">&times;</span>`;
       const removeBtn = badge.querySelector('.card-remove-tag');
       removeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -540,7 +541,7 @@ const KanbanBoard = (() => {
   function _populateAssigneeSelect(selectedValue) {
     const select = document.getElementById('card-assignee-select');
     if (!select) return;
-    select.innerHTML = '<option value="">Не назначен</option>';
+    select.innerHTML = '<option value="">' + I18n.t('modal.not.assigned') + '</option>';
     const performers = _settings?.performers || [];
     for (const performer of performers) {
       const opt = document.createElement('option');
@@ -554,7 +555,7 @@ const KanbanBoard = (() => {
   function _populateAuthorSelect(selectedValue) {
     const select = document.getElementById('card-author-select');
     if (!select) return;
-    select.innerHTML = '<option value="">Не указан</option>';
+    select.innerHTML = '<option value="">' + I18n.t('modal.not.specified') + '</option>';
     const authors = _settings?.authors || [];
     for (const author of authors) {
       const opt = document.createElement('option');
@@ -606,7 +607,7 @@ const KanbanBoard = (() => {
 
   function _deleteCard() {
     if (!_editingCard || _editingCard._isTemporary) return;
-    if (!confirm('Удалить задачу "' + _editingCard.title + '"?')) return;
+    if (!confirm(I18n.t('column.delete.card.confirm', { title: escapeHtml(_editingCard.title) }))) return;
 
     const col = _columns.find(c => c.id === _editingColumnId);
     if (col) {
@@ -621,7 +622,7 @@ const KanbanBoard = (() => {
   function _addColumn() {
     const newCol = {
       id: generateId(),
-      title: 'Новая колонка',
+      title: I18n.t('column.new.column'),
       color: _randomColor(),
       order: _columns.length,
       cards: []
@@ -667,7 +668,7 @@ const KanbanBoard = (() => {
     saveBtn.className = 'column-action-btn';
     saveBtn.innerHTML = '&#10003;';
     saveBtn.addEventListener('click', () => {
-      col.title = input.value.trim() || 'Без названия';
+      col.title = input.value.trim() || I18n.t('column.untitled');
       col.color = colorPicker.value;
       _renderBoard();
       save();
@@ -713,7 +714,7 @@ const KanbanBoard = (() => {
     if (!col) return;
     if (_columns.length <= 1) return;
 
-    if (!confirm('Удалить колонку "' + col.title + '" и все её задачи?')) return;
+    if (!confirm(I18n.t('column.delete.confirm', { title: escapeHtml(col.title) }))) return;
 
     _columns = _columns.filter(c => c.id !== columnId);
     _renderBoard();
@@ -726,7 +727,7 @@ const KanbanBoard = (() => {
 
     const performers = _settings?.performers || [];
     const currentAssignee = assigneeSelect.value;
-    assigneeSelect.innerHTML = '<option value="">Все исполнители</option>';
+    assigneeSelect.innerHTML = '<option value="">' + I18n.t('filter.all.assignees') + '</option>';
     for (const performer of performers) {
       const opt = document.createElement('option');
       opt.value = performer.name;
@@ -748,7 +749,7 @@ const KanbanBoard = (() => {
     const allTags = _settings?.tags || [];
 
     if (allTags.length === 0) {
-      listEl.innerHTML = '<div class="filter-tag-item" style="cursor:default;opacity:0.5">Нет тегов</div>';
+      listEl.innerHTML = '<div class="filter-tag-item" style="cursor:default;opacity:0.5">' + I18n.t('column.no.tags') + '</div>';
       _updateFilterTagsLabel(labelEl);
       return;
     }
@@ -791,9 +792,9 @@ const KanbanBoard = (() => {
   function _updateFilterTagsLabel(labelEl) {
     const filterState = KanbanFilter.getState();
     if (filterState.tags.length > 0) {
-      labelEl.textContent = filterState.tags.length + ' выбрано';
+      labelEl.textContent = I18n.t('tags.filter.selected', { count: filterState.tags.length });
     } else {
-      labelEl.textContent = 'Все теги';
+      labelEl.textContent = I18n.t('tags.filter.all');
     }
   }
 
@@ -814,7 +815,7 @@ const KanbanBoard = (() => {
       chip.style.background = tag.color + '22';
       chip.style.color = tag.color;
       chip.style.border = '1px solid ' + tag.color + '55';
-      chip.innerHTML = `<span class="filter-tag-name">${escapeHtml(tag.name)}</span><span class="filter-tag-chip-remove" title="Удалить фильтр">&#10005;</span>`;
+      chip.innerHTML = `<span class="filter-tag-name">${escapeHtml(tag.name)}</span><span class="filter-tag-chip-remove" title="${I18n.t('tags.remove.title')}">&#10005;</span>`;
       chip.querySelector('.filter-tag-chip-remove').addEventListener('click', (e) => {
         e.stopPropagation();
         KanbanFilter.removeTag(tagId);

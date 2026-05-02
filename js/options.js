@@ -1,6 +1,9 @@
 'use strict';
 
+moduleGuard('I18n');
+
 document.addEventListener('DOMContentLoaded', async () => {
+  await I18n.init();
   let settings = await StorageSync.get('settings') || getDefaultSettings();
   let tags = settings.tags || _getDefaultTags();
   let performers = settings.performers || _getDefaultPerformers();
@@ -69,7 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       name.type = 'text';
       name.value = tag.name;
       name.className = 'col-name-input';
-      name.placeholder = 'Название тега';
+      name.placeholder = I18n.t('options.tags.new');
 
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'col-delete-btn';
@@ -98,7 +101,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('add-tag-option').addEventListener('click', () => {
     tags.push({
       id: generateId(),
-      name: 'Новый тег',
+      name: I18n.t('options.tags.new'),
       color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')
     });
     renderTagsList();
@@ -123,7 +126,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       name.type = 'text';
       name.value = performer.name;
       name.className = 'col-name-input';
-      name.placeholder = 'Имя исполнителя';
+      name.placeholder = I18n.t('options.performers.new');
 
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'col-delete-btn';
@@ -152,7 +155,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('add-performer-option').addEventListener('click', () => {
     performers.push({
       id: generateId(),
-      name: 'Новый исполнитель',
+      name: I18n.t('options.performers.new'),
       color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')
     });
     renderPerformersList();
@@ -172,7 +175,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       name.type = 'text';
       name.value = author.name;
       name.className = 'col-name-input';
-      name.placeholder = 'Имя автора';
+      name.placeholder = I18n.t('options.authors.new');
 
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'col-delete-btn';
@@ -197,7 +200,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderAuthorsList();
 
   document.getElementById('add-author-option').addEventListener('click', () => {
-    authors.push({ id: generateId(), name: 'Новый автор' });
+    authors.push({ id: generateId(), name: I18n.t('options.authors.new') });
     renderAuthorsList();
   });
 
@@ -228,14 +231,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       name.type = 'text';
       name.value = col.title;
       name.className = 'col-name-input';
-      name.placeholder = 'Название колонки';
+      name.placeholder = I18n.t('options.columns.new');
 
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'col-delete-btn';
       deleteBtn.innerHTML = '&times;';
       deleteBtn.addEventListener('click', () => {
         if (columns.length <= 1) return;
-        if (!confirm('Удалить колонку "' + col.title + '"?')) return;
+        const confirmMsg = I18n.t('column.delete.confirm', { title: escapeHtml(col.title) });
+        if (!confirm(confirmMsg)) return;
         columns = columns.filter(c => c.id !== col.id);
         renderColumnsList();
       });
@@ -311,7 +315,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('add-column-option').addEventListener('click', () => {
     columns.push({
       id: generateId(),
-      title: 'Новая колонка',
+      title: I18n.t('options.columns.new'),
       color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
       order: columns.length,
       cards: []
@@ -325,6 +329,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('input[name="theme"]').forEach(radio => {
       radio.checked = radio.value === theme;
     });
+    const langSelect = document.getElementById('language-select');
+    if (langSelect) {
+      langSelect.value = settings.language || 'ru';
+    }
   }
 
   loadSettingsUI();
@@ -334,8 +342,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('save-options').addEventListener('click', async () => {
     const theme = document.querySelector('input[name="theme"]:checked')?.value || 'system';
 
+    const language = document.getElementById('language-select')?.value || 'ru';
+
     settings = {
       theme,
+      language,
       tags,
       columns,
       performers,
@@ -347,10 +358,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     await StorageSync.set('settings', settings);
     applyTheme(theme);
+    I18n.setLang(language);
 
     const btn = document.getElementById('save-options');
     const originalText = btn.textContent;
-    btn.textContent = 'Сохранено!';
+    btn.textContent = I18n.t('options.saved');
     btn.disabled = true;
     setTimeout(() => {
       btn.textContent = originalText;

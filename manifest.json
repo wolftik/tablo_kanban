@@ -7,7 +7,7 @@
     "newtab": "views/newtab.html"
   },
   "action": {
-    "default_title": "Открыть Tablo Kanban"
+    "default_title": "Open Tablo Kanban"
   },
   "permissions": [
     "bookmarks",
