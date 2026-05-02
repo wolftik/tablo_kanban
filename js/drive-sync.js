@@ -4,9 +4,9 @@ const DriveSync = (() => {
   const FILE_NAME = 'kanban_data.json';
   const MIME_TYPE = 'application/json';
 
-  function _accessToken() {
+  function _getToken(interactive) {
     return new Promise((resolve, reject) => {
-      chrome.identity.getAuthToken({ interactive: false }, (token) => {
+      chrome.identity.getAuthToken({ interactive }, (token) => {
         if (chrome.runtime.lastError) {
           reject(chrome.runtime.lastError);
         } else {
@@ -14,6 +14,10 @@ const DriveSync = (() => {
         }
       });
     });
+  }
+
+  function _accessToken() {
+    return _getToken(true);
   }
 
   async function _request(url, options = {}) {
@@ -59,7 +63,7 @@ const DriveSync = (() => {
 
   async function isSignedIn() {
     try {
-      await _accessToken();
+      await _getToken(false);
       return true;
     } catch {
       return false;
@@ -80,12 +84,7 @@ const DriveSync = (() => {
 
   async function signOut() {
     return new Promise((resolve) => {
-      chrome.identity.getAuthToken({ interactive: false }, (token) => {
-        if (token) {
-          chrome.identity.removeCachedAuthToken({ token }, () => {
-            fetch('https://accounts.google.com/o/oauth2/revoke?token=' + token).catch(() => {});
-          });
-        }
+      chrome.identity.clearAllCachedAuthTokens(() => {
         resolve();
       });
     });

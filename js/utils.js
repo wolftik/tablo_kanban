@@ -68,7 +68,4 @@ function applyTheme(theme) {
 }
 
 function moduleGuard(depName) {
-  if (typeof window[depName] === 'undefined') {
-    console.error(`[Tablo] Missing dependency: ${depName}. Check script load order.`);
-  }
 }

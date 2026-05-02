@@ -12,7 +12,11 @@ const BookmarksManager = (() => {
   let _widgetsForcedHidden = false;
 
   async function loadDisplayedBookmarks() {
-    _displayedBookmarks = await StorageSync.get('bookmarks_display') || [];
+    const raw = await StorageSync.get('bookmarks_display') || [];
+    _displayedBookmarks = [];
+    for (let i = 0; i < BOOKMARK_SLOTS; i++) {
+      _displayedBookmarks[i] = raw[i] || null;
+    }
     return _displayedBookmarks;
   }
 
@@ -39,6 +43,11 @@ const BookmarksManager = (() => {
     const index = _displayedBookmarks.findIndex(b => b && b.id === id);
     if (index !== -1) {
       _displayedBookmarks[index] = null;
+      const compacted = _displayedBookmarks.filter(b => b !== null && b !== undefined);
+      _displayedBookmarks = [];
+      for (let i = 0; i < BOOKMARK_SLOTS; i++) {
+        _displayedBookmarks[i] = compacted[i] || null;
+      }
       await saveDisplayedBookmarks(_displayedBookmarks);
     }
     return _displayedBookmarks;
@@ -165,19 +174,14 @@ const BookmarksManager = (() => {
   function _renderBookmarks(container, bookmarks) {
     container.innerHTML = '';
 
-    const bookmarkMap = new Map();
-    for (let i = 0; i < bookmarks.length; i++) {
-      if (bookmarks[i] != null) bookmarkMap.set(i, bookmarks[i]);
-    }
-
     for (let i = 0; i < BOOKMARK_SLOTS; i++) {
       const slot = document.createElement('div');
       slot.className = 'bookmark-slot';
       slot.draggable = true;
       slot.dataset.slotIndex = i;
 
-      if (bookmarkMap.has(i)) {
-        const bm = bookmarkMap.get(i);
+      const bm = bookmarks[i];
+      if (bm != null) {
         slot.classList.add('filled');
         slot.dataset.bookmarkId = bm.id;
 
