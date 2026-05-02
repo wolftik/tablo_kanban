@@ -7,6 +7,9 @@
   --add-btn-bg: #6366f1;
   --add-btn-hover: #4f46e5;
   --add-btn-color: #fff;
+  --bookmark-grid-columns: 11;
+  --bookmark-slot-width: 120px;
+  --bookmark-slot-height: 100px;
 }
 
 [data-theme="dark"] {
@@ -15,6 +18,21 @@
   --bookmark-hover-bg: #334155;
   --bookmark-text: #f1f5f9;
   --bookmark-favicon-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Widgets zone — for future weather, clock, currency widgets */
+#widgets-zone {
+  display: none;
+}
+
+.widgets-zone {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  background: var(--bookmarks-bg);
+  border-bottom: 1px solid var(--bookmarks-border);
+  flex-shrink: 0;
 }
 
 #head-bar {
@@ -36,8 +54,8 @@
   width: fit-content;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: repeat(11, 120px);
-  grid-template-rows: repeat(2, 100px);
+  grid-template-columns: repeat(var(--bookmark-grid-columns), var(--bookmark-slot-width));
+  grid-template-rows: repeat(2, var(--bookmark-slot-height));
   gap: 8px;
   overflow-x: auto;
   max-width: 100%;
@@ -254,44 +272,6 @@
   background: rgba(239,68,68,0.2);
 }
 
-.bookmark-folder {
-  position: relative;
-}
-
-.bookmark-folder .folder-arrow {
-  font-size: 10px;
-  margin-left: 2px;
-  transition: transform 0.15s;
-}
-
-.bookmark-folder.open .folder-arrow {
-  transform: rotate(90deg);
-}
-
-.bookmark-subfolder {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  background: var(--bookmarks-bg);
-  border: 1px solid var(--bookmarks-border);
-  border-radius: 6px;
-  padding: 4px;
-  min-width: 180px;
-  max-height: 400px;
-  overflow-y: auto;
-  z-index: 1000;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-}
-
-.bookmark-folder.open .bookmark-subfolder {
-  display: block;
-}
-
-#add-bookmark-btn {
-  display: none;
-}
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -410,9 +390,11 @@
 }
 
 @media (max-width: 900px) {
+  :root {
+    --bookmark-slot-width: 80px;
+    --bookmark-slot-height: 72px;
+  }
   #bookmarks-container {
-    grid-template-columns: repeat(11, 80px);
-    grid-template-rows: repeat(2, 72px);
     gap: 4px;
   }
   .bookmark-slot .favicon {
@@ -424,9 +406,11 @@
 }
 
 @media (max-width: 600px) {
+  :root {
+    --bookmark-slot-width: 60px;
+    --bookmark-slot-height: 56px;
+  }
   #bookmarks-container {
-    grid-template-columns: repeat(11, 60px);
-    grid-template-rows: repeat(2, 56px);
     gap: 2px;
   }
   .bookmark-slot .favicon {

@@ -1,100 +1,32 @@
+'use strict';
+
 document.addEventListener('DOMContentLoaded', async () => {
-  const settings = await Storage.get('settings') || Storage.getDefaultSettings();
+  const settings = await StorageSync.get('settings') || _getDefaultSettings();
 
   applyTheme(settings.theme || 'system');
 
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    const theme = document.documentElement.getAttribute('data-theme');
+    if (theme === 'system') applyTheme('system');
+  });
+
   const bmContainer = document.getElementById('bookmarks-container');
   if (bmContainer) {
-    await BookmarksManager.render();
+    BookmarksManager.render();
   }
 
-  const addBmBtn = document.getElementById('add-bookmark-btn');
-  const addBmModal = document.getElementById('add-bookmark-modal');
-  const bmUrlInput = document.getElementById('bookmark-url');
-  const bmTitleInput = document.getElementById('bookmark-title');
-  const bmSaveBtn = document.getElementById('bookmark-save');
-  const bmCancelBtn = document.getElementById('bookmark-cancel');
+  _initBookmarkModal();
 
-  // Modal event bindings (always execute)
-  if (addBmModal) {
-    // Only bind the "add via button" if the button exists
-    if (addBmBtn) {
-      addBmBtn.addEventListener('click', () => {
-        const container = document.getElementById('bookmarks-container');
-        if (container) {
-          container.querySelectorAll('.bookmark-slot.empty.active').forEach(p => p.classList.remove('active'));
-        }
-        // Сбросить позицию
-        delete addBmModal.dataset.targetIndex;
-        addBmModal.style.display = 'flex';
-        bmUrlInput.focus();
-      });
-    }
+  KanbanBoard.init();
+  WidgetSystem.initAll();
 
-    bmCancelBtn.addEventListener('click', () => {
-      addBmModal.style.display = 'none';
-      bmUrlInput.value = '';
-      bmTitleInput.value = '';
-      delete addBmModal.dataset.targetIndex;
-    });
-
-    bmSaveBtn.addEventListener('click', async () => {
-      let url = bmUrlInput.value.trim();
-      const title = bmTitleInput.value.trim();
-      if (!url) return;
-      if (!/^https?:\/\//i.test(url)) {
-        url = 'https://' + url;
-      }
-
-      let displayTitle = title;
-      if (!displayTitle) {
-        try {
-          displayTitle = new URL(url).hostname;
-        } catch {
-          displayTitle = url;
-        }
-      }
-      
-      const targetIndex = addBmModal.dataset.targetIndex ? parseInt(addBmModal.dataset.targetIndex) : null;
-          await BookmarksManager.addDisplayedBookmark(url, displayTitle, targetIndex);
-      await BookmarksManager.render();
-      addBmModal.style.display = 'none';
-      bmUrlInput.value = '';
-      bmTitleInput.value = '';
-      delete addBmModal.dataset.targetIndex;
-      
-      // Убрать активный класс у всех плейсхолдеров
-      const container = document.getElementById('bookmarks-container');
-      if (container) {
-        container.querySelectorAll('.bookmark-slot.empty.active').forEach(p => p.classList.remove('active'));
-      }
-    });
-
-    bmUrlInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') bmSaveBtn.click();
-      if (e.key === 'Escape') bmCancelBtn.click();
-    });
-
-    addBmModal.addEventListener('click', (e) => {
-      if (e.target === addBmModal) {
-        addBmModal.style.display = 'none';
-        bmUrlInput.value = '';
-        bmTitleInput.value = '';
-        delete addBmModal.dataset.targetIndex;
-      }
-    });
-  }
-
-  await KanbanBoard.init();
-
-  // Settings button — opens options page
   const settingsBtn = document.getElementById('settings-btn');
   if (settingsBtn) {
     settingsBtn.addEventListener('click', () => {
       if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.openOptionsPage) {
         chrome.runtime.openOptionsPage();
       } else {
-        window.open('views/options.html', '_blank');
+        window.open('options.html', '_blank');
       }
     });
   }
@@ -107,9 +39,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     if (e.key === '/' && !e.ctrlKey && !e.metaKey) {
       const active = document.activeElement;
-      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT')) {
-        return;
-      }
+      if (active && (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA' || active.tagName === 'SELECT')) return;
       e.preventDefault();
       const filterSearch = document.getElementById('filter-search');
       if (filterSearch) filterSearch.focus();
@@ -126,6 +56,81 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 });
+
+function _initBookmarkModal() {
+  const modal = document.getElementById('add-bookmark-modal');
+  if (!modal) return;
+
+  const urlInput = document.getElementById('bookmark-url');
+  const titleInput = document.getElementById('bookmark-title');
+  const saveBtn = document.getElementById('bookmark-save');
+  const cancelBtn = document.getElementById('bookmark-cancel');
+
+  cancelBtn.addEventListener('click', () => {
+    modal.style.display = 'none';
+    urlInput.value = '';
+    titleInput.value = '';
+    delete modal.dataset.targetIndex;
+  });
+
+  saveBtn.addEventListener('click', async () => {
+    let url = urlInput.value.trim();
+    const title = titleInput.value.trim();
+    if (!url) return;
+    if (!/^https?:\/\//i.test(url)) {
+      url = 'https://' + url;
+    }
+
+    let displayTitle = title;
+    if (!displayTitle) {
+      try {
+        displayTitle = new URL(url).hostname;
+      } catch {
+        displayTitle = url;
+      }
+    }
+
+    const targetIndex = modal.dataset.targetIndex ? parseInt(modal.dataset.targetIndex) : null;
+    await BookmarksManager.addDisplayedBookmark(url, displayTitle, targetIndex);
+    await BookmarksManager.render();
+    modal.style.display = 'none';
+    urlInput.value = '';
+    titleInput.value = '';
+    delete modal.dataset.targetIndex;
+
+    const container = document.getElementById('bookmarks-container');
+    if (container) {
+      container.querySelectorAll('.bookmark-slot.empty.active').forEach(p => p.classList.remove('active'));
+    }
+  });
+
+  urlInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') saveBtn.click();
+    if (e.key === 'Escape') cancelBtn.click();
+  });
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      urlInput.value = '';
+      titleInput.value = '';
+      delete modal.dataset.targetIndex;
+    }
+  });
+}
+
+function _getDefaultSettings() {
+  return {
+    theme: 'system',
+    cardSize: 'standard',
+    showFavicon: true,
+    visibleBookmarks: [],
+    performers: [],
+    tags: [],
+    authors: [],
+    kanbanFilter: {}
+  };
+}
 
 function applyTheme(theme) {
   if (!theme || theme === 'system') {

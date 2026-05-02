@@ -1,106 +1,131 @@
-const KanbanBoard = {
-  _columns: [],
-  _editingCard: null,
-  _editingColumnId: null,
-  _draggedCard: null,
-  _draggedColumn: null,
-  _filterState: { search: '', priority: '', assignee: '', tags: [] },
-  _settings: null,
+'use strict';
 
-  async init() {
-    this._settings = await Storage.get('settings') || Storage.getDefaultSettings();
-    this._columns = this._settings.columns || Storage.getDefaultColumns();
-    this._columns.forEach(col => col.cards = col.cards || []);
-    this._filterState = this._settings.kanbanFilter || { search: '', priority: '', assignee: '', tags: [] };
-    this._renderBoard();
-    this._bindEvents();
-    this._updateFilterDropdowns();
-    this._updateClearButton();
-  },
+const KanbanBoard = (() => {
+  let _columns = [];
+  let _settings = null;
+  let _editingCard = null;
+  let _editingColumnId = null;
+  let _draggedCard = null;
+  let _draggedColumn = null;
 
-  async save() {
-    this._columns.forEach((col, i) => { col.order = i; });
-    const settings = await Storage.get('settings') || Storage.getDefaultSettings();
-    settings.columns = this._columns;
-    settings.kanbanFilter = this._filterState;
-    settings.theme = this._settings?.theme || settings.theme;
-    settings.cardSize = this._settings?.cardSize || settings.cardSize;
-    settings.tags = this._settings?.tags || settings.tags;
-    settings.performers = this._settings?.performers || settings.performers;
-    settings.authors = this._settings?.authors || settings.authors;
-    settings.visibleBookmarks = this._settings?.visibleBookmarks || settings.visibleBookmarks;
-    settings.showFavicon = this._settings?.showFavicon !== undefined ? this._settings.showFavicon : settings.showFavicon;
-    await Storage.set('settings', settings);
-    this._settings = settings;
-  },
+  async function init() {
+    _settings = await StorageSync.get('settings') || _getDefaultSettings();
+    const saved = await StorageLocal.get(KanbanConstants.STORAGE_KEY);
+    _columns = saved && saved.columns ? saved.columns : _createDefaultColumns();
+    _columns.forEach(col => col.cards = col.cards || []);
 
-  _getCardsForColumn(columnId) {
-    const col = this._columns.find(c => c.id === columnId);
+    KanbanFilter.init(
+      _settings.kanbanFilter || { search: '', priority: '', assignee: '', tags: [] },
+      _onFilterChange
+    );
+
+    _renderBoard();
+    _bindEvents();
+    _renderFilterUI();
+    _updateClearButton();
+  }
+
+  async function save() {
+    _columns.forEach((col, i) => { col.order = i; });
+    await StorageLocal.set(KanbanConstants.STORAGE_KEY, { columns: _columns });
+
+    const settings = await StorageSync.get('settings') || _getDefaultSettings();
+    settings.columns = _columns;
+    settings.kanbanFilter = KanbanFilter.toJSON();
+    settings.theme = _settings?.theme || settings.theme;
+    settings.cardSize = _settings?.cardSize || settings.cardSize;
+    settings.tags = _settings?.tags || settings.tags;
+    settings.performers = _settings?.performers || settings.performers;
+    settings.authors = _settings?.authors || settings.authors;
+    settings.visibleBookmarks = _settings?.visibleBookmarks || settings.visibleBookmarks;
+    settings.showFavicon = _settings?.showFavicon !== undefined ? _settings.showFavicon : settings.showFavicon;
+    await StorageSync.set('settings', settings);
+    _settings = settings;
+  }
+
+  function getColumns() {
+    return _columns;
+  }
+
+  function getSettings() {
+    return _settings;
+  }
+
+  function _onFilterChange() {
+    _renderBoard();
+    _updateClearButton();
+  }
+
+  function _getDefaultSettings() {
+    return {
+      theme: 'system',
+      cardSize: 'standard',
+      showFavicon: true,
+      visibleBookmarks: [],
+      performers: [
+        { id: generateId(), name: 'Иванов И.И.', color: '#6366f1' },
+        { id: generateId(), name: 'Петров П.П.', color: '#22c55e' },
+        { id: generateId(), name: 'Сидоров С.С.', color: '#f59e0b' }
+      ],
+      tags: [
+        { id: generateId(), name: 'Bug', color: '#ef4444' },
+        { id: generateId(), name: 'Feature', color: '#3b82f6' },
+        { id: generateId(), name: 'Enhancement', color: '#8b5cf6' }
+      ],
+      authors: [],
+      kanbanFilter: {},
+      columns: _createDefaultColumns()
+    };
+  }
+
+  function generateId() {
+    return crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substr(2);
+  }
+
+  function _createDefaultColumns() {
+    return KanbanConstants.DEFAULT_COLUMNS.map((c, i) => ({
+      id: generateId(),
+      title: c.title,
+      color: c.color,
+      order: i,
+      cards: []
+    }));
+  }
+
+  function _getCardsForColumn(columnId) {
+    const col = _columns.find(c => c.id === columnId);
     return (col?.cards || []).sort((a, b) => (a.order || 0) - (b.order || 0));
-  },
+  }
 
-  _getFilteredCardsForColumn(columnId) {
-    const cards = this._getCardsForColumn(columnId);
-    const f = this._filterState;
-    return cards.filter(card => {
-      if (f.search) {
-        const search = f.search.toLowerCase();
-        if (!card.title.toLowerCase().includes(search) &&
-            !(card.description || '').toLowerCase().includes(search) &&
-            !(card.assignee || '').toLowerCase().includes(search) &&
-            !(card.author || '').toLowerCase().includes(search)) {
-          return false;
-        }
-      }
-      if (f.priority && (card.priority || '') !== f.priority) {
-        return false;
-      }
-      if (f.assignee && (card.assignee || '') !== f.assignee) {
-        return false;
-      }
-      if (f.tags && f.tags.length > 0) {
-        const cardTags = card.tags || [];
-        if (!f.tags.some(t => cardTags.includes(t))) {
-          return false;
-        }
-      }
-      return true;
-    });
-  },
-
-  _updateColumnCounts() {
+  function _updateColumnCounts() {
     document.querySelectorAll('.kanban-column').forEach(colEl => {
       const colId = colEl.dataset.columnId;
-      const cards = this._getFilteredCardsForColumn(colId);
+      const cards = KanbanFilter.filterCards(_getCardsForColumn(colId));
       const countEl = colEl.querySelector('.column-count');
-      if (countEl) {
-        countEl.textContent = cards.length;
-      }
+      if (countEl) countEl.textContent = cards.length;
     });
-  },
+  }
 
-  _renderBoard() {
+  function _renderBoard() {
     const board = document.getElementById('kanban-board');
     if (!board) return;
-
     board.innerHTML = '';
 
-    const sorted = [...this._columns].sort((a, b) => (a.order || 0) - (b.order || 0));
-
+    const sorted = [..._columns].sort((a, b) => (a.order || 0) - (b.order || 0));
     for (const col of sorted) {
-      board.appendChild(this._createColumnElement(col));
+      board.appendChild(_createColumnElement(col));
     }
 
-    this._updateColumnCounts();
+    _updateColumnCounts();
 
     const addColBtn = document.createElement('button');
     addColBtn.className = 'add-column-btn';
-    addColBtn.innerHTML = '+ Добавить колонку';
-    addColBtn.addEventListener('click', () => this._addColumn());
+    addColBtn.textContent = '+ Добавить колонку';
+    addColBtn.addEventListener('click', () => _addColumn());
     board.appendChild(addColBtn);
-  },
+  }
 
-  _createColumnElement(col) {
+  function _createColumnElement(col) {
     const colEl = document.createElement('div');
     colEl.className = 'kanban-column';
     colEl.dataset.columnId = col.id;
@@ -139,7 +164,7 @@ const KanbanBoard = {
     editBtn.title = 'Редактировать';
     editBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      this._editColumn(col.id);
+      _editColumn(col.id);
     });
 
     const deleteBtn = document.createElement('button');
@@ -148,7 +173,7 @@ const KanbanBoard = {
     deleteBtn.title = 'Удалить';
     deleteBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      this._deleteColumn(col.id);
+      _deleteColumn(col.id);
     });
 
     actions.appendChild(editBtn);
@@ -162,109 +187,31 @@ const KanbanBoard = {
     cardsContainer.className = 'column-cards';
     cardsContainer.dataset.columnId = col.id;
 
-    const cards = this._getFilteredCardsForColumn(col.id);
+    const cards = KanbanFilter.filterCards(_getCardsForColumn(col.id));
     for (const card of cards) {
-      cardsContainer.appendChild(this._createCardElement(card, col.id));
+      const cardEl = KanbanCard.create(card, col.id, _settings);
+      _bindCardDrag(cardEl);
+      cardEl.addEventListener('click', () => _openEditCardModal(card, col.id));
+      cardsContainer.appendChild(cardEl);
     }
 
     const addCardBtn = document.createElement('button');
     addCardBtn.className = 'column-add-card';
     addCardBtn.textContent = '+ Добавить задачу';
-    addCardBtn.addEventListener('click', () => this._openNewCardModal(col.id));
+    addCardBtn.addEventListener('click', () => _openNewCardModal(col.id));
 
     colEl.appendChild(header);
     colEl.appendChild(cardsContainer);
     colEl.appendChild(addCardBtn);
 
-    this._bindColumnDragDrop(colEl, cardsContainer, col.id);
+    _bindColumnDragDrop(colEl, cardsContainer, col.id);
 
     return colEl;
-  },
+  }
 
-  _createCardElement(card, columnId) {
-    const cardEl = document.createElement('div');
-    cardEl.className = 'kanban-card';
-    cardEl.draggable = true;
-    cardEl.dataset.cardId = card.id;
-    cardEl.dataset.columnId = columnId;
-
-    if (card.priority) {
-      const priorityBar = document.createElement('div');
-      priorityBar.className = 'card-priority-bar priority-' + card.priority;
-      cardEl.appendChild(priorityBar);
-    }
-
-    const titleEl = document.createElement('div');
-    titleEl.className = 'card-title';
-    titleEl.textContent = card.title;
-    cardEl.appendChild(titleEl);
-
-    if (card.description) {
-      const descEl = document.createElement('div');
-      descEl.className = 'card-description';
-      descEl.textContent = card.description;
-      cardEl.appendChild(descEl);
-    }
-
-    const meta = document.createElement('div');
-    meta.className = 'card-meta';
-
-    if (card.createdAt) {
-      const dateEl = document.createElement('span');
-      dateEl.className = 'card-date';
-      const d = new Date(card.createdAt);
-      dateEl.textContent = d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit' });
-      meta.appendChild(dateEl);
-    }
-
-    if (card.priority) {
-      const badge = document.createElement('span');
-      badge.className = 'card-priority-badge priority-' + card.priority;
-      const labels = { low: 'Низкий', medium: 'Средний', high: 'Высокий', urgent: 'Срочный' };
-      badge.textContent = labels[card.priority] || '';
-      meta.appendChild(badge);
-    }
-
-    cardEl.appendChild(meta);
-
-    if (card.assignee) {
-      const assigneeEl = document.createElement('div');
-      assigneeEl.className = 'card-assignee';
-      const initial = card.assignee.charAt(0).toUpperCase();
-      const avatar = document.createElement('span');
-      avatar.className = 'assignee-avatar';
-      const performer = (this._settings?.performers || []).find(p => p.name === card.assignee);
-      avatar.style.background = performer ? performer.color : this._hashToColor(card.assignee);
-      avatar.textContent = initial;
-      avatar.title = card.assignee;
-      assigneeEl.appendChild(avatar);
-      cardEl.appendChild(assigneeEl);
-    }
-
-    if (card.tags && card.tags.length > 0) {
-      const tagsContainer = document.createElement('div');
-      tagsContainer.className = 'card-tags';
-      const tags = this._getTagsForDisplay(card.tags);
-      for (const tag of tags) {
-        const badge = document.createElement('span');
-        badge.className = 'tag-badge';
-        badge.textContent = tag.name;
-        badge.style.background = tag.color;
-        tagsContainer.appendChild(badge);
-      }
-      cardEl.appendChild(tagsContainer);
-    }
-
-    cardEl.addEventListener('click', () => this._openEditCardModal(card, columnId));
-
-    this._bindCardDrag(cardEl);
-
-    return cardEl;
-  },
-
-  _bindCardDrag(cardEl) {
+  function _bindCardDrag(cardEl) {
     cardEl.addEventListener('dragstart', (e) => {
-      this._draggedCard = {
+      _draggedCard = {
         cardId: cardEl.dataset.cardId,
         fromColumnId: cardEl.dataset.columnId
       };
@@ -275,180 +222,21 @@ const KanbanBoard = {
 
     cardEl.addEventListener('dragend', () => {
       cardEl.classList.remove('dragging');
-      this._draggedCard = null;
+      _draggedCard = null;
       document.querySelectorAll('.drop-placeholder').forEach(p => p.remove());
       document.querySelectorAll('.drag-over-card').forEach(c => c.classList.remove('drag-over-card'));
     });
-  },
+  }
 
-  _hashToColor(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const h = Math.abs(hash) % 360;
-    const s = 55 + (Math.abs(hash >> 8) % 20);
-    const l = 50 + (Math.abs(hash >> 4) % 10);
-    return `hsl(${h}, ${s}%, ${l}%)`;
-  },
-
-  _getTagsForDisplay(tagIds) {
-    if (!this._settings || !this._settings.tags) return [];
-    return tagIds.map(id => this._settings.tags.find(t => t.id === id)).filter(Boolean);
-  },
-
-  _updateFilterDropdowns() {
-    const assigneeSelect = document.getElementById('filter-assignee');
-    if (!assigneeSelect) return;
-
-    const performers = this._settings?.performers || [];
-    const currentAssignee = assigneeSelect.value;
-    assigneeSelect.innerHTML = '<option value="">Все исполнители</option>';
-    for (const performer of performers) {
-      const opt = document.createElement('option');
-      opt.value = performer.name;
-      opt.textContent = performer.name;
-      if (performer.name === currentAssignee) opt.selected = true;
-      assigneeSelect.appendChild(opt);
-    }
-
-    this._renderTagsDropdown();
-    this._renderTagsChips();
-  },
-
-  _renderTagsDropdown() {
-    const listEl = document.getElementById('filter-tags-list');
-    const labelEl = document.getElementById('filter-tags-label');
-    if (!listEl || !labelEl) return;
-
-    listEl.innerHTML = '';
-    const allTags = this._settings?.tags || [];
-
-    if (allTags.length === 0) {
-      listEl.innerHTML = '<div class="filter-tag-item" style="cursor:default;opacity:0.5">Нет тегов</div>';
-      this._updateTagsLabel(labelEl);
-      return;
-    }
-
-    const fragment = document.createDocumentFragment();
-
-    for (const tag of allTags) {
-      const item = document.createElement('div');
-      item.className = 'filter-tag-item' + (this._filterState.tags.includes(tag.id) ? ' selected' : '');
-      item.dataset.tagId = tag.id;
-
-      const checkbox = document.createElement('span');
-      checkbox.className = 'filter-tag-checkbox';
-      const colorDot = document.createElement('span');
-      colorDot.className = 'filter-tag-color';
-      colorDot.style.background = tag.color;
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'filter-tag-name';
-      nameSpan.textContent = tag.name;
-
-      item.appendChild(checkbox);
-      item.appendChild(colorDot);
-      item.appendChild(nameSpan);
-      item.addEventListener('click', () => this._toggleTagFilter(tag.id));
-      fragment.appendChild(item);
-    }
-
-    listEl.appendChild(fragment);
-    this._updateTagsLabel(labelEl);
-  },
-
-  _updateTagsLabel(labelEl) {
-    if (this._filterState.tags.length > 0) {
-      labelEl.textContent = `${this._filterState.tags.length} выбрано`;
-    } else {
-      labelEl.textContent = 'Все теги';
-    }
-  },
-
-  _renderTagsChips() {
-    const chipsEl = document.getElementById('filter-tags-chips');
-    if (!chipsEl) return;
-    chipsEl.innerHTML = '';
-
-    const allTags = this._settings?.tags || [];
-    for (const tagId of this._filterState.tags) {
-      const tag = allTags.find(t => t.id === tagId);
-      if (!tag) continue;
-
-      const chip = document.createElement('span');
-      chip.className = 'filter-tag-chip';
-      chip.style.background = tag.color + '22';
-      chip.style.color = tag.color;
-      chip.style.border = `1px solid ${tag.color}55`;
-      chip.innerHTML = `
-        <span class="filter-tag-name">${escapeHtml(tag.name)}</span>
-        <span class="filter-tag-chip-remove" title="Удалить фильтр">&#10005;</span>
-      `;
-      chip.querySelector('.filter-tag-chip-remove').addEventListener('click', (e) => {
-        e.stopPropagation();
-        this._removeTagFilter(tagId);
-      });
-      chipsEl.appendChild(chip);
-    }
-  },
-
-  _toggleTagFilter(tagId) {
-    const tags = this._filterState.tags;
-    const index = tags.indexOf(tagId);
-    if (index >= 0) {
-      tags.splice(index, 1);
-    } else {
-      tags.push(tagId);
-    }
-    this._applyFilters();
-  },
-
-  _removeTagFilter(tagId) {
-    this._filterState.tags = this._filterState.tags.filter(t => t !== tagId);
-    this._applyFilters();
-  },
-
-  _updateClearButton() {
-    const btn = document.getElementById('filter-clear');
-    if (!btn) return;
-    const hasFilters = this._filterState.search || this._filterState.priority || this._filterState.assignee || this._filterState.tags.length > 0;
-    btn.classList.toggle('visible', hasFilters);
-  },
-
-  _applyFilters() {
-    this._filterState.search = document.getElementById('filter-search').value.trim();
-    this._filterState.priority = document.getElementById('filter-priority').value;
-    this._filterState.assignee = document.getElementById('filter-assignee').value;
-    this._renderBoard();
-    this._updateClearButton();
-    this._renderTagsDropdown();
-    this._renderTagsChips();
-    this.save();
-  },
-
-  _clearFilters() {
-    this._filterState = { search: '', priority: '', assignee: '', tags: [] };
-    const searchInput = document.getElementById('filter-search');
-    const prioritySelect = document.getElementById('filter-priority');
-    const assigneeSelect = document.getElementById('filter-assignee');
-    if (searchInput) searchInput.value = '';
-    if (prioritySelect) prioritySelect.value = '';
-    if (assigneeSelect) assigneeSelect.value = '';
-    this._renderBoard();
-    this._updateFilterDropdowns();
-    this._updateClearButton();
-    this.save();
-  },
-
-  _bindColumnDragDrop(colEl, cardsContainer, columnId) {
+  function _bindColumnDragDrop(colEl, cardsContainer, columnId) {
     cardsContainer.addEventListener('dragover', (e) => {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
 
-      const afterElement = this._getDragAfterElement(cardsContainer, e.clientY);
+      const afterElement = getCardDragAfterElement(cardsContainer, e.clientY);
       let placeholder = cardsContainer.querySelector('.drop-placeholder');
       if (!placeholder) {
-        placeholder = this._createPlaceholder();
+        placeholder = KanbanCard.createPlaceholder();
       }
       if (afterElement == null) {
         cardsContainer.appendChild(placeholder);
@@ -466,19 +254,19 @@ const KanbanBoard = {
 
     cardsContainer.addEventListener('drop', (e) => {
       e.preventDefault();
-      if (!this._draggedCard) return;
+      if (!_draggedCard) return;
 
-      const { cardId, fromColumnId } = this._draggedCard;
+      const { cardId, fromColumnId } = _draggedCard;
       if (fromColumnId === columnId) {
-        this._reorderCardInColumn(columnId, cardId);
+        _reorderCardInColumn(columnId, cardId);
       } else {
-        this._moveCard(fromColumnId, columnId, cardId);
+        _moveCard(fromColumnId, columnId, cardId);
       }
 
       document.querySelectorAll('.drop-placeholder').forEach(p => p.remove());
-      this._renderBoard();
-      this.save();
-      this._draggedCard = null;
+      _renderBoard();
+      save();
+      _draggedCard = null;
     });
 
     colEl.addEventListener('dragover', (e) => {
@@ -500,35 +288,11 @@ const KanbanBoard = {
       e.preventDefault();
       colEl.classList.remove('drag-over-column');
     });
+  }
 
-    const header = colEl.querySelector('.column-header');
-    header.addEventListener('dragstart', (e) => {
-      this._draggedColumn = columnId;
-      colEl.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', 'column:' + columnId);
-    });
-
-    header.addEventListener('dragend', () => {
-      this._draggedColumn = null;
-      colEl.classList.remove('dragging');
-      document.querySelectorAll('.drag-over-column').forEach(c => c.classList.remove('drag-over-column'));
-    });
-  },
-
-  _getDragAfterElement(container, y) {
-    return getCardDragAfterElement(container, y);
-  },
-
-  _createPlaceholder() {
-    const ph = document.createElement('div');
-    ph.className = 'drop-placeholder';
-    return ph;
-  },
-
-  _moveCard(fromColumnId, toColumnId, cardId) {
-    const fromCol = this._columns.find(c => c.id === fromColumnId);
-    const toCol = this._columns.find(c => c.id === toColumnId);
+  function _moveCard(fromColumnId, toColumnId, cardId) {
+    const fromCol = _columns.find(c => c.id === fromColumnId);
+    const toCol = _columns.find(c => c.id === toColumnId);
     if (!fromCol || !toCol) return;
 
     const cardIndex = fromCol.cards.findIndex(c => c.id === cardId);
@@ -559,19 +323,17 @@ const KanbanBoard = {
     }
 
     toCol.cards.splice(insertIndex, 0, card);
-  },
+  }
 
-  _reorderCardInColumn(columnId, cardId) {
-    const col = this._columns.find(c => c.id === columnId);
+  function _reorderCardInColumn(columnId, cardId) {
+    const col = _columns.find(c => c.id === columnId);
     if (!col) return;
 
     const cardIndex = col.cards.findIndex(c => c.id === cardId);
     if (cardIndex === -1) return;
 
     const placeholder = document.querySelector('.kanban-column[data-column-id="' + columnId + '"] .drop-placeholder');
-    if (!placeholder) {
-      return;
-    }
+    if (!placeholder) return;
 
     const card = col.cards[cardIndex];
 
@@ -579,13 +341,14 @@ const KanbanBoard = {
     let newIndex;
     if (prevSibling && prevSibling.classList.contains('kanban-card')) {
       const prevCardId = prevSibling.dataset.cardId;
-      let prevIndex = col.cards.findIndex(c => c.id === prevCardId);
+      const prevIndex = col.cards.findIndex(c => c.id === prevCardId);
       if (prevIndex === -1) {
         newIndex = col.cards.length;
       } else {
-        newIndex = prevIndex + 1;
         if (cardIndex < prevIndex) {
           newIndex = prevIndex;
+        } else {
+          newIndex = prevIndex + 1;
         }
       }
     } else {
@@ -601,11 +364,11 @@ const KanbanBoard = {
 
     col.cards.splice(cardIndex, 1);
     col.cards.splice(newIndex, 0, card);
-  },
+  }
 
-  _bindColumnReorder(board) {
+  function _bindColumnReorder(board) {
     board.addEventListener('dragover', (e) => {
-      if (!this._draggedColumn) return;
+      if (!_draggedColumn) return;
       e.preventDefault();
 
       const columns = [...board.querySelectorAll('.kanban-column')];
@@ -613,7 +376,7 @@ const KanbanBoard = {
         const box = child.getBoundingClientRect();
         const offset = e.clientX - box.left - box.width / 2;
         if (offset < 0 && offset > closest.offset) {
-          return { offset: offset, element: child };
+          return { offset, element: child };
         }
         return closest;
       }, { offset: Number.NEGATIVE_INFINITY }).element;
@@ -629,69 +392,81 @@ const KanbanBoard = {
     });
 
     board.addEventListener('drop', (e) => {
-      if (!this._draggedColumn) return;
+      if (!_draggedColumn) return;
       e.preventDefault();
 
       const columnEls = [...board.querySelectorAll('.kanban-column')];
       const columnIds = columnEls.map(el => el.dataset.columnId);
       const newColumns = [];
       for (const id of columnIds) {
-        const orig = this._columns.find(c => c.id === id);
+        const orig = _columns.find(c => c.id === id);
         if (orig) newColumns.push(orig);
       }
-      this._columns = newColumns;
+      _columns = newColumns;
 
-      this.save();
-      this._draggedColumn = null;
+      save();
+      _draggedColumn = null;
     });
-  },
 
-  _openNewCardModal(columnId) {
-    this._editingCard = { title: '', description: '', priority: '', columnId: columnId, assignee: '', author: '', tags: [] };
-    this._editingColumnId = columnId;
-    document.getElementById('modal-title').textContent = 'Новая задача';
-    document.getElementById('card-title-input').value = '';
-    document.getElementById('card-desc-input').value = '';
-    this._populateAssigneeSelect('');
-    this._populateAuthorSelect('');
-    document.getElementById('card-priority-select').value = '';
-    document.getElementById('card-delete-btn').style.display = 'none';
-    this._populateTagSelector([]);
-    this._closeTagsDropdown();
+    board.querySelectorAll('.kanban-column .column-header').forEach(header => {
+      header.addEventListener('dragstart', (e) => {
+        const colEl = header.closest('.kanban-column');
+        if (!colEl) return;
+        _draggedColumn = colEl.dataset.columnId;
+        colEl.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData('text/plain', 'column:' + colEl.dataset.columnId);
+      });
+
+      header.addEventListener('dragend', () => {
+        _draggedColumn = null;
+        document.querySelectorAll('.kanban-column').forEach(c => c.classList.remove('dragging'));
+        document.querySelectorAll('.drag-over-column').forEach(c => c.classList.remove('drag-over-column'));
+      });
+    });
+  }
+
+  function _openNewCardModal(columnId) {
+    _editingCard = { title: '', description: '', priority: '', columnId, assignee: '', author: '', tags: [] };
+    _editingColumnId = columnId;
+    _populateModal('Новая задача', columnId, null);
+  }
+
+  function _openEditCardModal(card, columnId) {
+    if (card._isTemporary) return;
+    _editingCard = { ...card, tags: card.tags ? [...card.tags] : [] };
+    _editingColumnId = columnId;
+    _populateModal('Редактировать задачу', columnId, card);
+  }
+
+  function _populateModal(titleText, columnId, card) {
+    document.getElementById('modal-title').textContent = titleText;
+    document.getElementById('card-title-input').value = card ? (card.title || '') : '';
+    document.getElementById('card-desc-input').value = card ? (card.description || '') : '';
+    _populateAssigneeSelect(card ? (card.assignee || '') : '');
+    _populateAuthorSelect(card ? (card.author || '') : '');
+    document.getElementById('card-priority-select').value = card ? (card.priority || '') : '';
+    document.getElementById('card-delete-btn').style.display = card ? 'inline-block' : 'none';
+    _populateTagSelector(card ? (card.tags || []) : []);
+    _closeTagsDropdown();
     document.getElementById('edit-card-modal').style.display = 'flex';
     setTimeout(() => document.getElementById('card-title-input').focus(), 50);
-  },
+  }
 
-  _openEditCardModal(card, columnId) {
-    if (card._isTemporary) return;
-    this._editingCard = { ...card, tags: card.tags ? [...card.tags] : [] };
-    this._editingColumnId = columnId;
-    document.getElementById('modal-title').textContent = 'Редактировать задачу';
-    document.getElementById('card-title-input').value = card.title || '';
-    document.getElementById('card-desc-input').value = card.description || '';
-    this._populateAssigneeSelect(card.assignee || '');
-    this._populateAuthorSelect(card.author || '');
-    document.getElementById('card-priority-select').value = card.priority || '';
-    document.getElementById('card-delete-btn').style.display = 'inline-block';
-    this._populateTagSelector(card.tags || []);
-    this._closeTagsDropdown();
-    document.getElementById('edit-card-modal').style.display = 'flex';
-  },
-
-  _closeModal() {
+  function _closeModal() {
     document.getElementById('edit-card-modal').style.display = 'none';
-    this._editingCard = null;
-    this._editingColumnId = null;
-  },
+    _editingCard = null;
+    _editingColumnId = null;
+  }
 
-  _populateTagSelector(selectedTagIds) {
+  function _populateTagSelector(selectedTagIds) {
     const container = document.getElementById('card-tags-selector');
     if (!container) return;
     container.innerHTML = '';
-    const tags = this._settings?.tags || [];
+    const tags = _settings?.tags || [];
     if (tags.length === 0) {
       container.innerHTML = '<div class="card-tags-empty">Нет тегов</div>';
-      this._updateTagsDisplay();
+      _updateTagsDisplay();
       return;
     }
     for (const tag of tags) {
@@ -711,15 +486,13 @@ const KanbanBoard = {
       label.appendChild(cb);
       label.appendChild(dot);
       label.appendChild(span);
-      cb.addEventListener('change', () => {
-        this._updateTagsDisplay();
-      });
+      cb.addEventListener('change', () => _updateTagsDisplay());
       container.appendChild(label);
     }
-    this._updateTagsDisplay();
-  },
+    _updateTagsDisplay();
+  }
 
-  _updateTagsDisplay() {
+  function _updateTagsDisplay() {
     const display = document.getElementById('card-tags-display');
     const selectedContainer = document.getElementById('card-tags-selected');
     if (!display) return;
@@ -734,7 +507,7 @@ const KanbanBoard = {
       display.appendChild(placeholder);
       return;
     }
-    const tags = this._settings?.tags || [];
+    const tags = _settings?.tags || [];
     for (const cb of checkedBoxes) {
       const tag = tags.find(t => t.id === cb.value);
       if (!tag) continue;
@@ -746,42 +519,42 @@ const KanbanBoard = {
       removeBtn.addEventListener('click', (e) => {
         e.stopPropagation();
         cb.checked = false;
-        this._updateTagsDisplay();
+        _updateTagsDisplay();
       });
       display.appendChild(badge);
       const dropdownBadge = badge.cloneNode(true);
       dropdownBadge.querySelector('.card-remove-tag').addEventListener('click', (e) => {
         e.stopPropagation();
         cb.checked = false;
-        this._updateTagsDisplay();
+        _updateTagsDisplay();
       });
       selectedContainer.appendChild(dropdownBadge);
     }
-  },
+  }
 
-  _toggleTagsDropdown() {
+  function _toggleTagsDropdown() {
     const wrapper = document.getElementById('card-tags-dropdown-wrapper');
     const dropdown = document.getElementById('card-tags-dropdown');
     if (!wrapper || !dropdown) return;
     const isActive = wrapper.classList.contains('active');
     wrapper.classList.toggle('active', !isActive);
     dropdown.classList.toggle('active', !isActive);
-  },
+  }
 
-  _closeTagsDropdown() {
+  function _closeTagsDropdown() {
     const wrapper = document.getElementById('card-tags-dropdown-wrapper');
     const dropdown = document.getElementById('card-tags-dropdown');
     if (wrapper) wrapper.classList.remove('active');
     if (dropdown) dropdown.classList.remove('active');
     const selected = document.getElementById('card-tags-selected');
     if (selected) selected.innerHTML = '';
-  },
+  }
 
-  _populateAssigneeSelect(selectedValue) {
+  function _populateAssigneeSelect(selectedValue) {
     const select = document.getElementById('card-assignee-select');
     if (!select) return;
     select.innerHTML = '<option value="">Не назначен</option>';
-    const performers = this._settings?.performers || [];
+    const performers = _settings?.performers || [];
     for (const performer of performers) {
       const opt = document.createElement('option');
       opt.value = performer.name;
@@ -789,13 +562,13 @@ const KanbanBoard = {
       if (performer.name === selectedValue) opt.selected = true;
       select.appendChild(opt);
     }
-  },
+  }
 
-  _populateAuthorSelect(selectedValue) {
+  function _populateAuthorSelect(selectedValue) {
     const select = document.getElementById('card-author-select');
     if (!select) return;
     select.innerHTML = '<option value="">Не указан</option>';
-    const authors = this._settings?.authors || [];
+    const authors = _settings?.authors || [];
     for (const author of authors) {
       const opt = document.createElement('option');
       opt.value = author.name;
@@ -803,9 +576,9 @@ const KanbanBoard = {
       if (author.name === selectedValue) opt.selected = true;
       select.appendChild(opt);
     }
-  },
+  }
 
-  _saveCard() {
+  function _saveCard() {
     const title = document.getElementById('card-title-input').value.trim();
     if (!title) return;
 
@@ -816,30 +589,20 @@ const KanbanBoard = {
 
     const selectedTags = Array.from(document.querySelectorAll('.card-tag-option input[type="checkbox"]:checked')).map(cb => cb.value);
 
-    if (this._editingCard && this._editingCard.id) {
-      const col = this._columns.find(c => c.id === this._editingColumnId);
+    if (_editingCard && _editingCard.id) {
+      const col = _columns.find(c => c.id === _editingColumnId);
       if (col) {
-        const card = col.cards.find(c => c.id === this._editingCard.id);
+        const card = col.cards.find(c => c.id === _editingCard.id);
         if (card) {
-          card.title = title;
-          card.description = description;
-          card.priority = priority;
-          card.assignee = assignee;
-          card.author = author;
-          card.tags = selectedTags;
-          card.updatedAt = Date.now();
+          Object.assign(card, { title, description, priority, assignee, author, tags: selectedTags, updatedAt: Date.now() });
         }
       }
     } else {
-      const col = this._columns.find(c => c.id === this._editingColumnId);
+      const col = _columns.find(c => c.id === _editingColumnId);
       if (col) {
         col.cards.push({
-          id: Storage.generateId(),
-          title: title,
-          description: description,
-          priority: priority,
-          assignee: assignee,
-          author: author,
+          id: generateId(),
+          title, description, priority, assignee, author,
           tags: selectedTags,
           order: col.cards.length,
           createdAt: Date.now(),
@@ -848,38 +611,37 @@ const KanbanBoard = {
       }
     }
 
-    this._closeModal();
-    this._renderBoard();
-    this._updateFilterDropdowns();
-    this.save();
-  },
+    _closeModal();
+    _renderBoard();
+    _renderFilterUI();
+    save();
+  }
 
-  _deleteCard() {
-    if (!this._editingCard || this._editingCard._isTemporary) return;
+  function _deleteCard() {
+    if (!_editingCard || _editingCard._isTemporary) return;
+    if (!confirm('Удалить задачу "' + _editingCard.title + '"?')) return;
 
-    if (!confirm('Удалить задачу "' + this._editingCard.title + '"?')) return;
-
-    const col = this._columns.find(c => c.id === this._editingColumnId);
+    const col = _columns.find(c => c.id === _editingColumnId);
     if (col) {
-      col.cards = col.cards.filter(c => c.id !== this._editingCard.id);
+      col.cards = col.cards.filter(c => c.id !== _editingCard.id);
     }
 
-    this._closeModal();
-    this._renderBoard();
-    this.save();
-  },
+    _closeModal();
+    _renderBoard();
+    save();
+  }
 
-  _addColumn() {
+  function _addColumn() {
     const newCol = {
-      id: Storage.generateId(),
+      id: generateId(),
       title: 'Новая колонка',
-      color: '#' + Math.floor(Math.random()*16777215).toString(16).padStart(6, '0'),
-      order: this._columns.length,
+      color: _randomColor(),
+      order: _columns.length,
       cards: []
     };
-    this._columns.push(newCol);
-    this._renderBoard();
-    this.save();
+    _columns.push(newCol);
+    _renderBoard();
+    save();
 
     const board = document.getElementById('kanban-board');
     const lastCol = board.querySelector('.kanban-column:last-child');
@@ -887,28 +649,31 @@ const KanbanBoard = {
       const input = lastCol.querySelector('.column-title input');
       if (input) input.focus();
     }
-  },
+  }
 
-  _editColumn(columnId) {
-    const col = this._columns.find(c => c.id === columnId);
+  function _randomColor() {
+    const hue = Math.floor(Math.random() * 360);
+    return `hsl(${hue}, 60%, 50%)`;
+  }
+
+  function _editColumn(columnId) {
+    const col = _columns.find(c => c.id === columnId);
     if (!col) return;
 
     const colEl = document.querySelector('.kanban-column[data-column-id="' + columnId + '"]');
     if (!colEl) return;
 
     const titleContainer = colEl.querySelector('.column-title');
-    const currentTitle = col.title;
-    const currentColor = col.color;
 
     titleContainer.innerHTML = '';
 
     const input = document.createElement('input');
     input.type = 'text';
-    input.value = currentTitle;
+    input.value = col.title;
 
     const colorPicker = document.createElement('input');
     colorPicker.type = 'color';
-    colorPicker.value = currentColor;
+    colorPicker.value = _hslToHex(col.color) || col.color;
     colorPicker.className = 'column-color-picker';
 
     const saveBtn = document.createElement('button');
@@ -917,16 +682,14 @@ const KanbanBoard = {
     saveBtn.addEventListener('click', () => {
       col.title = input.value.trim() || 'Без названия';
       col.color = colorPicker.value;
-      this._renderBoard();
-      this.save();
+      _renderBoard();
+      save();
     });
 
     const cancelBtn = document.createElement('button');
     cancelBtn.className = 'column-action-btn delete';
     cancelBtn.innerHTML = '&times;';
-    cancelBtn.addEventListener('click', () => {
-      this._renderBoard();
-    });
+    cancelBtn.addEventListener('click', () => _renderBoard());
 
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') saveBtn.click();
@@ -940,45 +703,169 @@ const KanbanBoard = {
 
     input.focus();
     input.select();
-  },
+  }
 
-  _deleteColumn(columnId) {
-    const col = this._columns.find(c => c.id === columnId);
+  function _hslToHex(hsl) {
+    if (!hsl || !hsl.startsWith('hsl')) return null;
+    const match = hsl.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
+    if (!match) return null;
+    const h = parseInt(match[1]) / 360;
+    const s = parseInt(match[2]) / 100;
+    const l = parseInt(match[3]) / 100;
+    const a = s * Math.min(l, 1 - l);
+    const f = (n) => {
+      const k = (n + h * 12) % 12;
+      const color = l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+      return Math.round(255 * color).toString(16).padStart(2, '0');
+    };
+    return `#${f(0)}${f(8)}${f(4)}`;
+  }
+
+  function _deleteColumn(columnId) {
+    const col = _columns.find(c => c.id === columnId);
     if (!col) return;
-    if (this._columns.length <= 1) return;
+    if (_columns.length <= 1) return;
 
     if (!confirm('Удалить колонку "' + col.title + '" и все её задачи?')) return;
 
-    this._columns = this._columns.filter(c => c.id !== columnId);
-    this._renderBoard();
-    this.save();
-  },
+    _columns = _columns.filter(c => c.id !== columnId);
+    _renderBoard();
+    save();
+  }
 
-  _bindEvents() {
-    const board = document.getElementById('kanban-board');
-    if (board) {
-      this._bindColumnReorder(board);
+  function _renderFilterUI() {
+    const assigneeSelect = document.getElementById('filter-assignee');
+    if (!assigneeSelect) return;
+
+    const performers = _settings?.performers || [];
+    const currentAssignee = assigneeSelect.value;
+    assigneeSelect.innerHTML = '<option value="">Все исполнители</option>';
+    for (const performer of performers) {
+      const opt = document.createElement('option');
+      opt.value = performer.name;
+      opt.textContent = performer.name;
+      if (performer.name === currentAssignee) opt.selected = true;
+      assigneeSelect.appendChild(opt);
     }
 
-    document.getElementById('card-save').addEventListener('click', () => this._saveCard());
-    document.getElementById('card-cancel').addEventListener('click', () => this._closeModal());
-    document.getElementById('card-delete-btn').addEventListener('click', () => this._deleteCard());
+    _renderTagsDropdown();
+    _renderTagsChips();
+  }
+
+  function _renderTagsDropdown() {
+    const listEl = document.getElementById('filter-tags-list');
+    const labelEl = document.getElementById('filter-tags-label');
+    if (!listEl || !labelEl) return;
+
+    listEl.innerHTML = '';
+    const allTags = _settings?.tags || [];
+
+    if (allTags.length === 0) {
+      listEl.innerHTML = '<div class="filter-tag-item" style="cursor:default;opacity:0.5">Нет тегов</div>';
+      _updateFilterTagsLabel(labelEl);
+      return;
+    }
+
+    const fragment = document.createDocumentFragment();
+    const filterState = KanbanFilter.getState();
+
+    for (const tag of allTags) {
+      const item = document.createElement('div');
+      item.className = 'filter-tag-item' + (filterState.tags.includes(tag.id) ? ' selected' : '');
+      item.dataset.tagId = tag.id;
+
+      const checkbox = document.createElement('span');
+      checkbox.className = 'filter-tag-checkbox';
+      const colorDot = document.createElement('span');
+      colorDot.className = 'filter-tag-color';
+      colorDot.style.background = tag.color;
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'filter-tag-name';
+      nameSpan.textContent = tag.name;
+
+      item.appendChild(checkbox);
+      item.appendChild(colorDot);
+      item.appendChild(nameSpan);
+      item.addEventListener('click', () => {
+        KanbanFilter.toggleTag(tag.id);
+        _renderBoard();
+        _updateClearButton();
+        _renderTagsDropdown();
+        _renderTagsChips();
+        save();
+      });
+      fragment.appendChild(item);
+    }
+
+    listEl.appendChild(fragment);
+    _updateFilterTagsLabel(labelEl);
+  }
+
+  function _updateFilterTagsLabel(labelEl) {
+    const filterState = KanbanFilter.getState();
+    if (filterState.tags.length > 0) {
+      labelEl.textContent = filterState.tags.length + ' выбрано';
+    } else {
+      labelEl.textContent = 'Все теги';
+    }
+  }
+
+  function _renderTagsChips() {
+    const chipsEl = document.getElementById('filter-tags-chips');
+    if (!chipsEl) return;
+    chipsEl.innerHTML = '';
+
+    const allTags = _settings?.tags || [];
+    const filterState = KanbanFilter.getState();
+
+    for (const tagId of filterState.tags) {
+      const tag = allTags.find(t => t.id === tagId);
+      if (!tag) continue;
+
+      const chip = document.createElement('span');
+      chip.className = 'filter-tag-chip';
+      chip.style.background = tag.color + '22';
+      chip.style.color = tag.color;
+      chip.style.border = '1px solid ' + tag.color + '55';
+      chip.innerHTML = `<span class="filter-tag-name">${escapeHtml(tag.name)}</span><span class="filter-tag-chip-remove" title="Удалить фильтр">&#10005;</span>`;
+      chip.querySelector('.filter-tag-chip-remove').addEventListener('click', (e) => {
+        e.stopPropagation();
+        KanbanFilter.removeTag(tagId);
+        _renderBoard();
+        _updateClearButton();
+        _renderTagsDropdown();
+        _renderTagsChips();
+        save();
+      });
+      chipsEl.appendChild(chip);
+    }
+  }
+
+  function _updateClearButton() {
+    const btn = document.getElementById('filter-clear');
+    if (!btn) return;
+    btn.classList.toggle('visible', KanbanFilter.hasActiveFilters());
+  }
+
+  function _bindEvents() {
+    const board = document.getElementById('kanban-board');
+    if (board) _bindColumnReorder(board);
+
+    document.getElementById('card-save').addEventListener('click', () => _saveCard());
+    document.getElementById('card-cancel').addEventListener('click', () => _closeModal());
+    document.getElementById('card-delete-btn').addEventListener('click', () => _deleteCard());
 
     document.getElementById('card-title-input').addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') this._saveCard();
-      if (e.key === 'Escape') this._closeModal();
+      if (e.key === 'Enter') _saveCard();
+      if (e.key === 'Escape') _closeModal();
     });
 
     document.getElementById('edit-card-modal').addEventListener('click', (e) => {
-      if (e.target.classList.contains('modal-overlay')) {
-        this._closeModal();
-      }
+      if (e.target.classList.contains('modal-overlay')) _closeModal();
     });
 
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        this._closeModal();
-      }
+      if (e.key === 'Escape') _closeModal();
     });
 
     const filterSearch = document.getElementById('filter-search');
@@ -987,19 +874,42 @@ const KanbanBoard = {
     const filterClear = document.getElementById('filter-clear');
 
     if (filterSearch) {
-      filterSearch.addEventListener('input', () => this._applyFilters());
+      filterSearch.addEventListener('input', () => {
+        KanbanFilter.applyFilters(filterSearch.value, filterPriority?.value || '', filterAssignee?.value || '');
+        _renderBoard();
+        _updateClearButton();
+        save();
+      });
     }
     if (filterPriority) {
-      filterPriority.addEventListener('change', () => this._applyFilters());
+      filterPriority.addEventListener('change', () => {
+        KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority.value, filterAssignee?.value || '');
+        _renderBoard();
+        _updateClearButton();
+        save();
+      });
     }
     if (filterAssignee) {
-      filterAssignee.addEventListener('change', () => this._applyFilters());
+      filterAssignee.addEventListener('change', () => {
+        KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee.value);
+        _renderBoard();
+        _updateClearButton();
+        save();
+      });
     }
     if (filterClear) {
-      filterClear.addEventListener('click', () => this._clearFilters());
+      filterClear.addEventListener('click', () => {
+        KanbanFilter.clear();
+        if (filterSearch) filterSearch.value = '';
+        if (filterPriority) filterPriority.value = '';
+        if (filterAssignee) filterAssignee.value = '';
+        _renderBoard();
+        _renderFilterUI();
+        _updateClearButton();
+        save();
+      });
     }
 
-    // Tags dropdown toggle
     const tagsLabel = document.getElementById('filter-tags-label');
     if (tagsLabel) {
       tagsLabel.addEventListener('click', () => {
@@ -1008,13 +918,10 @@ const KanbanBoard = {
         const isVisible = dropdown.style.display === 'block';
         dropdown.style.display = isVisible ? 'none' : 'block';
         tagsLabel.classList.toggle('active', !isVisible);
-        if (!isVisible) {
-          this._renderTagsDropdown();
-        }
+        if (!isVisible) _renderTagsDropdown();
       });
     }
 
-    // Close tags dropdown on outside click
     document.addEventListener('click', (e) => {
       const dropdown = document.getElementById('filter-tags-dropdown');
       const label = document.getElementById('filter-tags-label');
@@ -1024,33 +931,30 @@ const KanbanBoard = {
       }
     });
 
-    // Card tags dropdown toggle
     const tagsDisplay = document.getElementById('card-tags-display');
     if (tagsDisplay) {
       tagsDisplay.addEventListener('click', (e) => {
         e.stopPropagation();
-        this._toggleTagsDropdown();
+        _toggleTagsDropdown();
       });
     }
 
-    // Card tags clear button
     const tagsClearBtn = document.getElementById('tags-dropdown-clear');
     if (tagsClearBtn) {
       tagsClearBtn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const checkboxes = document.querySelectorAll('.card-tag-option input[type="checkbox"]');
-        checkboxes.forEach(cb => cb.checked = false);
-        this._updateTagsDisplay();
+        document.querySelectorAll('.card-tag-option input[type="checkbox"]').forEach(cb => cb.checked = false);
+        _updateTagsDisplay();
       });
     }
 
-    // Close card tags dropdown on outside click
     document.addEventListener('click', (e) => {
       const wrapper = document.getElementById('card-tags-dropdown-wrapper');
       if (wrapper && wrapper.classList.contains('active') && !wrapper.contains(e.target)) {
-        this._closeTagsDropdown();
+        _closeTagsDropdown();
       }
     });
-  },
+  }
 
-};
+  return { init, save, getColumns, getSettings };
+})();

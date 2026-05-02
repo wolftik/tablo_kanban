@@ -232,6 +232,36 @@ header h1 {
   background: #fecaca;
 }
 
+.column-option-item .col-color-input {
+  width: 32px;
+  height: 32px;
+  border: none;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.column-option-item .col-color-input::-webkit-color-swatch {
+  border: 2px solid var(--border);
+  border-radius: 50%;
+}
+
+.column-option-item .col-name-input {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-input);
+  color: var(--text);
+  font-size: 14px;
+}
+
+.column-option-item.dragging {
+  opacity: 0.5;
+}
+
 /* Bookmark folders */
 .folder-check-item {
   display: flex;

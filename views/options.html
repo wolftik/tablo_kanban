@@ -13,7 +13,8 @@
     </header>
 
     <nav id="settings-tabs">
-      <button class="tab-btn active" data-tab="tags">Теги</button>
+      <button class="tab-btn active" data-tab="columns">Колонки</button>
+      <button class="tab-btn" data-tab="tags">Теги</button>
       <button class="tab-btn" data-tab="performers">Исполнители</button>
       <button class="tab-btn" data-tab="authors">Авторы</button>
       <button class="tab-btn" data-tab="appearance">Внешний вид</button>
@@ -21,22 +22,41 @@
     </nav>
 
     <main>
+      <!-- Columns Tab -->
+      <div id="tab-columns" class="tab-content active">
+        <div class="setting-group">
+          <h3>Колонки доски</h3>
+          <p>Перетаскивайте для изменения порядка. Для удаления нажмите &times;.</p>
+          <div id="columns-list"></div>
+          <button id="add-column-option" class="btn-primary">Добавить колонку</button>
+        </div>
+      </div>
+
       <!-- Tags Tab -->
-      <div id="tab-tags" class="tab-content active">
-        <div id="tags-list"></div>
-        <button id="add-tag-option" class="btn-primary">Добавить тег</button>
+      <div id="tab-tags" class="tab-content">
+        <div class="setting-group">
+          <h3>Теги</h3>
+          <div id="tags-list"></div>
+          <button id="add-tag-option" class="btn-primary">Добавить тег</button>
+        </div>
       </div>
 
       <!-- Performers Tab -->
       <div id="tab-performers" class="tab-content">
-        <div id="performers-list"></div>
-        <button id="add-performer-option" class="btn-primary">Добавить исполнителя</button>
+        <div class="setting-group">
+          <h3>Исполнители</h3>
+          <div id="performers-list"></div>
+          <button id="add-performer-option" class="btn-primary">Добавить исполнителя</button>
+        </div>
       </div>
 
       <!-- Authors Tab -->
       <div id="tab-authors" class="tab-content">
-        <div id="authors-list"></div>
-        <button id="add-author-option" class="btn-primary">Добавить автора</button>
+        <div class="setting-group">
+          <h3>Авторы</h3>
+          <div id="authors-list"></div>
+          <button id="add-author-option" class="btn-primary">Добавить автора</button>
+        </div>
       </div>
 
       <!-- Appearance Tab -->
@@ -84,7 +104,7 @@
           <h3>Tablo Kanban</h3>
           <p>Версия 1.0.0</p>
           <p>Панель закладок и канбан-доска для новой вкладки Chrome.</p>
-          <p>Настройки хранятся локально в вашем браузере.</p>
+          <p>Настройки хранятся в <strong>chrome.storage.sync</strong> (синхронизация между устройствами), данные доски — в <strong>chrome.storage.local</strong>.</p>
         </div>
       </div>
     </main>
@@ -94,8 +114,10 @@
     </footer>
   </div>
 
-  <script src="../js/storage.js"></script>
   <script src="../js/utils.js"></script>
+  <script src="../js/storage-sync.js"></script>
+  <script src="../js/storage-local.js"></script>
+  <script src="../js/kanban-constants.js"></script>
   <script src="../js/options.js"></script>
 </body>
 </html>

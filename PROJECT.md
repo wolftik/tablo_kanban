@@ -2,90 +2,59 @@
 
 ## Goal
 
-Create a Google Chrome extension (Manifest V3) called "Tablo Kanban". It replaces the new tab page with a 20/80 split layout:
+Create a Google Chrome extension (Manifest V3) called "Tablo Kanban". It replaces the new tab page with a bookmarks bar and a fully functional Kanban board.
 
-- **Top section**: A bookmarks bar (220px) displaying Chrome bookmarks and user-added URLs, supporting folders/subfolders and favicons.
-- **Bottom section**: A fully functional Kanban board (Backlog, To Do, In Progress, Review, Done).
-- **Settings page**: To manage columns, appearance (theme, card size), and bookmark visibility.
-
-## Instructions
-
-- The extension should be built with **Vanilla HTML/CSS/JS** (no frameworks).
-- **Data Storage**: Use `chrome.storage.sync` with a `localStorage` fallback.
-- **Drag & Drop**: Use native HTML5 Drag and Drop API.
-- **Bookmarks**: Integrate with `chrome.bookmarks` API, display favicons via `chrome://favicon/`.
-- **Theming**: Support Light, Dark, and System themes using CSS custom properties.
-- Default columns: Backlog, To Do, In Progress, Review, Done.
-- **Card priorities**: Low, Medium, High, Urgent with color-coded priority bars and badges.
-- **Column customization**: Users can change column colors (color picker), add color indicators, and reorder columns.
-- **Bookmarks**: Support for bookmark folders/subfolders with dropdown menus, delete buttons on hover, and favicon display.
-- **UI language**: Russian.
-
-## Discoveries
-
-- The `Storage` utility successfully abstracts both `chrome.storage.sync` and `localStorage`.
-- The layout strictly separates the bookmarks bar (`height: 220px`) and the kanban board (`height: calc(100vh - 285px)`).
-- Drag helper utilities (`getDragAfterElement`, `getCardDragAfterElement`, `getBookmarkDragAfterElement`) were extracted to `js/utils.js` to avoid code duplication.
-- Card priority levels (low, medium, high, urgent) are rendered with color-coded priority bars on card edges and badges in the card meta.
-- Column color indicators are displayed as colored dots in column headers.
-- The settings page has 4 tabs: Columns, Appearance, Bookmarks, About.
-- Bookmarks bar uses CSS Grid layout (12 columns x 2 rows = 24 tiles) with placeholder tiles for adding new bookmarks.
-- Bookmark drag-and-drop: `dragover` handler only updates visual highlighting (`.drag-over` class), `drop` handler calculates position from `e.clientY` and updates DOM before saving.
-- New bookmarks can be positioned at specific grid slots by clicking placeholders (position stored in `modal.dataset.targetIndex`).
-- Placeholders support `.active` state for visual feedback when a target position is selected.
-
-## Accomplished
-
-- **Created**: `manifest.json` (MV3, `chrome_url_overrides.newtab`, permissions, action).
-- **Created**: `icons/icon16.svg`, `icons/icon48.svg`, `icons/icon128.svg`.
-- **Created**: `views/newtab.html` (HTML structure for the app, modals).
-- **Created**: `views/options.html` (Settings UI with 4 tabs: Columns, Appearance, Bookmarks, About).
-- **Created**: `css/bookmarks.css` (Styles for bookmarks bar, modals, placeholders, active state).
-- **Created**: `css/kanban.css` (Styles for board, columns, cards, drag placeholders, priority bars).
-- **Created**: `css/options.css` (Styles for settings page).
-- **Created**: `js/storage.js` (Data storage abstraction, default values generator).
-- **Created**: `js/bookmarks.js` (Chrome Bookmarks API wrapper, rendering, display management, favicon support, drag-and-drop, placeholder positioning).
-- **Created**: `js/kanban.js` (Kanban board state, rendering columns/cards, drag-and-drop logic for cards and columns, modal interactions, priority support, column color editing).
-- **Created**: `js/newtab.js` (Entry point for `newtab.html` - initializes Storage, BookmarksManager, KanbanBoard, theme, bookmark modal with position support).
-- **Created**: `js/options.js` (Entry point for `options.html` - tab switching, column list with drag reorder, bookmark folders checkbox, save settings).
-- **Created**: `js/utils.js` (Shared drag helper utilities: `getDragAfterElement`, `getCardDragAfterElement`, `getBookmarkDragAfterElement`).
-- **Fixed**: Bookmark drag-and-drop bug — `getBookmarkDragAfterElement` excluded `.bookmark-placeholder` elements; `drop` handler now moves DOM element before saving; `dragover` handler simplified to visual-only updates.
-- **Added**: Bookmark positioning feature — placeholders carry `data-index`, click selects target grid position, `addDisplayedBookmark` accepts `position` parameter for `splice` insertion, modal tracks `targetIndex` for correct placement.
-
-## Project Structure
+## Architecture
 
 ```
-manifest.json
-icons/
-  icon16.svg
-  icon48.svg
-  icon128.svg
-views/
-  newtab.html
-  options.html
-css/
-  bookmarks.css
-  kanban.css
-  options.css
 js/
-  storage.js
-  bookmarks.js
-  kanban.js
-  newtab.js
-  options.js
-  utils.js
+  storage-sync.js          # chrome.storage.sync + localStorage fallback (settings, bookmarks_display)
+  storage-local.js         # chrome.storage.local + localStorage fallback (kanban data)
+  kanban-constants.js      # Shared constants (priorities, default columns, storage key)
+  kanban-filter.js         # Filter state management (search, priority, assignee, tags)
+  kanban-card.js           # Card DOM creation and helpers
+  kanban.js                # Kanban board core (IIFE module)
+  bookmarks-context-menu.js # Context menu for bookmarks (IIFE module)
+  bookmarks.js             # Bookmarks manager (IIFE module)
+  widget-system.js         # Widget registration and lifecycle system
+  newtab.js                # Entry point for newtab.html
+  options.js               # Entry point for options.html
+  utils.js                 # Shared utilities (escapeHtml, drag helpers)
 ```
 
-All files are complete and the extension is ready to load in Chrome (`chrome://extensions/` → Load unpacked).
+### Module Pattern
+All JS files use IIFE (Immediately Invoked Function Expression) pattern with `'use strict'`, exposing a single global const per module. This avoids global scope pollution while maintaining compatibility with Chrome Extension CSP.
 
-### Fixed Issues (May 2026)
+### Storage Strategy
+- **chrome.storage.sync** (`StorageSync`): Settings, bookmarks_display, tags, performers — data that benefits from cross-device sync (limited to ~100 KB).
+- **chrome.storage.local** (`StorageLocal`): Kanban board data (columns, cards) — potentially large, no size limit concern (~10 MB available).
 
-- **Fixed**: Added `chrome_url_overrides.newtab` to `manifest.json` — the extension now actually replaces the new tab page.
-- **Fixed**: Options page save no longer drops `performers` and `kanbanFilter` from settings.
-- **Fixed**: XSS vulnerabilities — tag/ bookmark names are escaped before innerHTML insertion.
-- **Fixed**: Removed duplicate `_getDragAfterElement` in `kanban.js` (now delegates to `getCardDragAfterElement` from `utils.js`).
-- **Fixed**: Extracted `BOOKMARK_SLOTS = 22` as module-level constant in `bookmarks.js`, replacing scattered magic numbers.
-- **Fixed**: Drag handle in options page now uses Unicode `\u2630` instead of HTML entity via `textContent`.
-- **Fixed**: `_hashToColor` now varies both saturation and lightness for better color distribution.
-- **Fixed**: URL parsing in bookmark save modal is wrapped in try-catch to prevent crashes on invalid URLs.
-- **Added**: `escapeHtml()` utility function in `utils.js` for safe HTML interpolation.
+### Widget System
+The `WidgetSystem` provides a lifecycle for future widgets (weather, clock, currency rates):
+- `register(name, { init })` — register a widget module
+- `initAll()` — initialize all registered widgets
+- Widgets render into `#widgets-zone` in the head-bar area
+
+## Features
+- Bookmarks bar with 22 slots (11×2 grid), drag-and-drop positioning
+- Google favicons for bookmarks
+- Context menu (edit/delete) for bookmarks
+- Kanban board with drag-and-drop cards and columns
+- Card priorities (Low, Medium, High, Urgent) with color bars and badges
+- Column editing (title, color) inline
+- Filter by assignee, priority, tags, and text search
+- Tags system with color-coded badges
+- Assignees/Authors with colored avatars
+- Theme: Light, Dark, System
+- Card sizes: Compact, Standard, Large
+- Settings page with tabs (Columns, Tags, Performers, Authors, Appearance)
+
+## Fixed Issues (May 2026)
+- Modular architecture: separated storage, kanban components, bookmark modules
+- chrome.storage.local for board data (avoids sync quota limits)
+- Context menu now closes on scroll/resize
+- Window.open replaced with safe a.click() for bookmark navigation
+- CSS custom properties for bookmark grid dimensions
+- Added Columns tab to settings page with drag-and-drop reorder
+- Removed unused code (getBookmarkDragAfterElement, dead CSS)
+- Widgets zone prepared in HTML/CSS for future expansion

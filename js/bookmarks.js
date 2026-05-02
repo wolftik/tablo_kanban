@@ -1,94 +1,125 @@
+'use strict';
+
 const BOOKMARK_SLOTS = 22;
+const BOOKMARK_GRID_COLUMNS = 11;
 
-const BookmarksManager = {
-  _displayedBookmarks: [],
-  _chromeBookmarks: [],
+const BookmarksManager = (() => {
+  let _displayedBookmarks = [];
 
+  async function loadDisplayedBookmarks() {
+    _displayedBookmarks = await StorageSync.get('bookmarks_display') || [];
+    return _displayedBookmarks;
+  }
 
-  async loadDisplayedBookmarks() {
-    this._displayedBookmarks = await Storage.get('bookmarks_display') || [];
-    return this._displayedBookmarks;
-  },
+  async function saveDisplayedBookmarks(bookmarks) {
+    _displayedBookmarks = bookmarks;
+    await StorageSync.set('bookmarks_display', bookmarks);
+  }
 
-  async saveDisplayedBookmarks(bookmarks) {
-    this._displayedBookmarks = bookmarks;
-    await Storage.set('bookmarks_display', bookmarks);
-  },
-
-  async addDisplayedBookmark(url, title, position = null) {
-    if (!this._displayedBookmarks.find(b => b && b.url === url)) {
-      const newBookmark = { id: Storage.generateId(), url, title: title || url };
-      if (position !== null && position >= 0 && position < BOOKMARK_SLOTS && !this._displayedBookmarks[position]) {
-        this._displayedBookmarks[position] = newBookmark;
-      } else {
-        // Найти первый пустой слот
-        let emptyIndex = this._displayedBookmarks.indexOf(null);
-        if (emptyIndex === -1) emptyIndex = this._displayedBookmarks.length;
-        this._displayedBookmarks[emptyIndex] = newBookmark;
-      }
-      await this.saveDisplayedBookmarks(this._displayedBookmarks);
+  async function addDisplayedBookmark(url, title, position = null) {
+    if (_displayedBookmarks.some(b => b && b.url === url)) return _displayedBookmarks;
+    const newBookmark = { id: generateId(), url, title: title || url };
+    if (position !== null && position >= 0 && position < BOOKMARK_SLOTS && !_displayedBookmarks[position]) {
+      _displayedBookmarks[position] = newBookmark;
+    } else {
+      let emptyIndex = _displayedBookmarks.indexOf(null);
+      if (emptyIndex === -1) emptyIndex = _displayedBookmarks.length;
+      _displayedBookmarks[emptyIndex] = newBookmark;
     }
-    return this._displayedBookmarks;
-  },
+    await saveDisplayedBookmarks(_displayedBookmarks);
+    return _displayedBookmarks;
+  }
 
-  async removeDisplayedBookmark(id) {
-    const index = this._displayedBookmarks.findIndex(b => b && b.id === id);
+  async function removeDisplayedBookmark(id) {
+    const index = _displayedBookmarks.findIndex(b => b && b.id === id);
     if (index !== -1) {
-      this._displayedBookmarks[index] = null;
-      await this.saveDisplayedBookmarks(this._displayedBookmarks);
+      _displayedBookmarks[index] = null;
+      await saveDisplayedBookmarks(_displayedBookmarks);
     }
-    return this._displayedBookmarks;
-  },
+    return _displayedBookmarks;
+  }
 
-  getAllChromeBookmarks() {
-    return new Promise((resolve, reject) => {
+  function generateId() {
+    return crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substr(2);
+  }
+
+  function getDisplayedBookmarks() {
+    return _displayedBookmarks;
+  }
+
+  function getGridColumns() {
+    return BOOKMARK_GRID_COLUMNS;
+  }
+
+  async function render() {
+    const container = document.getElementById('bookmarks-container');
+    if (!container) return;
+
+    await loadDisplayedBookmarks();
+
+    const settings = await StorageSync.get('settings') || _getDefaultSettings();
+    const visibleIds = settings.visibleBookmarks || [];
+
+    const bookmarksToRender = [];
+    for (let i = 0; i < BOOKMARK_SLOTS; i++) {
+      bookmarksToRender[i] = _displayedBookmarks[i] || null;
+    }
+
+    if (visibleIds.length > 0 && typeof chrome !== 'undefined' && chrome.bookmarks) {
+      const folders = await _getAllChromeBookmarks();
+      const allBookmarks = _flattenBookmarks(folders);
+      const visibleBookmarks = allBookmarks.filter(bm => visibleIds.includes(bm.id));
+
+      let vi = 0;
+      for (let i = 0; i < BOOKMARK_SLOTS; i++) {
+        if (bookmarksToRender[i] === null && vi < visibleBookmarks.length) {
+          bookmarksToRender[i] = visibleBookmarks[vi++];
+        }
+      }
+    }
+
+    _renderBookmarks(container, bookmarksToRender);
+  }
+
+  function _getDefaultSettings() {
+    return {
+      theme: 'system',
+      cardSize: 'standard',
+      showFavicon: true,
+      visibleBookmarks: [],
+      performers: [],
+      tags: [],
+      authors: [],
+      kanbanFilter: {}
+    };
+  }
+
+  function _getAllChromeBookmarks() {
+    return new Promise((resolve) => {
       if (typeof chrome === 'undefined' || !chrome.bookmarks) {
         resolve([]);
         return;
       }
-      chrome.bookmarks.getTree((result) => {
-        resolve(result);
-      });
+      chrome.bookmarks.getTree((result) => resolve(result));
     });
-  },
+  }
 
-  flattenBookmarks(nodes, result = []) {
+  function _flattenBookmarks(nodes, result = []) {
     for (const node of nodes) {
       if (node.url) {
-        result.push({
-          id: node.id,
-          url: node.url,
-          title: node.title || node.url,
-          dateAdded: node.dateAdded,
-        });
+        result.push({ id: node.id, url: node.url, title: node.title || node.url, dateAdded: node.dateAdded });
       }
-      if (node.children) {
-        this.flattenBookmarks(node.children, result);
-      }
+      if (node.children) _flattenBookmarks(node.children, result);
     }
     return result;
-  },
+  }
 
-  getAllFolders(nodes, result = []) {
-    for (const node of nodes) {
-      if (!node.url && node.title) {
-        result.push({ id: node.id, title: node.title || 'Без названия', children: node.children || [] });
-      }
-      if (node.children) {
-        this.getAllFolders(node.children, result);
-      }
-    }
-    return result;
-  },
-
-  renderBookmarks(container, bookmarks) {
+  function _renderBookmarks(container, bookmarks) {
     container.innerHTML = '';
 
     const bookmarkMap = new Map();
     for (let i = 0; i < bookmarks.length; i++) {
-      if (bookmarks[i] !== null && bookmarks[i] !== undefined) {
-        bookmarkMap.set(i, bookmarks[i]);
-      }
+      if (bookmarks[i] != null) bookmarkMap.set(i, bookmarks[i]);
     }
 
     for (let i = 0; i < BOOKMARK_SLOTS; i++) {
@@ -125,12 +156,18 @@ const BookmarksManager = {
         menuBtn.addEventListener('click', (e) => {
           e.preventDefault();
           e.stopPropagation();
-          this.showContextMenu(e.clientX, e.clientY, bm, container);
+          BookmarksContextMenu.show(e.clientX, e.clientY, bm, container, {
+            onEdit: _openEditModal,
+            onDelete: async (bookmark, ctx) => {
+              await removeDisplayedBookmark(bookmark.id);
+              render();
+            }
+          });
         });
 
         slot.addEventListener('click', (e) => {
           if (e.target.closest('.bookmark-menu-btn')) return;
-          window.open(bm.url, '_blank', 'noopener,noreferrer');
+          _openUrl(bm.url);
         });
 
         slot.appendChild(favicon);
@@ -159,80 +196,34 @@ const BookmarksManager = {
       container.appendChild(slot);
     }
 
-    this._bindBookmarkDragDrop(container);
-  },
+    _bindBookmarkDragDrop(container);
+  }
 
-  showContextMenu(x, y, bookmark, container) {
-    let menu = document.getElementById('bookmark-context-menu');
-    if (!menu) {
-      menu = document.createElement('div');
-      menu.id = 'bookmark-context-menu';
-      menu.className = 'bookmark-context-menu';
-      menu.innerHTML = `
-        <button class="bookmark-context-menu-item edit">
-          <span>&#9998;</span>
-          <span>Редактировать</span>
-        </button>
-        <button class="bookmark-context-menu-item delete">
-          <span>&#128465;</span>
-          <span>Удалить</span>
-        </button>
-      `;
-      document.body.appendChild(menu);
-    }
+  function _openUrl(url) {
+    try {
+      const a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch {}
+  }
 
-    this._currentContextMenuBookmark = bookmark;
-    this._currentContextMenuContainer = container;
+  let _editModalCurrentBookmark = null;
+  let _editModalCurrentContainer = null;
 
-    menu.style.left = x + 'px';
-    menu.style.top = y + 'px';
-    menu.classList.add('show');
+  function _openEditModal(bookmark) {
+    _editModalCurrentBookmark = bookmark;
+    _editModalCurrentContainer = document.getElementById('bookmarks-container');
 
-    const editBtn = menu.querySelector('.edit');
-    const deleteBtn = menu.querySelector('.delete');
-
-    editBtn.onclick = (e) => {
-      e.stopPropagation();
-      this.hideContextMenu();
-      this.openEditModal(bookmark);
-    };
-
-    deleteBtn.onclick = (e) => {
-      e.stopPropagation();
-      this.hideContextMenu();
-      this.removeDisplayedBookmark(bookmark.id).then(() => {
-        this.renderBookmarks(container, this._displayedBookmarks);
-      });
-    };
-
-    this._closeMenuOnOutsideClick = (e) => {
-      if (!menu.contains(e.target)) {
-        this.hideContextMenu();
-      }
-    };
-
-    setTimeout(() => {
-      document.addEventListener('click', this._closeMenuOnOutsideClick);
-    }, 100);
-  },
-
-  hideContextMenu() {
-    const menu = document.getElementById('bookmark-context-menu');
-    if (menu) {
-      menu.classList.remove('show');
-    }
-    if (this._closeMenuOnOutsideClick) {
-      document.removeEventListener('click', this._closeMenuOnOutsideClick);
-      this._closeMenuOnOutsideClick = null;
-    }
-  },
-
-  openEditModal(bookmark) {
     let modal = document.getElementById('bookmark-edit-modal');
     if (!modal) {
       modal = document.createElement('div');
       modal.id = 'bookmark-edit-modal';
       modal.className = 'modal-overlay';
+      modal.style.display = 'none';
       modal.innerHTML = `
         <div class="modal">
           <h3>Редактировать закладку</h3>
@@ -246,25 +237,16 @@ const BookmarksManager = {
       `;
       document.body.appendChild(modal);
 
-      const cancelBtn = modal.querySelector('#bookmark-edit-cancel');
-      cancelBtn.onclick = () => {
-        modal.style.display = 'none';
-      };
-
-      const saveBtn = modal.querySelector('#bookmark-edit-save');
-      saveBtn.onclick = () => {
+      modal.querySelector('#bookmark-edit-cancel').onclick = () => { modal.style.display = 'none'; };
+      modal.querySelector('#bookmark-edit-save').onclick = () => {
         const newUrl = document.getElementById('bookmark-edit-url').value;
         const newTitle = document.getElementById('bookmark-edit-title').value;
-        if (newUrl && this._currentContextMenuBookmark) {
-          const index = this._displayedBookmarks.findIndex(b => b && b.id === this._currentContextMenuBookmark.id);
+        if (newUrl && _editModalCurrentBookmark) {
+          const index = _displayedBookmarks.findIndex(b => b && b.id === _editModalCurrentBookmark.id);
           if (index !== -1) {
-            this._displayedBookmarks[index] = {
-              ...this._displayedBookmarks[index],
-              url: newUrl,
-              title: newTitle || newUrl
-            };
-            this.saveDisplayedBookmarks(this._displayedBookmarks).then(() => {
-              this.renderBookmarks(this._currentContextMenuContainer, this._displayedBookmarks);
+            _displayedBookmarks[index] = { ..._displayedBookmarks[index], url: newUrl, title: newTitle || newUrl };
+            saveDisplayedBookmarks(_displayedBookmarks).then(() => {
+              render();
               modal.style.display = 'none';
             });
           }
@@ -272,18 +254,16 @@ const BookmarksManager = {
       };
 
       modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          modal.style.display = 'none';
-        }
+        if (e.target === modal) modal.style.display = 'none';
       });
     }
 
     document.getElementById('bookmark-edit-url').value = bookmark.url;
     document.getElementById('bookmark-edit-title').value = bookmark.title;
     modal.style.display = 'flex';
-  },
+  }
 
-  _bindBookmarkDragDrop(container) {
+  function _bindBookmarkDragDrop(container) {
     let dragSourceIndex = null;
 
     container.addEventListener('dragstart', (e) => {
@@ -305,14 +285,11 @@ const BookmarksManager = {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
 
-      const targetSlot = this._getSlotFromCoordinates(container, e.clientX, e.clientY);
-
+      const targetSlot = _getSlotFromCoordinates(container, e.clientX, e.clientY);
       container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
       if (targetSlot !== null) {
         const slotEl = container.children[targetSlot];
-        if (slotEl) {
-          slotEl.classList.add('drag-over');
-        }
+        if (slotEl) slotEl.classList.add('drag-over');
       }
     });
 
@@ -328,81 +305,55 @@ const BookmarksManager = {
 
       if (dragSourceIndex === null) return;
 
-      const targetSlot = this._getSlotFromCoordinates(container, e.clientX, e.clientY);
+      const targetSlot = _getSlotFromCoordinates(container, e.clientX, e.clientY);
       if (targetSlot === null || targetSlot === dragSourceIndex) return;
 
-      const dragged = this._displayedBookmarks[dragSourceIndex];
-      const target = this._displayedBookmarks[targetSlot];
+      const dragged = _displayedBookmarks[dragSourceIndex];
+      const target = _displayedBookmarks[targetSlot];
 
-      this._displayedBookmarks[dragSourceIndex] = target || null;
-      this._displayedBookmarks[targetSlot] = dragged || null;
+      _displayedBookmarks[dragSourceIndex] = target || null;
+      _displayedBookmarks[targetSlot] = dragged || null;
 
-      await this.saveDisplayedBookmarks(this._displayedBookmarks);
+      await saveDisplayedBookmarks(_displayedBookmarks);
       dragSourceIndex = null;
-      this.renderBookmarks(container, this._displayedBookmarks);
+      _renderBookmarks(container, _displayedBookmarks);
     });
-  },
+  }
 
-  _getSlotFromCoordinates(container, x, y) {
+  function _getSlotFromCoordinates(container, x, y) {
     const children = Array.from(container.children);
     if (children.length === 0) return 0;
-    
+
     let closestSlot = null;
     let minDistance = Infinity;
-    
+
     for (let i = 0; i < children.length; i++) {
       const rect = children[i].getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
       const centerY = rect.top + rect.height / 2;
-      
       const distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
-      
       if (distance < minDistance) {
         minDistance = distance;
         closestSlot = parseInt(children[i].dataset.slotIndex);
       }
     }
-    
+
     return closestSlot;
-  },
-
-
-  async render() {
-    const container = document.getElementById('bookmarks-container');
-    if (!container) return;
-
-    await this.loadDisplayedBookmarks();
-
-    const settings = await Storage.get('settings') || Storage.getDefaultSettings();
-    const visibleIds = settings.visibleBookmarks || [];
-
-    // Создаём карту позиций для пользовательских закладок
-    const bookmarksToRender = [];
-    for (let i = 0; i < BOOKMARK_SLOTS; i++) {
-      bookmarksToRender[i] = this._displayedBookmarks[i] || null;
-    }
-
-    // Заполняем пустые слоты Chrome-закладками
-    if (visibleIds.length > 0 && typeof chrome !== 'undefined' && chrome.bookmarks) {
-      const folders = await this.getAllChromeBookmarks();
-      const allBookmarks = this.flattenBookmarks(folders);
-      const visibleBookmarks = allBookmarks.filter(bm => visibleIds.includes(bm.id));
-
-      let vi = 0;
-      for (let i = 0; i < BOOKMARK_SLOTS; i++) {
-        if (bookmarksToRender[i] === null && vi < visibleBookmarks.length) {
-          bookmarksToRender[i] = visibleBookmarks[vi++];
-        }
-      }
-    }
-
-    // Передаём полный массив с null-слотами
-    this.renderBookmarks(container, bookmarksToRender);
   }
-};
+
+  return {
+    render,
+    loadDisplayedBookmarks,
+    saveDisplayedBookmarks,
+    addDisplayedBookmark,
+    removeDisplayedBookmark,
+    getDisplayedBookmarks,
+    getGridColumns
+  };
+})();
 
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') {
-    BookmarksManager.hideContextMenu();
+    BookmarksContextMenu.hide();
   }
 });
