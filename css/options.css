@@ -399,53 +399,42 @@ footer {
 /* Weather settings */
 .weather-switch {
   margin-top: 8px;
+  gap: 10px;
 }
 
-.weather-switch span {
-  margin-left: 0px;
+.weather-switch > span:not(.switch) {
+  margin-left: 0;
 }
 
 .weather-settings {
-  margin-top: 8px;
-  margin-left: 48px;
   display: none;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
 }
 
-.weather-field {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  margin-bottom: 8px;
-}
-
-.weather-field:last-child {
-  margin-bottom: 0;
-}
-
-.weather-field span {
-  font-size: 14px;
-  color: var(--text-secondary);
-}
-
-.weather-field input[type="text"],
-.weather-field select {
-  max-width: 200px;
-  padding: 10px 12px;
+.weather-settings input[type="text"],
+.weather-settings select {
+  padding: 6px 10px;
   border: 1px solid var(--border);
   border-radius: 6px;
   background: var(--bg-input);
   color: var(--text);
-  font-size: 14px;
+  font-size: 13px;
   outline: none;
   transition: border-color 0.15s;
 }
 
-.weather-field input[type="text"]:focus,
-.weather-field select:focus {
-  border-color: var(--primary);
+.weather-settings input[type="text"] {
+  width: 140px;
 }
 
-.weather-field select {
-  max-width: 120px;
+.weather-settings select {
+  width: 64px;
   cursor: pointer;
+}
+
+.weather-settings input[type="text"]:focus,
+.weather-settings select:focus {
+  border-color: var(--primary);
 }

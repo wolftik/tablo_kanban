@@ -114,7 +114,7 @@ const WeatherWidget = {
     zone.classList.add('active');
 
     this._fetchAndRender(settings);
-    this._interval = setInterval(() => this._fetchAndRender(null), 600000);
+    this._interval = setInterval(() => this._fetchAndRender(null), 3600000);
   },
 
   async _fetchAndRender(settings) {
