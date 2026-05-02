@@ -9,6 +9,10 @@ moduleGuard('KanbanCard');
 const KanbanBoard = (() => {
   let _columns = [];
   let _settings = null;
+  let _kanbanFilter = null;
+  let _tags = [];
+  let _performers = [];
+  let _authors = [];
   let _editingCard = null;
   let _editingColumnId = null;
   let _draggedCard = null;
@@ -50,11 +54,7 @@ const KanbanBoard = (() => {
   }
 
   function _updateTagsIndex() {
-    if (!_settings || !_settings.tags) {
-      _tagsIndex = new Map();
-      return;
-    }
-    _tagsIndex = new Map(_settings.tags.map(t => [t.id, t]));
+    _tagsIndex = new Map(_tags.map(t => [t.id, t]));
   }
 
   function _tagById(id) {
@@ -63,39 +63,49 @@ const KanbanBoard = (() => {
 
   async function init() {
     _settings = await StorageSync.get('settings') || getDefaultSettings();
-    const saved = await StorageLocal.get(KanbanConstants.STORAGE_KEY);
-    _columns = saved && saved.columns ? saved.columns : _createDefaultColumns();
+    const saved = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
+
+    _migrateFromSync(saved);
+
+    _columns = saved.columns ? saved.columns : _createDefaultColumns();
     _columns.forEach(col => col.cards = col.cards || []);
+
+    _tags = saved.tags || KanbanConstants.DEFAULT_TAGS.map(t => ({ ...t }));
+    _performers = saved.performers || KanbanConstants.DEFAULT_PERFORMERS.map(p => ({ ...p }));
+    _authors = saved.authors || [];
+    _kanbanFilter = saved.kanbanFilter || { search: '', priority: '', assignee: '', tags: [] };
 
     _updateTagsIndex();
 
-    KanbanFilter.init(
-      _settings.kanbanFilter || { search: '', priority: '', assignee: '', tags: [] },
-      _onFilterChange
-    );
+    KanbanFilter.init(_kanbanFilter, _onFilterChange);
 
     _cacheDoms();
+    if (_dom.board) {
+      _dom.board.innerHTML = '';
+      _dom.board.classList.remove('kanban-initialized');
+    }
     _renderBoard();
     _bindEvents();
     _renderFilterUI();
     _updateClearButton();
   }
 
+  async function _migrateFromSync(saved) {
+    if (saved.columns) return;
+    if (!_settings.columns) return;
+    saved.columns = saved.columns || _settings.columns || _createDefaultColumns();
+    await StorageLocal.set(KanbanConstants.STORAGE_KEY, saved);
+  }
+
   async function save() {
     _columns.forEach((col, i) => { col.order = i; });
-    await StorageLocal.set(KanbanConstants.STORAGE_KEY, { columns: _columns });
-
-    const settings = await StorageSync.get('settings') || getDefaultSettings();
-    settings.kanbanFilter = KanbanFilter.toJSON();
-    settings.theme = _settings?.theme || settings.theme;
-    settings.tags = _settings?.tags || settings.tags;
-    settings.performers = _settings?.performers || settings.performers;
-    settings.authors = _settings?.authors || settings.authors;
-    settings.visibleBookmarks = _settings?.visibleBookmarks || settings.visibleBookmarks;
-    settings.showFavicon = _settings?.showFavicon !== undefined ? _settings.showFavicon : settings.showFavicon;
-    await StorageSync.set('settings', settings);
-    _settings = settings;
-    _updateTagsIndex();
+    await StorageLocal.set(KanbanConstants.STORAGE_KEY, {
+      columns: _columns,
+      kanbanFilter: _kanbanFilter,
+      tags: _tags,
+      performers: _performers,
+      authors: _authors
+    });
   }
 
   function getColumns() {
@@ -107,16 +117,9 @@ const KanbanBoard = (() => {
   }
 
   function _onFilterChange() {
+    _kanbanFilter = KanbanFilter.toJSON();
     _renderBoard();
     _updateClearButton();
-  }
-
-  function _getDefaultSettings() {
-    return Object.assign(getDefaultSettings(), {
-      performers: KanbanConstants.DEFAULT_PERFORMERS.map(p => ({ ...p, id: generateId() })),
-      tags: KanbanConstants.DEFAULT_TAGS.map(t => ({ ...t, id: generateId() })),
-      columns: _createDefaultColumns()
-    });
   }
 
   function _createDefaultColumns() {
@@ -253,15 +256,15 @@ const KanbanBoard = (() => {
           }
         }
       } else {
-        const cardEl = KanbanCard.create(card, col.id, _settings);
-        _bindCardDrag(cardEl);
-        cardEl.addEventListener('click', () => _openEditCardModal(card, col.id));
-        if (insertBeforeCard) {
-          container.insertBefore(cardEl, insertBeforeCard);
-        } else {
-          container.appendChild(cardEl);
-        }
-        existingMap.set(card.id, cardEl);
+        const cardEl = KanbanCard.create(card, col.id, _performers, _tags);
+    _bindCardDrag(cardEl);
+    cardEl.addEventListener('click', () => _openEditCardModal(card, col.id));
+    if (insertBeforeCard) {
+      container.insertBefore(cardEl, insertBeforeCard);
+    } else {
+      container.appendChild(cardEl);
+    }
+    existingMap.set(card.id, cardEl);
       }
       insertBeforeCard = existingMap.get(card.id) || insertBeforeCard;
     }
@@ -357,12 +360,15 @@ const KanbanBoard = (() => {
       if (!assigneeEl) {
         const ae = document.createElement('div');
         ae.className = 'card-assignee';
+        const avatar = document.createElement('span');
+        avatar.className = 'assignee-avatar';
+        ae.appendChild(avatar);
         cardEl.appendChild(ae);
       }
       const target = cardEl.querySelector('.card-assignee');
       const avatar = target ? target.querySelector('.assignee-avatar') : null;
       if (avatar) {
-        const performer = (_settings?.performers || []).find(p => p.name === card.assignee);
+        const performer = _performers.find(p => p.name === card.assignee);
         const bg = performer ? performer.color : KanbanCard._hashToColor(card.assignee);
         if (avatar.style.background !== bg) avatar.style.background = bg;
         if (avatar.textContent !== card.assignee.charAt(0).toUpperCase()) avatar.textContent = card.assignee.charAt(0).toUpperCase();
@@ -473,7 +479,7 @@ const KanbanBoard = (() => {
     const cards = KanbanFilter.filterCards(_getCardsForColumn(col.id));
     const fragment = document.createDocumentFragment();
     for (const card of cards) {
-      const cardEl = KanbanCard.create(card, col.id, _settings);
+      const cardEl = KanbanCard.create(card, col.id, _performers, _tags);
       _bindCardDrag(cardEl);
       cardEl.addEventListener('click', () => _openEditCardModal(card, col.id));
       fragment.appendChild(cardEl);
@@ -751,14 +757,13 @@ const KanbanBoard = (() => {
     const container = _dom.cardTagsSelector;
     if (!container) return;
     container.innerHTML = '';
-    const tags = _settings?.tags || [];
-    if (tags.length === 0) {
+    if (_tags.length === 0) {
       container.innerHTML = '<div class="card-tags-empty">' + I18n.t('column.no.tags') + '</div>';
       _updateTagsDisplay();
       return;
     }
     const fragment = document.createDocumentFragment();
-    for (const tag of tags) {
+    for (const tag of _tags) {
       const label = document.createElement('label');
       label.className = 'card-tag-option';
       label.dataset.tagId = tag.id;
@@ -799,9 +804,8 @@ const KanbanBoard = (() => {
     }
     const displayFragment = document.createDocumentFragment();
     const selectedFragment = document.createDocumentFragment();
-    const tags = _settings?.tags || [];
     for (const cb of checkedBoxes) {
-      const tag = tags.find(t => t.id === cb.value);
+      const tag = _tags.find(t => t.id === cb.value);
       if (!tag) continue;
       const badge = document.createElement('span');
       badge.className = 'card-selected-tag';
@@ -848,9 +852,8 @@ const KanbanBoard = (() => {
     const select = _dom.cardAssignee;
     if (!select) return;
     select.innerHTML = '<option value="">' + I18n.t('modal.not.assigned') + '</option>';
-    const performers = _settings?.performers || [];
     const fragment = document.createDocumentFragment();
-    for (const performer of performers) {
+    for (const performer of _performers) {
       const opt = document.createElement('option');
       opt.value = performer.name;
       opt.textContent = performer.name;
@@ -864,9 +867,8 @@ const KanbanBoard = (() => {
     const select = _dom.cardAuthor;
     if (!select) return;
     select.innerHTML = '<option value="">' + I18n.t('modal.not.specified') + '</option>';
-    const authors = _settings?.authors || [];
     const fragment = document.createDocumentFragment();
-    for (const author of authors) {
+    for (const author of _authors) {
       const opt = document.createElement('option');
       opt.value = author.name;
       opt.textContent = author.name;
@@ -1023,10 +1025,9 @@ const KanbanBoard = (() => {
     const assigneeSelect = _dom.filterAssignee;
     if (!assigneeSelect) return;
 
-    const performers = _settings?.performers || [];
     const currentAssignee = assigneeSelect.value;
     assigneeSelect.innerHTML = '<option value="">' + I18n.t('filter.all.assignees') + '</option>';
-    for (const performer of performers) {
+    for (const performer of _performers) {
       const opt = document.createElement('option');
       opt.value = performer.name;
       opt.textContent = performer.name;
@@ -1044,9 +1045,8 @@ const KanbanBoard = (() => {
     if (!listEl || !labelEl) return;
 
     listEl.innerHTML = '';
-    const allTags = _settings?.tags || [];
 
-    if (allTags.length === 0) {
+    if (_tags.length === 0) {
       listEl.innerHTML = '<div class="filter-tag-item" style="cursor:default;opacity:0.5">' + I18n.t('column.no.tags') + '</div>';
       _updateFilterTagsLabel(labelEl);
       return;
@@ -1055,7 +1055,7 @@ const KanbanBoard = (() => {
     const fragment = document.createDocumentFragment();
     const filterState = KanbanFilter.getState();
 
-    for (const tag of allTags) {
+    for (const tag of _tags) {
       const item = document.createElement('div');
       item.className = 'filter-tag-item' + (filterState.tags.includes(tag.id) ? ' selected' : '');
       item.dataset.tagId = tag.id;
@@ -1078,7 +1078,6 @@ const KanbanBoard = (() => {
         _updateClearButton();
         _renderTagsDropdown();
         _renderTagsChips();
-        save();
       });
       fragment.appendChild(item);
     }
@@ -1101,11 +1100,10 @@ const KanbanBoard = (() => {
     if (!chipsEl) return;
     chipsEl.innerHTML = '';
 
-    const allTags = _settings?.tags || [];
     const filterState = KanbanFilter.getState();
 
     for (const tagId of filterState.tags) {
-      const tag = allTags.find(t => t.id === tagId);
+      const tag = _tags.find(t => t.id === tagId);
       if (!tag) continue;
 
       const chip = document.createElement('span');
@@ -1121,7 +1119,6 @@ const KanbanBoard = (() => {
         _updateClearButton();
         _renderTagsDropdown();
         _renderTagsChips();
-        save();
       });
       chipsEl.appendChild(chip);
     }
@@ -1169,7 +1166,6 @@ const KanbanBoard = (() => {
           KanbanFilter.applyFilters(filterSearch.value, filterPriority?.value || '', filterAssignee?.value || '');
           _renderBoard();
           _updateClearButton();
-          save();
         }, 150);
       });
     }
@@ -1178,7 +1174,6 @@ const KanbanBoard = (() => {
         KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority.value, filterAssignee?.value || '');
         _renderBoard();
         _updateClearButton();
-        save();
       });
     }
     if (filterAssignee) {
@@ -1186,7 +1181,6 @@ const KanbanBoard = (() => {
         KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee.value);
         _renderBoard();
         _updateClearButton();
-        save();
       });
     }
     if (filterClear) {
@@ -1198,7 +1192,6 @@ const KanbanBoard = (() => {
         _renderBoard();
         _renderFilterUI();
         _updateClearButton();
-        save();
       });
     }
 

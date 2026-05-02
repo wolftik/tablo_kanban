@@ -53,6 +53,7 @@ const BookmarksManager = (() => {
   }
 
   let _dragDropInitialized = false;
+  let _cachedVisibleIds = [];
 
   function _initResponsive(container) {
     if (_responsiveObserver) _responsiveObserver.disconnect();
@@ -118,6 +119,7 @@ const BookmarksManager = (() => {
 
     const settings = await StorageSync.get('settings') || getDefaultSettings();
     const visibleIds = settings.visibleBookmarks || [];
+    _cachedVisibleIds = visibleIds;
 
     const bookmarksToRender = [];
     for (let i = 0; i < BOOKMARK_SLOTS; i++) {
@@ -407,6 +409,10 @@ const BookmarksManager = (() => {
     addDisplayedBookmark,
     removeDisplayedBookmark,
     getDisplayedBookmarks,
-    getGridColumns
+    getGridColumns,
+    reloadVisibleIds: async () => {
+      const settings = await StorageSync.get('settings') || getDefaultSettings();
+      _cachedVisibleIds = settings.visibleBookmarks || [];
+    }
   };
 })();

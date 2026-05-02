@@ -25,10 +25,11 @@ const StorageLocal = (() => {
       } catch (e) {
         console.warn('StorageLocal.set (local) failed:', e);
       }
+    } else {
+      try {
+        localStorage.setItem('_local_' + key, JSON.stringify(value));
+      } catch {}
     }
-    try {
-      localStorage.setItem('_local_' + key, JSON.stringify(value));
-    } catch {}
   }
 
   async function remove(key) {
@@ -36,10 +37,11 @@ const StorageLocal = (() => {
       try {
         await chrome.storage.local.remove(key);
       } catch {}
+    } else {
+      try {
+        localStorage.removeItem('_local_' + key);
+      } catch {}
     }
-    try {
-      localStorage.removeItem('_local_' + key);
-    } catch {}
   }
 
   return { get, set, remove };

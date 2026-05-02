@@ -54,10 +54,6 @@ function getDefaultSettings() {
     language: 'ru',
     showFavicon: true,
     visibleBookmarks: [],
-    performers: [],
-    tags: [],
-    authors: [],
-    kanbanFilter: {},
     widgets: { clock: true, weather: false, weatherCity: 'Moscow', weatherUnit: 'metric' }
   };
 }

@@ -64,6 +64,23 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   });
+
+  if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged) {
+    chrome.storage.onChanged.addListener((changes, areaName) => {
+      if (areaName === 'sync' && changes.settings) {
+        const newSettings = changes.settings.newValue;
+        if (newSettings) {
+          applyTheme(newSettings.theme || 'system');
+        }
+      }
+      if (areaName === 'sync' && changes.bookmarks_display) {
+        BookmarksManager.render();
+      }
+      if (areaName === 'local' && changes.kanban_data) {
+        KanbanBoard.init();
+      }
+    });
+  }
 });
 
 function _initBookmarkModal() {

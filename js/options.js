@@ -1,14 +1,17 @@
 'use strict';
 
 moduleGuard('I18n');
+moduleGuard('StorageLocal');
+moduleGuard('KanbanConstants');
 
 document.addEventListener('DOMContentLoaded', async () => {
   await I18n.init();
   let settings = await StorageSync.get('settings') || getDefaultSettings();
-  let tags = settings.tags || _getDefaultTags();
-  let performers = settings.performers || _getDefaultPerformers();
-  let authors = settings.authors || [];
-  let columns = settings.columns || _getDefaultColumns();
+  let kanbanData = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
+  let tags = kanbanData.tags || _getDefaultTags();
+  let performers = kanbanData.performers || _getDefaultPerformers();
+  let authors = kanbanData.authors || [];
+  let columns = kanbanData.columns || _getDefaultColumns();
 
   _setupTabs();
 
@@ -332,13 +335,8 @@ document.addEventListener('DOMContentLoaded', async () => {
     settings = {
       theme,
       language,
-      tags,
-      columns,
-      performers,
-      authors,
       visibleBookmarks: settings.visibleBookmarks || [],
       showFavicon: settings.showFavicon !== undefined ? settings.showFavicon : true,
-      kanbanFilter: settings.kanbanFilter || {},
       widgets: {
         clock: $clockChk ? $clockChk.checked : true,
         weather: $weatherChk ? $weatherChk.checked : false,
@@ -348,6 +346,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     await StorageSync.set('settings', settings);
+    await StorageLocal.set('kanban_data', {
+      columns: columns,
+      tags: tags,
+      performers: performers,
+      authors: authors
+    });
     applyTheme(theme);
     I18n.setLang(language);
 

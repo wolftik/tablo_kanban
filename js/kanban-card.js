@@ -3,7 +3,6 @@
 moduleGuard('I18n');
 
 const KanbanCard = (() => {
-  moduleGuard('StorageSync');
 
   function _hashToColor(str) {
     let hash = 0;
@@ -16,12 +15,12 @@ const KanbanCard = (() => {
     return `hsl(${h}, ${s}%, ${l}%)`;
   }
 
-  function _getTagsForDisplay(tagIds, settings, tagById) {
+  function _getTagsForDisplay(tagIds, tagById, tags) {
     if (tagById) return tagIds.map(id => tagById(id)).filter(Boolean);
-    if (!settings || !settings.tags) return [];
-    return tagIds.map(id => settings.tags.find(t => t.id === id)).filter(Boolean);
+    if (!tags) return [];
+    return tagIds.map(id => tags.find(t => t.id === id)).filter(Boolean);
   }
-  function create(card, columnId, settings) {
+  function create(card, columnId, performers, tags) {
     const cardEl = document.createElement('div');
     cardEl.className = 'kanban-card';
     cardEl.draggable = true;
@@ -72,7 +71,7 @@ const KanbanCard = (() => {
       const initial = card.assignee.charAt(0).toUpperCase();
       const avatar = document.createElement('span');
       avatar.className = 'assignee-avatar';
-      const performer = (settings?.performers || []).find(p => p.name === card.assignee);
+      const performer = (performers || []).find(p => p.name === card.assignee);
       avatar.style.background = performer ? performer.color : _hashToColor(card.assignee);
       avatar.textContent = initial;
       avatar.title = card.assignee;
@@ -83,8 +82,8 @@ const KanbanCard = (() => {
     if (card.tags && card.tags.length > 0) {
       const tagsContainer = document.createElement('div');
       tagsContainer.className = 'card-tags';
-      const tags = _getTagsForDisplay(card.tags, settings);
-      for (const tag of tags) {
+      const displayTags = _getTagsForDisplay(card.tags, null, tags);
+      for (const tag of displayTags) {
         const badge = document.createElement('span');
         badge.className = 'tag-badge';
         badge.textContent = tag.name;

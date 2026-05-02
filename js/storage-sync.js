@@ -25,10 +25,11 @@ const StorageSync = (() => {
       } catch (e) {
         console.warn('StorageSync.set (sync) failed:', e);
       }
+    } else {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+      } catch {}
     }
-    try {
-      localStorage.setItem(key, JSON.stringify(value));
-    } catch {}
   }
 
   async function remove(key) {
@@ -36,10 +37,11 @@ const StorageSync = (() => {
       try {
         await chrome.storage.sync.remove(key);
       } catch {}
+    } else {
+      try {
+        localStorage.removeItem(key);
+      } catch {}
     }
-    try {
-      localStorage.removeItem(key);
-    } catch {}
   }
 
   return { get, set, remove };
