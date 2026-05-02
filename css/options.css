@@ -289,6 +289,51 @@ header h1 {
   font-size: 14px;
 }
 
+/* Donate buttons */
+.donate-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.donate-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 16px 24px;
+  min-width: 140px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.donate-btn:hover {
+  border-color: var(--primary);
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.15);
+  transform: translateY(-2px);
+}
+
+.donate-icon {
+  font-size: 28px;
+  line-height: 1;
+}
+
+.donate-label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.donate-hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
 /* Buttons */
 .btn-primary {
   padding: 10px 20px;
