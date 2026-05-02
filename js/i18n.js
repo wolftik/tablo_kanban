@@ -108,6 +108,14 @@ const I18n = (() => {
       'card.tags.remove.title': 'Удалить тег',
 
       'widgets.clock': 'Часы',
+      'widgets.weather': 'Погода',
+      'weather.city': 'Город',
+      'weather.city.placeholder': 'Например: Москва',
+      'weather.unit': 'Единицы',
+      'weather.celsius': '°C',
+      'weather.fahrenheit': '°F',
+      'weather.error': 'Нет данных',
+      'weather.loading': 'Загрузка...',
       'options.widgets.title': 'Виджеты'
     },
 
@@ -217,6 +225,14 @@ const I18n = (() => {
       'card.tags.remove.title': 'Remove tag',
 
       'widgets.clock': 'Clock',
+      'widgets.weather': 'Weather',
+      'weather.city': 'City',
+      'weather.city.placeholder': 'e.g. London',
+      'weather.unit': 'Units',
+      'weather.celsius': '°C',
+      'weather.fahrenheit': '°F',
+      'weather.error': 'No data',
+      'weather.loading': 'Loading...',
       'options.widgets.title': 'Widgets'
     },
 
@@ -326,6 +342,14 @@ const I18n = (() => {
       'card.tags.remove.title': '移除标签',
 
       'widgets.clock': '时钟',
+      'widgets.weather': '天气',
+      'weather.city': '城市',
+      'weather.city.placeholder': '例如：上海',
+      'weather.unit': '单位',
+      'weather.celsius': '°C',
+      'weather.fahrenheit': '°F',
+      'weather.error': '无数据',
+      'weather.loading': '加载中...',
       'options.widgets.title': '组件'
     }
   };

@@ -395,3 +395,57 @@ footer {
 .col-drag-handle:active {
   cursor: grabbing;
 }
+
+/* Weather settings */
+.weather-switch {
+  margin-top: 8px;
+}
+
+.weather-switch span {
+  margin-left: 0px;
+}
+
+.weather-settings {
+  margin-top: 8px;
+  margin-left: 48px;
+  display: none;
+}
+
+.weather-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.weather-field:last-child {
+  margin-bottom: 0;
+}
+
+.weather-field span {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.weather-field input[type="text"],
+.weather-field select {
+  max-width: 200px;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg-input);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.weather-field input[type="text"]:focus,
+.weather-field select:focus {
+  border-color: var(--primary);
+}
+
+.weather-field select {
+  max-width: 120px;
+  cursor: pointer;
+}

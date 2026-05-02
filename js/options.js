@@ -337,6 +337,23 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (clockCheckbox) {
       clockCheckbox.checked = settings.widgets?.clock !== false;
     }
+    const weatherCheckbox = document.getElementById('widget-weather');
+    const weatherSettings = document.getElementById('weather-settings');
+    const weatherCity = document.getElementById('weather-city');
+    const weatherUnit = document.getElementById('weather-unit');
+    if (weatherCheckbox && weatherSettings) {
+      weatherCheckbox.checked = settings.widgets?.weather === true;
+      weatherSettings.style.display = weatherCheckbox.checked ? 'block' : 'none';
+      weatherCheckbox.addEventListener('change', () => {
+        weatherSettings.style.display = weatherCheckbox.checked ? 'block' : 'none';
+      });
+    }
+    if (weatherCity) {
+      weatherCity.value = settings.widgets?.weatherCity || 'Moscow';
+    }
+    if (weatherUnit) {
+      weatherUnit.value = settings.widgets?.weatherUnit || 'metric';
+    }
   }
 
   loadSettingsUI();
@@ -349,6 +366,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const language = document.getElementById('language-select')?.value || 'ru';
 
     const clockCheckbox = document.getElementById('widget-clock');
+    const weatherCheckbox = document.getElementById('widget-weather');
+    const weatherCity = document.getElementById('weather-city');
+    const weatherUnit = document.getElementById('weather-unit');
 
     settings = {
       theme,
@@ -361,7 +381,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       showFavicon: settings.showFavicon !== undefined ? settings.showFavicon : true,
       kanbanFilter: settings.kanbanFilter || {},
       widgets: {
-        clock: clockCheckbox ? clockCheckbox.checked : true
+        clock: clockCheckbox ? clockCheckbox.checked : true,
+        weather: weatherCheckbox ? weatherCheckbox.checked : false,
+        weatherCity: weatherCity ? weatherCity.value.trim() || 'Moscow' : 'Moscow',
+        weatherUnit: weatherUnit ? weatherUnit.value : 'metric'
       }
     };
 

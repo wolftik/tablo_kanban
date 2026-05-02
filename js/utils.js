@@ -46,7 +46,7 @@ function getDefaultSettings() {
     tags: [],
     authors: [],
     kanbanFilter: {},
-    widgets: { clock: true }
+    widgets: { clock: true, weather: false, weatherCity: 'Moscow', weatherUnit: 'metric' }
   };
 }
 
