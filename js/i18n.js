@@ -19,6 +19,7 @@ const I18n = (() => {
       'card.placeholder.add.site': 'Добавить сайт',
 
       'filter.all.assignees': 'Все исполнители',
+      'filter.all.authors': 'Все авторы',
       'filter.all.priorities': 'Все приоритеты',
       'filter.all.tags': 'Все теги',
       'filter.search.placeholder': 'Поиск задач...',
@@ -163,6 +164,7 @@ const I18n = (() => {
       'card.placeholder.add.site': 'Add site',
 
       'filter.all.assignees': 'All assignees',
+      'filter.all.authors': 'All authors',
       'filter.all.priorities': 'All priorities',
       'filter.all.tags': 'All tags',
       'filter.search.placeholder': 'Search tasks...',
@@ -307,6 +309,7 @@ const I18n = (() => {
       'card.placeholder.add.site': '添加网站',
 
       'filter.all.assignees': '所有执行者',
+      'filter.all.authors': '所有作者',
       'filter.all.priorities': '所有优先级',
       'filter.all.tags': '所有标签',
       'filter.search.placeholder': '搜索任务...',

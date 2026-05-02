@@ -46,6 +46,7 @@ const KanbanBoard = (() => {
       filterSearch: document.getElementById('filter-search'),
       filterPriority: document.getElementById('filter-priority'),
       filterAssignee: document.getElementById('filter-assignee'),
+      filterAuthor: document.getElementById('filter-author'),
       filterClear: document.getElementById('filter-clear'),
       filterTagsLabel: document.getElementById('filter-tags-label'),
       filterTagsDropdown: document.getElementById('filter-tags-dropdown'),
@@ -103,7 +104,7 @@ const KanbanBoard = (() => {
     _tags = saved.tags || KanbanConstants.DEFAULT_TAGS.map(t => ({ ...t }));
     _performers = saved.performers || KanbanConstants.DEFAULT_PERFORMERS.map(p => ({ ...p }));
     _authors = saved.authors || [];
-    _kanbanFilter = saved.kanbanFilter || { search: '', priority: '', assignee: '', tags: [] };
+    _kanbanFilter = saved.kanbanFilter || { search: '', priority: '', assignee: '', author: '', tags: [] };
 
     _updateTagsIndex();
 
@@ -1094,6 +1095,19 @@ const KanbanBoard = (() => {
       assigneeSelect.appendChild(opt);
     }
 
+    const authorSelect = _dom.filterAuthor;
+    if (authorSelect) {
+      const currentAuthor = authorSelect.value;
+      authorSelect.innerHTML = '<option value="">' + I18n.t('filter.all.authors') + '</option>';
+      for (const author of _authors) {
+        const opt = document.createElement('option');
+        opt.value = author.name;
+        opt.textContent = author.name;
+        if (author.name === currentAuthor) opt.selected = true;
+        authorSelect.appendChild(opt);
+      }
+    }
+
     _renderTagsDropdown();
     _renderTagsChips();
   }
@@ -1214,6 +1228,7 @@ const KanbanBoard = (() => {
     const filterSearch = _dom.filterSearch;
     const filterPriority = _dom.filterPriority;
     const filterAssignee = _dom.filterAssignee;
+    const filterAuthor = _dom.filterAuthor;
     const filterClear = _dom.filterClear;
 
     if (filterSearch) {
@@ -1222,7 +1237,7 @@ const KanbanBoard = (() => {
         if (_searchTimer) clearTimeout(_searchTimer);
         _searchTimer = setTimeout(() => {
           _searchTimer = null;
-          KanbanFilter.applyFilters(filterSearch.value, filterPriority?.value || '', filterAssignee?.value || '');
+          KanbanFilter.applyFilters(filterSearch.value, filterPriority?.value || '', filterAssignee?.value || '', filterAuthor?.value || '');
           _renderBoard();
           _updateClearButton();
         }, 150);
@@ -1230,14 +1245,21 @@ const KanbanBoard = (() => {
     }
     if (filterPriority) {
       filterPriority.addEventListener('change', () => {
-        KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority.value, filterAssignee?.value || '');
+        KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority.value, filterAssignee?.value || '', filterAuthor?.value || '');
         _renderBoard();
         _updateClearButton();
       });
     }
     if (filterAssignee) {
       filterAssignee.addEventListener('change', () => {
-        KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee.value);
+        KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee.value, filterAuthor?.value || '');
+        _renderBoard();
+        _updateClearButton();
+      });
+    }
+    if (filterAuthor) {
+      filterAuthor.addEventListener('change', () => {
+        KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee?.value || '', filterAuthor.value);
         _renderBoard();
         _updateClearButton();
       });
@@ -1248,6 +1270,7 @@ const KanbanBoard = (() => {
         if (filterSearch) filterSearch.value = '';
         if (filterPriority) filterPriority.value = '';
         if (filterAssignee) filterAssignee.value = '';
+        if (filterAuthor) filterAuthor.value = '';
         _renderBoard();
         _renderFilterUI();
         _updateClearButton();

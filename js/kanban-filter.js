@@ -1,7 +1,7 @@
 'use strict';
 
 const KanbanFilter = (() => {
-  let _state = { search: '', priority: '', assignee: '', tags: [] };
+  let _state = { search: '', priority: '', assignee: '', author: '', tags: [] };
   let _onChange = null;
 
   function init(state, onChange) {
@@ -13,10 +13,11 @@ const KanbanFilter = (() => {
     return { ..._state };
   }
 
-  function applyFilters(search, priority, assignee) {
+  function applyFilters(search, priority, assignee, author) {
     _state.search = search.trim();
     _state.priority = priority;
     _state.assignee = assignee;
+    _state.author = author || '';
     _notify();
   }
 
@@ -36,12 +37,12 @@ const KanbanFilter = (() => {
   }
 
   function clear() {
-    _state = { search: '', priority: '', assignee: '', tags: [] };
+    _state = { search: '', priority: '', assignee: '', author: '', tags: [] };
     _notify();
   }
 
   function hasActiveFilters() {
-    return !!( _state.search || _state.priority || _state.assignee || _state.tags.length > 0);
+    return !!( _state.search || _state.priority || _state.assignee || _state.author || _state.tags.length > 0);
   }
 
   function filterCards(cards) {
@@ -58,6 +59,7 @@ const KanbanFilter = (() => {
       }
       if (f.priority && card.priority !== f.priority) return false;
       if (f.assignee && card.assignee !== f.assignee) return false;
+      if (f.author && card.author !== f.author) return false;
       if (f.tags.length > 0) {
         const cardTags = card.tags || [];
         if (!f.tags.some(t => cardTags.includes(t))) return false;
