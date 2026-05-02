@@ -450,6 +450,15 @@ const KanbanBoard = (() => {
       _editColumn(col.id);
     });
 
+    const clearBtn = document.createElement('button');
+    clearBtn.className = 'column-action-btn clear';
+    clearBtn.innerHTML = '&#9003;';
+    clearBtn.title = I18n.t('column.clear.cards');
+    clearBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      _clearColumnCards(col.id);
+    });
+
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'column-action-btn delete';
     deleteBtn.innerHTML = '&times;';
@@ -460,6 +469,7 @@ const KanbanBoard = (() => {
     });
 
     actions.appendChild(editBtn);
+    actions.appendChild(clearBtn);
     actions.appendChild(deleteBtn);
 
     header.appendChild(titleContainer);
@@ -1016,6 +1026,28 @@ const KanbanBoard = (() => {
       return Math.round(255 * color).toString(16).padStart(2, '0');
     };
     return `#${f(0)}${f(8)}${f(4)}`;
+  }
+
+  function _clearColumnCards(columnId) {
+    const col = _columns.find(c => c.id === columnId);
+    if (!col) return;
+    if (!col.cards || col.cards.length === 0) return;
+
+    const lang = I18n.getLang();
+    const phraseMap = { ru: 'очистить', en: 'clear', zh: '清空' };
+    const phrase = phraseMap[lang] || 'clear';
+
+    const input = prompt(I18n.t('column.clear.cards.confirm', { phrase }), '');
+    if (input === null) return;
+
+    if (input.trim().toLowerCase() !== phrase.toLowerCase()) {
+      alert(I18n.t('column.clear.cards.wrong'));
+      return;
+    }
+
+    col.cards = [];
+    _renderBoard();
+    save();
   }
 
   function _deleteColumn(columnId) {

@@ -63,6 +63,10 @@ const I18n = (() => {
       'column.untitled': 'Без названия',
       'column.no.tags': 'Нет тегов',
       'column.no.name': 'Без названия',
+      'column.clear.cards': 'Очистить задачи',
+      'column.clear.cards.confirm': 'Введите "{phrase}" для подтверждения',
+      'column.clear.cards.placeholder': 'очистить',
+      'column.clear.cards.wrong': 'Неверная фраза',
 
       'card.date.format': 'ru-RU',
 
@@ -180,6 +184,10 @@ const I18n = (() => {
       'column.untitled': 'Untitled',
       'column.no.tags': 'No tags',
       'column.no.name': 'Untitled',
+      'column.clear.cards': 'Clear all cards',
+      'column.clear.cards.confirm': 'Type "{phrase}" to confirm',
+      'column.clear.cards.placeholder': 'clear',
+      'column.clear.cards.wrong': 'Wrong phrase',
 
       'card.date.format': 'en-US',
 
@@ -297,6 +305,10 @@ const I18n = (() => {
       'column.untitled': '无标题',
       'column.no.tags': '无标签',
       'column.no.name': '无标题',
+      'column.clear.cards': '清空卡片',
+      'column.clear.cards.confirm': '输入"{phrase}"确认',
+      'column.clear.cards.placeholder': '清空',
+      'column.clear.cards.wrong': '短语错误',
 
       'card.date.format': 'zh-CN',
 

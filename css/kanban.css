@@ -166,8 +166,17 @@
   color: #ef4444;
 }
 
+.column-action-btn.clear:hover {
+  background: #fef3c7;
+  color: #d97706;
+}
+
 [data-theme="dark"] .column-action-btn.delete:hover {
   background: rgba(239,68,68,0.2);
+}
+
+[data-theme="dark"] .column-action-btn.clear:hover {
+  background: rgba(245,158,11,0.2);
 }
 
 .column-cards {
