@@ -68,8 +68,7 @@ const KanbanBoard = (() => {
     try {
       const driveModified = await SyncProvider.getLastModified();
       if (driveModified === 0) return;
-      const local = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
-      const localModified = local._modified || 0;
+      const localModified = saved._modified || 0;
       if (driveModified <= localModified) return;
 
       _driveSyncing = true;
@@ -125,6 +124,7 @@ const KanbanBoard = (() => {
     if (saved.columns) return;
     if (!_settings.columns) return;
     saved.columns = saved.columns || _settings.columns || _createDefaultColumns();
+    saved._modified = Date.now();
     await StorageLocal.set(KanbanConstants.STORAGE_KEY, saved);
   }
 
@@ -137,10 +137,15 @@ const KanbanBoard = (() => {
     if (!data) return;
     await StorageLocal.set(KanbanConstants.STORAGE_KEY, data);
 
-    if (_driveSyncing) return;
+    if (_driveSyncing) {
+      return;
+    }
     try {
       _driveSyncing = true;
       await SyncProvider.upload(data);
+      if (_pendingSave) {
+        _saveTimer = setTimeout(_flushSave, 0);
+      }
     } catch (e) {
       console.warn('[KanbanBoard] Sync save failed:', e);
     } finally {
@@ -434,7 +439,7 @@ const KanbanBoard = (() => {
 
     const tagsContainer = cardEl.querySelector('.card-tags');
     if (card.tags && card.tags.length > 0) {
-      const displayTags = KanbanCard._getTagsForDisplay(card.tags, _settings, _tagById);
+      const displayTags = KanbanCard._getTagsForDisplay(card.tags, _tagById, _tags);
       if (!tagsContainer) {
         const tc = document.createElement('div');
         tc.className = 'card-tags';

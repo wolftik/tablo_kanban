@@ -489,7 +489,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       columns: columns,
       tags: tags,
       performers: performers,
-      authors: authors
+      authors: authors,
+      _modified: Date.now()
     });
     applyTheme(theme);
     I18n.setLang(language);
