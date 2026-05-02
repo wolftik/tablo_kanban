@@ -234,7 +234,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       item.addEventListener('dragend', () => {
         item.classList.remove('dragging');
         document.querySelectorAll('.column-option-item.drag-over').forEach(el => el.classList.remove('drag-over'));
-        dragId = null;
+        let dragId = null;
       });
     });
 

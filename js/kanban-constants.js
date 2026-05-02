@@ -21,12 +21,12 @@ const KanbanConstants = {
   ],
 
   DEFAULT_TAGS: [
-    { id: generateId(), name: 'Bug', color: '#ef4444' },
-    { id: generateId(), name: 'Feature', color: '#3b82f6' },
-    { id: generateId(), name: 'Enhancement', color: '#8b5cf6' }
+    { name: 'Bug', color: '#ef4444' },
+    { name: 'Feature', color: '#3b82f6' },
+    { name: 'Enhancement', color: '#8b5cf6' }
   ],
 
   DEFAULT_PERFORMERS: [
-    { id: generateId(), name: 'Akiko I.N.', color: '#6366f1' },
+    { name: 'Akiko I.N.', color: '#6366f1' },
   ]
 };

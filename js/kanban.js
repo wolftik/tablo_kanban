@@ -101,8 +101,8 @@ const KanbanBoard = (() => {
     _columns = saved.columns ? saved.columns : _createDefaultColumns();
     _columns.forEach(col => col.cards = col.cards || []);
 
-    _tags = saved.tags || KanbanConstants.DEFAULT_TAGS.map(t => ({ ...t }));
-    _performers = saved.performers || KanbanConstants.DEFAULT_PERFORMERS.map(p => ({ ...p }));
+    _tags = saved.tags || KanbanConstants.DEFAULT_TAGS.map(t => ({ ...t, id: generateId() }));
+    _performers = saved.performers || KanbanConstants.DEFAULT_PERFORMERS.map(p => ({ ...p, id: generateId() }));
     _authors = saved.authors || [];
     _kanbanFilter = saved.kanbanFilter || { search: '', priority: '', assignee: '', author: '', tags: [] };
 

@@ -55,20 +55,6 @@ const YadiskSync = (() => {
     }
   }
 
-  async function signIn() {
-    const token = prompt(
-      'Введите OAuth-токен Яндекс.Диска.\n\n' +
-      'Получить токен: https://oauth.yandex.ru/authorize?response_type=token&client_id=YOUR_CLIENT_ID\n\n' +
-      'Токен будет сохранён в chrome.storage.sync.'
-    );
-    if (!token || !token.trim()) {
-      throw new Error('Token was not provided');
-    }
-    const trimmed = token.trim();
-    await setToken(trimmed);
-    return true;
-  }
-
   async function signOut() {
     await removeToken();
   }
@@ -127,5 +113,5 @@ const YadiskSync = (() => {
     }
   }
 
-  return { isSignedIn, signIn, signOut, upload, download, getLastModified, setToken, removeToken };
+  return { isSignedIn, signOut, upload, download, getLastModified, setToken, removeToken };
 })();

@@ -15,12 +15,14 @@
     "identity"
   ],
   "oauth2": {
-    "client_id": "YOUR_CLIENT_ID_HERE",
+    "client_id": "1043800479318-eia8n50tct7i8bd80f443ah5pvb22qro.apps.googleusercontent.com",
     "scopes": [
       "https://www.googleapis.com/auth/drive.file"
     ]
   },
-  "key": "YOUR_EXTENSION_PUBLIC_KEY_HERE — see https://developer.chrome.com/docs/extensions/reference/manifest/key",
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; connect-src 'self' https://www.googleapis.com https://cloud-api.yandex.net https://geocoding-api.open-meteo.com https://api.open-meteo.com https://www.google.com; img-src 'self' https://www.google.com data:; style-src 'self' 'unsafe-inline'"
+  },
   "options_page": "views/options.html",
   "icons": {
     "16": "icons/icon16.svg",
