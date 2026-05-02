@@ -6,6 +6,7 @@ moduleGuard('StorageLocal');
 moduleGuard('KanbanConstants');
 moduleGuard('KanbanFilter');
 moduleGuard('KanbanCard');
+moduleGuard('SyncProvider');
 const KanbanBoard = (() => {
   let _columns = [];
   let _settings = null;
@@ -24,6 +25,7 @@ const KanbanBoard = (() => {
   let _boundDocKeydown = null;
   let _boundDocClickFilter = null;
   let _boundDocClickTags = null;
+  let _driveSyncing = false;
 
   function _cacheDoms() {
     _dom = {
@@ -61,9 +63,38 @@ const KanbanBoard = (() => {
     return _tagsIndex ? _tagsIndex.get(id) : null;
   }
 
+  async function _tryLoadFromDrive(saved) {
+    if (_driveSyncing) return;
+    try {
+      const driveModified = await SyncProvider.getLastModified();
+      if (driveModified === 0) return;
+      const local = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
+      const localModified = local._modified || 0;
+      if (driveModified <= localModified) return;
+
+      _driveSyncing = true;
+      const driveData = await SyncProvider.download();
+      if (driveData && driveData.columns) {
+        saved.columns = driveData.columns;
+        saved.tags = driveData.tags;
+        saved.performers = driveData.performers;
+        saved.authors = driveData.authors;
+        saved.kanbanFilter = driveData.kanbanFilter;
+        saved._modified = driveModified;
+        await StorageLocal.set(KanbanConstants.STORAGE_KEY, saved);
+      }
+    } catch (e) {
+      console.warn('[KanbanBoard] Drive sync load failed:', e);
+    } finally {
+      _driveSyncing = false;
+    }
+  }
+
   async function init() {
     _settings = await StorageSync.get('settings') || getDefaultSettings();
     const saved = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
+
+    await _tryLoadFromDrive(saved);
 
     _migrateFromSync(saved);
 
@@ -99,13 +130,25 @@ const KanbanBoard = (() => {
 
   async function save() {
     _columns.forEach((col, i) => { col.order = i; });
-    await StorageLocal.set(KanbanConstants.STORAGE_KEY, {
+    const data = {
       columns: _columns,
       kanbanFilter: _kanbanFilter,
       tags: _tags,
       performers: _performers,
-      authors: _authors
-    });
+      authors: _authors,
+      _modified: Date.now()
+    };
+    await StorageLocal.set(KanbanConstants.STORAGE_KEY, data);
+
+    if (_driveSyncing) return;
+    try {
+      _driveSyncing = true;
+      await SyncProvider.upload(data);
+    } catch (e) {
+      console.warn('[KanbanBoard] Sync save failed:', e);
+    } finally {
+      _driveSyncing = false;
+    }
   }
 
   function getColumns() {

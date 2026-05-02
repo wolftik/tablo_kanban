@@ -3,6 +3,9 @@
 moduleGuard('I18n');
 moduleGuard('StorageLocal');
 moduleGuard('KanbanConstants');
+moduleGuard('DriveSync');
+moduleGuard('YadiskSync');
+moduleGuard('SyncProvider');
 
 document.addEventListener('DOMContentLoaded', async () => {
   await I18n.init();
@@ -316,6 +319,130 @@ document.addEventListener('DOMContentLoaded', async () => {
       $weatherUnit.value = settings.widgets?.weatherUnit || 'metric';
     }
   }
+
+  // ===== Sync tab =====
+  (async function _initSyncTab() {
+    const statusText = document.getElementById('sync-status-text');
+    const signInBtn = document.getElementById('sync-sign-in');
+    const signOutBtn = document.getElementById('sync-sign-out');
+    const providerSelect = document.getElementById('sync-provider-select');
+    const providerDesc = document.getElementById('sync-provider-desc');
+    const tokenSection = document.getElementById('yadisk-token-section');
+    const tokenInput = document.getElementById('yadisk-token-input');
+    const tokenApply = document.getElementById('yadisk-token-apply');
+    const tokenClear = document.getElementById('yadisk-token-clear');
+
+    async function _currentProvider() {
+      const p = await SyncProvider.getProvider();
+      return p.name;
+    }
+
+    function _updateUIForProvider(providerName) {
+      const descKey = providerName === 'yandex_disk' ? 'options.sync.desc.yandex' : 'options.sync.desc.google';
+      providerDesc.textContent = I18n.t(descKey);
+      providerDesc.dataset.i18n = descKey;
+      tokenSection.style.display = providerName === 'yandex_disk' ? 'block' : 'none';
+    }
+
+    async function _updateSyncUI() {
+      try {
+        const providerName = await _currentProvider();
+        providerSelect.value = providerName;
+        _updateUIForProvider(providerName);
+
+        if (providerName === 'yandex_disk') {
+          const hasToken = await YadiskSync.isSignedIn();
+          if (hasToken) {
+            statusText.textContent = I18n.t('options.sync.connected');
+            statusText.className = 'sync-status-connected';
+            signInBtn.style.display = 'none';
+            signOutBtn.style.display = '';
+            tokenInput.style.display = 'none';
+            tokenApply.style.display = 'none';
+            tokenClear.style.display = '';
+          } else {
+            statusText.textContent = I18n.t('options.sync.disconnected');
+            statusText.className = 'sync-status-disconnected';
+            signInBtn.style.display = 'none';
+            signOutBtn.style.display = 'none';
+            tokenInput.style.display = '';
+            tokenApply.style.display = '';
+            tokenClear.style.display = 'none';
+          }
+        } else {
+          const signedIn = await DriveSync.isSignedIn();
+          if (signedIn) {
+            statusText.textContent = I18n.t('options.sync.connected');
+            statusText.className = 'sync-status-connected';
+            signInBtn.style.display = 'none';
+            signOutBtn.style.display = '';
+          } else {
+            statusText.textContent = I18n.t('options.sync.disconnected');
+            statusText.className = 'sync-status-disconnected';
+            signInBtn.style.display = '';
+            signOutBtn.style.display = 'none';
+          }
+        }
+      } catch {
+        statusText.textContent = I18n.t('options.sync.error');
+        statusText.className = 'sync-status-error';
+        signInBtn.style.display = '';
+        signOutBtn.style.display = 'none';
+      }
+    }
+
+    await _updateSyncUI();
+
+    providerSelect.addEventListener('change', async () => {
+      const newProvider = providerSelect.value;
+      await SyncProvider.setProvider(newProvider);
+      await _updateSyncUI();
+    });
+
+    signInBtn.addEventListener('click', async () => {
+      try {
+        await SyncProvider.signIn();
+        const kanbanData = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
+        if (kanbanData.columns) {
+          kanbanData._modified = Date.now();
+          await SyncProvider.upload(kanbanData);
+        }
+        await _updateSyncUI();
+      } catch (e) {
+        statusText.textContent = I18n.t('options.sync.failed');
+        statusText.className = 'sync-status-error';
+      }
+    });
+
+    signOutBtn.addEventListener('click', async () => {
+      await SyncProvider.signOut();
+      await _updateSyncUI();
+    });
+
+    tokenApply.addEventListener('click', async () => {
+      const token = tokenInput.value.trim();
+      if (!token) return;
+      try {
+        await YadiskSync.setToken(token);
+        await SyncProvider.setProvider('yandex_disk');
+        const kanbanData = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
+        if (kanbanData.columns) {
+          kanbanData._modified = Date.now();
+          await YadiskSync.upload(kanbanData);
+        }
+        tokenInput.value = '';
+        await _updateSyncUI();
+      } catch (e) {
+        statusText.textContent = I18n.t('options.sync.failed');
+        statusText.className = 'sync-status-error';
+      }
+    });
+
+    tokenClear.addEventListener('click', async () => {
+      await YadiskSync.removeToken();
+      await _updateSyncUI();
+    });
+  })();
 
   // ===== Save =====
   const $saveBtn = document.getElementById('save-options');

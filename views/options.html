@@ -18,6 +18,7 @@
       <button class="tab-btn" data-tab="performers" data-i18n="options.tab.performers">Исполнители</button>
       <button class="tab-btn" data-tab="authors" data-i18n="options.tab.authors">Авторы</button>
       <button class="tab-btn" data-tab="appearance" data-i18n="options.tab.appearance">Настройки</button>
+      <button class="tab-btn" data-tab="sync" data-i18n="options.tab.sync">Синхронизация</button>
       <button class="tab-btn" data-tab="about" data-i18n="options.tab.about">О расширении</button>
     </nav>
 
@@ -111,6 +112,71 @@
 
       </div>
 
+      <!-- Sync Tab -->
+      <div id="tab-sync" class="tab-content">
+        <div class="setting-group">
+          <h3 data-i18n="options.sync.title">Синхронизация</h3>
+
+          <label class="sync-provider-label" data-i18n="options.sync.provider">Провайдер синхронизации:</label>
+          <select id="sync-provider-select" class="sync-provider-select">
+            <option value="google_drive" data-i18n="options.sync.provider.google">Google Drive</option>
+            <option value="yandex_disk" data-i18n="options.sync.provider.yandex">Яндекс.Диск</option>
+          </select>
+
+          <div id="sync-provider-info" class="sync-provider-info">
+            <p id="sync-provider-desc" data-i18n="options.sync.desc.google">Данные канбан-доски будут синхронизироваться между устройствами через ваш Google Drive.</p>
+          </div>
+
+          <div id="sync-status" class="sync-status">
+            <span id="sync-status-text" data-i18n="options.sync.checking">Проверка статуса...</span>
+          </div>
+          <div class="sync-actions">
+            <button id="sync-sign-in" class="btn-primary" style="display:none" data-i18n="options.sync.signin">Подключить</button>
+            <button id="sync-sign-out" class="btn-secondary" style="display:none" data-i18n="options.sync.signout">Отключить синхронизацию</button>
+          </div>
+
+          <div id="yadisk-token-section" class="yadisk-token-section" style="display:none">
+            <p>
+              <span data-i18n="options.sync.yadisk.hint">Для подключения Яндекс.Диска необходимо получить OAuth-токен:</span><br>
+              1. Перейдите на <a href="https://oauth.yandex.ru" target="_blank" rel="noopener">oauth.yandex.ru</a><br>
+              2. Создайте приложение и получите токен с правами <code>cloud_api:disk.write</code> и <code>cloud_api:disk.read</code><br>
+              3. <span data-i18n="options.sync.yadisk.paste">Вставьте токен в поле ниже</span>
+            </p>
+            <div class="yadisk-token-input-wrap">
+              <input type="password" id="yadisk-token-input" class="yadisk-token-input" placeholder="Введите OAuth-токен...">
+              <button id="yadisk-token-apply" class="btn-primary" data-i18n="options.sync.yadisk.apply">Сохранить токен</button>
+            </div>
+            <button id="yadisk-token-clear" class="btn-secondary" style="display:none" data-i18n="options.sync.yadisk.clear">Очистить токен</button>
+          </div>
+            <hr class="sync-section-divider">
+            <h3 data-i18n="options.support.title">Поддержать проект</h3>
+            <p data-i18n="options.support.desc">Если расширение вам полезно, вы можете поддержать его развитие:</p>
+            <div class="donate-buttons">
+              <a href="https://www.tinkoff.ru/rm/r_puImGsHvgn.CFkhtsUvVy/yJeVo62164" class="donate-btn" target="_blank" rel="noopener">
+                <span class="donate-icon">💳</span>
+                <span class="donate-label">Т-Банк</span>
+                <span class="donate-hint">Перевод по ссылке</span>
+              </a>
+              <a href="https://yoomoney.ru/to/4100119525267885" class="donate-btn" target="_blank" rel="noopener">
+                <span class="donate-icon">💳</span> 
+                <span class="donate-label">Юмани</span>
+                <span class="donate-hint">Перевод по ссылке</span>
+              </a>
+              <a href="https://donate.webmoney.com/w/kNt7extCOKfkzklt83ipld" class="donate-btn" target="_blank" rel="noopener">
+                <span class="donate-icon">🌐</span>
+                <span class="donate-label">WebMoney</span>
+                <span class="donate-hint">Donate через WM</span>
+              </a>
+            </div>
+            <hr class="sync-section-divider">
+            <h3 data-i18n="app.name">Tablo Kanban</h3>
+            <p data-i18n="options.about.version">Версия 1.0.0</p>
+            <p data-i18n="options.about.desc">Панель закладок и канбан-доска для новой вкладки Chrome.</p>
+            <p data-i18n="options.about.storage">Настройки хранятся в <strong>chrome.storage.sync</strong> (синхронизация между устройствами), данные доски — в <strong>chrome.storage.local</strong>.</p>
+
+        </div>
+      </div>
+
       <!-- About Tab -->
       <div id="tab-about" class="tab-content">
         <div class="setting-group">
@@ -152,6 +218,9 @@
   <script defer src="../js/utils.js"></script>
   <script defer src="../js/storage-sync.js"></script>
   <script defer src="../js/storage-local.js"></script>
+  <script defer src="../js/drive-sync.js"></script>
+  <script defer src="../js/yadisk-sync.js"></script>
+  <script defer src="../js/sync-provider.js"></script>
   <script defer src="../js/kanban-constants.js"></script>
   <script defer src="../js/options.js"></script>
 </body>
