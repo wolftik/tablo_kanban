@@ -364,13 +364,24 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (providerName === 'yandex_disk') {
           const hasToken = await YadiskSync.isSignedIn();
           if (hasToken) {
-            statusText.textContent = I18n.t('options.sync.connected');
-            statusText.className = 'sync-status-connected';
-            signInBtn.style.display = 'none';
-            signOutBtn.style.display = '';
-            tokenInput.style.display = 'none';
-            tokenApply.style.display = 'none';
-            tokenClear.style.display = '';
+            const result = await YadiskSync.verifyToken();
+            if (result.valid) {
+              statusText.textContent = I18n.t('options.sync.connected');
+              statusText.className = 'sync-status-connected';
+              signInBtn.style.display = 'none';
+              signOutBtn.style.display = '';
+              tokenInput.style.display = 'none';
+              tokenApply.style.display = 'none';
+              tokenClear.style.display = '';
+            } else {
+              statusText.textContent = I18n.t('options.sync.token.expired');
+              statusText.className = 'sync-status-error';
+              signInBtn.style.display = 'none';
+              signOutBtn.style.display = '';
+              tokenInput.style.display = '';
+              tokenApply.style.display = '';
+              tokenClear.style.display = '';
+            }
           } else {
             statusText.textContent = I18n.t('options.sync.disconnected');
             statusText.className = 'sync-status-disconnected';

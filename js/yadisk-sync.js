@@ -55,6 +55,23 @@ const YadiskSync = (() => {
     }
   }
 
+  function _isAuthError(err) {
+    return err && (err.message && (err.message.includes('401') || err.message.includes('Unauthorized')));
+  }
+
+  async function verifyToken() {
+    try {
+      await _getToken();
+      await _request(BASE_URL + '/resources?path=app:/tablo_kanban/' + FILE_NAME + '&fields=modified');
+      return { valid: true };
+    } catch (err) {
+      if (_isAuthError(err)) {
+        return { valid: false, reason: 'token_expired' };
+      }
+      return { valid: false, reason: 'network_error' };
+    }
+  }
+
   async function signOut() {
     await removeToken();
   }
@@ -113,5 +130,5 @@ const YadiskSync = (() => {
     }
   }
 
-  return { isSignedIn, signOut, upload, download, getLastModified, setToken, removeToken };
+  return { isSignedIn, signOut, upload, download, getLastModified, setToken, removeToken, verifyToken };
 })();
