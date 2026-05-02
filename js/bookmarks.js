@@ -51,9 +51,16 @@ const BookmarksManager = (() => {
     return BOOKMARK_GRID_COLUMNS;
   }
 
+  let _dragDropInitialized = false;
+
   async function render() {
     const container = document.getElementById('bookmarks-container');
     if (!container) return;
+
+    if (!_dragDropInitialized) {
+      _initDragDrop(container);
+      _dragDropInitialized = true;
+    }
 
     await loadDisplayedBookmarks();
 
@@ -158,7 +165,7 @@ const BookmarksManager = (() => {
           e.stopPropagation();
           BookmarksContextMenu.show(e.clientX, e.clientY, bm, container, {
             onEdit: _openEditModal,
-            onDelete: async (bookmark, ctx) => {
+            onDelete: async (bookmark) => {
               await removeDisplayedBookmark(bookmark.id);
               render();
             }
@@ -195,8 +202,63 @@ const BookmarksManager = (() => {
 
       container.appendChild(slot);
     }
+  }
 
-    _bindBookmarkDragDrop(container);
+  function _initDragDrop(container) {
+    let sourceIndex = null;
+
+    container.addEventListener('dragstart', (e) => {
+      const slot = e.target.closest('.bookmark-slot');
+      if (!slot) return;
+      sourceIndex = parseInt(slot.dataset.slotIndex);
+      slot.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', String(sourceIndex));
+    });
+
+    container.addEventListener('dragend', () => {
+      sourceIndex = null;
+      container.querySelectorAll('.bookmark-slot.dragging').forEach(el => el.classList.remove('dragging'));
+      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
+    });
+
+    container.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+
+      const targetSlot = _getSlotFromCoordinates(container, e.clientX, e.clientY);
+      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
+      if (targetSlot !== null) {
+        const slotEl = container.children[targetSlot];
+        if (slotEl) slotEl.classList.add('drag-over');
+      }
+    });
+
+    container.addEventListener('dragleave', (e) => {
+      if (!container.contains(e.relatedTarget)) {
+        container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
+      }
+    });
+
+    container.addEventListener('drop', async (e) => {
+      e.preventDefault();
+      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+      if (sourceIndex === null) return;
+
+      const targetSlot = _getSlotFromCoordinates(container, e.clientX, e.clientY);
+      if (targetSlot === null || targetSlot === sourceIndex) return;
+
+      const dragged = _displayedBookmarks[sourceIndex];
+      const target = _displayedBookmarks[targetSlot];
+
+      _displayedBookmarks[sourceIndex] = target || null;
+      _displayedBookmarks[targetSlot] = dragged || null;
+
+      await saveDisplayedBookmarks(_displayedBookmarks);
+      sourceIndex = null;
+      _renderBookmarks(container, _displayedBookmarks);
+    });
   }
 
   function _openUrl(url) {
@@ -263,82 +325,39 @@ const BookmarksManager = (() => {
     modal.style.display = 'flex';
   }
 
-  function _bindBookmarkDragDrop(container) {
-    let dragSourceIndex = null;
-
-    container.addEventListener('dragstart', (e) => {
-      const slot = e.target.closest('.bookmark-slot');
-      if (!slot) return;
-      dragSourceIndex = parseInt(slot.dataset.slotIndex);
-      slot.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', String(dragSourceIndex));
-    });
-
-    container.addEventListener('dragend', () => {
-      dragSourceIndex = null;
-      container.querySelectorAll('.bookmark-slot.dragging').forEach(el => el.classList.remove('dragging'));
-      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
-    });
-
-    container.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-
-      const targetSlot = _getSlotFromCoordinates(container, e.clientX, e.clientY);
-      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
-      if (targetSlot !== null) {
-        const slotEl = container.children[targetSlot];
-        if (slotEl) slotEl.classList.add('drag-over');
-      }
-    });
-
-    container.addEventListener('dragleave', (e) => {
-      if (!container.contains(e.relatedTarget)) {
-        container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
-      }
-    });
-
-    container.addEventListener('drop', async (e) => {
-      e.preventDefault();
-      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
-
-      if (dragSourceIndex === null) return;
-
-      const targetSlot = _getSlotFromCoordinates(container, e.clientX, e.clientY);
-      if (targetSlot === null || targetSlot === dragSourceIndex) return;
-
-      const dragged = _displayedBookmarks[dragSourceIndex];
-      const target = _displayedBookmarks[targetSlot];
-
-      _displayedBookmarks[dragSourceIndex] = target || null;
-      _displayedBookmarks[targetSlot] = dragged || null;
-
-      await saveDisplayedBookmarks(_displayedBookmarks);
-      dragSourceIndex = null;
-      _renderBookmarks(container, _displayedBookmarks);
-    });
-  }
-
   function _getSlotFromCoordinates(container, x, y) {
     const children = Array.from(container.children);
     if (children.length === 0) return 0;
 
-    let closestSlot = null;
-    let minDistance = Infinity;
+    const cols = BOOKMARK_GRID_COLUMNS;
 
+    let row = 0;
+    let minRowDist = Infinity;
     for (let i = 0; i < children.length; i++) {
       const rect = children[i].getBoundingClientRect();
-      const centerX = rect.left + rect.width / 2;
-      const centerY = rect.top + rect.height / 2;
-      const distance = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
-      if (distance < minDistance) {
-        minDistance = distance;
-        closestSlot = parseInt(children[i].dataset.slotIndex);
+      const dist = Math.abs(y - (rect.top + rect.height / 2));
+      if (dist < minRowDist) {
+        minRowDist = dist;
+        row = Math.floor(i / cols);
       }
     }
 
-    return closestSlot;
+    const rowStart = row * cols;
+    const rowEnd = Math.min(rowStart + cols, children.length);
+
+    let col = 0;
+    let minColDist = Infinity;
+    for (let i = rowStart; i < rowEnd; i++) {
+      const rect = children[i].getBoundingClientRect();
+      const dist = Math.abs(x - (rect.left + rect.width / 2));
+      if (dist < minColDist) {
+        minColDist = dist;
+        col = i - rowStart;
+      }
+    }
+
+    const targetIndex = row * cols + col;
+    return targetIndex < children.length ? parseInt(children[targetIndex].dataset.slotIndex) : null;
   }
 
   return {
