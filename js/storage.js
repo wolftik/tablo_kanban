@@ -96,6 +96,7 @@ const Storage = {
       visibleBookmarks: [],
       performers: this.getDefaultPerformers(),
       tags: this.getDefaultTags(),
+      authors: [],
       kanbanFilter: {},
       columns: this.getDefaultColumns(),
     };

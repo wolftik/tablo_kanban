@@ -31,7 +31,7 @@ function getCardDragAfterElement(container, y) {
 }
 
 function getBookmarkDragAfterElement(container, y) {
-  const items = [...container.querySelectorAll('.bookmark-item:not(.dragging)')];
+  const items = [...container.querySelectorAll('.bookmark-slot:not(.dragging)')];
   if (items.length === 0) return null;
   return items.reduce((closest, child) => {
     const box = child.getBoundingClientRect();

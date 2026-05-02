@@ -276,11 +276,6 @@ header h1 {
   background: var(--primary-hover);
 }
 
-#add-column-option {
-  width: 100%;
-  margin-top: 8px;
-}
-
 footer {
   margin-top: 24px;
   padding-top: 16px;

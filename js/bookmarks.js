@@ -84,7 +84,6 @@ const BookmarksManager = {
   renderBookmarks(container, bookmarks) {
     container.innerHTML = '';
 
-    // Создаём карту позиций: индекс слота -> закладка
     const bookmarkMap = new Map();
     for (let i = 0; i < bookmarks.length; i++) {
       if (bookmarks[i] !== null && bookmarks[i] !== undefined) {
@@ -93,15 +92,15 @@ const BookmarksManager = {
     }
 
     for (let i = 0; i < BOOKMARK_SLOTS; i++) {
+      const slot = document.createElement('div');
+      slot.className = 'bookmark-slot';
+      slot.draggable = true;
+      slot.dataset.slotIndex = i;
+
       if (bookmarkMap.has(i)) {
         const bm = bookmarkMap.get(i);
-        const a = document.createElement('a');
-        a.className = 'bookmark-item';
-        a.draggable = true;
-        a.dataset.bookmarkId = bm.id;
-        a.href = bm.url;
-        a.target = '_blank';
-        a.rel = 'noopener noreferrer';
+        slot.classList.add('filled');
+        slot.dataset.bookmarkId = bm.id;
 
         const favicon = document.createElement('img');
         favicon.className = 'favicon';
@@ -129,31 +128,35 @@ const BookmarksManager = {
           this.showContextMenu(e.clientX, e.clientY, bm, container);
         });
 
-        a.appendChild(favicon);
-        a.appendChild(titleEl);
-        a.appendChild(menuBtn);
-        container.appendChild(a);
+        slot.addEventListener('click', (e) => {
+          if (e.target.closest('.bookmark-menu-btn')) return;
+          window.open(bm.url, '_blank', 'noopener,noreferrer');
+        });
+
+        slot.appendChild(favicon);
+        slot.appendChild(titleEl);
+        slot.appendChild(menuBtn);
       } else {
-        const placeholder = document.createElement('div');
-        placeholder.className = 'bookmark-placeholder';
-        placeholder.dataset.index = i;
-        placeholder.innerHTML = `
+        slot.classList.add('empty');
+        slot.innerHTML = `
           <span class="placeholder-icon">⁂</span>
-          <span>Добавить сайт</span>
+          <span class="placeholder-text">Добавить сайт</span>
         `;
-        placeholder.addEventListener('click', () => {
+        slot.addEventListener('click', (e) => {
+          if (e.target.closest('.bookmark-menu-btn')) return;
           const modal = document.getElementById('add-bookmark-modal');
           const urlInput = document.getElementById('bookmark-url');
           if (modal && urlInput) {
-            container.querySelectorAll('.bookmark-placeholder.active').forEach(p => p.classList.remove('active'));
-            placeholder.classList.add('active');
-            modal.dataset.targetIndex = placeholder.dataset.index;
+            container.querySelectorAll('.bookmark-slot.empty.active').forEach(p => p.classList.remove('active'));
+            slot.classList.add('active');
+            modal.dataset.targetIndex = i;
             modal.style.display = 'flex';
             urlInput.focus();
           }
         });
-        container.appendChild(placeholder);
       }
+
+      container.appendChild(slot);
     }
 
     this._bindBookmarkDragDrop(container);
@@ -281,19 +284,21 @@ const BookmarksManager = {
   },
 
   _bindBookmarkDragDrop(container) {
-    const bookmarkItems = container.querySelectorAll('.bookmark-item');
+    let dragSourceIndex = null;
 
-    bookmarkItems.forEach(item => {
-      item.addEventListener('dragstart', (e) => {
-        item.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/plain', item.dataset.bookmarkId);
-      });
+    container.addEventListener('dragstart', (e) => {
+      const slot = e.target.closest('.bookmark-slot');
+      if (!slot) return;
+      dragSourceIndex = parseInt(slot.dataset.slotIndex);
+      slot.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', String(dragSourceIndex));
+    });
 
-      item.addEventListener('dragend', () => {
-        item.classList.remove('dragging');
-        container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-      });
+    container.addEventListener('dragend', () => {
+      dragSourceIndex = null;
+      container.querySelectorAll('.bookmark-slot.dragging').forEach(el => el.classList.remove('dragging'));
+      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
     });
 
     container.addEventListener('dragover', (e) => {
@@ -301,8 +306,8 @@ const BookmarksManager = {
       e.dataTransfer.dropEffect = 'move';
 
       const targetSlot = this._getSlotFromCoordinates(container, e.clientX, e.clientY);
-      
-      container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
       if (targetSlot !== null) {
         const slotEl = container.children[targetSlot];
         if (slotEl) {
@@ -313,46 +318,28 @@ const BookmarksManager = {
 
     container.addEventListener('dragleave', (e) => {
       if (!container.contains(e.relatedTarget)) {
-        container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+        container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
       }
     });
 
     container.addEventListener('drop', async (e) => {
       e.preventDefault();
-      const dragging = container.querySelector('.bookmark-item.dragging');
-      if (!dragging) return;
+      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
+
+      if (dragSourceIndex === null) return;
 
       const targetSlot = this._getSlotFromCoordinates(container, e.clientX, e.clientY);
+      if (targetSlot === null || targetSlot === dragSourceIndex) return;
 
-      if (targetSlot === null) {
-        container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
-        return;
-      }
+      const dragged = this._displayedBookmarks[dragSourceIndex];
+      const target = this._displayedBookmarks[targetSlot];
 
-      const targetEl = container.children[targetSlot];
-      
-      if (targetEl && targetEl !== dragging) {
-        container.insertBefore(dragging, targetEl);
-      } else if (!targetEl) {
-        container.appendChild(dragging);
-      }
+      this._displayedBookmarks[dragSourceIndex] = target || null;
+      this._displayedBookmarks[targetSlot] = dragged || null;
 
-      const items = container.querySelectorAll('.bookmark-item');
-      const sparseArray = new Array(BOOKMARK_SLOTS).fill(null);
-      
-      items.forEach((item, index) => {
-        sparseArray[index] = {
-          id: item.dataset.bookmarkId,
-          url: item.href,
-          title: item.querySelector('.bookmark-title').textContent
-        };
-      });
-
-      await this.saveDisplayedBookmarks(sparseArray);
-      this._displayedBookmarks = sparseArray;
+      await this.saveDisplayedBookmarks(this._displayedBookmarks);
+      dragSourceIndex = null;
       this.renderBookmarks(container, this._displayedBookmarks);
-      
-      container.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
     });
   },
 
@@ -372,7 +359,7 @@ const BookmarksManager = {
       
       if (distance < minDistance) {
         minDistance = distance;
-        closestSlot = i;
+        closestSlot = parseInt(children[i].dataset.slotIndex);
       }
     }
     

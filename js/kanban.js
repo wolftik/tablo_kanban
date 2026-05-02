@@ -23,6 +23,13 @@ const KanbanBoard = {
     const settings = await Storage.get('settings') || Storage.getDefaultSettings();
     settings.columns = this._columns;
     settings.kanbanFilter = this._filterState;
+    settings.theme = this._settings?.theme || settings.theme;
+    settings.cardSize = this._settings?.cardSize || settings.cardSize;
+    settings.tags = this._settings?.tags || settings.tags;
+    settings.performers = this._settings?.performers || settings.performers;
+    settings.authors = this._settings?.authors || settings.authors;
+    settings.visibleBookmarks = this._settings?.visibleBookmarks || settings.visibleBookmarks;
+    settings.showFavicon = this._settings?.showFavicon !== undefined ? this._settings.showFavicon : settings.showFavicon;
     await Storage.set('settings', settings);
     this._settings = settings;
   },
@@ -40,7 +47,8 @@ const KanbanBoard = {
         const search = f.search.toLowerCase();
         if (!card.title.toLowerCase().includes(search) &&
             !(card.description || '').toLowerCase().includes(search) &&
-            !(card.assignee || '').toLowerCase().includes(search)) {
+            !(card.assignee || '').toLowerCase().includes(search) &&
+            !(card.author || '').toLowerCase().includes(search)) {
           return false;
         }
       }
@@ -225,7 +233,8 @@ const KanbanBoard = {
       const initial = card.assignee.charAt(0).toUpperCase();
       const avatar = document.createElement('span');
       avatar.className = 'assignee-avatar';
-      avatar.style.background = this._hashToColor(card.assignee);
+      const performer = (this._settings?.performers || []).find(p => p.name === card.assignee);
+      avatar.style.background = performer ? performer.color : this._hashToColor(card.assignee);
       avatar.textContent = initial;
       avatar.title = card.assignee;
       assigneeEl.appendChild(avatar);
@@ -638,12 +647,13 @@ const KanbanBoard = {
   },
 
   _openNewCardModal(columnId) {
-    this._editingCard = { title: '', description: '', priority: '', columnId: columnId, assignee: '', tags: [] };
+    this._editingCard = { title: '', description: '', priority: '', columnId: columnId, assignee: '', author: '', tags: [] };
     this._editingColumnId = columnId;
     document.getElementById('modal-title').textContent = 'Новая задача';
     document.getElementById('card-title-input').value = '';
     document.getElementById('card-desc-input').value = '';
     this._populateAssigneeSelect('');
+    this._populateAuthorSelect('');
     document.getElementById('card-priority-select').value = '';
     document.getElementById('card-delete-btn').style.display = 'none';
     this._populateTagSelector([]);
@@ -660,6 +670,7 @@ const KanbanBoard = {
     document.getElementById('card-title-input').value = card.title || '';
     document.getElementById('card-desc-input').value = card.description || '';
     this._populateAssigneeSelect(card.assignee || '');
+    this._populateAuthorSelect(card.author || '');
     document.getElementById('card-priority-select').value = card.priority || '';
     document.getElementById('card-delete-btn').style.display = 'inline-block';
     this._populateTagSelector(card.tags || []);
@@ -780,6 +791,20 @@ const KanbanBoard = {
     }
   },
 
+  _populateAuthorSelect(selectedValue) {
+    const select = document.getElementById('card-author-select');
+    if (!select) return;
+    select.innerHTML = '<option value="">Не указан</option>';
+    const authors = this._settings?.authors || [];
+    for (const author of authors) {
+      const opt = document.createElement('option');
+      opt.value = author.name;
+      opt.textContent = author.name;
+      if (author.name === selectedValue) opt.selected = true;
+      select.appendChild(opt);
+    }
+  },
+
   _saveCard() {
     const title = document.getElementById('card-title-input').value.trim();
     if (!title) return;
@@ -787,6 +812,7 @@ const KanbanBoard = {
     const description = document.getElementById('card-desc-input').value.trim();
     const priority = document.getElementById('card-priority-select').value;
     const assignee = document.getElementById('card-assignee-select').value;
+    const author = document.getElementById('card-author-select').value;
 
     const selectedTags = Array.from(document.querySelectorAll('.card-tag-option input[type="checkbox"]:checked')).map(cb => cb.value);
 
@@ -799,6 +825,7 @@ const KanbanBoard = {
           card.description = description;
           card.priority = priority;
           card.assignee = assignee;
+          card.author = author;
           card.tags = selectedTags;
           card.updatedAt = Date.now();
         }
@@ -812,6 +839,7 @@ const KanbanBoard = {
           description: description,
           priority: priority,
           assignee: assignee,
+          author: author,
           tags: selectedTags,
           order: col.cards.length,
           createdAt: Date.now(),
@@ -1025,254 +1053,4 @@ const KanbanBoard = {
     });
   },
 
-  async _openManagePerformersModal() {
-    const modal = document.getElementById('manage-performers-modal');
-    if (!modal) return;
-    modal.style.display = 'flex';
-    this._renderPerformersList();
-  },
-
-  _renderPerformersList() {
-    const list = document.getElementById('performers-list');
-    if (!list) return;
-    list.innerHTML = '';
-    const performers = this._settings?.performers || [];
-    for (const performer of performers) {
-      const item = document.createElement('div');
-      item.className = 'performer-item';
-      item.dataset.id = performer.id;
-      item.innerHTML = `
-        <span class="performer-color-dot" style="background:${performer.color}"></span>
-        <span class="performer-name">${performer.name}</span>
-        <button class="performer-edit" title="Редактировать">&#9998;</button>
-        <button class="performer-delete" title="Удалить">&#10005;</button>
-      `;
-      const editBtn = item.querySelector('.performer-edit');
-      editBtn.addEventListener('click', () => this._editPerformer(performer));
-      const deleteBtn = item.querySelector('.performer-delete');
-      deleteBtn.addEventListener('click', () => this._deletePerformer(performer.id));
-      list.appendChild(item);
-    }
-  },
-
-  async _editPerformer(performer) {
-    const newName = prompt('Имя исполнителя:', performer.name);
-    if (!newName || newName.trim() === '') return;
-    const newColor = prompt('Цвет (hex):', performer.color);
-    if (!newColor) return;
-    const performers = this._settings?.performers || [];
-    const p = performers.find(x => x.id === performer.id);
-    if (p) {
-      p.name = newName.trim();
-      p.color = newColor.trim();
-    }
-    await this._savePerformers();
-  },
-
-  async _deletePerformer(id) {
-    const performers = this._settings?.performers || [];
-    const performer = performers.find(x => x.id === id);
-    if (!performer) return;
-    const allCards = this._columns.flatMap(col => col.cards || []);
-    const usedByCards = allCards.filter(c => c.assignee === performer.name);
-    if (usedByCards.length > 0) {
-      if (!confirm(`Исполнитель "${performer.name}" используется в ${usedByCards.length} задачах.\nВсе ссылки будут удалены. Продолжить?`)) return;
-    }
-    this._settings.performers = performers.filter(x => x.id !== id);
-    for (const card of usedByCards) {
-      card.assignee = '';
-    }
-    await this._savePerformers();
-  },
-
-  async _addPerformer() {
-    const nameInput = document.getElementById('performer-name-input');
-    const colorInput = document.getElementById('performer-color-input');
-    if (!nameInput || !colorInput) return;
-    const name = nameInput.value.trim();
-    if (!name) return;
-    const color = colorInput.value;
-    if (!this._settings.performers) this._settings.performers = [];
-    this._settings.performers.push({
-      id: Storage.generateId(),
-      name: name,
-      color: color
-    });
-    nameInput.value = '';
-    await this._savePerformers();
-  },
-
-  async _savePerformers() {
-    await Storage.set('settings', this._settings);
-    this._renderPerformersList();
-    this._updateFilterDropdowns();
-    this._renderBoard();
-  },
-
-  async _openManageTagsModal() {
-    const modal = document.getElementById('manage-tags-modal');
-    if (!modal) return;
-    modal.style.display = 'flex';
-    this._renderTagsList();
-  },
-
-  _renderTagsList() {
-    const list = document.getElementById('manage-tags-list');
-    if (!list) return;
-    list.innerHTML = '';
-    const tags = this._settings?.tags || [];
-    for (const tag of tags) {
-      const item = document.createElement('div');
-      item.className = 'manage-tag-item';
-      item.dataset.id = tag.id;
-      item.dataset.editing = 'false';
-      item.innerHTML = `
-        <span class="tag-color-dot" style="background:${tag.color}"></span>
-        <span class="tag-name" title="Нажмите для редактирования">${tag.name}</span>
-        <input type="color" class="tag-color-picker" value="${tag.color}" title="Цвет">
-        <button class="tag-delete" title="Удалить">&#10005;</button>
-      `;
-      const colorPicker = item.querySelector('.tag-color-picker');
-      colorPicker.addEventListener('input', (e) => {
-        e.stopPropagation();
-        const dot = item.querySelector('.tag-color-dot');
-        dot.style.background = e.target.value;
-      });
-      colorPicker.addEventListener('change', (e) => {
-        e.stopPropagation();
-        tag.color = e.target.value;
-        this._saveTags();
-      });
-      const deleteBtn = item.querySelector('.tag-delete');
-      deleteBtn.addEventListener('click', () => this._deleteTag(tag.id));
-      const nameSpan = item.querySelector('.tag-name');
-      nameSpan.addEventListener('click', () => this._enterEditMode(item, tag));
-      list.appendChild(item);
-    }
-  },
-
-  _enterEditMode(item, tag) {
-    item.dataset.editing = 'true';
-    const nameSpan = item.querySelector('.tag-name');
-    const colorPicker = item.querySelector('.tag-color-picker');
-    nameSpan.style.display = 'none';
-    colorPicker.style.display = 'none';
-    let nameInput = item.querySelector('.tag-name-input');
-    if (!nameInput) {
-      nameInput = document.createElement('input');
-      nameInput.type = 'text';
-      nameInput.className = 'tag-name-input';
-      nameInput.maxLength = 22;
-      nameInput.value = tag.name;
-      item.insertBefore(nameInput, colorPicker);
-    }
-    nameInput.style.display = 'block';
-    nameInput.value = tag.name;
-    nameInput.focus();
-    nameInput.select();
-    const saveBtn = document.createElement('button');
-    saveBtn.className = 'tag-save';
-    saveBtn.title = 'Сохранить';
-    saveBtn.innerHTML = '&#10003;';
-    saveBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this._saveEdit(item, tag);
-    });
-    const cancelBtn = document.createElement('button');
-    cancelBtn.className = 'tag-cancel';
-    cancelBtn.title = 'Отмена';
-    cancelBtn.innerHTML = '&#9675;';
-    cancelBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      this._cancelEdit(item, tag);
-    });
-    let deleteBtn = item.querySelector('.tag-delete');
-    item.insertBefore(cancelBtn, deleteBtn);
-    item.insertBefore(saveBtn, cancelBtn);
-    nameInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        this._saveEdit(item, tag);
-      } else if (e.key === 'Escape') {
-        e.preventDefault();
-        this._cancelEdit(item, tag);
-      }
-    });
-    nameInput.addEventListener('blur', () => {
-      if (item.dataset.editing === 'true') {
-        const name = nameInput.value.trim();
-        if (name && name.length <= 22) {
-          tag.name = name;
-          tag.color = item.querySelector('.tag-color-picker').value;
-          this._saveTags();
-        } else {
-          this._cancelEdit(item, tag);
-        }
-      }
-    });
-  },
-
-  _saveEdit(item, tag) {
-    const nameInput = item.querySelector('.tag-name-input');
-    const name = nameInput.value.trim();
-    if (!name || name.length > 22) return;
-    tag.name = name;
-    tag.color = item.querySelector('.tag-color-picker').value;
-    this._saveTags();
-  },
-
-  _cancelEdit(item, tag) {
-    item.dataset.editing = 'false';
-    const nameSpan = item.querySelector('.tag-name');
-    const colorPicker = item.querySelector('.tag-color-picker');
-    const saveBtn = item.querySelector('.tag-save');
-    const cancelBtn = item.querySelector('.tag-cancel');
-    const nameInput = item.querySelector('.tag-name-input');
-    if (saveBtn) saveBtn.remove();
-    if (cancelBtn) cancelBtn.remove();
-    nameSpan.style.display = 'inline';
-    colorPicker.style.display = 'inline-block';
-    if (nameInput) nameInput.style.display = 'none';
-    nameSpan.textContent = tag.name;
-  },
-
-  async _deleteTag(id) {
-    const tags = this._settings?.tags || [];
-    const tag = tags.find(x => x.id === id);
-    if (!tag) return;
-    const allCards = this._columns.flatMap(col => col.cards || []);
-    const usedByCards = allCards.filter(c => c.tags && c.tags.includes(id));
-    if (usedByCards.length > 0) {
-      if (!confirm(`Тег "${tag.name}" используется в ${usedByCards.length} задачах.\nВсе ссылки будут удалены. Продолжить?`)) return;
-    }
-    this._settings.tags = tags.filter(x => x.id !== id);
-    for (const card of usedByCards) {
-      card.tags = (card.tags || []).filter(t => t !== id);
-    }
-    await this._saveTags();
-  },
-
-  async _addTag() {
-    const nameInput = document.getElementById('tag-name-input');
-    const colorInput = document.getElementById('tag-color-input');
-    if (!nameInput || !colorInput) return;
-    const name = nameInput.value.trim();
-    if (!name) return;
-    const color = colorInput.value;
-    if (!this._settings.tags) this._settings.tags = [];
-    this._settings.tags.push({
-      id: Storage.generateId(),
-      name: name,
-      color: color
-    });
-    nameInput.value = '';
-    await this._saveTags();
-  },
-
-  async _saveTags() {
-    await Storage.set('settings', this._settings);
-    this._renderTagsList();
-    this._updateFilterDropdowns();
-    this._renderBoard();
-  }
 };

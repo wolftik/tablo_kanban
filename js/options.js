@@ -1,41 +1,9 @@
 document.addEventListener('DOMContentLoaded', async () => {
   let settings = await Storage.get('settings') || Storage.getDefaultSettings();
-  let columns = settings.columns || Storage.getDefaultColumns();
   let tags = settings.tags || Storage.getDefaultTags();
-  let bookmarkFolders = [];
-
-  await loadChromeBookmarks();
-
+  let performers = settings.performers || Storage.getDefaultPerformers();
+  let authors = settings.authors || [];
   setupTabs();
-  renderColumnsList();
-  renderTagsList();
-  renderBookmarkFolders();
-  loadSettingsUI();
-
-  async function loadChromeBookmarks() {
-    return new Promise((resolve) => {
-      if (typeof chrome === 'undefined' || !chrome.bookmarks) {
-        resolve([]);
-        return;
-      }
-      chrome.bookmarks.getTree((result) => {
-        bookmarkFolders = flattenFolders(result, []);
-        resolve(bookmarkFolders);
-      });
-    });
-  }
-
-  function flattenFolders(nodes, result) {
-    for (const node of nodes) {
-      if (!node.url && node.title) {
-        result.push({ id: node.id, title: node.title || 'Без названия' });
-      }
-      if (node.children) {
-        flattenFolders(node.children, result);
-      }
-    }
-    return result;
-  }
 
   function setupTabs() {
     const tabs = document.querySelectorAll('.tab-btn');
@@ -50,64 +18,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         document.getElementById('tab-' + tabId).classList.add('active');
       });
     });
-  }
-
-  function renderColumnsList() {
-    const list = document.getElementById('columns-list');
-    if (!list) return;
-
-    list.innerHTML = '';
-
-    const sorted = [...columns].sort((a, b) => (a.order || 0) - (b.order || 0));
-
-    sorted.forEach((col, index) => {
-      const item = document.createElement('div');
-      item.className = 'column-option-item';
-      item.draggable = true;
-      item.dataset.columnId = col.id;
-
-      const dragHandle = document.createElement('span');
-      dragHandle.className = 'col-drag-handle';
-      dragHandle.textContent = '\u2630';
-
-      const color = document.createElement('input');
-      color.type = 'color';
-      color.value = col.color || '#6366f1';
-      color.className = 'col-color';
-
-      const name = document.createElement('input');
-      name.type = 'text';
-      name.value = col.title;
-      name.className = 'col-name';
-
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'col-delete-btn';
-      deleteBtn.innerHTML = '&times;';
-      deleteBtn.addEventListener('click', () => {
-        if (columns.length <= 1) return;
-        columns = columns.filter(c => c.id !== col.id);
-        renderColumnsList();
-      });
-
-      item.appendChild(dragHandle);
-      item.appendChild(color);
-      item.appendChild(name);
-      item.appendChild(deleteBtn);
-      list.appendChild(item);
-
-      const updateColumn = () => {
-        const found = columns.find(c => c.id === col.id);
-        if (found) {
-          found.title = name.value;
-          found.color = color.value;
-        }
-      };
-
-      name.addEventListener('blur', updateColumn);
-      color.addEventListener('input', updateColumn);
-    });
-
-    setupColumnReorder(list);
   }
 
   function renderTagsList() {
@@ -166,97 +76,116 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderTagsList();
   });
 
-  function setupColumnReorder(list) {
-    let draggedItem = null;
-
-    list.addEventListener('dragstart', (e) => {
-      const item = e.target.closest('.column-option-item');
-      if (!item) return;
-      draggedItem = item;
-      item.style.opacity = '0.5';
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', item.dataset.columnId);
-    });
-
-    list.addEventListener('dragend', (e) => {
-      if (draggedItem) draggedItem.style.opacity = '1';
-      draggedItem = null;
-      list.querySelectorAll('.column-option-item').forEach(i => {
-        i.style.borderTop = '';
-      });
-    });
-
-    list.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      const afterElement = getDragAfterElement(list, e.clientY);
-      if (draggedItem) {
-        if (afterElement == null) {
-          list.appendChild(draggedItem);
-        } else {
-          list.insertBefore(draggedItem, afterElement);
-        }
-      }
-    });
-
-    list.addEventListener('drop', (e) => {
-      e.preventDefault();
-      const newOrder = [...list.querySelectorAll('.column-option-item')];
-      const newColumns = [];
-      for (const el of newOrder) {
-        const col = columns.find(c => c.id === el.dataset.columnId);
-        if (col) newColumns.push(col);
-      }
-      columns = newColumns;
-      renderColumnsList();
-    });
-  }
-
-  
-
-  function renderBookmarkFolders() {
-    const list = document.getElementById('bookmark-folders-list');
+  function renderPerformersList() {
+    const list = document.getElementById('performers-list');
     if (!list) return;
 
     list.innerHTML = '';
 
-    if (bookmarkFolders.length === 0) {
-      const empty = document.createElement('p');
-      empty.style.color = 'var(--text-secondary)';
-      empty.textContent = 'Нет доступных папок закладок';
-      list.appendChild(empty);
-      return;
-    }
-
-    const visibleIds = settings.visibleBookmarks || [];
-
-    for (const folder of bookmarkFolders) {
+    performers.forEach((performer) => {
       const item = document.createElement('div');
-      item.className = 'folder-check-item';
+      item.className = 'tag-option-item';
 
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = visibleIds.includes(folder.id);
-      checkbox.dataset.folderId = folder.id;
+      const color = document.createElement('input');
+      color.type = 'color';
+      color.value = performer.color || '#6366f1';
+      color.className = 'tag-color';
 
-      const icon = document.createElement('span');
-      icon.className = 'folder-icon';
-      icon.textContent = '&#128193;';
+      const name = document.createElement('input');
+      name.type = 'text';
+      name.value = performer.name;
+      name.className = 'tag-name';
+      name.placeholder = 'Имя исполнителя';
 
-      const name = document.createElement('span');
-      name.className = 'folder-name';
-      name.textContent = folder.title;
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'tag-delete-btn';
+      deleteBtn.innerHTML = '&times;';
+      deleteBtn.addEventListener('click', () => {
+        performers = performers.filter(p => p.id !== performer.id);
+        renderPerformersList();
+      });
 
-      item.appendChild(checkbox);
-      item.appendChild(icon);
+      item.appendChild(color);
       item.appendChild(name);
+      item.appendChild(deleteBtn);
       list.appendChild(item);
-    }
+
+      const updatePerformer = () => {
+        const found = performers.find(p => p.id === performer.id);
+        if (found) {
+          found.name = name.value;
+          found.color = color.value;
+        }
+      };
+
+      name.addEventListener('blur', updatePerformer);
+      color.addEventListener('input', updatePerformer);
+    });
   }
+
+  renderPerformersList();
+
+  document.getElementById('add-performer-option').addEventListener('click', () => {
+    performers.push({
+      id: Storage.generateId(),
+      name: 'Новый исполнитель',
+      color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')
+    });
+    renderPerformersList();
+  });
+
+  function renderAuthorsList() {
+    const list = document.getElementById('authors-list');
+    if (!list) return;
+
+    list.innerHTML = '';
+
+    authors.forEach((author, index) => {
+      const item = document.createElement('div');
+      item.className = 'tag-option-item';
+
+      const name = document.createElement('input');
+      name.type = 'text';
+      name.value = author.name;
+      name.className = 'tag-name';
+      name.placeholder = 'Имя автора';
+
+      const deleteBtn = document.createElement('button');
+      deleteBtn.className = 'tag-delete-btn';
+      deleteBtn.innerHTML = '&times;';
+      deleteBtn.addEventListener('click', () => {
+        authors = authors.filter(a => a.id !== author.id);
+        renderAuthorsList();
+      });
+
+      item.appendChild(name);
+      item.appendChild(deleteBtn);
+      list.appendChild(item);
+
+      const updateAuthor = () => {
+        const found = authors.find(a => a.id === author.id);
+        if (found) {
+          found.name = name.value;
+        }
+      };
+
+      name.addEventListener('blur', updateAuthor);
+    });
+  }
+
+  renderAuthorsList();
+
+  document.getElementById('add-author-option').addEventListener('click', () => {
+    authors.push({
+      id: Storage.generateId(),
+      name: 'Новый автор'
+    });
+    renderAuthorsList();
+  });
 
   function loadSettingsUI() {
     const theme = settings.theme || 'system';
     const cardSize = settings.cardSize || 'standard';
-    const showFavicon = settings.showFavicon !== false;
 
     document.querySelectorAll('input[name="theme"]').forEach(radio => {
       radio.checked = radio.value === theme;
@@ -265,45 +194,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('input[name="card-size"]').forEach(radio => {
       radio.checked = radio.value === cardSize;
     });
-
-    const faviconCheckbox = document.getElementById('show-favicon-option');
-    if (faviconCheckbox) {
-      faviconCheckbox.checked = showFavicon;
-    }
   }
-
-  document.getElementById('add-column-option').addEventListener('click', () => {
-    columns.push({
-      id: Storage.generateId(),
-      title: 'Новая колонка',
-      color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
-      order: columns.length,
-      cards: []
-    });
-    renderColumnsList();
-  });
 
   document.getElementById('save-options').addEventListener('click', async () => {
     const theme = document.querySelector('input[name="theme"]:checked')?.value || 'system';
     const cardSize = document.querySelector('input[name="card-size"]:checked')?.value || 'standard';
-    const showFaviconEl = document.getElementById('show-favicon-option');
-    const showFavicon = showFaviconEl ? !!showFaviconEl.checked : true;
-
-    const visibleIds = [];
-    document.querySelectorAll('#bookmark-folders-list input[type="checkbox"]:checked').forEach(cb => {
-      visibleIds.push(cb.dataset.folderId);
-    });
-
-    columns.forEach((col, i) => { col.order = i; });
 
     settings = {
       theme: theme,
       cardSize: cardSize,
-      showFavicon: showFavicon,
-      visibleBookmarks: visibleIds,
       tags: tags,
-      columns: columns,
-      performers: settings.performers || Storage.getDefaultPerformers(),
+      columns: settings.columns || Storage.getDefaultColumns(),
+      performers: performers,
+      authors: authors,
       kanbanFilter: settings.kanbanFilter || {}
     };
 

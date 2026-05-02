@@ -13,24 +13,30 @@
     </header>
 
     <nav id="settings-tabs">
-      <button class="tab-btn active" data-tab="columns">Колонки</button>
-      <button class="tab-btn" data-tab="tags">Теги</button>
+      <button class="tab-btn active" data-tab="tags">Теги</button>
+      <button class="tab-btn" data-tab="performers">Исполнители</button>
+      <button class="tab-btn" data-tab="authors">Авторы</button>
       <button class="tab-btn" data-tab="appearance">Внешний вид</button>
-      <button class="tab-btn" data-tab="bookmarks">Закладки</button>
       <button class="tab-btn" data-tab="about">О расширении</button>
     </nav>
 
     <main>
-      <!-- Columns Tab -->
-      <div id="tab-columns" class="tab-content active">
-        <div id="columns-list"></div>
-        <button id="add-column-option" class="btn-primary">Добавить колонку</button>
-      </div>
-
       <!-- Tags Tab -->
-      <div id="tab-tags" class="tab-content">
+      <div id="tab-tags" class="tab-content active">
         <div id="tags-list"></div>
         <button id="add-tag-option" class="btn-primary">Добавить тег</button>
+      </div>
+
+      <!-- Performers Tab -->
+      <div id="tab-performers" class="tab-content">
+        <div id="performers-list"></div>
+        <button id="add-performer-option" class="btn-primary">Добавить исполнителя</button>
+      </div>
+
+      <!-- Authors Tab -->
+      <div id="tab-authors" class="tab-content">
+        <div id="authors-list"></div>
+        <button id="add-author-option" class="btn-primary">Добавить автора</button>
       </div>
 
       <!-- Appearance Tab -->
@@ -69,22 +75,6 @@
               <span>Большой</span>
             </label>
           </div>
-        </div>
-      </div>
-
-      <!-- Bookmarks Tab -->
-      <div id="tab-bookmarks" class="tab-content">
-        <div class="setting-group">
-          <h3>Папки закладок для отображения</h3>
-          <div id="bookmark-folders-list"></div>
-        </div>
-
-        <div class="setting-group">
-          <h3>Показывать favicon</h3>
-          <label class="switch-label">
-            <input type="checkbox" id="show-favicon-option">
-            <span class="switch"></span>
-          </label>
         </div>
       </div>
 
