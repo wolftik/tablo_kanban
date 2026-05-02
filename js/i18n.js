@@ -140,7 +140,10 @@ const I18n = (() => {
       'weather.fahrenheit': '°F',
       'weather.error': 'Нет данных',
       'weather.loading': 'Загрузка...',
-      'options.widgets.title': 'Виджеты'
+      'options.widgets.title': 'Виджеты',
+      'options.bookmarks.title': 'Закладки',
+      'options.bookmarks.slots': 'Количество закладок:',
+      'options.bookmarks.slots.hint': 'Максимум 22. Должно быть чётным числом.'
     },
 
     en: {
@@ -281,7 +284,10 @@ const I18n = (() => {
       'weather.fahrenheit': '°F',
       'weather.error': 'No data',
       'weather.loading': 'Loading...',
-      'options.widgets.title': 'Widgets'
+      'options.widgets.title': 'Widgets',
+      'options.bookmarks.title': 'Bookmarks',
+      'options.bookmarks.slots': 'Number of bookmarks:',
+      'options.bookmarks.slots.hint': 'Maximum 22. Must be an even number.'
     },
 
     zh: {
@@ -422,7 +428,10 @@ const I18n = (() => {
       'weather.fahrenheit': '°F',
       'weather.error': '无数据',
       'weather.loading': '加载中...',
-      'options.widgets.title': '组件'
+      'options.widgets.title': '组件',
+      'options.bookmarks.title': '书签',
+      'options.bookmarks.slots': '书签数量：',
+      'options.bookmarks.slots.hint': '最多 22 个。必须为偶数。'
     }
   };
 

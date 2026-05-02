@@ -318,6 +318,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     if ($weatherUnit) {
       $weatherUnit.value = settings.widgets?.weatherUnit || 'metric';
     }
+    const $bookmarkSlots = document.getElementById('bookmark-slots');
+    if ($bookmarkSlots) {
+      $bookmarkSlots.value = settings.bookmarkSlots || 22;
+      $bookmarkSlots.addEventListener('change', () => {
+        let val = parseInt($bookmarkSlots.value) || 22;
+        if (val % 2 !== 0) val = Math.min(val + 1, 22);
+        if (val < 2) val = 2;
+        if (val > 22) val = 22;
+        $bookmarkSlots.value = val;
+      });
+    }
   }
 
   // ===== Sync tab =====
@@ -464,6 +475,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       language,
       visibleBookmarks: settings.visibleBookmarks || [],
       showFavicon: settings.showFavicon !== undefined ? settings.showFavicon : true,
+      bookmarkSlots: Math.min(22, Math.max(2, parseInt(document.getElementById('bookmark-slots')?.value) || 22)),
       widgets: {
         clock: $clockChk ? $clockChk.checked : true,
         weather: $weatherChk ? $weatherChk.checked : false,

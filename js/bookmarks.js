@@ -1,7 +1,7 @@
 'use strict';
 
-const BOOKMARK_SLOTS = 22;
-const BOOKMARK_GRID_COLUMNS = 11;
+let _bookmarkSlots = 22;
+let _bookmarkGridColumns = 11;
 
 moduleGuard('I18n');
 moduleGuard('StorageSync');
@@ -11,10 +11,21 @@ const BookmarksManager = (() => {
   let _responsiveObserver = null;
   let _widgetsForcedHidden = false;
 
+  function _slots() { return _bookmarkSlots; }
+  function _columns() { return _bookmarkGridColumns; }
+
+  async function _loadSettings() {
+    const settings = await StorageSync.get('settings') || getDefaultSettings();
+    _bookmarkSlots = settings.bookmarkSlots || 22;
+    _bookmarkGridColumns = Math.ceil(_bookmarkSlots / 2);
+    return settings;
+  }
+
   async function loadDisplayedBookmarks() {
+    await _loadSettings();
     const raw = await StorageSync.get('bookmarks_display') || [];
     _displayedBookmarks = [];
-    for (let i = 0; i < BOOKMARK_SLOTS; i++) {
+    for (let i = 0; i < _bookmarkSlots; i++) {
       _displayedBookmarks[i] = raw[i] || null;
     }
     return _displayedBookmarks;
@@ -28,7 +39,7 @@ const BookmarksManager = (() => {
   async function addDisplayedBookmark(url, title, position = null) {
     if (_displayedBookmarks.some(b => b && b.url === url)) return _displayedBookmarks;
     const newBookmark = { id: generateId(), url, title: title || url };
-    if (position !== null && position >= 0 && position < BOOKMARK_SLOTS && !_displayedBookmarks[position]) {
+    if (position !== null && position >= 0 && position < _bookmarkSlots && !_displayedBookmarks[position]) {
       _displayedBookmarks[position] = newBookmark;
     } else {
       let emptyIndex = _displayedBookmarks.indexOf(null);
@@ -45,7 +56,7 @@ const BookmarksManager = (() => {
       _displayedBookmarks[index] = null;
       const compacted = _displayedBookmarks.filter(b => b !== null && b !== undefined);
       _displayedBookmarks = [];
-      for (let i = 0; i < BOOKMARK_SLOTS; i++) {
+      for (let i = 0; i < _bookmarkSlots; i++) {
         _displayedBookmarks[i] = compacted[i] || null;
       }
       await saveDisplayedBookmarks(_displayedBookmarks);
@@ -58,7 +69,7 @@ const BookmarksManager = (() => {
   }
 
   function getGridColumns() {
-    return BOOKMARK_GRID_COLUMNS;
+    return _bookmarkGridColumns;
   }
 
   let _dragDropInitialized = false;
@@ -126,12 +137,12 @@ const BookmarksManager = (() => {
 
     await loadDisplayedBookmarks();
 
-    const settings = await StorageSync.get('settings') || getDefaultSettings();
+    const settings = await _loadSettings();
     const visibleIds = settings.visibleBookmarks || [];
     _cachedVisibleIds = visibleIds;
 
     const bookmarksToRender = [];
-    for (let i = 0; i < BOOKMARK_SLOTS; i++) {
+    for (let i = 0; i < _bookmarkSlots; i++) {
       bookmarksToRender[i] = _displayedBookmarks[i] || null;
     }
 
@@ -141,7 +152,7 @@ const BookmarksManager = (() => {
       const visibleBookmarks = allBookmarks.filter(bm => visibleIds.includes(bm.id));
 
       let vi = 0;
-      for (let i = 0; i < BOOKMARK_SLOTS; i++) {
+      for (let i = 0; i < _bookmarkSlots; i++) {
         if (bookmarksToRender[i] === null && vi < visibleBookmarks.length) {
           bookmarksToRender[i] = visibleBookmarks[vi++];
         }
@@ -173,8 +184,10 @@ const BookmarksManager = (() => {
 
   function _renderBookmarks(container, bookmarks) {
     container.innerHTML = '';
+    container.style.setProperty('--bookmark-grid-columns', _bookmarkGridColumns);
+    container.style.gridTemplateRows = 'repeat(2, var(--bookmark-slot-height))';
 
-    for (let i = 0; i < BOOKMARK_SLOTS; i++) {
+    for (let i = 0; i < _bookmarkSlots; i++) {
       const slot = document.createElement('div');
       slot.className = 'bookmark-slot';
       slot.draggable = true;
@@ -374,7 +387,7 @@ const BookmarksManager = (() => {
     const children = Array.from(container.children);
     if (children.length === 0) return 0;
 
-    const cols = BOOKMARK_GRID_COLUMNS;
+    const cols = _bookmarkGridColumns;
 
     let row = 0;
     let minRowDist = Infinity;

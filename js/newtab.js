@@ -72,6 +72,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (newSettings) {
           applyTheme(newSettings.theme || 'system');
         }
+        BookmarksManager.render();
       }
       if (areaName === 'sync' && changes.bookmarks_display) {
         BookmarksManager.render();
