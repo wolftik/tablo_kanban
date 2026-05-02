@@ -884,66 +884,6 @@
   border-color: #6366f1;
 }
 
-/* Options page tag styles */
-.tag-option-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  margin-bottom: 8px;
-}
-
-.tag-option-item input[type="text"] {
-  flex: 1;
-  padding: 6px 10px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  background: var(--bg-input);
-  color: var(--text);
-  font-size: 14px;
-}
-
-.tag-option-item input[type="color"] {
-  width: 32px;
-  height: 32px;
-  border: none;
-  padding: 0;
-  background: none;
-  cursor: pointer;
-  border-radius: 50%;
-}
-
-.tag-option-item input[type="color"]::-webkit-color-swatch {
-  border: 2px solid var(--border);
-  border-radius: 50%;
-}
-
-.tag-option-item .tag-delete-btn {
-  width: 28px;
-  height: 28px;
-  border: none;
-  background: #fee2e2;
-  color: #ef4444;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.tag-option-item .tag-delete-btn:hover {
-  background: #fecaca;
-}
-
-[data-theme="dark"] .tag-option-item .tag-delete-btn:hover {
-  background: rgba(239,68,68,0.2);
-}
-
 #tags-list {
   margin-bottom: 16px;
 }

@@ -58,21 +58,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     tags.forEach(tag => {
       const item = document.createElement('div');
-      item.className = 'tag-option-item';
+      item.className = 'column-option-item';
 
       const color = document.createElement('input');
       color.type = 'color';
       color.value = tag.color || '#6366f1';
-      color.className = 'tag-color';
+      color.className = 'col-color-input';
 
       const name = document.createElement('input');
       name.type = 'text';
       name.value = tag.name;
-      name.className = 'tag-name';
+      name.className = 'col-name-input';
       name.placeholder = 'Название тега';
 
       const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'tag-delete-btn';
+      deleteBtn.className = 'col-delete-btn';
       deleteBtn.innerHTML = '&times;';
       deleteBtn.addEventListener('click', () => {
         tags = tags.filter(t => t.id !== tag.id);
@@ -112,21 +112,21 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     performers.forEach(performer => {
       const item = document.createElement('div');
-      item.className = 'tag-option-item';
+      item.className = 'column-option-item';
 
       const color = document.createElement('input');
       color.type = 'color';
       color.value = performer.color || '#6366f1';
-      color.className = 'tag-color';
+      color.className = 'col-color-input';
 
       const name = document.createElement('input');
       name.type = 'text';
       name.value = performer.name;
-      name.className = 'tag-name';
+      name.className = 'col-name-input';
       name.placeholder = 'Имя исполнителя';
 
       const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'tag-delete-btn';
+      deleteBtn.className = 'col-delete-btn';
       deleteBtn.innerHTML = '&times;';
       deleteBtn.addEventListener('click', () => {
         performers = performers.filter(p => p.id !== performer.id);
@@ -166,16 +166,16 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     authors.forEach(author => {
       const item = document.createElement('div');
-      item.className = 'tag-option-item';
+      item.className = 'column-option-item';
 
       const name = document.createElement('input');
       name.type = 'text';
       name.value = author.name;
-      name.className = 'tag-name';
+      name.className = 'col-name-input';
       name.placeholder = 'Имя автора';
 
       const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'tag-delete-btn';
+      deleteBtn.className = 'col-delete-btn';
       deleteBtn.innerHTML = '&times;';
       deleteBtn.addEventListener('click', () => {
         authors = authors.filter(a => a.id !== author.id);
