@@ -68,11 +68,7 @@ function applyTheme(theme) {
 }
 
 function moduleGuard(depName) {
-  try {
-    if (typeof eval(depName) === 'undefined') {
-      console.error(`[Tablo] Missing dependency: ${depName}. Check script load order.`);
-    }
-  } catch {
+  if (typeof window[depName] === 'undefined') {
     console.error(`[Tablo] Missing dependency: ${depName}. Check script load order.`);
   }
 }

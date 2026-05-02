@@ -32,15 +32,27 @@
   --text: #f1f5f9;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 #kanban-board {
-  height: calc(100vh - 322px);
+  flex: 1;
+  min-height: 0;
   display: flex;
   padding: 12px;
   gap: 12px;
   overflow-x: auto;
   overflow-y: auto;
   background: var(--board-bg);
-  min-height: 0;
 }
 
 #kanban-board::-webkit-scrollbar {

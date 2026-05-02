@@ -1,10 +1,7 @@
 'use strict';
 
 moduleGuard('I18n');
-
-function _makeId() {
-  return crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substr(2);
-}
+moduleGuard('generateId');
 
 const KanbanConstants = {
   getPriorityLabel(key) {
@@ -24,14 +21,14 @@ const KanbanConstants = {
   ],
 
   DEFAULT_TAGS: [
-    { id: _makeId(), name: 'Bug', color: '#ef4444' },
-    { id: _makeId(), name: 'Feature', color: '#3b82f6' },
-    { id: _makeId(), name: 'Enhancement', color: '#8b5cf6' }
+    { id: generateId(), name: 'Bug', color: '#ef4444' },
+    { id: generateId(), name: 'Feature', color: '#3b82f6' },
+    { id: generateId(), name: 'Enhancement', color: '#8b5cf6' }
   ],
 
   DEFAULT_PERFORMERS: [
-    { id: _makeId(), name: 'Иванов И.И.', color: '#6366f1' },
-    { id: _makeId(), name: 'Петров П.П.', color: '#22c55e' },
-    { id: _makeId(), name: 'Сидоров С.С.', color: '#f59e0b' }
+    { id: generateId(), name: 'Иванов И.И.', color: '#6366f1' },
+    { id: generateId(), name: 'Петров П.П.', color: '#22c55e' },
+    { id: generateId(), name: 'Сидоров С.С.', color: '#f59e0b' }
   ]
 };

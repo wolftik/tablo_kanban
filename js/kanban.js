@@ -128,16 +128,13 @@ const KanbanBoard = (() => {
     await StorageLocal.set(KanbanConstants.STORAGE_KEY, saved);
   }
 
-  async function save() {
-    _columns.forEach((col, i) => { col.order = i; });
-    const data = {
-      columns: _columns,
-      kanbanFilter: _kanbanFilter,
-      tags: _tags,
-      performers: _performers,
-      authors: _authors,
-      _modified: Date.now()
-    };
+  let _saveTimer = null;
+  let _pendingSave = null;
+
+  async function _flushSave() {
+    const data = _pendingSave;
+    _pendingSave = null;
+    if (!data) return;
     await StorageLocal.set(KanbanConstants.STORAGE_KEY, data);
 
     if (_driveSyncing) return;
@@ -149,6 +146,20 @@ const KanbanBoard = (() => {
     } finally {
       _driveSyncing = false;
     }
+  }
+
+  function save() {
+    _columns.forEach((col, i) => { col.order = i; });
+    _pendingSave = {
+      columns: _columns,
+      kanbanFilter: _kanbanFilter,
+      tags: _tags,
+      performers: _performers,
+      authors: _authors,
+      _modified: Date.now()
+    };
+    if (_saveTimer) clearTimeout(_saveTimer);
+    _saveTimer = setTimeout(_flushSave, 300);
   }
 
   function getColumns() {
