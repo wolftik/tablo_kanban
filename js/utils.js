@@ -45,7 +45,8 @@ function getDefaultSettings() {
     performers: [],
     tags: [],
     authors: [],
-    kanbanFilter: {}
+    kanbanFilter: {},
+    widgets: { clock: true }
   };
 }
 

@@ -105,7 +105,10 @@ const I18n = (() => {
       'card.tags.placeholder': 'Все теги',
       'card.tags.dropdown.header': 'Выберите теги',
       'card.tags.dropdown.clear': 'Очистить',
-      'card.tags.remove.title': 'Удалить тег'
+      'card.tags.remove.title': 'Удалить тег',
+
+      'widgets.clock': 'Часы',
+      'options.widgets.title': 'Виджеты'
     },
 
     en: {
@@ -211,7 +214,10 @@ const I18n = (() => {
       'card.tags.placeholder': 'All tags',
       'card.tags.dropdown.header': 'Select tags',
       'card.tags.dropdown.clear': 'Clear',
-      'card.tags.remove.title': 'Remove tag'
+      'card.tags.remove.title': 'Remove tag',
+
+      'widgets.clock': 'Clock',
+      'options.widgets.title': 'Widgets'
     },
 
     zh: {
@@ -317,7 +323,10 @@ const I18n = (() => {
       'card.tags.placeholder': '所有标签',
       'card.tags.dropdown.header': '选择标签',
       'card.tags.dropdown.clear': '清除',
-      'card.tags.remove.title': '移除标签'
+      'card.tags.remove.title': '移除标签',
+
+      'widgets.clock': '时钟',
+      'options.widgets.title': '组件'
     }
   };
 

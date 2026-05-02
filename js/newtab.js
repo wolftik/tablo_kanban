@@ -23,6 +23,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   KanbanBoard.init();
   WidgetSystem.initAll();
 
+  const widgetsZone = document.getElementById('widgets-zone');
+  if (widgetsZone && bmContainer && !widgetsZone.classList.contains('active')) {
+    bmContainer.classList.add('centered');
+  }
+
   const settingsBtn = document.getElementById('settings-btn');
   if (settingsBtn) {
     settingsBtn.addEventListener('click', () => {

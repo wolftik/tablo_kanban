@@ -333,6 +333,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (langSelect) {
       langSelect.value = settings.language || 'ru';
     }
+    const clockCheckbox = document.getElementById('widget-clock');
+    if (clockCheckbox) {
+      clockCheckbox.checked = settings.widgets?.clock !== false;
+    }
   }
 
   loadSettingsUI();
@@ -344,6 +348,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     const language = document.getElementById('language-select')?.value || 'ru';
 
+    const clockCheckbox = document.getElementById('widget-clock');
+
     settings = {
       theme,
       language,
@@ -353,7 +359,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       authors,
       visibleBookmarks: settings.visibleBookmarks || [],
       showFavicon: settings.showFavicon !== undefined ? settings.showFavicon : true,
-      kanbanFilter: settings.kanbanFilter || {}
+      kanbanFilter: settings.kanbanFilter || {},
+      widgets: {
+        clock: clockCheckbox ? clockCheckbox.checked : true
+      }
     };
 
     await StorageSync.set('settings', settings);
