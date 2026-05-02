@@ -39,7 +39,6 @@ function generateId() {
 function getDefaultSettings() {
   return {
     theme: 'system',
-    cardSize: 'standard',
     showFavicon: true,
     visibleBookmarks: [],
     performers: [],
@@ -59,7 +58,11 @@ function applyTheme(theme) {
 }
 
 function moduleGuard(depName) {
-  if (typeof window[depName] === 'undefined') {
+  try {
+    if (typeof eval(depName) === 'undefined') {
+      console.error(`[Tablo] Missing dependency: ${depName}. Check script load order.`);
+    }
+  } catch {
     console.error(`[Tablo] Missing dependency: ${depName}. Check script load order.`);
   }
 }

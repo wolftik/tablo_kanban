@@ -306,6 +306,12 @@ header h1 {
   background: var(--primary-hover);
 }
 
+#add-tag-option,
+#add-performer-option,
+#add-author-option {
+  margin-top: 8px;
+}
+
 footer {
   margin-top: 24px;
   padding-top: 16px;

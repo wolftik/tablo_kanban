@@ -37,7 +37,6 @@ const KanbanBoard = (() => {
     const settings = await StorageSync.get('settings') || getDefaultSettings();
     settings.kanbanFilter = KanbanFilter.toJSON();
     settings.theme = _settings?.theme || settings.theme;
-    settings.cardSize = _settings?.cardSize || settings.cardSize;
     settings.tags = _settings?.tags || settings.tags;
     settings.performers = _settings?.performers || settings.performers;
     settings.authors = _settings?.authors || settings.authors;

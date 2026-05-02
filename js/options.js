@@ -322,14 +322,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ===== Appearance tab =====
   function loadSettingsUI() {
     const theme = settings.theme || 'system';
-    const cardSize = settings.cardSize || 'standard';
-
     document.querySelectorAll('input[name="theme"]').forEach(radio => {
       radio.checked = radio.value === theme;
-    });
-
-    document.querySelectorAll('input[name="card-size"]').forEach(radio => {
-      radio.checked = radio.value === cardSize;
     });
   }
 
@@ -339,11 +333,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ===== Save =====
   document.getElementById('save-options').addEventListener('click', async () => {
     const theme = document.querySelector('input[name="theme"]:checked')?.value || 'system';
-    const cardSize = document.querySelector('input[name="card-size"]:checked')?.value || 'standard';
 
     settings = {
       theme,
-      cardSize,
       tags,
       columns,
       performers,
