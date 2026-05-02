@@ -4,6 +4,23 @@ moduleGuard('I18n');
 
 const KanbanCard = (() => {
   moduleGuard('StorageSync');
+
+  function _hashToColor(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    const h = Math.abs(hash) % 360;
+    const s = 55 + (Math.abs(hash >> 8) % 20);
+    const l = 50 + (Math.abs(hash >> 4) % 10);
+    return `hsl(${h}, ${s}%, ${l}%)`;
+  }
+
+  function _getTagsForDisplay(tagIds, settings, tagById) {
+    if (tagById) return tagIds.map(id => tagById(id)).filter(Boolean);
+    if (!settings || !settings.tags) return [];
+    return tagIds.map(id => settings.tags.find(t => t.id === id)).filter(Boolean);
+  }
   function create(card, columnId, settings) {
     const cardEl = document.createElement('div');
     cardEl.className = 'kanban-card';
@@ -86,21 +103,5 @@ const KanbanCard = (() => {
     return ph;
   }
 
-  function _hashToColor(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-      hash = str.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const h = Math.abs(hash) % 360;
-    const s = 55 + (Math.abs(hash >> 8) % 20);
-    const l = 50 + (Math.abs(hash >> 4) % 10);
-    return `hsl(${h}, ${s}%, ${l}%)`;
-  }
-
-  function _getTagsForDisplay(tagIds, settings) {
-    if (!settings || !settings.tags) return [];
-    return tagIds.map(id => settings.tags.find(t => t.id === id)).filter(Boolean);
-  }
-
-  return { create, createPlaceholder };
+  return { create, createPlaceholder, _hashToColor, _getTagsForDisplay };
 })();

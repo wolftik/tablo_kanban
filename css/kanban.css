@@ -16,7 +16,6 @@
   --bookmarks-border: #e2e8f0;
   --border: #e2e8f0;
   --bg-input: #ffffff;
-  --bg-card: #ffffff;
   --text: #1e293b;
 }
 
@@ -30,7 +29,6 @@
   --drop-highlight: rgba(99, 102, 241, 0.25);
   --border: #334155;
   --bg-input: #1e293b;
-  --bg-card: #1e293b;
   --text: #f1f5f9;
 }
 
@@ -72,6 +70,7 @@
   max-height: 100%;
   min-height: 0;
   transition: background 0.15s;
+  contain: layout style;
 }
 
 .kanban-column.drag-over-column {
@@ -154,7 +153,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
+  transition: background 0.15s, color 0.15s;
 }
 
 .column-action-btn:hover {
@@ -179,6 +178,7 @@
   flex-direction: column;
   gap: 6px;
   min-height: 0;
+  contain: layout size;
 }
 
 .column-cards::-webkit-scrollbar {
@@ -292,7 +292,7 @@
   color: #64748b;
   font-size: 13px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
   flex-shrink: 0;
   margin-top: 4px;
 }
@@ -325,7 +325,7 @@
   font-size: 14px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -407,7 +407,7 @@
   display: none;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
   flex-shrink: 0;
 }
 
@@ -518,7 +518,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .filter-tag-item.selected .filter-tag-checkbox {
@@ -788,7 +788,7 @@
   cursor: pointer;
   white-space: nowrap;
   flex-shrink: 0;
-  transition: all 0.15s;
+  transition: background 0.15s;
 }
 
 .tags-dropdown-clear:hover {

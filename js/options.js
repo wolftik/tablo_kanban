@@ -45,147 +45,117 @@ document.addEventListener('DOMContentLoaded', async () => {
     }));
   }
 
-  // ===== Tags tab =====
-  function renderTagsList() {
-    const list = document.getElementById('tags-list');
+  function _renderColoredList(listId, items, { placeholderKey, onDelete, onUpdate }) {
+    const list = document.getElementById(listId);
     if (!list) return;
     list.innerHTML = '';
 
-    tags.forEach(tag => {
-      const item = document.createElement('div');
-      item.className = 'column-option-item';
+    items.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'column-option-item';
 
-      const color = document.createElement('input');
-      color.type = 'color';
-      color.value = tag.color || '#6366f1';
-      color.className = 'col-color-input';
+      const colorInput = document.createElement('input');
+      colorInput.type = 'color';
+      colorInput.value = item.color || '#6366f1';
+      colorInput.className = 'col-color-input';
 
-      const name = document.createElement('input');
-      name.type = 'text';
-      name.value = tag.name;
-      name.className = 'col-name-input';
-      name.placeholder = I18n.t('options.tags.new');
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.value = item.name;
+      nameInput.className = 'col-name-input';
+      nameInput.placeholder = I18n.t(placeholderKey);
 
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'col-delete-btn';
-      deleteBtn.innerHTML = '&times;';
-      deleteBtn.addEventListener('click', () => {
-        tags = tags.filter(t => t.id !== tag.id);
-        renderTagsList();
+      const delBtn = document.createElement('button');
+      delBtn.className = 'col-delete-btn';
+      delBtn.innerHTML = '&times;';
+      delBtn.addEventListener('click', () => {
+        onDelete(item.id);
       });
 
-      item.appendChild(color);
-      item.appendChild(name);
-      item.appendChild(deleteBtn);
-      list.appendChild(item);
+      el.appendChild(colorInput);
+      el.appendChild(nameInput);
+      el.appendChild(delBtn);
+      list.appendChild(el);
 
-      const update = () => {
-        const found = tags.find(t => t.id === tag.id);
-        if (found) { found.name = name.value; found.color = color.value; }
-      };
-      name.addEventListener('blur', update);
-      color.addEventListener('input', update);
+      const sync = () => onUpdate(item.id, nameInput.value, colorInput.value);
+      nameInput.addEventListener('blur', sync);
+      colorInput.addEventListener('input', sync);
+    });
+  }
+
+  function _renderTextList(listId, items, { placeholderKey, onDelete, onUpdate }) {
+    const list = document.getElementById(listId);
+    if (!list) return;
+    list.innerHTML = '';
+
+    items.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'column-option-item';
+
+      const nameInput = document.createElement('input');
+      nameInput.type = 'text';
+      nameInput.value = item.name;
+      nameInput.className = 'col-name-input';
+      nameInput.placeholder = I18n.t(placeholderKey);
+
+      const delBtn = document.createElement('button');
+      delBtn.className = 'col-delete-btn';
+      delBtn.innerHTML = '&times;';
+      delBtn.addEventListener('click', () => {
+        onDelete(item.id);
+      });
+
+      el.appendChild(nameInput);
+      el.appendChild(delBtn);
+      list.appendChild(el);
+
+      const sync = () => onUpdate(item.id, nameInput.value);
+      nameInput.addEventListener('blur', sync);
+    });
+  }
+
+  function _randomColor() {
+    return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+  }
+
+  // ===== Tags tab =====
+  function renderTagsList() {
+    _renderColoredList('tags-list', tags, {
+      placeholderKey: 'options.tags.new',
+      onDelete: (id) => { tags = tags.filter(t => t.id !== id); renderTagsList(); },
+      onUpdate: (id, name, color) => { const f = tags.find(t => t.id === id); if (f) { f.name = name; f.color = color; } }
     });
   }
 
   renderTagsList();
 
   document.getElementById('add-tag-option').addEventListener('click', () => {
-    tags.push({
-      id: generateId(),
-      name: I18n.t('options.tags.new'),
-      color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')
-    });
+    tags.push({ id: generateId(), name: I18n.t('options.tags.new'), color: _randomColor() });
     renderTagsList();
   });
 
   // ===== Performers tab =====
   function renderPerformersList() {
-    const list = document.getElementById('performers-list');
-    if (!list) return;
-    list.innerHTML = '';
-
-    performers.forEach(performer => {
-      const item = document.createElement('div');
-      item.className = 'column-option-item';
-
-      const color = document.createElement('input');
-      color.type = 'color';
-      color.value = performer.color || '#6366f1';
-      color.className = 'col-color-input';
-
-      const name = document.createElement('input');
-      name.type = 'text';
-      name.value = performer.name;
-      name.className = 'col-name-input';
-      name.placeholder = I18n.t('options.performers.new');
-
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'col-delete-btn';
-      deleteBtn.innerHTML = '&times;';
-      deleteBtn.addEventListener('click', () => {
-        performers = performers.filter(p => p.id !== performer.id);
-        renderPerformersList();
-      });
-
-      item.appendChild(color);
-      item.appendChild(name);
-      item.appendChild(deleteBtn);
-      list.appendChild(item);
-
-      const update = () => {
-        const found = performers.find(p => p.id === performer.id);
-        if (found) { found.name = name.value; found.color = color.value; }
-      };
-      name.addEventListener('blur', update);
-      color.addEventListener('input', update);
+    _renderColoredList('performers-list', performers, {
+      placeholderKey: 'options.performers.new',
+      onDelete: (id) => { performers = performers.filter(p => p.id !== id); renderPerformersList(); },
+      onUpdate: (id, name, color) => { const f = performers.find(p => p.id === id); if (f) { f.name = name; f.color = color; } }
     });
   }
 
   renderPerformersList();
 
   document.getElementById('add-performer-option').addEventListener('click', () => {
-    performers.push({
-      id: generateId(),
-      name: I18n.t('options.performers.new'),
-      color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0')
-    });
+    performers.push({ id: generateId(), name: I18n.t('options.performers.new'), color: _randomColor() });
     renderPerformersList();
   });
 
   // ===== Authors tab =====
   function renderAuthorsList() {
-    const list = document.getElementById('authors-list');
-    if (!list) return;
-    list.innerHTML = '';
-
-    authors.forEach(author => {
-      const item = document.createElement('div');
-      item.className = 'column-option-item';
-
-      const name = document.createElement('input');
-      name.type = 'text';
-      name.value = author.name;
-      name.className = 'col-name-input';
-      name.placeholder = I18n.t('options.authors.new');
-
-      const deleteBtn = document.createElement('button');
-      deleteBtn.className = 'col-delete-btn';
-      deleteBtn.innerHTML = '&times;';
-      deleteBtn.addEventListener('click', () => {
-        authors = authors.filter(a => a.id !== author.id);
-        renderAuthorsList();
-      });
-
-      item.appendChild(name);
-      item.appendChild(deleteBtn);
-      list.appendChild(item);
-
-      const update = () => {
-        const found = authors.find(a => a.id === author.id);
-        if (found) found.name = name.value;
-      };
-      name.addEventListener('blur', update);
+    _renderTextList('authors-list', authors, {
+      placeholderKey: 'options.authors.new',
+      onDelete: (id) => { authors = authors.filter(a => a.id !== id); renderAuthorsList(); },
+      onUpdate: (id, name) => { const f = authors.find(a => a.id === id); if (f) f.name = name; }
     });
   }
 
@@ -258,6 +228,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       item.addEventListener('dragend', () => {
         item.classList.remove('dragging');
         document.querySelectorAll('.column-option-item.drag-over').forEach(el => el.classList.remove('drag-over'));
+        dragId = null;
       });
     });
 
@@ -321,46 +292,42 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.querySelectorAll('input[name="theme"]').forEach(radio => {
       radio.checked = radio.value === theme;
     });
-    const langSelect = document.getElementById('language-select');
-    if (langSelect) {
-      langSelect.value = settings.language || 'ru';
+    if ($langSelect) {
+      $langSelect.value = settings.language || 'ru';
     }
-    const clockCheckbox = document.getElementById('widget-clock');
-    if (clockCheckbox) {
-      clockCheckbox.checked = settings.widgets?.clock !== false;
+    if ($clockChk) {
+      $clockChk.checked = settings.widgets?.clock !== false;
     }
-    const weatherCheckbox = document.getElementById('widget-weather');
     const weatherSettings = document.getElementById('weather-settings');
-    const weatherCity = document.getElementById('weather-city');
-    const weatherUnit = document.getElementById('weather-unit');
-    if (weatherCheckbox && weatherSettings) {
-      weatherCheckbox.checked = settings.widgets?.weather === true;
-      weatherSettings.style.display = weatherCheckbox.checked ? 'block' : 'none';
-      weatherCheckbox.addEventListener('change', () => {
-        weatherSettings.style.display = weatherCheckbox.checked ? 'block' : 'none';
+    if ($weatherChk && weatherSettings) {
+      $weatherChk.checked = settings.widgets?.weather === true;
+      weatherSettings.style.display = $weatherChk.checked ? 'block' : 'none';
+      $weatherChk.addEventListener('change', () => {
+        weatherSettings.style.display = $weatherChk.checked ? 'block' : 'none';
       });
     }
-    if (weatherCity) {
-      weatherCity.value = settings.widgets?.weatherCity || 'Moscow';
+    if ($weatherCity) {
+      $weatherCity.value = settings.widgets?.weatherCity || 'Moscow';
     }
-    if (weatherUnit) {
-      weatherUnit.value = settings.widgets?.weatherUnit || 'metric';
+    if ($weatherUnit) {
+      $weatherUnit.value = settings.widgets?.weatherUnit || 'metric';
     }
   }
+
+  // ===== Save =====
+  const $saveBtn = document.getElementById('save-options');
+  const $langSelect = document.getElementById('language-select');
+  const $clockChk = document.getElementById('widget-clock');
+  const $weatherChk = document.getElementById('widget-weather');
+  const $weatherCity = document.getElementById('weather-city');
+  const $weatherUnit = document.getElementById('weather-unit');
 
   loadSettingsUI();
   applyTheme(settings.theme);
 
-  // ===== Save =====
-  document.getElementById('save-options').addEventListener('click', async () => {
+  $saveBtn.addEventListener('click', async () => {
     const theme = document.querySelector('input[name="theme"]:checked')?.value || 'system';
-
-    const language = document.getElementById('language-select')?.value || 'ru';
-
-    const clockCheckbox = document.getElementById('widget-clock');
-    const weatherCheckbox = document.getElementById('widget-weather');
-    const weatherCity = document.getElementById('weather-city');
-    const weatherUnit = document.getElementById('weather-unit');
+    const language = $langSelect?.value || 'ru';
 
     settings = {
       theme,
@@ -373,10 +340,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       showFavicon: settings.showFavicon !== undefined ? settings.showFavicon : true,
       kanbanFilter: settings.kanbanFilter || {},
       widgets: {
-        clock: clockCheckbox ? clockCheckbox.checked : true,
-        weather: weatherCheckbox ? weatherCheckbox.checked : false,
-        weatherCity: weatherCity ? weatherCity.value.trim() || 'Moscow' : 'Moscow',
-        weatherUnit: weatherUnit ? weatherUnit.value : 'metric'
+        clock: $clockChk ? $clockChk.checked : true,
+        weather: $weatherChk ? $weatherChk.checked : false,
+        weatherCity: $weatherCity ? $weatherCity.value.trim() || 'Moscow' : 'Moscow',
+        weatherUnit: $weatherUnit ? $weatherUnit.value : 'metric'
       }
     };
 
@@ -384,13 +351,12 @@ document.addEventListener('DOMContentLoaded', async () => {
     applyTheme(theme);
     I18n.setLang(language);
 
-    const btn = document.getElementById('save-options');
-    const originalText = btn.textContent;
-    btn.textContent = I18n.t('options.saved');
-    btn.disabled = true;
+    const originalText = $saveBtn.textContent;
+    $saveBtn.textContent = I18n.t('options.saved');
+    $saveBtn.disabled = true;
     setTimeout(() => {
-      btn.textContent = originalText;
-      btn.disabled = false;
+      $saveBtn.textContent = originalText;
+      $saveBtn.disabled = false;
     }, 1500);
   });
 });

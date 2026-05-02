@@ -13,6 +13,53 @@ const KanbanBoard = (() => {
   let _editingColumnId = null;
   let _draggedCard = null;
   let _draggedColumn = null;
+  let _rafGetDragAfterElement = createRafDragAfterElement();
+  let _tagsIndex = null;
+
+  let _dom = {};
+  let _boundDocKeydown = null;
+  let _boundDocClickFilter = null;
+  let _boundDocClickTags = null;
+
+  function _cacheDoms() {
+    _dom = {
+      board: document.getElementById('kanban-board'),
+      modal: document.getElementById('edit-card-modal'),
+      modalTitle: document.getElementById('modal-title'),
+      cardTitle: document.getElementById('card-title-input'),
+      cardDesc: document.getElementById('card-desc-input'),
+      cardPriority: document.getElementById('card-priority-select'),
+      cardAssignee: document.getElementById('card-assignee-select'),
+      cardAuthor: document.getElementById('card-author-select'),
+      cardDeleteBtn: document.getElementById('card-delete-btn'),
+      cardTagsSelector: document.getElementById('card-tags-selector'),
+      tagsDisplay: document.getElementById('card-tags-display'),
+      tagsSelected: document.getElementById('card-tags-selected'),
+      tagsDropdownWrapper: document.getElementById('card-tags-dropdown-wrapper'),
+      tagsDropdown: document.getElementById('card-tags-dropdown'),
+      filterSearch: document.getElementById('filter-search'),
+      filterPriority: document.getElementById('filter-priority'),
+      filterAssignee: document.getElementById('filter-assignee'),
+      filterClear: document.getElementById('filter-clear'),
+      filterTagsLabel: document.getElementById('filter-tags-label'),
+      filterTagsDropdown: document.getElementById('filter-tags-dropdown'),
+      filterTagsList: document.getElementById('filter-tags-list'),
+      filterTagsChips: document.getElementById('filter-tags-chips'),
+      tagsDropdownClear: document.getElementById('tags-dropdown-clear')
+    };
+  }
+
+  function _updateTagsIndex() {
+    if (!_settings || !_settings.tags) {
+      _tagsIndex = new Map();
+      return;
+    }
+    _tagsIndex = new Map(_settings.tags.map(t => [t.id, t]));
+  }
+
+  function _tagById(id) {
+    return _tagsIndex ? _tagsIndex.get(id) : null;
+  }
 
   async function init() {
     _settings = await StorageSync.get('settings') || getDefaultSettings();
@@ -20,11 +67,14 @@ const KanbanBoard = (() => {
     _columns = saved && saved.columns ? saved.columns : _createDefaultColumns();
     _columns.forEach(col => col.cards = col.cards || []);
 
+    _updateTagsIndex();
+
     KanbanFilter.init(
       _settings.kanbanFilter || { search: '', priority: '', assignee: '', tags: [] },
       _onFilterChange
     );
 
+    _cacheDoms();
     _renderBoard();
     _bindEvents();
     _renderFilterUI();
@@ -45,6 +95,7 @@ const KanbanBoard = (() => {
     settings.showFavicon = _settings?.showFavicon !== undefined ? _settings.showFavicon : settings.showFavicon;
     await StorageSync.set('settings', settings);
     _settings = settings;
+    _updateTagsIndex();
   }
 
   function getColumns() {
@@ -84,7 +135,8 @@ const KanbanBoard = (() => {
   }
 
   function _updateColumnCounts() {
-    document.querySelectorAll('.kanban-column').forEach(colEl => {
+    if (!_dom.board) return;
+    _dom.board.querySelectorAll('.kanban-column').forEach(colEl => {
       const colId = colEl.dataset.columnId;
       const cards = KanbanFilter.filterCards(_getCardsForColumn(colId));
       const countEl = colEl.querySelector('.column-count');
@@ -93,23 +145,271 @@ const KanbanBoard = (() => {
   }
 
   function _renderBoard() {
-    const board = document.getElementById('kanban-board');
+    const board = _dom.board;
     if (!board) return;
-    board.innerHTML = '';
 
     const sorted = [..._columns].sort((a, b) => (a.order || 0) - (b.order || 0));
-    for (const col of sorted) {
-      board.appendChild(_createColumnElement(col));
+
+    const existingCols = new Map();
+    board.querySelectorAll(':scope > .kanban-column').forEach(el => {
+      existingCols.set(el.dataset.columnId, el);
+    });
+
+    const removeIds = new Set(existingCols.keys());
+    let insertBeforeEl = null;
+
+    for (let i = sorted.length - 1; i >= 0; i--) {
+      const col = sorted[i];
+      removeIds.delete(col.id);
+
+      const existing = existingCols.get(col.id);
+      if (existing) {
+        _updateColumnElement(existing, col);
+      } else {
+        const colEl = _createColumnElement(col);
+        if (insertBeforeEl) {
+          board.insertBefore(colEl, insertBeforeEl);
+        } else {
+          board.appendChild(colEl);
+        }
+        existingCols.set(col.id, colEl);
+      }
+      insertBeforeEl = existingCols.get(col.id) || insertBeforeEl;
     }
 
-    _updateColumnCounts();
-    _bindColumnHeaderDrag();
+    for (const id of removeIds) {
+      const el = existingCols.get(id);
+      if (el) el.remove();
+    }
 
-    const addColBtn = document.createElement('button');
-    addColBtn.className = 'add-column-btn';
-    addColBtn.textContent = I18n.t('column.add.column');
-    addColBtn.addEventListener('click', () => _addColumn());
-    board.appendChild(addColBtn);
+    let addBtn = board.querySelector(':scope > .add-column-btn');
+    if (!addBtn) {
+      addBtn = document.createElement('button');
+      addBtn.className = 'add-column-btn';
+      addBtn.textContent = I18n.t('column.add.column');
+      addBtn.addEventListener('click', () => _addColumn());
+      board.appendChild(addBtn);
+    }
+
+    _bindColumnHeaderDrag();
+  }
+
+  function _updateColumnElement(colEl, col) {
+    const header = colEl.querySelector('.column-header');
+    if (header) header.draggable = true;
+
+    const titleContainer = colEl.querySelector('.column-title');
+    if (titleContainer) {
+      let colorDot = titleContainer.querySelector('.column-color-indicator');
+      if (!colorDot) {
+        colorDot = document.createElement('span');
+        colorDot.className = 'column-color-indicator';
+        titleContainer.prepend(colorDot);
+      }
+      colorDot.style.background = col.color || '#6366f1';
+
+      let titleText = titleContainer.querySelector('span:not(.column-color-indicator)');
+      if (!titleText) {
+        titleText = document.createElement('span');
+        titleContainer.appendChild(titleText);
+      }
+      if (titleText.textContent !== col.title) {
+        titleText.textContent = col.title;
+      }
+    }
+
+    const count = colEl.querySelector('.column-count');
+    const filteredCards = KanbanFilter.filterCards(_getCardsForColumn(col.id));
+    if (count && count.textContent !== String(filteredCards.length)) {
+      count.textContent = filteredCards.length;
+    }
+
+    const cardsContainer = colEl.querySelector('.column-cards');
+    if (cardsContainer) {
+      _syncCardsContainer(cardsContainer, col, filteredCards);
+    }
+  }
+
+  function _syncCardsContainer(container, col, filteredCards) {
+    const existingCards = container.querySelectorAll(':scope > .kanban-card');
+    const existingMap = new Map();
+    existingCards.forEach(el => existingMap.set(el.dataset.cardId, el));
+
+    const removeCardIds = new Set(existingMap.keys());
+    let insertBeforeCard = null;
+
+    for (let i = filteredCards.length - 1; i >= 0; i--) {
+      const card = filteredCards[i];
+      removeCardIds.delete(card.id);
+
+      const existing = existingMap.get(card.id);
+      if (existing) {
+        _updateCardElement(existing, card, col.id);
+        if (existing.nextElementSibling !== insertBeforeCard) {
+          if (insertBeforeCard) {
+            container.insertBefore(existing, insertBeforeCard);
+          } else {
+            container.appendChild(existing);
+          }
+        }
+      } else {
+        const cardEl = KanbanCard.create(card, col.id, _settings);
+        _bindCardDrag(cardEl);
+        cardEl.addEventListener('click', () => _openEditCardModal(card, col.id));
+        if (insertBeforeCard) {
+          container.insertBefore(cardEl, insertBeforeCard);
+        } else {
+          container.appendChild(cardEl);
+        }
+        existingMap.set(card.id, cardEl);
+      }
+      insertBeforeCard = existingMap.get(card.id) || insertBeforeCard;
+    }
+
+    for (const id of removeCardIds) {
+      const el = existingMap.get(id);
+      if (el) el.remove();
+    }
+
+    let addCardBtn = container.parentElement.querySelector(':scope > .column-add-card');
+    if (!addCardBtn) {
+      addCardBtn = document.createElement('button');
+      addCardBtn.className = 'column-add-card';
+      addCardBtn.textContent = I18n.t('column.add.card');
+      container.parentElement.appendChild(addCardBtn);
+    }
+    addCardBtn.onclick = () => _openNewCardModal(col.id);
+  }
+
+  function _updateCardElement(cardEl, card, columnId) {
+    cardEl.dataset.columnId = columnId;
+
+    const priorityBar = cardEl.querySelector('.card-priority-bar');
+    if (card.priority) {
+      const cls = 'card-priority-bar priority-' + card.priority;
+      if (!priorityBar) {
+        const bar = document.createElement('div');
+        bar.className = cls;
+        cardEl.prepend(bar);
+      } else if (priorityBar.className !== cls) {
+        priorityBar.className = cls;
+      }
+    } else if (priorityBar) {
+      priorityBar.remove();
+    }
+
+    const titleEl = cardEl.querySelector('.card-title');
+    if (titleEl && titleEl.textContent !== card.title) {
+      titleEl.textContent = card.title;
+    }
+
+    const descEl = cardEl.querySelector('.card-description');
+    if (card.description) {
+      if (!descEl) {
+        const d = document.createElement('div');
+        d.className = 'card-description';
+        d.textContent = card.description;
+        cardEl.insertBefore(d, cardEl.querySelector('.card-meta'));
+      } else if (descEl.textContent !== card.description) {
+        descEl.textContent = card.description;
+      }
+    } else if (descEl) {
+      descEl.remove();
+    }
+
+    const meta = cardEl.querySelector('.card-meta');
+    if (meta) {
+      const dateEl = meta.querySelector('.card-date');
+      if (card.createdAt) {
+        const dateStr = new Date(card.createdAt).toLocaleDateString(I18n.localeToBCP47(I18n.getLang()), { day: '2-digit', month: '2-digit' });
+        if (!dateEl) {
+          const d = document.createElement('span');
+          d.className = 'card-date';
+          d.textContent = dateStr;
+          meta.prepend(d);
+        } else if (dateEl.textContent !== dateStr) {
+          dateEl.textContent = dateStr;
+        }
+      } else if (dateEl) {
+        dateEl.remove();
+      }
+
+      const badge = meta.querySelector('.card-priority-badge');
+      if (card.priority) {
+        const cls = 'card-priority-badge priority-' + card.priority;
+        const label = KanbanConstants.getPriorityLabel(card.priority);
+        if (!badge) {
+          const b = document.createElement('span');
+          b.className = cls;
+          b.textContent = label;
+          meta.appendChild(b);
+        } else {
+          if (badge.className !== cls) badge.className = cls;
+          if (badge.textContent !== label) badge.textContent = label;
+        }
+      } else if (badge) {
+        badge.remove();
+      }
+    }
+
+    const assigneeEl = cardEl.querySelector('.card-assignee');
+    if (card.assignee) {
+      if (!assigneeEl) {
+        const ae = document.createElement('div');
+        ae.className = 'card-assignee';
+        cardEl.appendChild(ae);
+      }
+      const target = cardEl.querySelector('.card-assignee');
+      const avatar = target ? target.querySelector('.assignee-avatar') : null;
+      if (avatar) {
+        const performer = (_settings?.performers || []).find(p => p.name === card.assignee);
+        const bg = performer ? performer.color : KanbanCard._hashToColor(card.assignee);
+        if (avatar.style.background !== bg) avatar.style.background = bg;
+        if (avatar.textContent !== card.assignee.charAt(0).toUpperCase()) avatar.textContent = card.assignee.charAt(0).toUpperCase();
+        if (avatar.title !== card.assignee) avatar.title = card.assignee;
+      }
+    } else if (assigneeEl) {
+      assigneeEl.remove();
+    }
+
+    const tagsContainer = cardEl.querySelector('.card-tags');
+    if (card.tags && card.tags.length > 0) {
+      const displayTags = KanbanCard._getTagsForDisplay(card.tags, _settings, _tagById);
+      if (!tagsContainer) {
+        const tc = document.createElement('div');
+        tc.className = 'card-tags';
+        for (const tag of displayTags) {
+          const badge = document.createElement('span');
+          badge.className = 'tag-badge';
+          badge.textContent = tag.name;
+          badge.style.background = tag.color;
+          tc.appendChild(badge);
+        }
+        cardEl.appendChild(tc);
+      } else {
+        const existingBadges = tagsContainer.querySelectorAll(':scope > .tag-badge');
+        const badgeMap = new Map();
+        existingBadges.forEach(b => badgeMap.set(b.textContent, b));
+
+        const neededNames = new Set(displayTags.map(t => t.name));
+        for (const name of badgeMap.keys()) {
+          if (!neededNames.has(name)) {
+            badgeMap.get(name).remove();
+          }
+        }
+        for (const tag of displayTags) {
+          if (!badgeMap.has(tag.name)) {
+            const badge = document.createElement('span');
+            badge.className = 'tag-badge';
+            badge.textContent = tag.name;
+            badge.style.background = tag.color;
+            tagsContainer.appendChild(badge);
+          }
+        }
+      }
+    } else if (tagsContainer) {
+      tagsContainer.remove();
+    }
   }
 
   function _createColumnElement(col) {
@@ -130,10 +430,6 @@ const KanbanBoard = (() => {
 
     const titleText = document.createElement('span');
     titleText.textContent = col.title;
-    titleText.style.flex = '1';
-    titleText.style.overflow = 'hidden';
-    titleText.style.textOverflow = 'ellipsis';
-    titleText.style.whiteSpace = 'nowrap';
 
     titleContainer.appendChild(colorDot);
     titleContainer.appendChild(titleText);
@@ -175,12 +471,14 @@ const KanbanBoard = (() => {
     cardsContainer.dataset.columnId = col.id;
 
     const cards = KanbanFilter.filterCards(_getCardsForColumn(col.id));
+    const fragment = document.createDocumentFragment();
     for (const card of cards) {
       const cardEl = KanbanCard.create(card, col.id, _settings);
       _bindCardDrag(cardEl);
       cardEl.addEventListener('click', () => _openEditCardModal(card, col.id));
-      cardsContainer.appendChild(cardEl);
+      fragment.appendChild(cardEl);
     }
+    cardsContainer.appendChild(fragment);
 
     const addCardBtn = document.createElement('button');
     addCardBtn.className = 'column-add-card';
@@ -220,7 +518,7 @@ const KanbanBoard = (() => {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
 
-      const afterElement = getDragAfterElement(cardsContainer, e.clientY, '.kanban-card:not(.dragging)');
+      const afterElement = _rafGetDragAfterElement(cardsContainer, e.clientY, '.kanban-card:not(.dragging)');
       let placeholder = cardsContainer.querySelector('.drop-placeholder');
       if (!placeholder) {
         placeholder = KanbanCard.createPlaceholder();
@@ -342,20 +640,31 @@ const KanbanBoard = (() => {
   }
 
   function _bindColumnReorder(board) {
+    let _colRafId = null;
+    let _pendingColReorderX = 0;
+    let _colRafResult = { element: null };
+
     board.addEventListener('dragover', (e) => {
       if (!_draggedColumn) return;
       e.preventDefault();
 
-      const columns = [...board.querySelectorAll('.kanban-column')];
-      const afterElement = columns.reduce((closest, child) => {
-        const box = child.getBoundingClientRect();
-        const offset = e.clientX - box.left - box.width / 2;
-        if (offset < 0 && offset > closest.offset) {
-          return { offset, element: child };
-        }
-        return closest;
-      }, { offset: Number.NEGATIVE_INFINITY }).element;
+      if (!_colRafId) {
+        _colRafId = requestAnimationFrame(() => {
+          _colRafId = null;
+          const columns = [...board.querySelectorAll('.kanban-column')];
+          _colRafResult = columns.reduce((closest, child) => {
+            const box = child.getBoundingClientRect();
+            const offset = _pendingColReorderX - box.left - box.width / 2;
+            if (offset < 0 && offset > closest.offset) {
+              return { offset, element: child };
+            }
+            return closest;
+          }, { offset: Number.NEGATIVE_INFINITY });
+        });
+      }
+      _pendingColReorderX = e.clientX;
 
+      const afterElement = _colRafResult.element;
       const draggingCol = board.querySelector('.kanban-column.dragging');
       if (!draggingCol) return;
 
@@ -385,7 +694,7 @@ const KanbanBoard = (() => {
   }
 
   function _bindColumnHeaderDrag() {
-    const board = document.getElementById('kanban-board');
+    const board = _dom.board;
     if (!board) return;
     board.querySelectorAll('.kanban-column .column-header').forEach(header => {
       header.addEventListener('dragstart', (e) => {
@@ -419,27 +728,27 @@ const KanbanBoard = (() => {
   }
 
   function _populateModal(titleText, columnId, card) {
-    document.getElementById('modal-title').textContent = titleText;
-    document.getElementById('card-title-input').value = card ? (card.title || '') : '';
-    document.getElementById('card-desc-input').value = card ? (card.description || '') : '';
+    _dom.modalTitle.textContent = titleText;
+    _dom.cardTitle.value = card ? (card.title || '') : '';
+    _dom.cardDesc.value = card ? (card.description || '') : '';
     _populateAssigneeSelect(card ? (card.assignee || '') : '');
     _populateAuthorSelect(card ? (card.author || '') : '');
-    document.getElementById('card-priority-select').value = card ? (card.priority || '') : '';
-    document.getElementById('card-delete-btn').style.display = card ? 'inline-block' : 'none';
+    _dom.cardPriority.value = card ? (card.priority || '') : '';
+    _dom.cardDeleteBtn.style.display = card ? 'inline-block' : 'none';
     _populateTagSelector(card ? (card.tags || []) : []);
     _closeTagsDropdown();
-    document.getElementById('edit-card-modal').style.display = 'flex';
-    setTimeout(() => document.getElementById('card-title-input').focus(), 50);
+    _dom.modal.style.display = 'flex';
+    setTimeout(() => _dom.cardTitle.focus(), 50);
   }
 
   function _closeModal() {
-    document.getElementById('edit-card-modal').style.display = 'none';
+    _dom.modal.style.display = 'none';
     _editingCard = null;
     _editingColumnId = null;
   }
 
   function _populateTagSelector(selectedTagIds) {
-    const container = document.getElementById('card-tags-selector');
+    const container = _dom.cardTagsSelector;
     if (!container) return;
     container.innerHTML = '';
     const tags = _settings?.tags || [];
@@ -448,6 +757,7 @@ const KanbanBoard = (() => {
       _updateTagsDisplay();
       return;
     }
+    const fragment = document.createDocumentFragment();
     for (const tag of tags) {
       const label = document.createElement('label');
       label.className = 'card-tag-option';
@@ -466,14 +776,15 @@ const KanbanBoard = (() => {
       label.appendChild(dot);
       label.appendChild(span);
       cb.addEventListener('change', () => _updateTagsDisplay());
-      container.appendChild(label);
+      fragment.appendChild(label);
     }
+    container.appendChild(fragment);
     _updateTagsDisplay();
   }
 
   function _updateTagsDisplay() {
-    const display = document.getElementById('card-tags-display');
-    const selectedContainer = document.getElementById('card-tags-selected');
+    const display = _dom.tagsDisplay;
+    const selectedContainer = _dom.tagsSelected;
     if (!display) return;
     display.innerHTML = '';
     selectedContainer.innerHTML = '';
@@ -486,6 +797,8 @@ const KanbanBoard = (() => {
       display.appendChild(placeholder);
       return;
     }
+    const displayFragment = document.createDocumentFragment();
+    const selectedFragment = document.createDocumentFragment();
     const tags = _settings?.tags || [];
     for (const cb of checkedBoxes) {
       const tag = tags.find(t => t.id === cb.value);
@@ -500,20 +813,22 @@ const KanbanBoard = (() => {
         cb.checked = false;
         _updateTagsDisplay();
       });
-      display.appendChild(badge);
+      displayFragment.appendChild(badge);
       const dropdownBadge = badge.cloneNode(true);
       dropdownBadge.querySelector('.card-remove-tag').addEventListener('click', (e) => {
         e.stopPropagation();
         cb.checked = false;
         _updateTagsDisplay();
       });
-      selectedContainer.appendChild(dropdownBadge);
+      selectedFragment.appendChild(dropdownBadge);
     }
+    display.appendChild(displayFragment);
+    selectedContainer.appendChild(selectedFragment);
   }
 
   function _toggleTagsDropdown() {
-    const wrapper = document.getElementById('card-tags-dropdown-wrapper');
-    const dropdown = document.getElementById('card-tags-dropdown');
+    const wrapper = _dom.tagsDropdownWrapper;
+    const dropdown = _dom.tagsDropdown;
     if (!wrapper || !dropdown) return;
     const isActive = wrapper.classList.contains('active');
     wrapper.classList.toggle('active', !isActive);
@@ -521,50 +836,54 @@ const KanbanBoard = (() => {
   }
 
   function _closeTagsDropdown() {
-    const wrapper = document.getElementById('card-tags-dropdown-wrapper');
-    const dropdown = document.getElementById('card-tags-dropdown');
+    const wrapper = _dom.tagsDropdownWrapper;
+    const dropdown = _dom.tagsDropdown;
     if (wrapper) wrapper.classList.remove('active');
     if (dropdown) dropdown.classList.remove('active');
-    const selected = document.getElementById('card-tags-selected');
+    const selected = _dom.tagsSelected;
     if (selected) selected.innerHTML = '';
   }
 
   function _populateAssigneeSelect(selectedValue) {
-    const select = document.getElementById('card-assignee-select');
+    const select = _dom.cardAssignee;
     if (!select) return;
     select.innerHTML = '<option value="">' + I18n.t('modal.not.assigned') + '</option>';
     const performers = _settings?.performers || [];
+    const fragment = document.createDocumentFragment();
     for (const performer of performers) {
       const opt = document.createElement('option');
       opt.value = performer.name;
       opt.textContent = performer.name;
       if (performer.name === selectedValue) opt.selected = true;
-      select.appendChild(opt);
+      fragment.appendChild(opt);
     }
+    select.appendChild(fragment);
   }
 
   function _populateAuthorSelect(selectedValue) {
-    const select = document.getElementById('card-author-select');
+    const select = _dom.cardAuthor;
     if (!select) return;
     select.innerHTML = '<option value="">' + I18n.t('modal.not.specified') + '</option>';
     const authors = _settings?.authors || [];
+    const fragment = document.createDocumentFragment();
     for (const author of authors) {
       const opt = document.createElement('option');
       opt.value = author.name;
       opt.textContent = author.name;
       if (author.name === selectedValue) opt.selected = true;
-      select.appendChild(opt);
+      fragment.appendChild(opt);
     }
+    select.appendChild(fragment);
   }
 
   function _saveCard() {
-    const title = document.getElementById('card-title-input').value.trim();
+    const title = _dom.cardTitle.value.trim();
     if (!title) return;
 
-    const description = document.getElementById('card-desc-input').value.trim();
-    const priority = document.getElementById('card-priority-select').value;
-    const assignee = document.getElementById('card-assignee-select').value;
-    const author = document.getElementById('card-author-select').value;
+    const description = _dom.cardDesc.value.trim();
+    const priority = _dom.cardPriority.value;
+    const assignee = _dom.cardAssignee.value;
+    const author = _dom.cardAuthor.value;
 
     const selectedTags = Array.from(document.querySelectorAll('.card-tag-option input[type="checkbox"]:checked')).map(cb => cb.value);
 
@@ -622,8 +941,7 @@ const KanbanBoard = (() => {
     _renderBoard();
     save();
 
-    const board = document.getElementById('kanban-board');
-    const lastCol = board.querySelector('.kanban-column:last-child');
+    const lastCol = _dom.board.querySelector('.kanban-column:last-child');
     if (lastCol) {
       const input = lastCol.querySelector('.column-title input');
       if (input) input.focus();
@@ -713,7 +1031,7 @@ const KanbanBoard = (() => {
   }
 
   function _renderFilterUI() {
-    const assigneeSelect = document.getElementById('filter-assignee');
+    const assigneeSelect = _dom.filterAssignee;
     if (!assigneeSelect) return;
 
     const performers = _settings?.performers || [];
@@ -732,8 +1050,8 @@ const KanbanBoard = (() => {
   }
 
   function _renderTagsDropdown() {
-    const listEl = document.getElementById('filter-tags-list');
-    const labelEl = document.getElementById('filter-tags-label');
+    const listEl = _dom.filterTagsList;
+    const labelEl = _dom.filterTagsLabel;
     if (!listEl || !labelEl) return;
 
     listEl.innerHTML = '';
@@ -790,7 +1108,7 @@ const KanbanBoard = (() => {
   }
 
   function _renderTagsChips() {
-    const chipsEl = document.getElementById('filter-tags-chips');
+    const chipsEl = _dom.filterTagsChips;
     if (!chipsEl) return;
     chipsEl.innerHTML = '';
 
@@ -821,42 +1139,49 @@ const KanbanBoard = (() => {
   }
 
   function _updateClearButton() {
-    const btn = document.getElementById('filter-clear');
+    const btn = _dom.filterClear;
     if (!btn) return;
     btn.classList.toggle('visible', KanbanFilter.hasActiveFilters());
   }
 
   function _bindEvents() {
-    _bindColumnReorder(document.getElementById('kanban-board'));
+    _bindColumnReorder(_dom.board);
 
     document.getElementById('card-save').addEventListener('click', () => _saveCard());
     document.getElementById('card-cancel').addEventListener('click', () => _closeModal());
-    document.getElementById('card-delete-btn').addEventListener('click', () => _deleteCard());
+    _dom.cardDeleteBtn.addEventListener('click', () => _deleteCard());
 
-    document.getElementById('card-title-input').addEventListener('keydown', (e) => {
+    _dom.cardTitle.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') _saveCard();
       if (e.key === 'Escape') _closeModal();
     });
 
-    document.getElementById('edit-card-modal').addEventListener('click', (e) => {
+    _dom.modal.addEventListener('click', (e) => {
       if (e.target.classList.contains('modal-overlay')) _closeModal();
     });
 
-    document.addEventListener('keydown', (e) => {
+    if (_boundDocKeydown) document.removeEventListener('keydown', _boundDocKeydown);
+    _boundDocKeydown = (e) => {
       if (e.key === 'Escape') _closeModal();
-    });
+    };
+    document.addEventListener('keydown', _boundDocKeydown);
 
-    const filterSearch = document.getElementById('filter-search');
-    const filterPriority = document.getElementById('filter-priority');
-    const filterAssignee = document.getElementById('filter-assignee');
-    const filterClear = document.getElementById('filter-clear');
+    const filterSearch = _dom.filterSearch;
+    const filterPriority = _dom.filterPriority;
+    const filterAssignee = _dom.filterAssignee;
+    const filterClear = _dom.filterClear;
 
     if (filterSearch) {
+      let _searchTimer = null;
       filterSearch.addEventListener('input', () => {
-        KanbanFilter.applyFilters(filterSearch.value, filterPriority?.value || '', filterAssignee?.value || '');
-        _renderBoard();
-        _updateClearButton();
-        save();
+        if (_searchTimer) clearTimeout(_searchTimer);
+        _searchTimer = setTimeout(() => {
+          _searchTimer = null;
+          KanbanFilter.applyFilters(filterSearch.value, filterPriority?.value || '', filterAssignee?.value || '');
+          _renderBoard();
+          _updateClearButton();
+          save();
+        }, 150);
       });
     }
     if (filterPriority) {
@@ -888,10 +1213,10 @@ const KanbanBoard = (() => {
       });
     }
 
-    const tagsLabel = document.getElementById('filter-tags-label');
+    const tagsLabel = _dom.filterTagsLabel;
     if (tagsLabel) {
       tagsLabel.addEventListener('click', () => {
-        const dropdown = document.getElementById('filter-tags-dropdown');
+        const dropdown = _dom.filterTagsDropdown;
         if (!dropdown) return;
         const isVisible = dropdown.style.display === 'block';
         dropdown.style.display = isVisible ? 'none' : 'block';
@@ -900,16 +1225,18 @@ const KanbanBoard = (() => {
       });
     }
 
-    document.addEventListener('click', (e) => {
-      const dropdown = document.getElementById('filter-tags-dropdown');
-      const label = document.getElementById('filter-tags-label');
+    if (_boundDocClickFilter) document.removeEventListener('click', _boundDocClickFilter);
+    _boundDocClickFilter = (e) => {
+      const dropdown = _dom.filterTagsDropdown;
+      const label = _dom.filterTagsLabel;
       if (dropdown && label && !dropdown.contains(e.target) && !label.contains(e.target)) {
         dropdown.style.display = 'none';
         label.classList.remove('active');
       }
-    });
+    };
+    document.addEventListener('click', _boundDocClickFilter);
 
-    const tagsDisplay = document.getElementById('card-tags-display');
+    const tagsDisplay = _dom.tagsDisplay;
     if (tagsDisplay) {
       tagsDisplay.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -917,7 +1244,7 @@ const KanbanBoard = (() => {
       });
     }
 
-    const tagsClearBtn = document.getElementById('tags-dropdown-clear');
+    const tagsClearBtn = _dom.tagsDropdownClear;
     if (tagsClearBtn) {
       tagsClearBtn.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -926,12 +1253,14 @@ const KanbanBoard = (() => {
       });
     }
 
-    document.addEventListener('click', (e) => {
-      const wrapper = document.getElementById('card-tags-dropdown-wrapper');
+    if (_boundDocClickTags) document.removeEventListener('click', _boundDocClickTags);
+    _boundDocClickTags = (e) => {
+      const wrapper = _dom.tagsDropdownWrapper;
       if (wrapper && wrapper.classList.contains('active') && !wrapper.contains(e.target)) {
         _closeTagsDropdown();
       }
-    });
+    };
+    document.addEventListener('click', _boundDocClickTags);
   }
 
   return { init, save, getColumns, getSettings };

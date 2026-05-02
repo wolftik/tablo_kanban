@@ -1,9 +1,9 @@
 'use strict';
 
+const _escapeDiv = document.createElement('div');
 function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
+  _escapeDiv.textContent = str;
+  return _escapeDiv.innerHTML;
 }
 
 function getDragAfterElement(container, y, selector) {
@@ -17,6 +17,31 @@ function getDragAfterElement(container, y, selector) {
     }
     return closest;
   }, { offset: Number.NEGATIVE_INFINITY, element: null }).element;
+}
+
+function createRafDragAfterElement() {
+  let _rafId = null;
+  let _lastResult = null;
+  let _pendingContainer = null;
+  let _pendingY = 0;
+  let _pendingSelector = '';
+
+  function _process() {
+    _rafId = null;
+    if (_pendingContainer) {
+      _lastResult = getDragAfterElement(_pendingContainer, _pendingY, _pendingSelector);
+    }
+  }
+
+  return function throttledGetDragAfterElement(container, y, selector) {
+    _pendingContainer = container;
+    _pendingY = y;
+    _pendingSelector = selector;
+    if (!_rafId) {
+      _rafId = requestAnimationFrame(_process);
+    }
+    return _lastResult;
+  };
 }
 
 function generateId() {
