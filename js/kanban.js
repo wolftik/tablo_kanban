@@ -441,15 +441,6 @@ const KanbanBoard = (() => {
     const actions = document.createElement('div');
     actions.className = 'column-actions';
 
-    const editBtn = document.createElement('button');
-    editBtn.className = 'column-action-btn';
-    editBtn.innerHTML = '&#9998;';
-    editBtn.title = I18n.t('column.edit');
-    editBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      _editColumn(col.id);
-    });
-
     const clearBtn = document.createElement('button');
     clearBtn.className = 'column-action-btn clear';
     clearBtn.innerHTML = '&#9003;';
@@ -468,7 +459,6 @@ const KanbanBoard = (() => {
       _deleteColumn(col.id);
     });
 
-    actions.appendChild(editBtn);
     actions.appendChild(clearBtn);
     actions.appendChild(deleteBtn);
 
@@ -940,92 +930,59 @@ const KanbanBoard = (() => {
   }
 
   function _addColumn() {
-    const newCol = {
-      id: generateId(),
-      title: I18n.t('column.new.column'),
-      color: _randomColor(),
-      order: _columns.length,
-      cards: []
-    };
-    _columns.push(newCol);
-    _renderBoard();
-    save();
+    const modal = document.getElementById('add-column-modal');
+    const titleInput = document.getElementById('new-column-title');
+    const colorInput = document.getElementById('new-column-color');
+    const saveBtn = document.getElementById('new-column-save');
+    const cancelBtn = document.getElementById('new-column-cancel');
 
-    const lastCol = _dom.board.querySelector('.kanban-column:last-child');
-    if (lastCol) {
-      const input = lastCol.querySelector('.column-title input');
-      if (input) input.focus();
+    titleInput.value = '';
+    colorInput.value = '#6366f1';
+    modal.style.display = 'flex';
+    titleInput.focus();
+
+    function cleanup() {
+      modal.style.display = 'none';
+      saveBtn.removeEventListener('click', onSave);
+      cancelBtn.removeEventListener('click', onCancel);
+      document.removeEventListener('keydown', onKeydown);
     }
-  }
 
-  function _randomColor() {
-    const hue = Math.floor(Math.random() * 360);
-    return `hsl(${hue}, 60%, 50%)`;
-  }
+    function onSave() {
+      const title = titleInput.value.trim() || I18n.t('column.new.column');
+      const color = colorInput.value;
 
-  function _editColumn(columnId) {
-    const col = _columns.find(c => c.id === columnId);
-    if (!col) return;
+      const newCol = {
+        id: generateId(),
+        title: title,
+        color: color,
+        order: _columns.length,
+        cards: []
+      };
 
-    const colEl = document.querySelector('.kanban-column[data-column-id="' + columnId + '"]');
-    if (!colEl) return;
+      _columns.push(newCol);
 
-    const titleContainer = colEl.querySelector('.column-title');
-
-    titleContainer.innerHTML = '';
-
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.value = col.title;
-
-    const colorPicker = document.createElement('input');
-    colorPicker.type = 'color';
-    colorPicker.value = _hslToHex(col.color) || col.color;
-    colorPicker.className = 'column-color-picker';
-
-    const saveBtn = document.createElement('button');
-    saveBtn.className = 'column-action-btn';
-    saveBtn.innerHTML = '&#10003;';
-    saveBtn.addEventListener('click', () => {
-      col.title = input.value.trim() || I18n.t('column.untitled');
-      col.color = colorPicker.value;
       _renderBoard();
       save();
+      cleanup();
+    }
+
+    function onCancel() {
+      cleanup();
+    }
+
+    function onKeydown(e) {
+      if (e.key === 'Enter') onSave();
+      if (e.key === 'Escape') onCancel();
+    }
+
+    saveBtn.addEventListener('click', onSave);
+    cancelBtn.addEventListener('click', onCancel);
+    document.addEventListener('keydown', onKeydown);
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) onCancel();
     });
-
-    const cancelBtn = document.createElement('button');
-    cancelBtn.className = 'column-action-btn delete';
-    cancelBtn.innerHTML = '&times;';
-    cancelBtn.addEventListener('click', () => _renderBoard());
-
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') saveBtn.click();
-      if (e.key === 'Escape') cancelBtn.click();
-    });
-
-    titleContainer.appendChild(input);
-    titleContainer.appendChild(colorPicker);
-    titleContainer.appendChild(saveBtn);
-    titleContainer.appendChild(cancelBtn);
-
-    input.focus();
-    input.select();
-  }
-
-  function _hslToHex(hsl) {
-    if (!hsl || !hsl.startsWith('hsl')) return null;
-    const match = hsl.match(/hsl\((\d+),\s*(\d+)%,\s*(\d+)%\)/);
-    if (!match) return null;
-    const h = parseInt(match[1]) / 360;
-    const s = parseInt(match[2]) / 100;
-    const l = parseInt(match[3]) / 100;
-    const a = s * Math.min(l, 1 - l);
-    const f = (n) => {
-      const k = (n + h * 12) % 12;
-      const color = l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
-      return Math.round(255 * color).toString(16).padStart(2, '0');
-    };
-    return `#${f(0)}${f(8)}${f(4)}`;
   }
 
   function _clearColumnCards(columnId) {

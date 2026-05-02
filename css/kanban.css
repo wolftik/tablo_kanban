@@ -931,3 +931,27 @@
     padding: 2px 6px;
   }
 }
+
+/* New column modal */
+.new-column-color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.new-column-color-row label {
+  font-size: 14px;
+  color: var(--card-text);
+  white-space: nowrap;
+}
+
+.new-column-color-row input[type="color"] {
+  width: 40px;
+  height: 36px;
+  padding: 2px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  cursor: pointer;
+  background: none;
+}
