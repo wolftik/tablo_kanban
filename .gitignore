@@ -1,3 +1,6 @@
 .kilo/
 .venv/
 screenshots/
+
+PROJECT.md
+*.zip

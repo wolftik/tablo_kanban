@@ -1,10 +1,10 @@
 # Privacy Policy — Tablo Kanban
 
-**Last updated:** May 2, 2026
+**Last updated:** May 3, 2026
 
 ## Overview
 
-Tablo Kanban is a Chrome extension that replaces the new tab page with a bookmarks bar and a Kanban board. This policy explains what data the extension accesses, stores, and shares.
+Tablo Kanban is a Chrome/Edge/Yandex extension that replaces the new tab page with a bookmarks bar and a Kanban board. This policy explains what data the extension accesses, stores, and shares.
 
 ## Data Collection and Usage
 
@@ -23,9 +23,10 @@ All data stored via `chrome.storage` is **encrypted at rest** by Chrome and is n
 
 | Permission | Justification |
 |-----------|---------------|
-| `bookmarks` | Only reads your Chrome bookmark tree to display selected bookmarks on the new tab page. Does not modify bookmarks without your explicit action. |
+| `bookmarks` | Reads your Chrome bookmark tree to display selected bookmarks on the new tab page. Does not modify bookmarks without your explicit action. |
 | `storage` | Required for `chrome.storage.sync` and `chrome.storage.local` to save your board data and settings. |
 | `identity` | Used solely for Google Drive OAuth (optional cloud sync). Authenticates you to your own Google Drive. |
+| `tabs` | Detects when a new tab is opened and redirects it to the extension's page (in browsers that do not natively support new tab overrides, such as Yandex Browser and Edge). Also used to open the tab page when the extension icon is clicked. |
 
 ### External Services (Optional)
 
