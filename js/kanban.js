@@ -67,6 +67,10 @@ const KanbanBoard = (() => {
   async function _tryLoadFromDrive(saved) {
     if (_driveSyncing) return;
     try {
+      // Only attempt Drive sync if the user is already signed in (non-interactive check)
+      const signedIn = await SyncProvider.isSignedIn();
+      if (!signedIn) return;
+
       const driveModified = await SyncProvider.getLastModified();
       if (driveModified === 0) return;
       const localModified = saved._modified || 0;
@@ -142,6 +146,10 @@ const KanbanBoard = (() => {
       return;
     }
     try {
+      // Only attempt Drive sync upload if the user is already signed in
+      const signedIn = await SyncProvider.isSignedIn();
+      if (!signedIn) return;
+
       _driveSyncing = true;
       await SyncProvider.upload(data);
       if (_pendingSave) {

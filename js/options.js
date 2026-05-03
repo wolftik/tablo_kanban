@@ -423,15 +423,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     signInBtn.addEventListener('click', async () => {
       try {
+        const extId = chrome.runtime.id;
+        console.log('[Options] Extension ID:', extId);
+        console.log('[Options] OAuth client_id from manifest:', chrome.runtime.getManifest().oauth2?.client_id);
+
         await SyncProvider.signIn();
+
+        console.log('[Options] Sign-in successful, token obtained');
         const kanbanData = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
         if (kanbanData.columns) {
           kanbanData._modified = Date.now();
+          console.log('[Options] Uploading initial data to Drive...');
           await SyncProvider.upload(kanbanData);
+          console.log('[Options] Initial upload complete');
         }
         await _updateSyncUI();
       } catch (e) {
-        statusText.textContent = I18n.t('options.sync.failed');
+        const msg = e?.message || String(e);
+        console.error('[Options] Sync sign-in failed:', e);
+
+        let displayMsg = I18n.t('options.sync.failed') + ': ' + msg;
+        if (msg.includes('bad client id')) {
+          displayMsg += '. Проверьте настройки Google Cloud Console: client_id в manifest.json должен соответствовать ID расширения (' + chrome.runtime.id + ').';
+        }
+        statusText.textContent = displayMsg;
         statusText.className = 'sync-status-error';
       }
     });
