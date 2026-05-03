@@ -70,9 +70,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (areaName === 'sync' && changes.settings) {
         const newSettings = changes.settings.newValue;
         if (newSettings) {
-          applyTheme(newSettings.theme || 'system');
+          const oldTheme = document.documentElement.getAttribute('data-theme');
+          const newTheme = newSettings.theme || 'system';
+          if (newTheme !== oldTheme) applyTheme(newTheme);
+          if (newSettings.language && ['ru', 'en', 'zh'].includes(newSettings.language) && newSettings.language !== I18n.getLang()) {
+            location.reload();
+            return;
+          }
+          BookmarksManager.render();
         }
-        BookmarksManager.render();
       }
       if (areaName === 'sync' && changes.bookmarks_display) {
         BookmarksManager.render();

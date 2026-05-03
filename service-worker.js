@@ -17,5 +17,6 @@ chrome.action.onClicked.addListener((tab) => {
 });
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.action.setTitle({ title: 'Tablo Kanban — Open new tab page' });
+  const title = chrome.i18n.getMessage('settingsOpen');
+  chrome.action.setTitle({ title: 'Tablo Kanban — ' + title });
 });

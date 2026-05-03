@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       radio.checked = radio.value === theme;
     });
     if ($langSelect) {
-      $langSelect.value = settings.language || 'ru';
+      $langSelect.value = settings.language || 'en';
     }
     if ($clockChk) {
       $clockChk.checked = settings.widgets?.clock !== false;
@@ -479,7 +479,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   $saveBtn.addEventListener('click', async () => {
     const theme = document.querySelector('input[name="theme"]:checked')?.value || 'system';
-    const language = $langSelect?.value || 'ru';
+    const language = $langSelect?.value || 'en';
 
     settings = {
       theme,
@@ -504,7 +504,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       _modified: Date.now()
     });
     applyTheme(theme);
-    I18n.setLang(language);
+    await I18n.setLang(language);
+    renderTagsList();
+    renderPerformersList();
+    renderAuthorsList();
+    renderColumnsList();
 
     const originalText = $saveBtn.textContent;
     $saveBtn.textContent = I18n.t('options.saved');
