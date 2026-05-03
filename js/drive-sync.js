@@ -6,6 +6,10 @@ const DriveSync = (() => {
 
   function _getToken(interactive) {
     return new Promise((resolve, reject) => {
+      if (!chrome.identity || !chrome.identity.getAuthToken) {
+        reject(new Error('chrome.identity API is not supported in this browser'));
+        return;
+      }
       chrome.identity.getAuthToken({ interactive }, (token) => {
         if (chrome.runtime.lastError) {
           reject(chrome.runtime.lastError);

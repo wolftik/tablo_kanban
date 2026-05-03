@@ -84,7 +84,7 @@ const KanbanBoard = (() => {
         await StorageLocal.set(KanbanConstants.STORAGE_KEY, saved);
       }
     } catch (e) {
-      console.warn('[KanbanBoard] Drive sync load failed:', e);
+      console.warn('[KanbanBoard] Drive sync load failed:', e, e?.message || JSON.stringify(e));
     } finally {
       _driveSyncing = false;
     }
