@@ -33,6 +33,8 @@
     "page": "views/options.html",
     "open_in_tab": true
   },
+  "short_name": "Tablo Kanban",
+  "homepage_url": "https://github.com/wolftik/tablo_kanban",
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
