@@ -192,10 +192,10 @@ const I18n = (() => {
     const savedLang = settings && settings.language;
     if (savedLang && ['ru', 'en', 'zh'].includes(savedLang)) {
       _currentLang = savedLang;
-      await _loadMessages(_currentLang);
     } else {
       _currentLang = getLang();
     }
+    await _loadMessages(_currentLang);
     document.documentElement.setAttribute('lang', _currentLang === 'zh' ? 'zh-CN' : _currentLang === 'ru' ? 'ru-RU' : 'en-US');
     applyTranslations();
   }

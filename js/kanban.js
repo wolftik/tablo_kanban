@@ -94,6 +94,8 @@ const KanbanBoard = (() => {
     }
   }
 
+  let _initialized = false;
+
   async function init() {
     _settings = await StorageSync.get('settings') || getDefaultSettings();
     const saved = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
@@ -114,13 +116,17 @@ const KanbanBoard = (() => {
 
     KanbanFilter.init(_kanbanFilter, _onFilterChange);
 
-    _cacheDoms();
-    if (_dom.board) {
-      _dom.board.innerHTML = '';
-      _dom.board.classList.remove('kanban-initialized');
+    if (!_initialized) {
+      _cacheDoms();
+      if (_dom.board) {
+        _dom.board.innerHTML = '';
+        _dom.board.classList.remove('kanban-initialized');
+      }
+      _bindEvents();
+      _initialized = true;
     }
+
     _renderBoard();
-    _bindEvents();
     _renderFilterUI();
     _updateClearButton();
   }
@@ -809,13 +815,14 @@ const KanbanBoard = (() => {
     _populateAuthorSelect(card ? (card.author || '') : '');
     _dom.cardPriority.value = card ? (card.priority || '') : '';
     _dom.cardDeleteBtn.style.display = card ? 'inline-block' : 'none';
-    _populateTagSelector(card ? (card.tags || []) : []);
     _closeTagsDropdown();
+    _populateTagSelector(card ? (card.tags || []) : []);
     _dom.modal.style.display = 'flex';
     setTimeout(() => _dom.cardTitle.focus(), 50);
   }
 
   function _closeModal() {
+    _closeTagsDropdown();
     _dom.modal.style.display = 'none';
     _editingCard = null;
     _editingColumnId = null;
@@ -1223,7 +1230,7 @@ const KanbanBoard = (() => {
       if (e.key === 'Escape') _closeModal();
     });
 
-    _dom.modal.addEventListener('click', (e) => {
+    _dom.modal.addEventListener('mousedown', (e) => {
       if (e.target.classList.contains('modal-overlay')) _closeModal();
     });
 

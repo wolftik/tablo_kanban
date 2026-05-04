@@ -18,6 +18,15 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   _setupTabs();
 
+  function _setVersion() {
+    const verEl = document.querySelector('[data-i18n="options.about.version"]');
+    if (verEl && typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.getManifest) {
+      const manifest = chrome.runtime.getManifest();
+      verEl.textContent = verEl.textContent.replace('{version}', manifest.version || '?');
+    }
+  }
+  _setVersion();
+
   function _setupTabs() {
     const tabs = document.querySelectorAll('.tab-btn');
     const contents = document.querySelectorAll('.tab-content');
@@ -520,6 +529,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
     applyTheme(theme);
     await I18n.setLang(language);
+    _setVersion();
     renderTagsList();
     renderPerformersList();
     renderAuthorsList();
