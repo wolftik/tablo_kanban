@@ -1,6 +1,6 @@
 # Privacy Policy — Tablo Kanban
 
-**Last updated:** May 3, 2026
+**Last updated:** May 5, 2026
 
 ## Overview
 
@@ -26,7 +26,7 @@ All data stored via `chrome.storage` is **encrypted at rest** by Chrome and is n
 | `bookmarks` | Reads your Chrome bookmark tree to display selected bookmarks on the new tab page. Does not modify bookmarks without your explicit action. |
 | `storage` | Required for `chrome.storage.sync` and `chrome.storage.local` to save your board data and settings. |
 | `identity` | Used solely for Google Drive OAuth (optional cloud sync). Authenticates you to your own Google Drive. |
-| `tabs` | Detects when a new tab is opened and redirects it to the extension's page (in browsers that do not natively support new tab overrides, such as Yandex Browser and Edge). Also used to open the tab page when the extension icon is clicked. |
+| `tabs` | Used to open the extension page when the extension icon is clicked. |
 
 ### External Services (Optional)
 
