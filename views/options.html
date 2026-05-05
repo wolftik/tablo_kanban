@@ -194,6 +194,21 @@
                 <span class="donate-label">WebMoney</span>
                 <span class="donate-hint">Donate через WM</span>
               </a>
+              <button class="donate-btn donate-btn-qr" id="donate-okx-btn">
+                <span class="donate-icon"></span>
+                <span class="donate-label" data-i18n="options.support.okx">OKX (крипта)</span>
+                <span class="donate-hint" data-i18n="options.support.okx.hint">QR-код для перевода</span>
+              </button>
+            </div>
+
+            <!-- OKX QR Modal -->
+            <div class="qr-modal-overlay" id="okx-qr-modal">
+              <div class="qr-modal">
+                <button class="qr-modal-close" id="okx-qr-close">&times;</button>
+                <h3 data-i18n="options.support.okx.modalTitle">Поддержать через OKX</h3>
+                <p data-i18n="options.support.okx.modalDesc">Отсканируйте QR-код в приложении OKX для перевода:</p>
+                <img src="../img/qr-okx.jpg" alt="OKX QR Code" class="qr-modal-img">
+              </div>
             </div>
             <hr class="sync-section-divider">
             <h3 data-i18n="app.name">Tablo Kanban</h3>

@@ -568,4 +568,31 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     });
   }
+
+  // ===== OKX QR Modal =====
+  const $okxBtn = document.getElementById('donate-okx-btn');
+  const $okxModal = document.getElementById('okx-qr-modal');
+  const $okxClose = document.getElementById('okx-qr-close');
+
+  if ($okxBtn && $okxModal && $okxClose) {
+    $okxBtn.addEventListener('click', () => {
+      $okxModal.classList.add('active');
+    });
+
+    $okxClose.addEventListener('click', () => {
+      $okxModal.classList.remove('active');
+    });
+
+    $okxModal.addEventListener('click', (e) => {
+      if (e.target === $okxModal) {
+        $okxModal.classList.remove('active');
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && $okxModal.classList.contains('active')) {
+        $okxModal.classList.remove('active');
+      }
+    });
+  }
 });

@@ -262,8 +262,8 @@ header h1 {
 /* Donate buttons */
 .donate-buttons {
   display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
+  flex-wrap: nowrap;
+  gap: 8px;
   margin-top: 8px;
 }
 
@@ -271,12 +271,13 @@ header h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
-  padding: 16px 24px;
-  min-width: 140px;
+  gap: 2px;
+  padding: 10px 14px;
+  min-width: 0;
+  flex: 1;
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 10px;
   text-decoration: none;
   color: var(--text);
   transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
@@ -290,18 +291,100 @@ header h1 {
 }
 
 .donate-icon {
-  font-size: 28px;
+  font-size: 20px;
   line-height: 1;
 }
 
 .donate-label {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .donate-hint {
-  font-size: 12px;
+  font-size: 10px;
   color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.donate-btn-qr {
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.donate-btn-qr .donate-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.donate-btn-qr .donate-icon::after {
+  content: "〰️";
+  font-size: 20px;
+}
+
+/* QR Modal */
+.qr-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-modal-overlay.active {
+  display: flex;
+}
+
+.qr-modal {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 360px;
+  width: 90%;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.qr-modal h3 {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.qr-modal p {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.qr-modal-img {
+  width: 240px;
+  height: 240px;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+
+.qr-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 28px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.qr-modal-close:hover {
+  color: var(--text);
 }
 
 /* Buttons */
