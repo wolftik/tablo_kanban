@@ -144,17 +144,36 @@
           </div>
 
           <div id="yadisk-token-section" class="yadisk-token-section" style="display:none">
-            <p>
-              <span data-i18n="options.sync.yadisk.hint">Для подключения Яндекс.Диска необходимо получить OAuth-токен:</span><br>
-              1. Перейдите на <a href="https://oauth.yandex.ru" target="_blank" rel="noopener">oauth.yandex.ru</a><br>
-              2. Создайте приложение и получите токен с правами <code>cloud_api:disk.write</code> и <code>cloud_api:disk.read</code><br>
-              3. <span data-i18n="options.sync.yadisk.paste">Вставьте токен в поле ниже</span>
-            </p>
-            <div class="yadisk-token-input-wrap">
-              <input type="password" id="yadisk-token-input" class="yadisk-token-input" placeholder="Введите OAuth-токен...">
-              <button id="yadisk-token-apply" class="btn-primary" data-i18n="options.sync.yadisk.apply">Сохранить токен</button>
+            <div id="yadisk-client-section">
+              <p data-i18n="options.sync.yadisk.client.hint">Для подключения Яндекс.Диска зарегистрируйте приложение на oauth.yandex.ru:</p>
+              <ol>
+                <li>Перейдите на <a href="https://oauth.yandex.ru" target="_blank" rel="noopener">oauth.yandex.ru</a></li>
+                <li data-i18n="options.sync.yadisk.client.step2">Создайте приложение → тип «Веб-сервис»</li>
+                <li data-i18n="options.sync.yadisk.client.step3">В поле Redirect URI укажите: <code>https://oauth.yandex.ru/verification_code</code></li>
+                <li data-i18n="options.sync.yadisk.client.step4">Добавьте права <code>cloud_api:disk.write</code> и <code>cloud_api:disk.read</code></li>
+                <li data-i18n="options.sync.yadisk.client.step5">Скопируйте ClientID и вставьте ниже, нажмите «Сохранить»</li>
+              </ol>
+              <div class="yadisk-client-input-wrap">
+                <input type="text" id="yadisk-client-input" class="yadisk-client-input" placeholder="ClientID">
+                <button id="yadisk-client-apply" class="btn-primary" data-i18n="options.sync.yadisk.client.save">Сохранить</button>
+              </div>
             </div>
-            <button id="yadisk-token-clear" class="btn-secondary" style="display:none" data-i18n="options.sync.yadisk.clear">Очистить токен</button>
+            <hr class="sync-section-divider">
+            <button id="yadisk-oauth-btn" class="btn-primary yadisk-oauth-btn" style="display:none" data-i18n="options.sync.yadisk.oauth.get">Получить OAuth-токен</button>
+            <div id="yadisk-token-section-inner" style="display:none">
+              <p>
+                <span><b>Получение токена:</b></span><br>
+                1. Нажмите кнопку выше &mdash; откроется страница авторизации Яндекса<br>
+                2. Разрешите доступ &mdash; Яндекс перенаправит на <code>https://oauth.yandex.ru/verification_code</code><br>
+                3. Скопируйте <b>access_token</b> из адресной строки (после <code>access_token=</code>) и вставьте ниже<br>
+                4. Нажмите «Сохранить токен»
+              </p>
+              <div class="yadisk-token-input-wrap">
+                <input type="password" id="yadisk-token-input" class="yadisk-token-input" placeholder="Вставьте access_token из адресной строки...">
+                <button id="yadisk-token-apply" class="btn-primary" data-i18n="options.sync.yadisk.apply">Сохранить токен</button>
+              </div>
+              <button id="yadisk-token-clear" class="btn-secondary" style="display:none" data-i18n="options.sync.yadisk.clear">Очистить токен</button>
+            </div>
           </div>
             <hr class="sync-section-divider">
             <h3 data-i18n="options.support.title">Поддержать проект</h3>
@@ -189,6 +208,7 @@
     </main>
 
     <footer>
+      <button id="back-to-board" class="btn-secondary" data-i18n="options.back">← Вернуться</button>
       <button id="save-options" class="btn-primary" data-i18n="options.save">Сохранить</button>
     </footer>
   </div>

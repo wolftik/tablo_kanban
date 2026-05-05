@@ -1,7 +1,5 @@
 'use strict';
 
-moduleGuard('I18n');
-
 const KanbanCard = (() => {
 
   function _hashToColor(str) {

@@ -68,5 +68,4 @@ function applyTheme(theme) {
   }
 }
 
-function moduleGuard(depName) {
-}
+

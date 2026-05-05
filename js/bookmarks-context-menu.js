@@ -1,9 +1,6 @@
 'use strict';
 
-moduleGuard('I18n');
-
 const BookmarksContextMenu = (() => {
-  moduleGuard('BookmarksManager');
   let _currentBookmark = null;
   let _currentContainer = null;
   let _closeHandler = null;
@@ -75,13 +72,5 @@ const BookmarksContextMenu = (() => {
     _currentContainer = null;
   }
 
-  function getCurrentBookmark() {
-    return _currentBookmark;
-  }
-
-  function getCurrentContainer() {
-    return _currentContainer;
-  }
-
-  return { show, hide, getCurrentBookmark, getCurrentContainer };
+  return { show, hide };
 })();

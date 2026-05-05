@@ -332,7 +332,8 @@ footer {
   padding-top: 16px;
   border-top: 1px solid var(--border);
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Language select */
@@ -542,6 +543,14 @@ footer {
   margin-bottom: 12px;
 }
 
+.yadisk-token-section ol {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.8;
+  padding-left: 20px;
+  margin-bottom: 12px;
+}
+
 .yadisk-token-section code {
   background: var(--bg);
   padding: 1px 4px;
@@ -553,12 +562,14 @@ footer {
   color: var(--primary);
 }
 
+.yadisk-client-input-wrap,
 .yadisk-token-input-wrap {
   display: flex;
   gap: 8px;
   margin-bottom: 8px;
 }
 
+.yadisk-client-input,
 .yadisk-token-input {
   flex: 1;
   padding: 10px 12px;
@@ -571,6 +582,7 @@ footer {
   transition: border-color 0.15s;
 }
 
+.yadisk-client-input:focus,
 .yadisk-token-input:focus {
   border-color: var(--primary);
 }
@@ -579,4 +591,11 @@ footer {
   border: none;
   border-top: 1px solid var(--border);
   margin: 24px 0 16px;
+}
+
+.yadisk-oauth-btn {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 15px;
+  font-weight: 600;
 }

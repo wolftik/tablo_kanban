@@ -3,16 +3,10 @@
 let _bookmarkSlots = 22;
 let _bookmarkGridColumns = 11;
 
-moduleGuard('I18n');
-moduleGuard('StorageSync');
-moduleGuard('StorageLocal');
 const BookmarksManager = (() => {
   let _displayedBookmarks = [];
   let _responsiveObserver = null;
   let _widgetsForcedHidden = false;
-
-  function _slots() { return _bookmarkSlots; }
-  function _columns() { return _bookmarkGridColumns; }
 
   async function _loadSettings() {
     const settings = await StorageSync.get('settings') || getDefaultSettings();
@@ -64,16 +58,7 @@ const BookmarksManager = (() => {
     return _displayedBookmarks;
   }
 
-  function getDisplayedBookmarks() {
-    return _displayedBookmarks;
-  }
-
-  function getGridColumns() {
-    return _bookmarkGridColumns;
-  }
-
   let _dragDropInitialized = false;
-  let _cachedVisibleIds = [];
 
   function _initResponsive(container) {
     if (_responsiveObserver) _responsiveObserver.disconnect();
@@ -139,7 +124,6 @@ const BookmarksManager = (() => {
 
     const settings = await _loadSettings();
     const visibleIds = settings.visibleBookmarks || [];
-    _cachedVisibleIds = visibleIds;
 
     const bookmarksToRender = [];
     for (let i = 0; i < _bookmarkSlots; i++) {
@@ -424,12 +408,6 @@ const BookmarksManager = (() => {
     loadDisplayedBookmarks,
     saveDisplayedBookmarks,
     addDisplayedBookmark,
-    removeDisplayedBookmark,
-    getDisplayedBookmarks,
-    getGridColumns,
-    reloadVisibleIds: async () => {
-      const settings = await StorageSync.get('settings') || getDefaultSettings();
-      _cachedVisibleIds = settings.visibleBookmarks || [];
-    }
+    removeDisplayedBookmark
   };
 })();

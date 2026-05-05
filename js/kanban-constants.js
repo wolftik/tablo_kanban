@@ -1,8 +1,5 @@
 'use strict';
 
-moduleGuard('I18n');
-moduleGuard('generateId');
-
 const KanbanConstants = {
   getPriorityLabel(key) {
     return I18n.t('priority.' + key);

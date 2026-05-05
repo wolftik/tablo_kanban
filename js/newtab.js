@@ -1,7 +1,5 @@
 'use strict';
 
-moduleGuard('I18n');
-
 document.addEventListener('DOMContentLoaded', async () => {
   await I18n.init();
   const settings = await StorageSync.get('settings') || getDefaultSettings();
@@ -31,11 +29,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   const settingsBtn = document.getElementById('settings-btn');
   if (settingsBtn) {
     settingsBtn.addEventListener('click', () => {
-      if (typeof chrome !== 'undefined' && chrome.runtime && chrome.runtime.openOptionsPage) {
-        chrome.runtime.openOptionsPage();
-      } else {
-        window.open('options.html', '_blank');
-      }
+      window.location.href = 'options.html';
     });
   }
 

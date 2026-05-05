@@ -1,12 +1,5 @@
 'use strict';
 
-moduleGuard('I18n');
-moduleGuard('StorageLocal');
-moduleGuard('KanbanConstants');
-moduleGuard('DriveSync');
-moduleGuard('YadiskSync');
-moduleGuard('SyncProvider');
-
 document.addEventListener('DOMContentLoaded', async () => {
   await I18n.init();
   let settings = await StorageSync.get('settings') || getDefaultSettings();
@@ -243,7 +236,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       item.addEventListener('dragend', () => {
         item.classList.remove('dragging');
         document.querySelectorAll('.column-option-item.drag-over').forEach(el => el.classList.remove('drag-over'));
-        let dragId = null;
       });
     });
 
@@ -348,6 +340,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     const providerSelect = document.getElementById('sync-provider-select');
     const providerDesc = document.getElementById('sync-provider-desc');
     const tokenSection = document.getElementById('yadisk-token-section');
+    const clientSection = document.getElementById('yadisk-client-section');
+    const clientInput = document.getElementById('yadisk-client-input');
+    const clientApply = document.getElementById('yadisk-client-apply');
+    const oauthBtn = document.getElementById('yadisk-oauth-btn');
+    const tokenSectionInner = document.getElementById('yadisk-token-section-inner');
     const tokenInput = document.getElementById('yadisk-token-input');
     const tokenApply = document.getElementById('yadisk-token-apply');
     const tokenClear = document.getElementById('yadisk-token-clear');
@@ -371,6 +368,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         _updateUIForProvider(providerName);
 
         if (providerName === 'yandex_disk') {
+          const clientId = await YadiskSync.getClientId();
+          if (clientInput) {
+            clientInput.value = clientId;
+          }
+
           const hasToken = await YadiskSync.isSignedIn();
           if (hasToken) {
             const result = await YadiskSync.verifyToken();
@@ -379,16 +381,16 @@ document.addEventListener('DOMContentLoaded', async () => {
               statusText.className = 'sync-status-connected';
               signInBtn.style.display = 'none';
               signOutBtn.style.display = '';
-              tokenInput.style.display = 'none';
-              tokenApply.style.display = 'none';
-              tokenClear.style.display = '';
+              tokenSection.style.display = 'none';
             } else {
               statusText.textContent = I18n.t('options.sync.token.expired');
               statusText.className = 'sync-status-error';
               signInBtn.style.display = 'none';
               signOutBtn.style.display = '';
-              tokenInput.style.display = '';
-              tokenApply.style.display = '';
+              tokenSection.style.display = 'block';
+              clientSection.style.display = '';
+              oauthBtn.style.display = 'none';
+              tokenSectionInner.style.display = '';
               tokenClear.style.display = '';
             }
           } else {
@@ -396,9 +398,17 @@ document.addEventListener('DOMContentLoaded', async () => {
             statusText.className = 'sync-status-disconnected';
             signInBtn.style.display = 'none';
             signOutBtn.style.display = 'none';
-            tokenInput.style.display = '';
-            tokenApply.style.display = '';
-            tokenClear.style.display = 'none';
+
+            tokenSection.style.display = 'block';
+            clientSection.style.display = '';
+
+            if (clientId) {
+              oauthBtn.style.display = '';
+              tokenSectionInner.style.display = 'none';
+            } else {
+              oauthBtn.style.display = 'none';
+              tokenSectionInner.style.display = 'none';
+            }
           }
         } else {
           const signedIn = await DriveSync.isSignedIn();
@@ -430,32 +440,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       await _updateSyncUI();
     });
 
-    signInBtn.addEventListener('click', async () => {
+    clientApply.addEventListener('click', async () => {
+      const clientId = clientInput.value.trim();
+      if (!clientId) return;
+      await YadiskSync.setClientId(clientId);
+      await _updateSyncUI();
+    });
+
+    oauthBtn.addEventListener('click', async () => {
       try {
-        const extId = chrome.runtime.id;
-        console.log('[Options] Extension ID:', extId);
-        console.log('[Options] OAuth client_id from manifest:', chrome.runtime.getManifest().oauth2?.client_id);
-
-        await SyncProvider.signIn();
-
-        console.log('[Options] Sign-in successful, token obtained');
-        const kanbanData = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
-        if (kanbanData.columns) {
-          kanbanData._modified = Date.now();
-          console.log('[Options] Uploading initial data to Drive...');
-          await SyncProvider.upload(kanbanData);
-          console.log('[Options] Initial upload complete');
-        }
-        await _updateSyncUI();
+        console.log('[Options] Starting Yandex Disk OAuth...');
+        await YadiskSync.signIn();
+        statusText.textContent = I18n.t('options.sync.yadisk.oauth.opened');
+        statusText.className = 'sync-status-info';
+        oauthBtn.style.display = 'none';
+        tokenSectionInner.style.display = '';
       } catch (e) {
         const msg = e?.message || String(e);
-        console.error('[Options] Sync sign-in failed:', e);
-
-        let displayMsg = I18n.t('options.sync.failed') + ': ' + msg;
-        if (msg.includes('bad client id')) {
-          displayMsg += '. Проверьте настройки Google Cloud Console: client_id в manifest.json должен соответствовать ID расширения (' + chrome.runtime.id + ').';
-        }
-        statusText.textContent = displayMsg;
+        console.error('[Options] OAuth failed:', e);
+        statusText.textContent = I18n.t('options.sync.failed') + ': ' + msg;
         statusText.className = 'sync-status-error';
       }
     });
@@ -479,7 +482,17 @@ document.addEventListener('DOMContentLoaded', async () => {
         tokenInput.value = '';
         await _updateSyncUI();
       } catch (e) {
-        statusText.textContent = I18n.t('options.sync.failed');
+        const msg = e?.message || String(e);
+        console.error('[Options] Yandex Disk token apply failed:', e);
+        let displayMsg = I18n.t('options.sync.failed') + ': ' + msg;
+        if (msg.includes('Failed to fetch') || msg.includes('TypeError')) {
+          displayMsg += ' ' + (I18n.t('options.sync.csp_error') || 'Возможно, запросы к Яндекс.Диску заблокированы политикой безопасности.');
+        } else if (msg.includes('401') || msg.includes('Unauthorized')) {
+          displayMsg += ' ' + (I18n.t('options.sync.token.invalid') || 'Проверьте правильность токена и права доступа.');
+        } else if (msg.includes('403')) {
+          displayMsg += ' ' + (I18n.t('options.sync.token.forbidden') || 'Недостаточно прав доступа.');
+        }
+        statusText.textContent = displayMsg;
         statusText.className = 'sync-status-error';
       }
     });
@@ -543,4 +556,16 @@ document.addEventListener('DOMContentLoaded', async () => {
       $saveBtn.disabled = false;
     }, 1500);
   });
+
+  // ===== Back to board =====
+  const $backBtn = document.getElementById('back-to-board');
+  if ($backBtn) {
+    $backBtn.addEventListener('click', () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = 'newtab.html';
+      }
+    });
+  }
 });

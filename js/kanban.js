@@ -1,12 +1,5 @@
 'use strict';
 
-moduleGuard('I18n');
-moduleGuard('StorageSync');
-moduleGuard('StorageLocal');
-moduleGuard('KanbanConstants');
-moduleGuard('KanbanFilter');
-moduleGuard('KanbanCard');
-moduleGuard('SyncProvider');
 const KanbanBoard = (() => {
   let _columns = [];
   let _settings = null;
@@ -152,12 +145,14 @@ const KanbanBoard = (() => {
       return;
     }
     try {
-      // Only attempt Drive sync upload if the user is already signed in
       const signedIn = await SyncProvider.isSignedIn();
+      console.log('[KanbanBoard] Sync signedIn:', signedIn);
       if (!signedIn) return;
 
       _driveSyncing = true;
+      console.log('[KanbanBoard] Uploading data to sync provider...');
       await SyncProvider.upload(data);
+      console.log('[KanbanBoard] Upload complete');
       if (_pendingSave) {
         _saveTimer = setTimeout(_flushSave, 0);
       }
@@ -184,10 +179,6 @@ const KanbanBoard = (() => {
 
   function getColumns() {
     return _columns;
-  }
-
-  function getSettings() {
-    return _settings;
   }
 
   function _onFilterChange() {
@@ -1342,5 +1333,5 @@ const KanbanBoard = (() => {
     document.addEventListener('click', _boundDocClickTags);
   }
 
-  return { init, save, getColumns, getSettings };
+  return { init, save, getColumns };
 })();

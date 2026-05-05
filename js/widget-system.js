@@ -4,8 +4,6 @@ const GEOCODING_URL = 'https://geocoding-api.open-meteo.com/v1/search';
 const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';
 
 const WidgetSystem = (() => {
-  moduleGuard('StorageSync');
-  moduleGuard('I18n');
   const _widgets = new Map();
   let _initialized = false;
 
