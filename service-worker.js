@@ -1,15 +1,5 @@
 const NEWTAB = chrome.runtime.getURL('views/newtab.html');
 
-function isNewTab(url) {
-  return !url || url === 'chrome://newtab/' || url === 'about:blank' || url === 'about:newtab' || url === 'edge://newtab/';
-}
-
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-  if (changeInfo.status === 'loading' && isNewTab(tab.url)) {
-    chrome.tabs.update(tabId, { url: NEWTAB }).catch(() => {});
-  }
-});
-
 // Open on extension icon click
 chrome.action.onClicked.addListener((tab) => {
   chrome.tabs.create({ url: NEWTAB });

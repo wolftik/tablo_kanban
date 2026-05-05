@@ -59,6 +59,36 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
+  // Homepage info modal
+  const infoBtn = document.getElementById('homepage-info-btn');
+  const modal = document.getElementById('homepage-modal');
+  const urlInput = document.getElementById('homepage-url-input');
+  const copyBtn = document.getElementById('homepage-copy-btn');
+  const closeBtn = document.getElementById('homepage-modal-close');
+
+  if (infoBtn && modal) {
+    infoBtn.addEventListener('click', () => {
+      if (urlInput) urlInput.value = window.location.href;
+      modal.style.display = 'flex';
+    });
+  }
+
+  if (copyBtn && urlInput) {
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(urlInput.value);
+        const orig = copyBtn.textContent;
+        copyBtn.textContent = I18n.t('homepage.modal.copied');
+        setTimeout(() => { copyBtn.textContent = orig; }, 2000);
+      } catch (e) { console.error(e); }
+    });
+  }
+
+  if (closeBtn && modal) {
+    closeBtn.addEventListener('click', () => { modal.style.display = 'none'; });
+    modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
+  }
+
   if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === 'sync' && changes.settings) {

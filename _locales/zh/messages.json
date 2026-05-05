@@ -140,5 +140,12 @@
   "optionsWidgetsTitle": { "message": "组件", "description": "Widgets section title" },
   "optionsBookmarksTitle": { "message": "书签", "description": "Bookmarks section title" },
   "optionsBookmarksSlots": { "message": "书签数量：", "description": "Bookmark slots label" },
-  "optionsBookmarksSlotsHint": { "message": "最多 22 个。必须为偶数。", "description": "Bookmark slots hint" }
+  "optionsBookmarksSlotsHint": { "message": "最多 22 个。必须为偶数。", "description": "Bookmark slots hint" },
+
+  "homepageModalTitle": { "message": "设置为主页", "description": "Homepage modal title" },
+  "homepageModalDesc": { "message": "复制此 URL 并将其粘贴到浏览器设置中作为快速访问页面或主页。", "description": "Homepage modal description" },
+  "homepageModalCopy": { "message": "复制", "description": "Copy button" },
+  "homepageModalCopied": { "message": "已复制！", "description": "Copied confirmation" },
+  "homepageModalClose": { "message": "关闭", "description": "Close button" },
+  "homepageHint": { "message": "设为主页", "description": "Homepage info button tooltip" }
 }

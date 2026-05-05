@@ -140,5 +140,12 @@
   "optionsWidgetsTitle": { "message": "Виджеты", "description": "Widgets section title" },
   "optionsBookmarksTitle": { "message": "Закладки", "description": "Bookmarks section title" },
   "optionsBookmarksSlots": { "message": "Количество закладок:", "description": "Bookmark slots label" },
-  "optionsBookmarksSlotsHint": { "message": "Максимум 22. Должно быть чётным числом.", "description": "Bookmark slots hint" }
+  "optionsBookmarksSlotsHint": { "message": "Максимум 22. Должно быть чётным числом.", "description": "Bookmark slots hint" },
+
+  "homepageModalTitle": { "message": "Установка страницы быстрого доступа", "description": "Homepage modal title" },
+  "homepageModalDesc": { "message": "Скопируйте URL и вставьте его в настройках браузера как страницу быстрого доступа или домашнюю страницу.", "description": "Homepage modal description" },
+  "homepageModalCopy": { "message": "Копировать", "description": "Copy button" },
+  "homepageModalCopied": { "message": "Скопировано!", "description": "Copied confirmation" },
+  "homepageModalClose": { "message": "Закрыть", "description": "Close button" },
+  "homepageHint": { "message": "Установить как домашнюю страницу", "description": "Homepage info button tooltip" }
 }

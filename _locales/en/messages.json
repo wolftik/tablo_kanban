@@ -140,5 +140,12 @@
   "optionsWidgetsTitle": { "message": "Widgets", "description": "Widgets section title" },
   "optionsBookmarksTitle": { "message": "Bookmarks", "description": "Bookmarks section title" },
   "optionsBookmarksSlots": { "message": "Number of bookmarks:", "description": "Bookmark slots label" },
-  "optionsBookmarksSlotsHint": { "message": "Maximum 22. Must be an even number.", "description": "Bookmark slots hint" }
+  "optionsBookmarksSlotsHint": { "message": "Maximum 22. Must be an even number.", "description": "Bookmark slots hint" },
+
+  "homepageModalTitle": { "message": "Set as Homepage", "description": "Homepage modal title" },
+  "homepageModalDesc": { "message": "Copy this URL and paste it in your browser settings as the quick access page or homepage.", "description": "Homepage modal description" },
+  "homepageModalCopy": { "message": "Copy", "description": "Copy button" },
+  "homepageModalCopied": { "message": "Copied!", "description": "Copied confirmation" },
+  "homepageModalClose": { "message": "Close", "description": "Close button" },
+  "homepageHint": { "message": "Set as homepage", "description": "Homepage info button tooltip" }
 }

@@ -141,7 +141,14 @@ const I18n = (() => {
     'options.widgets.title': 'optionsWidgetsTitle',
     'options.bookmarks.title': 'optionsBookmarksTitle',
     'options.bookmarks.slots': 'optionsBookmarksSlots',
-    'options.bookmarks.slots.hint': 'optionsBookmarksSlotsHint'
+    'options.bookmarks.slots.hint': 'optionsBookmarksSlotsHint',
+
+    'homepage.modal.title': 'homepageModalTitle',
+    'homepage.modal.desc': 'homepageModalDesc',
+    'homepage.modal.copy': 'homepageModalCopy',
+    'homepage.modal.copied': 'homepageModalCopied',
+    'homepage.modal.close': 'homepageModalClose',
+    'homepage.hint': 'homepageHint'
   };
 
   let _currentLang = null;
