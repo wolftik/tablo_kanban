@@ -28,7 +28,25 @@ const WidgetSystem = (() => {
     }
   }
 
-  return { register, initAll };
+  function unregister(name) {
+    const widget = _widgets.get(name);
+    if (!widget) return;
+    if (widget.destroy) widget.destroy();
+    _widgets.delete(name);
+  }
+
+  function destroyAll() {
+    for (const [name] of _widgets) {
+      unregister(name);
+    }
+    _initialized = false;
+  }
+
+  function getWidgets() {
+    return _widgets;
+  }
+
+  return { register, unregister, initAll, destroyAll, getWidgets };
 })();
 
 const ClockWidget = {

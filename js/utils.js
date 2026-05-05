@@ -68,4 +68,54 @@ function applyTheme(theme) {
   }
 }
 
+function createSelect(options, value, placeholder) {
+  const select = document.createElement('select');
+  if (placeholder) {
+    const opt = document.createElement('option');
+    opt.value = '';
+    opt.textContent = placeholder;
+    select.appendChild(opt);
+  }
+  const fragment = document.createDocumentFragment();
+  for (const opt of options) {
+    const el = document.createElement('option');
+    el.value = opt.value;
+    el.textContent = opt.label;
+    if (opt.value === value) el.selected = true;
+    fragment.appendChild(el);
+  }
+  select.appendChild(fragment);
+  return select;
+}
+
+function renderColoredList(container, items, { renderItem, onClick }) {
+  container.innerHTML = '';
+  const fragment = document.createDocumentFragment();
+  for (const item of items) {
+    const el = renderItem(item);
+    if (onClick) el.addEventListener('click', () => onClick(item));
+    fragment.appendChild(el);
+  }
+  container.appendChild(fragment);
+}
+
+function handleModal(modalEl, { onSave, onCancel, onClose } = {}) {
+  const cleanup = () => {
+    modalEl.style.display = 'none';
+    if (onClose) onClose();
+  };
+
+  const keyHandler = (e) => {
+    if (e.key === 'Escape') cleanup();
+    if (e.key === 'Enter' && onSave) onSave();
+  };
+
+  modalEl.addEventListener('mousedown', (e) => {
+    if (e.target === modalEl) cleanup();
+  });
+  document.addEventListener('keydown', keyHandler);
+
+  return { cleanup, keyHandler };
+}
+
 

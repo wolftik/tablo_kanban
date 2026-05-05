@@ -1,24 +1,21 @@
 'use strict';
 
 const KanbanBoard = (() => {
-  let _columns = [];
   let _settings = null;
-  let _kanbanFilter = null;
-  let _tags = [];
-  let _performers = [];
-  let _authors = [];
   let _editingCard = null;
   let _editingColumnId = null;
-  let _draggedCard = null;
-  let _draggedColumn = null;
-  let _rafGetDragAfterElement = createRafDragAfterElement();
-  let _tagsIndex = null;
 
   let _dom = {};
   let _boundDocKeydown = null;
   let _boundDocClickFilter = null;
   let _boundDocClickTags = null;
   let _driveSyncing = false;
+
+  let _saveTimer = null;
+  let _pendingSave = null;
+
+  let _initialized = false;
+  let _loading = false;
 
   function _cacheDoms() {
     _dom = {
@@ -49,18 +46,9 @@ const KanbanBoard = (() => {
     };
   }
 
-  function _updateTagsIndex() {
-    _tagsIndex = new Map(_tags.map(t => [t.id, t]));
-  }
-
-  function _tagById(id) {
-    return _tagsIndex ? _tagsIndex.get(id) : null;
-  }
-
   async function _tryLoadFromDrive(saved) {
     if (_driveSyncing) return;
     try {
-      // Only attempt Drive sync if the user is already signed in (non-interactive check)
       const signedIn = await SyncProvider.isSignedIn();
       if (!signedIn) return;
 
@@ -87,53 +75,67 @@ const KanbanBoard = (() => {
     }
   }
 
-  let _initialized = false;
-
   async function init() {
-    _settings = await StorageSync.get('settings') || getDefaultSettings();
-    const saved = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
+    if (_loading) return;
+    _loading = true;
+    try {
+      _settings = await StorageSync.get('settings') || getDefaultSettings();
+      const saved = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
 
-    await _tryLoadFromDrive(saved);
+      await _tryLoadFromDrive(saved);
+      _migrateFromSync(saved);
+      KanbanStore.loadData(saved);
 
-    _migrateFromSync(saved);
+      const filter = KanbanStore.getFilter();
+      KanbanFilter.init(filter, _onFilterChange);
 
-    _columns = saved.columns ? saved.columns : _createDefaultColumns();
-    _columns.forEach(col => col.cards = col.cards || []);
-
-    _tags = saved.tags || KanbanConstants.DEFAULT_TAGS.map(t => ({ ...t, id: generateId() }));
-    _performers = saved.performers || KanbanConstants.DEFAULT_PERFORMERS.map(p => ({ ...p, id: generateId() }));
-    _authors = saved.authors || [];
-    _kanbanFilter = saved.kanbanFilter || { search: '', priority: '', assignee: '', author: '', tags: [] };
-
-    _updateTagsIndex();
-
-    KanbanFilter.init(_kanbanFilter, _onFilterChange);
-
-    if (!_initialized) {
-      _cacheDoms();
-      if (_dom.board) {
-        _dom.board.innerHTML = '';
-        _dom.board.classList.remove('kanban-initialized');
+      if (!_initialized) {
+        _cacheDoms();
+        if (_dom.board) {
+          _dom.board.innerHTML = '';
+          _dom.board.classList.remove('kanban-initialized');
+        }
+        KanbanRenderer.init(_dom, {
+          onEditCard: _openEditCardModal,
+          onAddCard: _openNewCardModal,
+          onAddColumn: _addColumn,
+          onClearColumn: _clearColumnCards,
+          onDeleteColumn: _deleteColumn,
+          onFilterTagToggle: (tagId) => {
+            KanbanFilter.toggleTag(tagId);
+            _onFilterChange();
+          },
+          onFilterTagRemove: (tagId) => {
+            KanbanFilter.removeTag(tagId);
+            _onFilterChange();
+          },
+          onCardDragStart: (cardId, columnId) => {
+            KanbanDnD.setDraggedCard(cardId, columnId);
+          },
+          onCardDragEnd: () => {
+            KanbanDnD.clearDraggedCard();
+          }
+        });
+        KanbanDnD.init(() => save());
+        _bindEvents();
+        _initialized = true;
       }
-      _bindEvents();
-      _initialized = true;
-    }
 
-    _renderBoard();
-    _renderFilterUI();
-    _updateClearButton();
+      KanbanRenderer.renderBoard(KanbanStore.getColumns());
+      KanbanRenderer.renderFilterUI();
+      KanbanRenderer.updateClearButton();
+    } finally {
+      _loading = false;
+    }
   }
 
   async function _migrateFromSync(saved) {
     if (saved.columns) return;
     if (!_settings.columns) return;
-    saved.columns = saved.columns || _settings.columns || _createDefaultColumns();
+    saved.columns = saved.columns || _settings.columns || [];
     saved._modified = Date.now();
     await StorageLocal.set(KanbanConstants.STORAGE_KEY, saved);
   }
-
-  let _saveTimer = null;
-  let _pendingSave = null;
 
   async function _flushSave() {
     const data = _pendingSave;
@@ -142,647 +144,42 @@ const KanbanBoard = (() => {
     await StorageLocal.set(KanbanConstants.STORAGE_KEY, data);
 
     if (_driveSyncing) {
+      if (_pendingSave) {
+        _saveTimer = setTimeout(_flushSave, 300);
+      }
       return;
     }
     try {
       const signedIn = await SyncProvider.isSignedIn();
-      console.log('[KanbanBoard] Sync signedIn:', signedIn);
       if (!signedIn) return;
 
       _driveSyncing = true;
-      console.log('[KanbanBoard] Uploading data to sync provider...');
       await SyncProvider.upload(data);
-      console.log('[KanbanBoard] Upload complete');
-      if (_pendingSave) {
-        _saveTimer = setTimeout(_flushSave, 0);
-      }
     } catch (e) {
       console.warn('[KanbanBoard] Sync save failed:', e);
     } finally {
       _driveSyncing = false;
+      if (_pendingSave) {
+        _saveTimer = setTimeout(_flushSave, 300);
+      }
     }
   }
 
   function save() {
-    _columns.forEach((col, i) => { col.order = i; });
-    _pendingSave = {
-      columns: _columns,
-      kanbanFilter: _kanbanFilter,
-      tags: _tags,
-      performers: _performers,
-      authors: _authors,
-      _modified: Date.now()
-    };
+    _pendingSave = KanbanStore.toSaveData();
     if (_saveTimer) clearTimeout(_saveTimer);
     _saveTimer = setTimeout(_flushSave, 300);
   }
 
   function getColumns() {
-    return _columns;
+    return KanbanStore.getColumns();
   }
 
   function _onFilterChange() {
-    _kanbanFilter = KanbanFilter.toJSON();
-    _renderBoard();
-    _updateClearButton();
-  }
-
-  function _createDefaultColumns() {
-    return KanbanConstants.DEFAULT_COLUMNS.map((c, i) => ({
-      id: generateId(),
-      title: c.title,
-      color: c.color,
-      order: i,
-      cards: []
-    }));
-  }
-
-  function _getCardsForColumn(columnId) {
-    const col = _columns.find(c => c.id === columnId);
-    return col?.cards || [];
-  }
-
-  function _updateColumnCounts() {
-    if (!_dom.board) return;
-    _dom.board.querySelectorAll('.kanban-column').forEach(colEl => {
-      const colId = colEl.dataset.columnId;
-      const cards = KanbanFilter.filterCards(_getCardsForColumn(colId));
-      const countEl = colEl.querySelector('.column-count');
-      if (countEl) countEl.textContent = cards.length;
-    });
-  }
-
-  function _renderBoard() {
-    const board = _dom.board;
-    if (!board) return;
-
-    const sorted = [..._columns].sort((a, b) => (a.order || 0) - (b.order || 0));
-
-    const existingCols = new Map();
-    board.querySelectorAll(':scope > .kanban-column').forEach(el => {
-      existingCols.set(el.dataset.columnId, el);
-    });
-
-    const removeIds = new Set(existingCols.keys());
-    let insertBeforeEl = null;
-
-    for (let i = sorted.length - 1; i >= 0; i--) {
-      const col = sorted[i];
-      removeIds.delete(col.id);
-
-      const existing = existingCols.get(col.id);
-      if (existing) {
-        _updateColumnElement(existing, col);
-      } else {
-        const colEl = _createColumnElement(col);
-        if (insertBeforeEl) {
-          board.insertBefore(colEl, insertBeforeEl);
-        } else {
-          board.appendChild(colEl);
-        }
-        existingCols.set(col.id, colEl);
-      }
-      insertBeforeEl = existingCols.get(col.id) || insertBeforeEl;
-    }
-
-    for (const id of removeIds) {
-      const el = existingCols.get(id);
-      if (el) el.remove();
-    }
-
-    let addBtn = board.querySelector(':scope > .add-column-btn');
-    if (!addBtn) {
-      addBtn = document.createElement('button');
-      addBtn.className = 'add-column-btn';
-      addBtn.textContent = I18n.t('column.add.column');
-      addBtn.addEventListener('click', () => _addColumn());
-      board.appendChild(addBtn);
-    }
-
-    _bindColumnHeaderDrag();
-  }
-
-  function _updateColumnElement(colEl, col) {
-    const header = colEl.querySelector('.column-header');
-    if (header) header.draggable = true;
-
-    const titleContainer = colEl.querySelector('.column-title');
-    if (titleContainer) {
-      let colorDot = titleContainer.querySelector('.column-color-indicator');
-      if (!colorDot) {
-        colorDot = document.createElement('span');
-        colorDot.className = 'column-color-indicator';
-        titleContainer.prepend(colorDot);
-      }
-      colorDot.style.background = col.color || '#6366f1';
-
-      let titleText = titleContainer.querySelector('span:not(.column-color-indicator)');
-      if (!titleText) {
-        titleText = document.createElement('span');
-        titleContainer.appendChild(titleText);
-      }
-      if (titleText.textContent !== col.title) {
-        titleText.textContent = col.title;
-      }
-    }
-
-    const count = colEl.querySelector('.column-count');
-    const filteredCards = KanbanFilter.filterCards(_getCardsForColumn(col.id));
-    if (count && count.textContent !== String(filteredCards.length)) {
-      count.textContent = filteredCards.length;
-    }
-
-    const cardsContainer = colEl.querySelector('.column-cards');
-    if (cardsContainer) {
-      _syncCardsContainer(cardsContainer, col, filteredCards);
-    }
-  }
-
-  function _syncCardsContainer(container, col, filteredCards) {
-    const existingCards = container.querySelectorAll(':scope > .kanban-card');
-    const existingMap = new Map();
-    existingCards.forEach(el => existingMap.set(el.dataset.cardId, el));
-
-    const removeCardIds = new Set(existingMap.keys());
-    let insertBeforeCard = null;
-
-    for (let i = filteredCards.length - 1; i >= 0; i--) {
-      const card = filteredCards[i];
-      removeCardIds.delete(card.id);
-
-      const existing = existingMap.get(card.id);
-      if (existing) {
-        _updateCardElement(existing, card, col.id);
-        if (existing.nextElementSibling !== insertBeforeCard) {
-          if (insertBeforeCard) {
-            container.insertBefore(existing, insertBeforeCard);
-          } else {
-            container.appendChild(existing);
-          }
-        }
-      } else {
-        const cardEl = KanbanCard.create(card, col.id, _performers, _tags);
-    _bindCardDrag(cardEl);
-    cardEl.addEventListener('click', () => _openEditCardModal(card, col.id));
-    if (insertBeforeCard) {
-      container.insertBefore(cardEl, insertBeforeCard);
-    } else {
-      container.appendChild(cardEl);
-    }
-    existingMap.set(card.id, cardEl);
-      }
-      insertBeforeCard = existingMap.get(card.id) || insertBeforeCard;
-    }
-
-    for (const id of removeCardIds) {
-      const el = existingMap.get(id);
-      if (el) el.remove();
-    }
-
-    let addCardBtn = container.parentElement.querySelector(':scope > .column-add-card');
-    if (!addCardBtn) {
-      addCardBtn = document.createElement('button');
-      addCardBtn.className = 'column-add-card';
-      addCardBtn.textContent = I18n.t('column.add.card');
-      container.parentElement.appendChild(addCardBtn);
-    }
-    addCardBtn.onclick = () => _openNewCardModal(col.id);
-  }
-
-  function _updateCardElement(cardEl, card, columnId) {
-    cardEl.dataset.columnId = columnId;
-
-    const priorityBar = cardEl.querySelector('.card-priority-bar');
-    if (card.priority) {
-      const cls = 'card-priority-bar priority-' + card.priority;
-      if (!priorityBar) {
-        const bar = document.createElement('div');
-        bar.className = cls;
-        cardEl.prepend(bar);
-      } else if (priorityBar.className !== cls) {
-        priorityBar.className = cls;
-      }
-    } else if (priorityBar) {
-      priorityBar.remove();
-    }
-
-    const titleEl = cardEl.querySelector('.card-title');
-    if (titleEl && titleEl.textContent !== card.title) {
-      titleEl.textContent = card.title;
-    }
-
-    const descEl = cardEl.querySelector('.card-description');
-    if (card.description) {
-      if (!descEl) {
-        const d = document.createElement('div');
-        d.className = 'card-description';
-        d.textContent = card.description;
-        cardEl.insertBefore(d, cardEl.querySelector('.card-meta'));
-      } else if (descEl.textContent !== card.description) {
-        descEl.textContent = card.description;
-      }
-    } else if (descEl) {
-      descEl.remove();
-    }
-
-    const meta = cardEl.querySelector('.card-meta');
-    if (meta) {
-      const dateEl = meta.querySelector('.card-date');
-      if (card.createdAt) {
-        const dateStr = new Date(card.createdAt).toLocaleDateString(I18n.localeToBCP47(I18n.getLang()), { day: '2-digit', month: '2-digit' });
-        if (!dateEl) {
-          const d = document.createElement('span');
-          d.className = 'card-date';
-          d.textContent = dateStr;
-          meta.prepend(d);
-        } else if (dateEl.textContent !== dateStr) {
-          dateEl.textContent = dateStr;
-        }
-      } else if (dateEl) {
-        dateEl.remove();
-      }
-
-      const badge = meta.querySelector('.card-priority-badge');
-      if (card.priority) {
-        const cls = 'card-priority-badge priority-' + card.priority;
-        const label = KanbanConstants.getPriorityLabel(card.priority);
-        if (!badge) {
-          const b = document.createElement('span');
-          b.className = cls;
-          b.textContent = label;
-          meta.appendChild(b);
-        } else {
-          if (badge.className !== cls) badge.className = cls;
-          if (badge.textContent !== label) badge.textContent = label;
-        }
-      } else if (badge) {
-        badge.remove();
-      }
-    }
-
-    const assigneeEl = cardEl.querySelector('.card-assignee');
-    if (card.assignee) {
-      if (!assigneeEl) {
-        const ae = document.createElement('div');
-        ae.className = 'card-assignee';
-        const avatar = document.createElement('span');
-        avatar.className = 'assignee-avatar';
-        ae.appendChild(avatar);
-        cardEl.appendChild(ae);
-      }
-      const target = cardEl.querySelector('.card-assignee');
-      const avatar = target ? target.querySelector('.assignee-avatar') : null;
-      if (avatar) {
-        const performer = _performers.find(p => p.name === card.assignee);
-        const bg = performer ? performer.color : KanbanCard._hashToColor(card.assignee);
-        if (avatar.style.background !== bg) avatar.style.background = bg;
-        if (avatar.textContent !== card.assignee.charAt(0).toUpperCase()) avatar.textContent = card.assignee.charAt(0).toUpperCase();
-        if (avatar.title !== card.assignee) avatar.title = card.assignee;
-      }
-    } else if (assigneeEl) {
-      assigneeEl.remove();
-    }
-
-    const tagsContainer = cardEl.querySelector('.card-tags');
-    if (card.tags && card.tags.length > 0) {
-      const displayTags = KanbanCard._getTagsForDisplay(card.tags, _tagById, _tags);
-      if (!tagsContainer) {
-        const tc = document.createElement('div');
-        tc.className = 'card-tags';
-        for (const tag of displayTags) {
-          const badge = document.createElement('span');
-          badge.className = 'tag-badge';
-          badge.textContent = tag.name;
-          badge.style.background = tag.color;
-          tc.appendChild(badge);
-        }
-        cardEl.appendChild(tc);
-      } else {
-        const existingBadges = tagsContainer.querySelectorAll(':scope > .tag-badge');
-        const badgeMap = new Map();
-        existingBadges.forEach(b => badgeMap.set(b.textContent, b));
-
-        const neededNames = new Set(displayTags.map(t => t.name));
-        for (const name of badgeMap.keys()) {
-          if (!neededNames.has(name)) {
-            badgeMap.get(name).remove();
-          }
-        }
-        for (const tag of displayTags) {
-          if (!badgeMap.has(tag.name)) {
-            const badge = document.createElement('span');
-            badge.className = 'tag-badge';
-            badge.textContent = tag.name;
-            badge.style.background = tag.color;
-            tagsContainer.appendChild(badge);
-          }
-        }
-      }
-    } else if (tagsContainer) {
-      tagsContainer.remove();
-    }
-  }
-
-  function _createColumnElement(col) {
-    const colEl = document.createElement('div');
-    colEl.className = 'kanban-column';
-    colEl.dataset.columnId = col.id;
-
-    const header = document.createElement('div');
-    header.className = 'column-header';
-    header.draggable = true;
-
-    const titleContainer = document.createElement('div');
-    titleContainer.className = 'column-title';
-
-    const colorDot = document.createElement('span');
-    colorDot.className = 'column-color-indicator';
-    colorDot.style.background = col.color || '#6366f1';
-
-    const titleText = document.createElement('span');
-    titleText.textContent = col.title;
-
-    titleContainer.appendChild(colorDot);
-    titleContainer.appendChild(titleText);
-
-    const count = document.createElement('span');
-    count.className = 'column-count';
-    count.textContent = (col.cards || []).length;
-
-    const actions = document.createElement('div');
-    actions.className = 'column-actions';
-
-    const clearBtn = document.createElement('button');
-    clearBtn.className = 'column-action-btn clear';
-    clearBtn.innerHTML = '&#9003;';
-    clearBtn.title = I18n.t('column.clear.cards');
-    clearBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      _clearColumnCards(col.id);
-    });
-
-    const deleteBtn = document.createElement('button');
-    deleteBtn.className = 'column-action-btn delete';
-    deleteBtn.innerHTML = '&times;';
-    deleteBtn.title = I18n.t('column.delete');
-    deleteBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      _deleteColumn(col.id);
-    });
-
-    actions.appendChild(clearBtn);
-    actions.appendChild(deleteBtn);
-
-    header.appendChild(titleContainer);
-    header.appendChild(count);
-    header.appendChild(actions);
-
-    const cardsContainer = document.createElement('div');
-    cardsContainer.className = 'column-cards';
-    cardsContainer.dataset.columnId = col.id;
-
-    const cards = KanbanFilter.filterCards(_getCardsForColumn(col.id));
-    const fragment = document.createDocumentFragment();
-    for (const card of cards) {
-      const cardEl = KanbanCard.create(card, col.id, _performers, _tags);
-      _bindCardDrag(cardEl);
-      cardEl.addEventListener('click', () => _openEditCardModal(card, col.id));
-      fragment.appendChild(cardEl);
-    }
-    cardsContainer.appendChild(fragment);
-
-    const addCardBtn = document.createElement('button');
-    addCardBtn.className = 'column-add-card';
-    addCardBtn.textContent = I18n.t('column.add.card');
-    addCardBtn.addEventListener('click', () => _openNewCardModal(col.id));
-
-    colEl.appendChild(header);
-    colEl.appendChild(cardsContainer);
-    colEl.appendChild(addCardBtn);
-
-    _bindColumnDragDrop(colEl, cardsContainer, col.id);
-
-    return colEl;
-  }
-
-  function _bindCardDrag(cardEl) {
-    cardEl.addEventListener('dragstart', (e) => {
-      _draggedCard = {
-        cardId: cardEl.dataset.cardId,
-        fromColumnId: cardEl.dataset.columnId
-      };
-      cardEl.classList.add('dragging');
-      e.dataTransfer.effectAllowed = 'move';
-      e.dataTransfer.setData('text/plain', cardEl.dataset.cardId);
-      e.dataTransfer.setDragImage(cardEl, e.offsetX, e.offsetY);
-    });
-
-    cardEl.addEventListener('dragend', () => {
-      cardEl.classList.remove('dragging');
-      _draggedCard = null;
-      document.querySelectorAll('.drop-placeholder').forEach(p => p.remove());
-    });
-  }
-
-  function _bindColumnDragDrop(colEl, cardsContainer, columnId) {
-    cardsContainer.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
-
-      const afterElement = _rafGetDragAfterElement(cardsContainer, e.clientY, '.kanban-card:not(.dragging)');
-      let placeholder = cardsContainer.querySelector('.drop-placeholder');
-      if (!placeholder) {
-        placeholder = KanbanCard.createPlaceholder();
-      }
-      if (afterElement == null) {
-        cardsContainer.appendChild(placeholder);
-      } else {
-        cardsContainer.insertBefore(placeholder, afterElement);
-      }
-    });
-
-    cardsContainer.addEventListener('dragleave', (e) => {
-      if (!cardsContainer.contains(e.relatedTarget)) {
-        const placeholder = cardsContainer.querySelector('.drop-placeholder');
-        if (placeholder) placeholder.remove();
-      }
-    });
-
-    cardsContainer.addEventListener('drop', (e) => {
-      e.preventDefault();
-      if (!_draggedCard) return;
-
-      const { cardId, fromColumnId } = _draggedCard;
-      if (fromColumnId === columnId) {
-        _reorderCardInColumn(columnId, cardId);
-      } else {
-        _moveCard(fromColumnId, columnId, cardId);
-      }
-
-      document.querySelectorAll('.drop-placeholder').forEach(p => p.remove());
-      _renderBoard();
-      save();
-      _draggedCard = null;
-    });
-
-    colEl.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      colEl.classList.add('drag-over-column');
-    });
-
-    colEl.addEventListener('dragleave', (e) => {
-      if (!colEl.contains(e.relatedTarget)) {
-        colEl.classList.remove('drag-over-column');
-      }
-    });
-
-    colEl.addEventListener('dragenter', () => {
-      colEl.classList.add('drag-over-column');
-    });
-
-    colEl.addEventListener('drop', (e) => {
-      e.preventDefault();
-      colEl.classList.remove('drag-over-column');
-    });
-  }
-
-  function _moveCard(fromColumnId, toColumnId, cardId) {
-    const fromCol = _columns.find(c => c.id === fromColumnId);
-    const toCol = _columns.find(c => c.id === toColumnId);
-    if (!fromCol || !toCol) return;
-
-    const cardIndex = fromCol.cards.findIndex(c => c.id === cardId);
-    if (cardIndex === -1) return;
-
-    const [card] = fromCol.cards.splice(cardIndex, 1);
-
-    const placeholder = document.querySelector('.kanban-column[data-column-id="' + toColumnId + '"] .drop-placeholder');
-    let insertIndex;
-    if (placeholder) {
-      const prevSibling = placeholder.previousElementSibling;
-      if (prevSibling && prevSibling.classList.contains('kanban-card')) {
-        const prevCardId = prevSibling.dataset.cardId;
-        const prevIndex = toCol.cards.findIndex(c => c.id === prevCardId);
-        insertIndex = prevIndex !== -1 ? prevIndex + 1 : toCol.cards.length;
-      } else {
-        const firstVisible = placeholder.parentElement.querySelector('.kanban-card');
-        if (firstVisible) {
-          const firstCardId = firstVisible.dataset.cardId;
-          const firstIndex = toCol.cards.findIndex(c => c.id === firstCardId);
-          insertIndex = firstIndex !== -1 ? firstIndex : 0;
-        } else {
-          insertIndex = toCol.cards.length;
-        }
-      }
-    } else {
-      insertIndex = toCol.cards.length;
-    }
-
-    toCol.cards.splice(insertIndex, 0, card);
-
-    toCol.cards.forEach((c, i) => { c.order = i; });
-  }
-
-  function _reorderCardInColumn(columnId, cardId) {
-    const col = _columns.find(c => c.id === columnId);
-    if (!col) return;
-
-    const placeholder = document.querySelector('.kanban-column[data-column-id="' + columnId + '"] .drop-placeholder');
-    if (!placeholder) return;
-
-    const prevSibling = placeholder.previousElementSibling;
-    let insertIndex;
-    if (prevSibling && prevSibling.classList.contains('kanban-card')) {
-      const prevCardId = prevSibling.dataset.cardId;
-      const prevIndex = col.cards.findIndex(c => c.id === prevCardId);
-      insertIndex = prevIndex !== -1 ? prevIndex + 1 : col.cards.length;
-    } else {
-      insertIndex = 0;
-    }
-
-    const cardIndex = col.cards.findIndex(c => c.id === cardId);
-    if (cardIndex === -1) return;
-    const [card] = col.cards.splice(cardIndex, 1);
-
-    const adjustedIndex = cardIndex < insertIndex ? insertIndex - 1 : insertIndex;
-    col.cards.splice(adjustedIndex, 0, card);
-
-    col.cards.forEach((c, i) => { c.order = i; });
-  }
-
-  function _bindColumnReorder(board) {
-    let _colRafId = null;
-    let _pendingColReorderX = 0;
-    let _colRafResult = { element: null };
-
-    board.addEventListener('dragover', (e) => {
-      if (!_draggedColumn) return;
-      e.preventDefault();
-
-      if (!_colRafId) {
-        _colRafId = requestAnimationFrame(() => {
-          _colRafId = null;
-          const columns = [...board.querySelectorAll('.kanban-column')];
-          _colRafResult = columns.reduce((closest, child) => {
-            const box = child.getBoundingClientRect();
-            const offset = _pendingColReorderX - box.left - box.width / 2;
-            if (offset < 0 && offset > closest.offset) {
-              return { offset, element: child };
-            }
-            return closest;
-          }, { offset: Number.NEGATIVE_INFINITY });
-        });
-      }
-      _pendingColReorderX = e.clientX;
-
-      const afterElement = _colRafResult.element;
-      const draggingCol = board.querySelector('.kanban-column.dragging');
-      if (!draggingCol) return;
-
-      if (afterElement == null) {
-        board.appendChild(draggingCol);
-      } else {
-        board.insertBefore(draggingCol, afterElement);
-      }
-    });
-
-    board.addEventListener('drop', (e) => {
-      if (!_draggedColumn) return;
-      e.preventDefault();
-
-      const columnEls = [...board.querySelectorAll('.kanban-column')];
-      const columnIds = columnEls.map(el => el.dataset.columnId);
-      const newColumns = [];
-      for (const id of columnIds) {
-        const orig = _columns.find(c => c.id === id);
-        if (orig) newColumns.push(orig);
-      }
-      _columns = newColumns;
-
-      save();
-      _draggedColumn = null;
-    });
-  }
-
-  function _bindColumnHeaderDrag() {
-    const board = _dom.board;
-    if (!board) return;
-    board.querySelectorAll('.kanban-column .column-header').forEach(header => {
-      header.addEventListener('dragstart', (e) => {
-        const colEl = header.closest('.kanban-column');
-        if (!colEl) return;
-        _draggedColumn = colEl.dataset.columnId;
-        colEl.classList.add('dragging');
-        e.dataTransfer.effectAllowed = 'move';
-        e.dataTransfer.setData('text/plain', 'column:' + colEl.dataset.columnId);
-      });
-
-      header.addEventListener('dragend', () => {
-        _draggedColumn = null;
-        document.querySelectorAll('.kanban-column').forEach(c => c.classList.remove('dragging'));
-        document.querySelectorAll('.drag-over-column').forEach(c => c.classList.remove('drag-over-column'));
-      });
-    });
+    KanbanStore.setFilter(KanbanFilter.toJSON());
+    KanbanRenderer.renderBoard(KanbanStore.getColumns());
+    KanbanRenderer.renderFilterUI();
+    KanbanRenderer.updateClearButton();
   }
 
   function _openNewCardModal(columnId) {
@@ -823,13 +220,14 @@ const KanbanBoard = (() => {
     const container = _dom.cardTagsSelector;
     if (!container) return;
     container.innerHTML = '';
-    if (_tags.length === 0) {
+    const tags = KanbanStore.getTags();
+    if (tags.length === 0) {
       container.innerHTML = '<div class="card-tags-empty">' + I18n.t('column.no.tags') + '</div>';
       _updateTagsDisplay();
       return;
     }
     const fragment = document.createDocumentFragment();
-    for (const tag of _tags) {
+    for (const tag of tags) {
       const label = document.createElement('label');
       label.className = 'card-tag-option';
       label.dataset.tagId = tag.id;
@@ -870,8 +268,9 @@ const KanbanBoard = (() => {
     }
     const displayFragment = document.createDocumentFragment();
     const selectedFragment = document.createDocumentFragment();
+    const tags = KanbanStore.getTags();
     for (const cb of checkedBoxes) {
-      const tag = _tags.find(t => t.id === cb.value);
+      const tag = tags.find(t => t.id === cb.value);
       if (!tag) continue;
       const badge = document.createElement('span');
       badge.className = 'card-selected-tag';
@@ -919,7 +318,7 @@ const KanbanBoard = (() => {
     if (!select) return;
     select.innerHTML = '<option value="">' + I18n.t('modal.not.assigned') + '</option>';
     const fragment = document.createDocumentFragment();
-    for (const performer of _performers) {
+    for (const performer of KanbanStore.getPerformers()) {
       const opt = document.createElement('option');
       opt.value = performer.name;
       opt.textContent = performer.name;
@@ -934,7 +333,7 @@ const KanbanBoard = (() => {
     if (!select) return;
     select.innerHTML = '<option value="">' + I18n.t('modal.not.specified') + '</option>';
     const fragment = document.createDocumentFragment();
-    for (const author of _authors) {
+    for (const author of KanbanStore.getAuthors()) {
       const opt = document.createElement('option');
       opt.value = author.name;
       opt.textContent = author.name;
@@ -956,30 +355,14 @@ const KanbanBoard = (() => {
     const selectedTags = Array.from(document.querySelectorAll('.card-tag-option input[type="checkbox"]:checked')).map(cb => cb.value);
 
     if (_editingCard && _editingCard.id) {
-      const col = _columns.find(c => c.id === _editingColumnId);
-      if (col) {
-        const card = col.cards.find(c => c.id === _editingCard.id);
-        if (card) {
-          Object.assign(card, { title, description, priority, assignee, author, tags: selectedTags, updatedAt: Date.now() });
-        }
-      }
+      KanbanStore.updateCard(_editingColumnId, _editingCard.id, { title, description, priority, assignee, author, tags: selectedTags });
     } else {
-      const col = _columns.find(c => c.id === _editingColumnId);
-      if (col) {
-        col.cards.push({
-          id: generateId(),
-          title, description, priority, assignee, author,
-          tags: selectedTags,
-          order: col.cards.length,
-          createdAt: Date.now(),
-          updatedAt: Date.now()
-        });
-      }
+      KanbanStore.addCard(_editingColumnId, { title, description, priority, assignee, author, tags: selectedTags });
     }
 
     _closeModal();
-    _renderBoard();
-    _renderFilterUI();
+    KanbanRenderer.renderBoard(KanbanStore.getColumns());
+    KanbanRenderer.renderFilterUI();
     save();
   }
 
@@ -987,13 +370,10 @@ const KanbanBoard = (() => {
     if (!_editingCard || _editingCard._isTemporary) return;
     if (!confirm(I18n.t('column.delete.card.confirm', { title: escapeHtml(_editingCard.title) }))) return;
 
-    const col = _columns.find(c => c.id === _editingColumnId);
-    if (col) {
-      col.cards = col.cards.filter(c => c.id !== _editingCard.id);
-    }
+    KanbanStore.deleteCard(_editingColumnId, _editingCard.id);
 
     _closeModal();
-    _renderBoard();
+    KanbanRenderer.renderBoard(KanbanStore.getColumns());
     save();
   }
 
@@ -1020,17 +400,9 @@ const KanbanBoard = (() => {
       const title = titleInput.value.trim() || I18n.t('column.new.column');
       const color = colorInput.value;
 
-      const newCol = {
-        id: generateId(),
-        title: title,
-        color: color,
-        order: _columns.length,
-        cards: []
-      };
+      KanbanStore.addColumn(title, color);
 
-      _columns.push(newCol);
-
-      _renderBoard();
+      KanbanRenderer.renderBoard(KanbanStore.getColumns());
       save();
       cleanup();
     }
@@ -1054,7 +426,7 @@ const KanbanBoard = (() => {
   }
 
   function _clearColumnCards(columnId) {
-    const col = _columns.find(c => c.id === columnId);
+    const col = KanbanStore.getColumns().find(c => c.id === columnId);
     if (!col) return;
     if (!col.cards || col.cards.length === 0) return;
 
@@ -1070,147 +442,27 @@ const KanbanBoard = (() => {
       return;
     }
 
-    col.cards = [];
-    _renderBoard();
+    KanbanStore.clearColumnCards(columnId);
+    KanbanRenderer.renderBoard(KanbanStore.getColumns());
     save();
   }
 
   function _deleteColumn(columnId) {
-    const col = _columns.find(c => c.id === columnId);
+    if (KanbanStore.isFirstColumn(columnId)) return;
+    const col = KanbanStore.getColumns().find(c => c.id === columnId);
     if (!col) return;
-    if (_columns.length <= 1) return;
+    if (KanbanStore.getColumns().length <= 1) return;
 
     if (!confirm(I18n.t('column.delete.confirm', { title: escapeHtml(col.title) }))) return;
 
-    _columns = _columns.filter(c => c.id !== columnId);
-    _renderBoard();
+    KanbanStore.deleteColumn(columnId);
+    KanbanRenderer.renderBoard(KanbanStore.getColumns());
     save();
   }
 
-  function _renderFilterUI() {
-    const assigneeSelect = _dom.filterAssignee;
-    if (!assigneeSelect) return;
-
-    const currentAssignee = assigneeSelect.value;
-    assigneeSelect.innerHTML = '<option value="">' + I18n.t('filter.all.assignees') + '</option>';
-    for (const performer of _performers) {
-      const opt = document.createElement('option');
-      opt.value = performer.name;
-      opt.textContent = performer.name;
-      if (performer.name === currentAssignee) opt.selected = true;
-      assigneeSelect.appendChild(opt);
-    }
-
-    const authorSelect = _dom.filterAuthor;
-    if (authorSelect) {
-      const currentAuthor = authorSelect.value;
-      authorSelect.innerHTML = '<option value="">' + I18n.t('filter.all.authors') + '</option>';
-      for (const author of _authors) {
-        const opt = document.createElement('option');
-        opt.value = author.name;
-        opt.textContent = author.name;
-        if (author.name === currentAuthor) opt.selected = true;
-        authorSelect.appendChild(opt);
-      }
-    }
-
-    _renderTagsDropdown();
-    _renderTagsChips();
-  }
-
-  function _renderTagsDropdown() {
-    const listEl = _dom.filterTagsList;
-    const labelEl = _dom.filterTagsLabel;
-    if (!listEl || !labelEl) return;
-
-    listEl.innerHTML = '';
-
-    if (_tags.length === 0) {
-      listEl.innerHTML = '<div class="filter-tag-item" style="cursor:default;opacity:0.5">' + I18n.t('column.no.tags') + '</div>';
-      _updateFilterTagsLabel(labelEl);
-      return;
-    }
-
-    const fragment = document.createDocumentFragment();
-    const filterState = KanbanFilter.getState();
-
-    for (const tag of _tags) {
-      const item = document.createElement('div');
-      item.className = 'filter-tag-item' + (filterState.tags.includes(tag.id) ? ' selected' : '');
-      item.dataset.tagId = tag.id;
-
-      const checkbox = document.createElement('span');
-      checkbox.className = 'filter-tag-checkbox';
-      const colorDot = document.createElement('span');
-      colorDot.className = 'filter-tag-color';
-      colorDot.style.background = tag.color;
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'filter-tag-name';
-      nameSpan.textContent = tag.name;
-
-      item.appendChild(checkbox);
-      item.appendChild(colorDot);
-      item.appendChild(nameSpan);
-      item.addEventListener('click', () => {
-        KanbanFilter.toggleTag(tag.id);
-        _renderBoard();
-        _updateClearButton();
-        _renderTagsDropdown();
-        _renderTagsChips();
-      });
-      fragment.appendChild(item);
-    }
-
-    listEl.appendChild(fragment);
-    _updateFilterTagsLabel(labelEl);
-  }
-
-  function _updateFilterTagsLabel(labelEl) {
-    const filterState = KanbanFilter.getState();
-    if (filterState.tags.length > 0) {
-      labelEl.textContent = I18n.t('tags.filter.selected', { count: filterState.tags.length });
-    } else {
-      labelEl.textContent = I18n.t('tags.filter.all');
-    }
-  }
-
-  function _renderTagsChips() {
-    const chipsEl = _dom.filterTagsChips;
-    if (!chipsEl) return;
-    chipsEl.innerHTML = '';
-
-    const filterState = KanbanFilter.getState();
-
-    for (const tagId of filterState.tags) {
-      const tag = _tags.find(t => t.id === tagId);
-      if (!tag) continue;
-
-      const chip = document.createElement('span');
-      chip.className = 'filter-tag-chip';
-      chip.style.background = tag.color + '22';
-      chip.style.color = tag.color;
-      chip.style.border = '1px solid ' + tag.color + '55';
-      chip.innerHTML = `<span class="filter-tag-name">${escapeHtml(tag.name)}</span><span class="filter-tag-chip-remove" title="${I18n.t('tags.remove.title')}">&#10005;</span>`;
-      chip.querySelector('.filter-tag-chip-remove').addEventListener('click', (e) => {
-        e.stopPropagation();
-        KanbanFilter.removeTag(tagId);
-        _renderBoard();
-        _updateClearButton();
-        _renderTagsDropdown();
-        _renderTagsChips();
-      });
-      chipsEl.appendChild(chip);
-    }
-  }
-
-  function _updateClearButton() {
-    const btn = _dom.filterClear;
-    if (!btn) return;
-    btn.classList.toggle('visible', KanbanFilter.hasActiveFilters());
-  }
-
   function _bindEvents() {
-    _bindColumnReorder(_dom.board);
+    KanbanDnD.bindColumnReorder(_dom.board);
+    KanbanDnD.bindColumnHeaderDrag(_dom.board);
 
     document.getElementById('card-save').addEventListener('click', () => _saveCard());
     document.getElementById('card-cancel').addEventListener('click', () => _closeModal());
@@ -1236,6 +488,7 @@ const KanbanBoard = (() => {
     const filterAssignee = _dom.filterAssignee;
     const filterAuthor = _dom.filterAuthor;
     const filterClear = _dom.filterClear;
+    let _filterChangeTimer = null;
 
     if (filterSearch) {
       let _searchTimer = null;
@@ -1244,30 +497,36 @@ const KanbanBoard = (() => {
         _searchTimer = setTimeout(() => {
           _searchTimer = null;
           KanbanFilter.applyFilters(filterSearch.value, filterPriority?.value || '', filterAssignee?.value || '', filterAuthor?.value || '');
-          _renderBoard();
-          _updateClearButton();
+          KanbanRenderer.renderBoard(KanbanStore.getColumns());
+          KanbanRenderer.updateClearButton();
         }, 150);
       });
     }
+    function _debouncedFilterRender() {
+      if (_filterChangeTimer) clearTimeout(_filterChangeTimer);
+      _filterChangeTimer = setTimeout(() => {
+        _filterChangeTimer = null;
+        KanbanRenderer.renderBoard(KanbanStore.getColumns());
+        KanbanRenderer.updateClearButton();
+      }, 100);
+    }
+
     if (filterPriority) {
       filterPriority.addEventListener('change', () => {
         KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority.value, filterAssignee?.value || '', filterAuthor?.value || '');
-        _renderBoard();
-        _updateClearButton();
+        _debouncedFilterRender();
       });
     }
     if (filterAssignee) {
       filterAssignee.addEventListener('change', () => {
         KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee.value, filterAuthor?.value || '');
-        _renderBoard();
-        _updateClearButton();
+        _debouncedFilterRender();
       });
     }
     if (filterAuthor) {
       filterAuthor.addEventListener('change', () => {
         KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee?.value || '', filterAuthor.value);
-        _renderBoard();
-        _updateClearButton();
+        _debouncedFilterRender();
       });
     }
     if (filterClear) {
@@ -1277,9 +536,9 @@ const KanbanBoard = (() => {
         if (filterPriority) filterPriority.value = '';
         if (filterAssignee) filterAssignee.value = '';
         if (filterAuthor) filterAuthor.value = '';
-        _renderBoard();
-        _renderFilterUI();
-        _updateClearButton();
+        KanbanRenderer.renderBoard(KanbanStore.getColumns());
+        KanbanRenderer.renderFilterUI();
+        KanbanRenderer.updateClearButton();
       });
     }
 
@@ -1291,7 +550,7 @@ const KanbanBoard = (() => {
         const isVisible = dropdown.style.display === 'block';
         dropdown.style.display = isVisible ? 'none' : 'block';
         tagsLabel.classList.toggle('active', !isVisible);
-        if (!isVisible) _renderTagsDropdown();
+        if (!isVisible) KanbanRenderer.renderTagsDropdown();
       });
     }
 

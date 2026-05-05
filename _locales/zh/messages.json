@@ -122,6 +122,8 @@
   "optionsSupportOkxHint": { "message": "扫码转账", "description": "OKX donate hint" },
   "optionsSupportOkxModalTitle": { "message": "通过 OKX 支持", "description": "OKX QR modal title" },
   "optionsSupportOkxModalDesc": { "message": "在 OKX 应用中扫描二维码进行转账：", "description": "OKX QR modal description" },
+  "cardOldTooltip": { "message": "任务已超过7天", "description": "Snail tooltip for old cards in first column" },
+  "cardFireTooltip": { "message": "任务已超过22天", "description": "Fire tooltip for very old cards in first column" },
   "cardTagsPlaceholder": { "message": "所有标签", "description": "Card tags placeholder" },
   "cardTagsDropdownHeader": { "message": "选择标签", "description": "Tags dropdown header" },
   "cardTagsDropdownClear": { "message": "清除", "description": "Clear tags button" },

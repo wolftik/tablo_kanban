@@ -122,6 +122,8 @@
   "optionsSupportOkxHint": { "message": "QR-код для перевода", "description": "OKX donate hint" },
   "optionsSupportOkxModalTitle": { "message": "Поддержать через OKX", "description": "OKX QR modal title" },
   "optionsSupportOkxModalDesc": { "message": "Отсканируйте QR-код в приложении OKX для перевода:", "description": "OKX QR modal description" },
+  "cardOldTooltip": { "message": "Задача висит больше 7 дней", "description": "Snail tooltip for old cards in first column" },
+  "cardFireTooltip": { "message": "Задача висит больше 22 дней", "description": "Fire tooltip for very old cards in first column" },
   "cardTagsPlaceholder": { "message": "Все теги", "description": "Card tags placeholder" },
   "cardTagsDropdownHeader": { "message": "Выберите теги", "description": "Tags dropdown header" },
   "cardTagsDropdownClear": { "message": "Очистить", "description": "Clear tags button" },

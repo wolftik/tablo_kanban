@@ -18,7 +18,12 @@ const KanbanCard = (() => {
     if (!tags) return [];
     return tagIds.map(id => tags.find(t => t.id === id)).filter(Boolean);
   }
-  function create(card, columnId, performers, tags) {
+  function _isFirstColumn(columnId) {
+    const columns = KanbanStore.getColumns();
+    return columns.length > 0 && columns[0].id === columnId;
+  }
+
+  function create(card, columnId, performers, tags, tagById) {
     const cardEl = document.createElement('div');
     cardEl.className = 'kanban-card';
     cardEl.draggable = true;
@@ -29,6 +34,23 @@ const KanbanCard = (() => {
       const priorityBar = document.createElement('div');
       priorityBar.className = 'card-priority-bar priority-' + card.priority;
       cardEl.appendChild(priorityBar);
+    }
+
+    if (card.createdAt && _isFirstColumn(columnId)) {
+      const age = Date.now() - card.createdAt;
+      if (age > 22 * 24 * 60 * 60 * 1000) {
+        const fire = document.createElement('span');
+        fire.className = 'card-aging-badge card-fire';
+        fire.textContent = '\uD83D\uDD25';
+        fire.title = I18n.t('card.fire.tooltip');
+        cardEl.appendChild(fire);
+      } else if (age > 7 * 24 * 60 * 60 * 1000) {
+        const snail = document.createElement('span');
+        snail.className = 'card-aging-badge card-snail';
+        snail.textContent = '\uD83D\uDC0C';
+        snail.title = I18n.t('card.old.tooltip');
+        cardEl.appendChild(snail);
+      }
     }
 
     const titleEl = document.createElement('div');
@@ -80,7 +102,7 @@ const KanbanCard = (() => {
     if (card.tags && card.tags.length > 0) {
       const tagsContainer = document.createElement('div');
       tagsContainer.className = 'card-tags';
-      const displayTags = _getTagsForDisplay(card.tags, null, tags);
+      const displayTags = _getTagsForDisplay(card.tags, tagById, tags);
       for (const tag of displayTags) {
         const badge = document.createElement('span');
         badge.className = 'tag-badge';

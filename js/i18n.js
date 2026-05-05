@@ -123,6 +123,8 @@ const I18n = (() => {
     'options.support.okx.hint': 'optionsSupportOkxHint',
     'options.support.okx.modalTitle': 'optionsSupportOkxModalTitle',
     'options.support.okx.modalDesc': 'optionsSupportOkxModalDesc',
+    'card.old.tooltip': 'cardOldTooltip',
+    'card.fire.tooltip': 'cardFireTooltip',
     'card.tags.placeholder': 'cardTagsPlaceholder',
     'card.tags.dropdown.header': 'cardTagsDropdownHeader',
     'card.tags.dropdown.clear': 'cardTagsDropdownClear',

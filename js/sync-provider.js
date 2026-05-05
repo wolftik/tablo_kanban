@@ -3,18 +3,17 @@
 const SyncProvider = (() => {
   const STORAGE_KEY = 'sync_provider';
 
-  function _getProviderName() {
-    return new Promise((resolve) => {
-      chrome.storage.sync.get(STORAGE_KEY, (data) => {
-        resolve(data[STORAGE_KEY] || 'google_drive');
-      });
-    });
+  async function _getProviderName() {
+    try {
+      const data = await chrome.storage.sync.get(STORAGE_KEY);
+      return data[STORAGE_KEY] || 'google_drive';
+    } catch {
+      return 'google_drive';
+    }
   }
 
-  function _setProviderName(name) {
-    return new Promise((resolve) => {
-      chrome.storage.sync.set({ [STORAGE_KEY]: name }, resolve);
-    });
+  async function _setProviderName(name) {
+    await chrome.storage.sync.set({ [STORAGE_KEY]: name });
   }
 
   function _resolve(providerName) {

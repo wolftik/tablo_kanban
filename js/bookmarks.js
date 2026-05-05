@@ -1,7 +1,7 @@
 'use strict';
 
 let _bookmarkSlots = 22;
-let _bookmarkGridColumns = 11;
+let _bookmarkGridColumns = 11; // updated in _loadSettings()
 
 const BookmarksManager = (() => {
   let _displayedBookmarks = [];
@@ -11,7 +11,7 @@ const BookmarksManager = (() => {
   async function _loadSettings() {
     const settings = await StorageSync.get('settings') || getDefaultSettings();
     _bookmarkSlots = settings.bookmarkSlots || 22;
-    _bookmarkGridColumns = Math.ceil(_bookmarkSlots / 2);
+    _bookmarkGridColumns = _bookmarkSlots < 12 ? _bookmarkSlots : Math.ceil(_bookmarkSlots / 2);
     return settings;
   }
 
@@ -59,11 +59,16 @@ const BookmarksManager = (() => {
   }
 
   let _dragDropInitialized = false;
+  let _rafId = null;
 
   function _initResponsive(container) {
     if (_responsiveObserver) _responsiveObserver.disconnect();
     _responsiveObserver = new ResizeObserver(() => {
-      _updateResponsiveLayout(container);
+      if (_rafId) return;
+      _rafId = requestAnimationFrame(() => {
+        _rafId = null;
+        _updateResponsiveLayout(container);
+      });
     });
     _responsiveObserver.observe(container);
     _updateResponsiveLayout(container);
@@ -169,7 +174,11 @@ const BookmarksManager = (() => {
   function _renderBookmarks(container, bookmarks) {
     container.innerHTML = '';
     container.style.setProperty('--bookmark-grid-columns', _bookmarkGridColumns);
-    container.style.gridTemplateRows = 'repeat(2, var(--bookmark-slot-height))';
+    const isSingleRow = _bookmarkSlots < 12;
+    container.style.gridTemplateRows = isSingleRow ? 'repeat(1, var(--bookmark-slot-height))' : 'repeat(2, var(--bookmark-slot-height))';
+    container.classList.toggle('single-row', isSingleRow);
+    const headBar = document.getElementById('head-bar');
+    if (headBar) headBar.classList.toggle('single-row', isSingleRow);
 
     for (let i = 0; i < _bookmarkSlots; i++) {
       const slot = document.createElement('div');
@@ -192,7 +201,15 @@ const BookmarksManager = (() => {
         }
         favicon.src = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
         favicon.onerror = () => {
-          favicon.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';
+          if (favicon.src.startsWith('chrome://favicon')) {
+            favicon.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';
+          } else {
+            try {
+              favicon.src = 'chrome://favicon/' + new URL(bm.url).origin;
+            } catch {
+              favicon.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';
+            }
+          }
         };
 
         const titleEl = document.createElement('span');
@@ -315,52 +332,12 @@ const BookmarksManager = (() => {
     } catch {}
   }
 
-  let _editModalCurrentBookmark = null;
-  let _editModalCurrentContainer = null;
-
   function _openEditModal(bookmark) {
-    _editModalCurrentBookmark = bookmark;
-    _editModalCurrentContainer = document.getElementById('bookmarks-container');
+    const modal = document.getElementById('bookmark-edit-modal');
+    if (!modal) return;
 
-    let modal = document.getElementById('bookmark-edit-modal');
-    if (!modal) {
-      modal = document.createElement('div');
-      modal.id = 'bookmark-edit-modal';
-      modal.className = 'modal-overlay';
-      modal.style.display = 'none';
-      modal.innerHTML = `
-        <div class="modal">
-          <h3>${I18n.t('bookmark.edit.title')}</h3>
-          <input type="text" id="bookmark-edit-url" placeholder="${I18n.t('bookmark.edit.url.placeholder')}">
-          <input type="text" id="bookmark-edit-title" placeholder="${I18n.t('bookmark.edit.title.placeholder')}">
-          <div class="modal-actions">
-            <button id="bookmark-edit-cancel">${I18n.t('bookmark.cancel')}</button>
-            <button id="bookmark-edit-save">${I18n.t('bookmark.save')}</button>
-          </div>
-        </div>
-      `;
-      document.body.appendChild(modal);
-
-      modal.querySelector('#bookmark-edit-cancel').onclick = () => { modal.style.display = 'none'; };
-      modal.querySelector('#bookmark-edit-save').onclick = () => {
-        const newUrl = document.getElementById('bookmark-edit-url').value;
-        const newTitle = document.getElementById('bookmark-edit-title').value;
-        if (newUrl && _editModalCurrentBookmark) {
-          const index = _displayedBookmarks.findIndex(b => b && b.id === _editModalCurrentBookmark.id);
-          if (index !== -1) {
-            _displayedBookmarks[index] = { ..._displayedBookmarks[index], url: newUrl, title: newTitle || newUrl };
-            saveDisplayedBookmarks(_displayedBookmarks).then(() => {
-              render();
-              modal.style.display = 'none';
-            });
-          }
-        }
-      };
-
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) modal.style.display = 'none';
-      });
-    }
+    modal._currentBookmark = bookmark;
+    modal._displayedBookmarks = _displayedBookmarks;
 
     document.getElementById('bookmark-edit-url').value = bookmark.url;
     document.getElementById('bookmark-edit-title').value = bookmark.title;

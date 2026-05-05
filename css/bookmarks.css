@@ -34,6 +34,10 @@
   justify-content: center;
 }
 
+#head-bar.single-row {
+  min-height: 140px;
+}
+
 #bookmarks-container {
   flex: 1 1 auto;
   min-width: 0;
@@ -45,6 +49,10 @@
   overflow-y: hidden;
   scrollbar-width: thin;
   scrollbar-color: #cbd5e1 transparent;
+}
+
+#bookmarks-container.single-row {
+  grid-template-rows: repeat(1, var(--bookmark-slot-height));
 }
 
 #bookmarks-container::-webkit-scrollbar {

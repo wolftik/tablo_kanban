@@ -72,6 +72,16 @@ document.addEventListener('DOMContentLoaded', async () => {
             return;
           }
           BookmarksManager.render();
+          const zone = document.getElementById('widgets-zone');
+          if (zone) {
+            zone.innerHTML = '';
+            zone.classList.remove('active');
+            delete zone.dataset.enabled;
+            WidgetSystem.destroyAll();
+          }
+          WidgetSystem.register('clock', ClockWidget);
+          WidgetSystem.register('weather', WeatherWidget);
+          WidgetSystem.initAll();
         }
       }
       if (areaName === 'sync' && changes.bookmarks_display) {
@@ -85,24 +95,24 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 function _initBookmarkModal() {
-  const modal = document.getElementById('add-bookmark-modal');
-  if (!modal) return;
+  const addModal = document.getElementById('add-bookmark-modal');
+  if (!addModal) return;
 
-  const urlInput = document.getElementById('bookmark-url');
-  const titleInput = document.getElementById('bookmark-title');
-  const saveBtn = document.getElementById('bookmark-save');
-  const cancelBtn = document.getElementById('bookmark-cancel');
+  const addUrlInput = document.getElementById('bookmark-url');
+  const addTitleInput = document.getElementById('bookmark-title');
+  const addSaveBtn = document.getElementById('bookmark-save');
+  const addCancelBtn = document.getElementById('bookmark-cancel');
 
-  cancelBtn.addEventListener('click', () => {
-    modal.style.display = 'none';
-    urlInput.value = '';
-    titleInput.value = '';
-    delete modal.dataset.targetIndex;
+  addCancelBtn.addEventListener('click', () => {
+    addModal.style.display = 'none';
+    addUrlInput.value = '';
+    addTitleInput.value = '';
+    delete addModal.dataset.targetIndex;
   });
 
-  saveBtn.addEventListener('click', async () => {
-    let url = urlInput.value.trim();
-    const title = titleInput.value.trim();
+  addSaveBtn.addEventListener('click', async () => {
+    let url = addUrlInput.value.trim();
+    const title = addTitleInput.value.trim();
     if (!url) return;
     if (!/^https?:\/\//i.test(url)) {
       url = 'https://' + url;
@@ -117,13 +127,13 @@ function _initBookmarkModal() {
       }
     }
 
-    const targetIndex = modal.dataset.targetIndex ? parseInt(modal.dataset.targetIndex) : null;
+    const targetIndex = addModal.dataset.targetIndex ? parseInt(addModal.dataset.targetIndex) : null;
     await BookmarksManager.addDisplayedBookmark(url, displayTitle, targetIndex);
     await BookmarksManager.render();
-    modal.style.display = 'none';
-    urlInput.value = '';
-    titleInput.value = '';
-    delete modal.dataset.targetIndex;
+    addModal.style.display = 'none';
+    addUrlInput.value = '';
+    addTitleInput.value = '';
+    delete addModal.dataset.targetIndex;
 
     const container = document.getElementById('bookmarks-container');
     if (container) {
@@ -131,18 +141,64 @@ function _initBookmarkModal() {
     }
   });
 
-  urlInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') saveBtn.click();
-    if (e.key === 'Escape') cancelBtn.click();
+  addUrlInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') addSaveBtn.click();
+    if (e.key === 'Escape') addCancelBtn.click();
   });
 
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) {
-      modal.style.display = 'none';
-      urlInput.value = '';
-      titleInput.value = '';
-      delete modal.dataset.targetIndex;
+  addModal.addEventListener('click', (e) => {
+    if (e.target === addModal) {
+      addModal.style.display = 'none';
+      addUrlInput.value = '';
+      addTitleInput.value = '';
+      delete addModal.dataset.targetIndex;
     }
+  });
+
+  _initBookmarkEditModal();
+}
+
+function _initBookmarkEditModal() {
+  let editModal = document.createElement('div');
+  editModal.id = 'bookmark-edit-modal';
+  editModal.className = 'modal-overlay';
+  editModal.style.display = 'none';
+  editModal.innerHTML = `
+    <div class="modal">
+      <h3 data-i18n="bookmark.edit.title"></h3>
+      <input type="text" id="bookmark-edit-url" data-i18n-placeholder="bookmark.edit.url.placeholder">
+      <input type="text" id="bookmark-edit-title" data-i18n-placeholder="bookmark.edit.title.placeholder">
+      <div class="modal-actions">
+        <button id="bookmark-edit-cancel" data-i18n="bookmark.cancel"></button>
+        <button id="bookmark-edit-save" data-i18n="bookmark.save"></button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(editModal);
+
+  const urlInput = document.getElementById('bookmark-edit-url');
+  const titleInput = document.getElementById('bookmark-edit-title');
+  const saveBtn = document.getElementById('bookmark-edit-save');
+  const cancelBtn = document.getElementById('bookmark-edit-cancel');
+
+  cancelBtn.addEventListener('click', () => { editModal.style.display = 'none'; });
+  saveBtn.addEventListener('click', async () => {
+    const newUrl = urlInput.value.trim();
+    const newTitle = titleInput.value.trim();
+    const bookmark = editModal._currentBookmark;
+    if (!newUrl || !bookmark) return;
+
+    const index = editModal._displayedBookmarks.findIndex(b => b && b.id === bookmark.id);
+    if (index === -1) return;
+
+    editModal._displayedBookmarks[index] = { ...editModal._displayedBookmarks[index], url: newUrl, title: newTitle || newUrl };
+    await BookmarksManager.saveDisplayedBookmarks(editModal._displayedBookmarks);
+    await BookmarksManager.render();
+    editModal.style.display = 'none';
+  });
+
+  editModal.addEventListener('click', (e) => {
+    if (e.target === editModal) editModal.style.display = 'none';
   });
 }
 

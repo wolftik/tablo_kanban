@@ -175,6 +175,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // ===== Columns tab =====
+  function _isFirstColumn(colId) {
+    const sorted = [...columns].sort((a, b) => (a.order || 0) - (b.order || 0));
+    return sorted.length > 0 && sorted[0].id === colId;
+  }
+
   function renderColumnsList() {
     const list = document.getElementById('columns-list');
     if (!list) return;
@@ -188,9 +193,12 @@ document.addEventListener('DOMContentLoaded', async () => {
       item.dataset.columnId = col.id;
       item.draggable = true;
 
+      const isFirst = _isFirstColumn(col.id);
+
       const dragHandle = document.createElement('span');
       dragHandle.className = 'col-drag-handle';
       dragHandle.textContent = '\u2630';
+      if (isFirst) dragHandle.style.display = 'none';
 
       const color = document.createElement('input');
       color.type = 'color';
@@ -202,17 +210,20 @@ document.addEventListener('DOMContentLoaded', async () => {
       name.value = col.title;
       name.className = 'col-name-input';
       name.placeholder = I18n.t('options.columns.new');
-
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'col-delete-btn';
       deleteBtn.innerHTML = '&times;';
-      deleteBtn.addEventListener('click', () => {
-        if (columns.length <= 1) return;
-        const confirmMsg = I18n.t('column.delete.confirm', { title: escapeHtml(col.title) });
-        if (!confirm(confirmMsg)) return;
-        columns = columns.filter(c => c.id !== col.id);
-        renderColumnsList();
-      });
+      if (isFirst) {
+        deleteBtn.style.display = 'none';
+      } else {
+        deleteBtn.addEventListener('click', () => {
+          if (columns.length <= 1) return;
+          const confirmMsg = I18n.t('column.delete.confirm', { title: escapeHtml(col.title) });
+          if (!confirm(confirmMsg)) return;
+          columns = columns.filter(c => c.id !== col.id);
+          renderColumnsList();
+        });
+      }
 
       item.appendChild(dragHandle);
       item.appendChild(color);
@@ -248,15 +259,20 @@ document.addEventListener('DOMContentLoaded', async () => {
     list.addEventListener('dragstart', (e) => {
       const item = e.target.closest('.column-option-item');
       if (!item) return;
+      if (_isFirstColumn(item.dataset.columnId)) {
+        e.preventDefault();
+        return;
+      }
       dragId = item.dataset.columnId;
     });
 
     list.addEventListener('dragover', (e) => {
       e.preventDefault();
-      const afterElement = getDragAfterElement(list, e.clientY, '.column-option-item:not(.dragging)');
       const dragging = list.querySelector('.dragging');
       if (!dragging) return;
-      if (afterElement == null) {
+      if (_isFirstColumn(dragging.dataset.columnId)) return;
+      const afterElement = getDragAfterElement(list, e.clientY, '.column-option-item:not(.dragging)');
+      if (afterElement == null || _isFirstColumn(afterElement.dataset.columnId)) {
         list.appendChild(dragging);
       } else {
         list.insertBefore(dragging, afterElement);
@@ -275,6 +291,12 @@ document.addEventListener('DOMContentLoaded', async () => {
           newColumns.push(col);
         }
       });
+      const firstColIdx = newColumns.findIndex(c => _isFirstColumn(c.id));
+      if (firstColIdx > 0) {
+        const firstCol = newColumns.splice(firstColIdx, 1)[0];
+        newColumns.unshift(firstCol);
+      }
+      newColumns.forEach((c, i) => { c.order = i; });
       columns = newColumns;
       dragId = null;
     });
