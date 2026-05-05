@@ -30,6 +30,9 @@
   "content_security_policy": {
     "extension_pages": "default-src 'self'; connect-src 'self' https://www.googleapis.com https://oauth.yandex.ru https://cloud-api.yandex.net https://downloader.disk.yandex.com https://downloader.disk.yandex.ru https://*.disk.yandex.net https://*.storage.yandex.net wss://mc.yandex.ru https://geocoding-api.open-meteo.com https://api.open-meteo.com https://www.google.com; img-src 'self' https://www.google.com https://*.gstatic.com data:; style-src 'self' 'unsafe-inline'"
   },
+  "chrome_url_overrides": {
+    "newtab": "views/newtab.html"
+  },
   "options_ui": {
     "page": "views/options.html",
     "open_in_tab": true
