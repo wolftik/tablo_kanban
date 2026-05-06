@@ -365,14 +365,25 @@
 }
 
 #bookmark-save,
-#card-save {
+#card-save,
+#bookmark-edit-save {
   background: #6366f1;
   color: white;
 }
 
 #bookmark-save:hover,
-#card-save:hover {
+#card-save:hover,
+#bookmark-edit-save:hover {
   background: #4f46e5;
+}
+
+#bookmark-edit-cancel {
+  background: transparent;
+  color: var(--text-secondary, #64748b);
+}
+
+#bookmark-edit-cancel:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
 #bookmark-cancel,

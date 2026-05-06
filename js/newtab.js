@@ -206,6 +206,13 @@ function _initBookmarkEditModal() {
   `;
   document.body.appendChild(editModal);
 
+  editModal.querySelectorAll('[data-i18n]').forEach(el => {
+    el.textContent = I18n.t(el.dataset.i18n);
+  });
+  editModal.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    el.placeholder = I18n.t(el.dataset.i18nPlaceholder);
+  });
+
   const urlInput = document.getElementById('bookmark-edit-url');
   const titleInput = document.getElementById('bookmark-edit-title');
   const saveBtn = document.getElementById('bookmark-edit-save');
