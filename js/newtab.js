@@ -97,7 +97,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           const oldTheme = document.documentElement.getAttribute('data-theme');
           const newTheme = newSettings.theme || 'system';
           if (newTheme !== oldTheme) applyTheme(newTheme);
-          if (newSettings.language && ['ru', 'en', 'zh'].includes(newSettings.language) && newSettings.language !== I18n.getLang()) {
+          if (newSettings.language && newSettings.language !== I18n.getLang()) {
             location.reload();
             return;
           }

@@ -196,32 +196,41 @@ const I18n = (() => {
     }
   }
 
+  const SUPPORTED_LOCALES = ['en', 'es', 'de', 'fr', 'pt', 'nl', 'zh', 'ru', 'it', 'hi'];
+
   function getLang() {
     if (_currentLang) return _currentLang;
     const uiLang = chrome.i18n.getUILanguage();
     if (uiLang.startsWith('ru')) return 'ru';
     if (uiLang.startsWith('zh')) return 'zh';
+    if (uiLang.startsWith('es')) return 'es';
+    if (uiLang.startsWith('hi')) return 'hi';
+    if (uiLang.startsWith('de')) return 'de';
+    if (uiLang.startsWith('fr')) return 'fr';
+    if (uiLang.startsWith('pt')) return 'pt';
+    if (uiLang.startsWith('nl')) return 'nl';
+    if (uiLang.startsWith('it')) return 'it';
     return 'en';
   }
 
   async function init() {
     const settings = await StorageSync.get('settings');
     const savedLang = settings && settings.language;
-    if (savedLang && ['ru', 'en', 'zh'].includes(savedLang)) {
+    if (savedLang && SUPPORTED_LOCALES.includes(savedLang)) {
       _currentLang = savedLang;
     } else {
       _currentLang = getLang();
     }
     await _loadMessages(_currentLang);
-    document.documentElement.setAttribute('lang', _currentLang === 'zh' ? 'zh-CN' : _currentLang === 'ru' ? 'ru-RU' : 'en-US');
+    document.documentElement.setAttribute('lang', localeToBCP47(_currentLang));
     applyTranslations();
   }
 
   async function setLang(locale) {
-    if (!['ru', 'en', 'zh'].includes(locale)) return;
+    if (!SUPPORTED_LOCALES.includes(locale)) return;
     _currentLang = locale;
     await _loadMessages(locale);
-    document.documentElement.setAttribute('lang', locale === 'zh' ? 'zh-CN' : locale === 'ru' ? 'ru-RU' : 'en-US');
+    document.documentElement.setAttribute('lang', localeToBCP47(locale));
     applyTranslations();
   }
 
@@ -243,7 +252,7 @@ const I18n = (() => {
   }
 
   function localeToBCP47(lang) {
-    const map = { ru: 'ru-RU', en: 'en-US', zh: 'zh-CN' };
+    const map = { en: 'en-US', es: 'es-ES', de: 'de-DE', fr: 'fr-FR', pt: 'pt-PT', nl: 'nl-NL', zh: 'zh-CN', ru: 'ru-RU', it: 'it-IT', hi: 'hi-IN' };
     return map[lang] || 'en-US';
   }
 

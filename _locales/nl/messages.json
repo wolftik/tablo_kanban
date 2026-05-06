@@ -1,0 +1,590 @@
+{
+  "appName": {
+    "message": "Tablo Kanban",
+    "description": "Extension name"
+  },
+  "appDescription": {
+    "message": "Bladwijzerbalk en Kanban-bord als nieuwe tabbladpagina",
+    "description": "Extension description"
+  },
+  "bookmarkAddTitle": {
+    "message": "Bladwijzer toevoegen",
+    "description": "Add bookmark dialog title"
+  },
+  "bookmarkUrlPlaceholder": {
+    "message": "URL (https://voorbeeld.nl)",
+    "description": "Bookmark URL input placeholder"
+  },
+  "bookmarkTitlePlaceholder": {
+    "message": "Titel",
+    "description": "Bookmark title input placeholder"
+  },
+  "bookmarkCancel": {
+    "message": "Annuleren",
+    "description": "Cancel button"
+  },
+  "bookmarkSave": {
+    "message": "Opslaan",
+    "description": "Save button"
+  },
+  "bookmarkEditTitle": {
+    "message": "Bladwijzer bewerken",
+    "description": "Edit bookmark dialog title"
+  },
+  "bookmarkEditUrlPlaceholder": {
+    "message": "URL",
+    "description": "Edit bookmark URL placeholder"
+  },
+  "bookmarkEditTitlePlaceholder": {
+    "message": "Titel",
+    "description": "Edit bookmark title placeholder"
+  },
+  "bookmarkContextEdit": {
+    "message": "Bewerken",
+    "description": "Context menu edit action"
+  },
+  "bookmarkContextDelete": {
+    "message": "Verwijderen",
+    "description": "Context menu delete action"
+  },
+  "cardPlaceholderAddSite": {
+    "message": "Site toevoegen",
+    "description": "Add site placeholder"
+  },
+  "filterAllAssignees": {
+    "message": "Alle verantwoordelijken",
+    "description": "Filter: all assignees option"
+  },
+  "filterAllAuthors": {
+    "message": "Alle auteurs",
+    "description": "Filter: all authors option"
+  },
+  "filterAllPriorities": {
+    "message": "Alle prioriteiten",
+    "description": "Filter: all priorities option"
+  },
+  "filterSearchPlaceholder": {
+    "message": "Taken zoeken...",
+    "description": "Filter search placeholder"
+  },
+  "filterClearTitle": {
+    "message": "Filters wissen",
+    "description": "Clear filters button title"
+  },
+  "priorityLow": {
+    "message": "Laag",
+    "description": "Low priority"
+  },
+  "priorityMedium": {
+    "message": "Middel",
+    "description": "Medium priority"
+  },
+  "priorityHigh": {
+    "message": "Hoog",
+    "description": "High priority"
+  },
+  "priorityUrgent": {
+    "message": "Urgent",
+    "description": "Urgent priority"
+  },
+  "tagsFilterAll": {
+    "message": "Alle tags",
+    "description": "Tags filter: all"
+  },
+  "tagsFilterSelected": {
+    "message": "$count$ geselecteerd",
+    "description": "Tags filter: selected count",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "tagsRemoveTitle": {
+    "message": "Filter verwijderen",
+    "description": "Remove tag filter tooltip"
+  },
+  "modalTask": {
+    "message": "Taak",
+    "description": "Modal title"
+  },
+  "modalTitlePlaceholder": {
+    "message": "Taaktitel",
+    "description": "Modal title input placeholder"
+  },
+  "modalDescPlaceholder": {
+    "message": "Beschrijving",
+    "description": "Modal description placeholder"
+  },
+  "modalAssignee": {
+    "message": "Verantwoordelijke:",
+    "description": "Assignee label"
+  },
+  "modalNotAssigned": {
+    "message": "Niet toegewezen",
+    "description": "Not assigned option"
+  },
+  "modalAuthor": {
+    "message": "Auteur:",
+    "description": "Author label"
+  },
+  "modalNotSpecified": {
+    "message": "Niet gespecificeerd",
+    "description": "Not specified option"
+  },
+  "modalTags": {
+    "message": "Tags:",
+    "description": "Tags label"
+  },
+  "modalTagsSelect": {
+    "message": "Tags selecteren",
+    "description": "Tags select tooltip"
+  },
+  "modalPriority": {
+    "message": "Prioriteit:",
+    "description": "Priority label"
+  },
+  "modalNoPriority": {
+    "message": "Geen prioriteit",
+    "description": "No priority option"
+  },
+  "modalDelete": {
+    "message": "Verwijderen",
+    "description": "Delete button"
+  },
+  "modalCancel": {
+    "message": "Annuleren",
+    "description": "Cancel button"
+  },
+  "modalSave": {
+    "message": "Opslaan",
+    "description": "Save button"
+  },
+  "modalNewTask": {
+    "message": "Nieuwe Taak",
+    "description": "New task modal title"
+  },
+  "modalEditTask": {
+    "message": "Taak Bewerken",
+    "description": "Edit task modal title"
+  },
+  "columnAddCard": {
+    "message": "+ Kaart Toevoegen",
+    "description": "Add card button"
+  },
+  "columnAddColumn": {
+    "message": "+ Kolom Toevoegen",
+    "description": "Add column button"
+  },
+  "columnAddTitle": {
+    "message": "Nieuwe Kolom",
+    "description": "Add column dialog title"
+  },
+  "columnAddCreate": {
+    "message": "Aanmaken",
+    "description": "Create column button"
+  },
+  "columnNewColumn": {
+    "message": "Nieuwe Kolom",
+    "description": "New column default name"
+  },
+  "columnNewPlaceholder": {
+    "message": "Kolomnaam",
+    "description": "New column input placeholder"
+  },
+  "columnNewColor": {
+    "message": "Kleur:",
+    "description": "Color picker label"
+  },
+  "columnDelete": {
+    "message": "Verwijderen",
+    "description": "Delete column button"
+  },
+  "columnDeleteConfirm": {
+    "message": "Kolom \"$title$\" en alle kaarten verwijderen?",
+    "description": "Column delete confirmation",
+    "placeholders": {
+      "title": {
+        "content": "$1"
+      }
+    }
+  },
+  "columnDeleteCardConfirm": {
+    "message": "Taak \"$title$\" verwijderen?",
+    "description": "Card delete confirmation",
+    "placeholders": {
+      "title": {
+        "content": "$1"
+      }
+    }
+  },
+  "columnNoTags": {
+    "message": "Geen tags",
+    "description": "No tags fallback"
+  },
+  "columnClearCards": {
+    "message": "Alle kaarten wissen",
+    "description": "Clear cards button"
+  },
+  "columnClearCardsConfirm": {
+    "message": "Typ \"$phrase$\" om te bevestigen",
+    "description": "Clear cards prompt",
+    "placeholders": {
+      "phrase": {
+        "content": "$1"
+      }
+    }
+  },
+  "columnClearCardsWrong": {
+    "message": "Onjuiste frase",
+    "description": "Clear cards wrong phrase error"
+  },
+  "settingsTitle": {
+    "message": "Instellingen",
+    "description": "Settings button title"
+  },
+  "settingsOpen": {
+    "message": "Tablo Kanban openen",
+    "description": "Open extension text"
+  },
+  "optionsTitle": {
+    "message": "Instellingen — Tablo Kanban",
+    "description": "Options page title"
+  },
+  "optionsTabColumns": {
+    "message": "Kolommen",
+    "description": "Columns tab button"
+  },
+  "optionsTabTags": {
+    "message": "Tags",
+    "description": "Tags tab button"
+  },
+  "optionsTabPerformers": {
+    "message": "Verantwoordelijken",
+    "description": "Performers tab button"
+  },
+  "optionsTabAuthors": {
+    "message": "Auteurs",
+    "description": "Authors tab button"
+  },
+  "optionsTabAppearance": {
+    "message": "Weergave",
+    "description": "Appearance tab button"
+  },
+  "optionsTabSync": {
+    "message": "Synchronisatie",
+    "description": "Sync tab button"
+  },
+  "optionsSyncTitle": {
+    "message": "Synchronisatie",
+    "description": "Sync section title"
+  },
+  "optionsSyncProvider": {
+    "message": "Sync-provider:",
+    "description": "Sync provider label"
+  },
+  "optionsSyncProviderGoogle": {
+    "message": "Google Drive",
+    "description": "Google Drive option"
+  },
+  "optionsSyncProviderYandex": {
+    "message": "Yandex Disk",
+    "description": "Yandex Disk option"
+  },
+  "optionsSyncDescGoogle": {
+    "message": "Kanban-bordgegevens worden gesynchroniseerd tussen apparaten via uw Google Drive. Google Drive-sync werkt alleen in Chrome.",
+    "description": "Google Drive sync description"
+  },
+  "optionsSyncDescYandex": {
+    "message": "Kanban-bordgegevens worden gesynchroniseerd tussen apparaten via uw Yandex Disk.",
+    "description": "Yandex Disk sync description"
+  },
+  "optionsSyncChecking": {
+    "message": "Status controleren...",
+    "description": "Sync status checking"
+  },
+  "optionsSyncConnected": {
+    "message": "Sync verbonden",
+    "description": "Sync connected status"
+  },
+  "optionsSyncDisconnected": {
+    "message": "Sync niet verbonden",
+    "description": "Sync disconnected status"
+  },
+  "optionsSyncSignin": {
+    "message": "Verbinding maken",
+    "description": "Sign in button"
+  },
+  "optionsSyncSignout": {
+    "message": "Sync verbreken",
+    "description": "Sign out button"
+  },
+  "optionsSyncFailed": {
+    "message": "Verbinding mislukt",
+    "description": "Sync failed status"
+  },
+  "optionsSyncError": {
+    "message": "Statuscontrole mislukt",
+    "description": "Sync error status"
+  },
+  "optionsSyncTokenExpired": {
+    "message": "Yandex Disk-token verlopen of ongeldig. Voer een nieuw token in.",
+    "description": "Token expired message"
+  },
+  "optionsSyncYadiskApply": {
+    "message": "Token opslaan",
+    "description": "Save token button"
+  },
+  "optionsSyncYadiskClear": {
+    "message": "Token wissen",
+    "description": "Clear token button"
+  },
+  "optionsSyncYadiskOauthGet": {
+    "message": "OAuth-token ophalen",
+    "description": "Get OAuth token button"
+  },
+  "optionsSyncYadiskOauthOpened": {
+    "message": "Yandex-autorisatiepagina geopend in een nieuw tabblad. Na autorisatie kopieert u het token uit de adresbalk, plakt u het in het veld 'OAuth-token' hieronder en klikt u op 'Token opslaan'.",
+    "description": "OAuth page opened message"
+  },
+  "optionsSyncYadiskClientHint": {
+    "message": "Om Yandex Disk te verbinden, registreert u een app op oauth.yandex.ru en voert u ClientID in:",
+    "description": "Client ID hint text"
+  },
+  "optionsSyncYadiskClientStep2": {
+    "message": "App aanmaken → type «Webservice»",
+    "description": "Step 2"
+  },
+  "optionsSyncYadiskClientStep4": {
+    "message": "Voeg machtigingen cloud_api:disk.write en cloud_api:disk.read toe",
+    "description": "Step 4"
+  },
+  "optionsSyncYadiskClientStep5": {
+    "message": "Kopieer ClientID (niet Client Secret!) en plak hieronder",
+    "description": "Step 5"
+  },
+  "optionsSyncYadiskClientSave": {
+    "message": "ClientID opslaan",
+    "description": "Save client ID button"
+  },
+  "optionsColumnsTitle": {
+    "message": "Bordkolommen",
+    "description": "Columns section title"
+  },
+  "optionsColumnsDesc": {
+    "message": "Sleep om te herschikken. Klik op × om te verwijderen.",
+    "description": "Columns section description"
+  },
+  "optionsColumnsAdd": {
+    "message": "Kolom Toevoegen",
+    "description": "Add column button"
+  },
+  "optionsColumnsNew": {
+    "message": "Nieuwe Kolom",
+    "description": "New column placeholder"
+  },
+  "optionsTagsTitle": {
+    "message": "Tags",
+    "description": "Tags section title"
+  },
+  "optionsTagsAdd": {
+    "message": "Tag Toevoegen",
+    "description": "Add tag button"
+  },
+  "optionsTagsNew": {
+    "message": "Nieuwe Tag",
+    "description": "New tag placeholder"
+  },
+  "optionsPerformersTitle": {
+    "message": "Verantwoordelijken",
+    "description": "Performers section title"
+  },
+  "optionsPerformersAdd": {
+    "message": "Verantwoordelijke Toevoegen",
+    "description": "Add performer button"
+  },
+  "optionsPerformersNew": {
+    "message": "Nieuwe Verantwoordelijke",
+    "description": "New performer placeholder"
+  },
+  "optionsAuthorsTitle": {
+    "message": "Auteurs",
+    "description": "Authors section title"
+  },
+  "optionsAuthorsAdd": {
+    "message": "Auteur Toevoegen",
+    "description": "Add author button"
+  },
+  "optionsAuthorsNew": {
+    "message": "Nieuwe Auteur",
+    "description": "New author placeholder"
+  },
+  "optionsAppearanceTheme": {
+    "message": "Thema",
+    "description": "Theme section title"
+  },
+  "optionsAppearanceLight": {
+    "message": "Licht",
+    "description": "Light theme option"
+  },
+  "optionsAppearanceDark": {
+    "message": "Donker",
+    "description": "Dark theme option"
+  },
+  "optionsAppearanceSystem": {
+    "message": "Systeem",
+    "description": "System theme option"
+  },
+  "optionsAppearanceLanguage": {
+    "message": "Taal",
+    "description": "Language section title"
+  },
+  "optionsBack": {
+    "message": "← Terug",
+    "description": "Back to main page button"
+  },
+  "optionsSave": {
+    "message": "Opslaan",
+    "description": "Save button"
+  },
+  "optionsSaved": {
+    "message": "Opgeslagen!",
+    "description": "Saved confirmation"
+  },
+  "optionsAboutVersion": {
+    "message": "Versie {version}",
+    "description": "Version info"
+  },
+  "optionsAboutDesc": {
+    "message": "Bladwijzerbalk en Kanban-bord voor uw nieuwe Chrome-tabbladpagina.",
+    "description": "About description"
+  },
+  "optionsAboutStorage": {
+    "message": "Bordgegevens worden lokaal opgeslagen in chrome.storage.local. Instellingen en API-sleutels staan in chrome.storage.sync (gesynchroniseerd tussen apparaten). Bordgegevens worden gesynchroniseerd via een gekozen provider (Google Drive of Yandex Disk).",
+    "description": "Storage info"
+  },
+  "optionsSupportTitle": {
+    "message": "Steun het Project",
+    "description": "Support section title"
+  },
+  "optionsSupportDesc": {
+    "message": "Als u deze extensie nuttig vindt, kunt u de ontwikkeling ervan steunen:",
+    "description": "Support section description"
+  },
+  "optionsSupportOkx": {
+    "message": "OKX (crypto)",
+    "description": "OKX donate button label"
+  },
+  "optionsSupportOkxHint": {
+    "message": "QR-code voor overschrijving",
+    "description": "OKX donate hint"
+  },
+  "optionsSupportOkxModalTitle": {
+    "message": "Steunen via OKX",
+    "description": "OKX QR modal title"
+  },
+  "optionsSupportOkxModalDesc": {
+    "message": "Scan de QR-code in de OKX-app om over te maken:",
+    "description": "OKX QR modal description"
+  },
+  "cardOldTooltip": {
+    "message": "Taak is ouder dan 7 dagen",
+    "description": "Snail tooltip for old cards in first column"
+  },
+  "cardFireTooltip": {
+    "message": "Taak is ouder dan 22 dagen",
+    "description": "Fire tooltip for very old cards in first column"
+  },
+  "cardTagsPlaceholder": {
+    "message": "Alle tags",
+    "description": "Card tags placeholder"
+  },
+  "cardTagsDropdownHeader": {
+    "message": "Tags selecteren",
+    "description": "Tags dropdown header"
+  },
+  "cardTagsDropdownClear": {
+    "message": "Wissen",
+    "description": "Clear tags button"
+  },
+  "cardTagsRemoveTitle": {
+    "message": "Tag verwijderen",
+    "description": "Remove tag tooltip"
+  },
+  "widgetsClock": {
+    "message": "Klok",
+    "description": "Clock widget label"
+  },
+  "widgetsWeather": {
+    "message": "Weer",
+    "description": "Weather widget label"
+  },
+  "weatherCity": {
+    "message": "Stad",
+    "description": "Weather city label"
+  },
+  "weatherCityPlaceholder": {
+    "message": "bijv. Amsterdam",
+    "description": "Weather city placeholder"
+  },
+  "weatherUnit": {
+    "message": "Eenheden",
+    "description": "Weather unit label"
+  },
+  "weatherCelsius": {
+    "message": "°C",
+    "description": "Celsius option"
+  },
+  "weatherFahrenheit": {
+    "message": "°F",
+    "description": "Fahrenheit option"
+  },
+  "weatherError": {
+    "message": "Geen gegevens",
+    "description": "Weather error message"
+  },
+  "weatherLoading": {
+    "message": "Laden...",
+    "description": "Weather loading message"
+  },
+  "optionsWidgetsTitle": {
+    "message": "Widgets",
+    "description": "Widgets section title"
+  },
+  "optionsBookmarksTitle": {
+    "message": "Bladwijzers",
+    "description": "Bookmarks section title"
+  },
+  "optionsBookmarksSlots": {
+    "message": "Aantal bladwijzers:",
+    "description": "Bookmark slots label"
+  },
+  "optionsBookmarksSlotsHint": {
+    "message": "Maximaal 22. Moet een even getal zijn.",
+    "description": "Bookmark slots hint"
+  },
+  "homepageModalTitle": {
+    "message": "Instellen als Startpagina",
+    "description": "Homepage modal title"
+  },
+  "homepageModalDesc": {
+    "message": "Kopieer deze URL en plak deze in uw browserinstellingen als de snelle-toegangspagina of startpagina.",
+    "description": "Homepage modal description"
+  },
+  "homepageModalCopy": {
+    "message": "Kopiëren",
+    "description": "Copy button"
+  },
+  "homepageModalCopied": {
+    "message": "Gekopieerd!",
+    "description": "Copied confirmation"
+  },
+  "homepageModalClose": {
+    "message": "Sluiten",
+    "description": "Close button"
+  },
+  "homepageHint": {
+    "message": "Instellen als startpagina",
+    "description": "Homepage info button tooltip"
+  }
+}

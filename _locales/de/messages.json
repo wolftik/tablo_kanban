@@ -1,0 +1,590 @@
+{
+  "appName": {
+    "message": "Tablo Kanban",
+    "description": "Extension name"
+  },
+  "appDescription": {
+    "message": "Lesezeichenleiste und Kanban-Board als neue Tab-Seite",
+    "description": "Extension description"
+  },
+  "bookmarkAddTitle": {
+    "message": "Lesezeichen hinzufügen",
+    "description": "Add bookmark dialog title"
+  },
+  "bookmarkUrlPlaceholder": {
+    "message": "URL (https://beispiel.de)",
+    "description": "Bookmark URL input placeholder"
+  },
+  "bookmarkTitlePlaceholder": {
+    "message": "Titel",
+    "description": "Bookmark title input placeholder"
+  },
+  "bookmarkCancel": {
+    "message": "Abbrechen",
+    "description": "Cancel button"
+  },
+  "bookmarkSave": {
+    "message": "Speichern",
+    "description": "Save button"
+  },
+  "bookmarkEditTitle": {
+    "message": "Lesezeichen bearbeiten",
+    "description": "Edit bookmark dialog title"
+  },
+  "bookmarkEditUrlPlaceholder": {
+    "message": "URL",
+    "description": "Edit bookmark URL placeholder"
+  },
+  "bookmarkEditTitlePlaceholder": {
+    "message": "Titel",
+    "description": "Edit bookmark title placeholder"
+  },
+  "bookmarkContextEdit": {
+    "message": "Bearbeiten",
+    "description": "Context menu edit action"
+  },
+  "bookmarkContextDelete": {
+    "message": "Löschen",
+    "description": "Context menu delete action"
+  },
+  "cardPlaceholderAddSite": {
+    "message": "Seite hinzufügen",
+    "description": "Add site placeholder"
+  },
+  "filterAllAssignees": {
+    "message": "Alle Bearbeiter",
+    "description": "Filter: all assignees option"
+  },
+  "filterAllAuthors": {
+    "message": "Alle Autoren",
+    "description": "Filter: all authors option"
+  },
+  "filterAllPriorities": {
+    "message": "Alle Prioritäten",
+    "description": "Filter: all priorities option"
+  },
+  "filterSearchPlaceholder": {
+    "message": "Aufgaben suchen...",
+    "description": "Filter search placeholder"
+  },
+  "filterClearTitle": {
+    "message": "Filter zurücksetzen",
+    "description": "Clear filters button title"
+  },
+  "priorityLow": {
+    "message": "Niedrig",
+    "description": "Low priority"
+  },
+  "priorityMedium": {
+    "message": "Mittel",
+    "description": "Medium priority"
+  },
+  "priorityHigh": {
+    "message": "Hoch",
+    "description": "High priority"
+  },
+  "priorityUrgent": {
+    "message": "Dringend",
+    "description": "Urgent priority"
+  },
+  "tagsFilterAll": {
+    "message": "Alle Tags",
+    "description": "Tags filter: all"
+  },
+  "tagsFilterSelected": {
+    "message": "$count$ ausgewählt",
+    "description": "Tags filter: selected count",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "tagsRemoveTitle": {
+    "message": "Filter entfernen",
+    "description": "Remove tag filter tooltip"
+  },
+  "modalTask": {
+    "message": "Aufgabe",
+    "description": "Modal title"
+  },
+  "modalTitlePlaceholder": {
+    "message": "Aufgabentitel",
+    "description": "Modal title input placeholder"
+  },
+  "modalDescPlaceholder": {
+    "message": "Beschreibung",
+    "description": "Modal description placeholder"
+  },
+  "modalAssignee": {
+    "message": "Bearbeiter:",
+    "description": "Assignee label"
+  },
+  "modalNotAssigned": {
+    "message": "Nicht zugewiesen",
+    "description": "Not assigned option"
+  },
+  "modalAuthor": {
+    "message": "Autor:",
+    "description": "Author label"
+  },
+  "modalNotSpecified": {
+    "message": "Nicht angegeben",
+    "description": "Not specified option"
+  },
+  "modalTags": {
+    "message": "Tags:",
+    "description": "Tags label"
+  },
+  "modalTagsSelect": {
+    "message": "Tags auswählen",
+    "description": "Tags select tooltip"
+  },
+  "modalPriority": {
+    "message": "Priorität:",
+    "description": "Priority label"
+  },
+  "modalNoPriority": {
+    "message": "Keine Priorität",
+    "description": "No priority option"
+  },
+  "modalDelete": {
+    "message": "Löschen",
+    "description": "Delete button"
+  },
+  "modalCancel": {
+    "message": "Abbrechen",
+    "description": "Cancel button"
+  },
+  "modalSave": {
+    "message": "Speichern",
+    "description": "Save button"
+  },
+  "modalNewTask": {
+    "message": "Neue Aufgabe",
+    "description": "New task modal title"
+  },
+  "modalEditTask": {
+    "message": "Aufgabe bearbeiten",
+    "description": "Edit task modal title"
+  },
+  "columnAddCard": {
+    "message": "+ Karte hinzufügen",
+    "description": "Add card button"
+  },
+  "columnAddColumn": {
+    "message": "+ Spalte hinzufügen",
+    "description": "Add column button"
+  },
+  "columnAddTitle": {
+    "message": "Neue Spalte",
+    "description": "Add column dialog title"
+  },
+  "columnAddCreate": {
+    "message": "Erstellen",
+    "description": "Create column button"
+  },
+  "columnNewColumn": {
+    "message": "Neue Spalte",
+    "description": "New column default name"
+  },
+  "columnNewPlaceholder": {
+    "message": "Spaltenname",
+    "description": "New column input placeholder"
+  },
+  "columnNewColor": {
+    "message": "Farbe:",
+    "description": "Color picker label"
+  },
+  "columnDelete": {
+    "message": "Löschen",
+    "description": "Delete column button"
+  },
+  "columnDeleteConfirm": {
+    "message": "Spalte \"$title$\" und alle Karten löschen?",
+    "description": "Column delete confirmation",
+    "placeholders": {
+      "title": {
+        "content": "$1"
+      }
+    }
+  },
+  "columnDeleteCardConfirm": {
+    "message": "Aufgabe \"$title$\" löschen?",
+    "description": "Card delete confirmation",
+    "placeholders": {
+      "title": {
+        "content": "$1"
+      }
+    }
+  },
+  "columnNoTags": {
+    "message": "Keine Tags",
+    "description": "No tags fallback"
+  },
+  "columnClearCards": {
+    "message": "Alle Karten leeren",
+    "description": "Clear cards button"
+  },
+  "columnClearCardsConfirm": {
+    "message": "Gib \"$phrase$\" zur Bestätigung ein",
+    "description": "Clear cards prompt",
+    "placeholders": {
+      "phrase": {
+        "content": "$1"
+      }
+    }
+  },
+  "columnClearCardsWrong": {
+    "message": "Falscher Ausdruck",
+    "description": "Clear cards wrong phrase error"
+  },
+  "settingsTitle": {
+    "message": "Einstellungen",
+    "description": "Settings button title"
+  },
+  "settingsOpen": {
+    "message": "Tablo Kanban öffnen",
+    "description": "Open extension text"
+  },
+  "optionsTitle": {
+    "message": "Einstellungen — Tablo Kanban",
+    "description": "Options page title"
+  },
+  "optionsTabColumns": {
+    "message": "Spalten",
+    "description": "Columns tab button"
+  },
+  "optionsTabTags": {
+    "message": "Tags",
+    "description": "Tags tab button"
+  },
+  "optionsTabPerformers": {
+    "message": "Ausführende",
+    "description": "Performers tab button"
+  },
+  "optionsTabAuthors": {
+    "message": "Autoren",
+    "description": "Authors tab button"
+  },
+  "optionsTabAppearance": {
+    "message": "Aussehen",
+    "description": "Appearance tab button"
+  },
+  "optionsTabSync": {
+    "message": "Sync",
+    "description": "Sync tab button"
+  },
+  "optionsSyncTitle": {
+    "message": "Sync",
+    "description": "Sync section title"
+  },
+  "optionsSyncProvider": {
+    "message": "Sync-Anbieter:",
+    "description": "Sync provider label"
+  },
+  "optionsSyncProviderGoogle": {
+    "message": "Google Drive",
+    "description": "Google Drive option"
+  },
+  "optionsSyncProviderYandex": {
+    "message": "Yandex Disk",
+    "description": "Yandex Disk option"
+  },
+  "optionsSyncDescGoogle": {
+    "message": "Kanban-Board-Daten werden über Google Drive zwischen Geräten synchronisiert. Google Drive Sync funktioniert nur in Chrome.",
+    "description": "Google Drive sync description"
+  },
+  "optionsSyncDescYandex": {
+    "message": "Kanban-Board-Daten werden über Yandex Disk zwischen Geräten synchronisiert.",
+    "description": "Yandex Disk sync description"
+  },
+  "optionsSyncChecking": {
+    "message": "Status wird geprüft...",
+    "description": "Sync status checking"
+  },
+  "optionsSyncConnected": {
+    "message": "Sync verbunden",
+    "description": "Sync connected status"
+  },
+  "optionsSyncDisconnected": {
+    "message": "Sync nicht verbunden",
+    "description": "Sync disconnected status"
+  },
+  "optionsSyncSignin": {
+    "message": "Verbinden",
+    "description": "Sign in button"
+  },
+  "optionsSyncSignout": {
+    "message": "Sync trennen",
+    "description": "Sign out button"
+  },
+  "optionsSyncFailed": {
+    "message": "Verbindung fehlgeschlagen",
+    "description": "Sync failed status"
+  },
+  "optionsSyncError": {
+    "message": "Statusprüfung fehlgeschlagen",
+    "description": "Sync error status"
+  },
+  "optionsSyncTokenExpired": {
+    "message": "Yandex Disk Token ist abgelaufen oder ungültig. Bitte gib einen neuen Token ein.",
+    "description": "Token expired message"
+  },
+  "optionsSyncYadiskApply": {
+    "message": "Token speichern",
+    "description": "Save token button"
+  },
+  "optionsSyncYadiskClear": {
+    "message": "Token löschen",
+    "description": "Clear token button"
+  },
+  "optionsSyncYadiskOauthGet": {
+    "message": "OAuth-Token abrufen",
+    "description": "Get OAuth token button"
+  },
+  "optionsSyncYadiskOauthOpened": {
+    "message": "Die Yandex-Autorisierungsseite wurde in einem neuen Tab geöffnet. Kopiere nach der Autorisierung den Token aus der Adressleiste, füge ihn unten in das Feld \"OAuth-Token\" ein und klicke auf \"Token speichern\".",
+    "description": "OAuth page opened message"
+  },
+  "optionsSyncYadiskClientHint": {
+    "message": "Um Yandex Disk zu verbinden, registriere eine App unter oauth.yandex.ru und gib die ClientID ein:",
+    "description": "Client ID hint text"
+  },
+  "optionsSyncYadiskClientStep2": {
+    "message": "App erstellen → Typ «Web service»",
+    "description": "Step 2"
+  },
+  "optionsSyncYadiskClientStep4": {
+    "message": "Berechtigungen cloud_api:disk.write und cloud_api:disk.read hinzufügen",
+    "description": "Step 4"
+  },
+  "optionsSyncYadiskClientStep5": {
+    "message": "ClientID kopieren (nicht Client Secret!) und unten einfügen",
+    "description": "Step 5"
+  },
+  "optionsSyncYadiskClientSave": {
+    "message": "ClientID speichern",
+    "description": "Save client ID button"
+  },
+  "optionsColumnsTitle": {
+    "message": "Board-Spalten",
+    "description": "Columns section title"
+  },
+  "optionsColumnsDesc": {
+    "message": "Zum Sortieren ziehen. Zum Löschen auf × klicken.",
+    "description": "Columns section description"
+  },
+  "optionsColumnsAdd": {
+    "message": "Spalte hinzufügen",
+    "description": "Add column button"
+  },
+  "optionsColumnsNew": {
+    "message": "Neue Spalte",
+    "description": "New column placeholder"
+  },
+  "optionsTagsTitle": {
+    "message": "Tags",
+    "description": "Tags section title"
+  },
+  "optionsTagsAdd": {
+    "message": "Tag hinzufügen",
+    "description": "Add tag button"
+  },
+  "optionsTagsNew": {
+    "message": "Neuer Tag",
+    "description": "New tag placeholder"
+  },
+  "optionsPerformersTitle": {
+    "message": "Ausführende",
+    "description": "Performers section title"
+  },
+  "optionsPerformersAdd": {
+    "message": "Ausführenden hinzufügen",
+    "description": "Add performer button"
+  },
+  "optionsPerformersNew": {
+    "message": "Neuer Ausführender",
+    "description": "New performer placeholder"
+  },
+  "optionsAuthorsTitle": {
+    "message": "Autoren",
+    "description": "Authors section title"
+  },
+  "optionsAuthorsAdd": {
+    "message": "Autor hinzufügen",
+    "description": "Add author button"
+  },
+  "optionsAuthorsNew": {
+    "message": "Neuer Autor",
+    "description": "New author placeholder"
+  },
+  "optionsAppearanceTheme": {
+    "message": "Design",
+    "description": "Theme section title"
+  },
+  "optionsAppearanceLight": {
+    "message": "Hell",
+    "description": "Light theme option"
+  },
+  "optionsAppearanceDark": {
+    "message": "Dunkel",
+    "description": "Dark theme option"
+  },
+  "optionsAppearanceSystem": {
+    "message": "System",
+    "description": "System theme option"
+  },
+  "optionsAppearanceLanguage": {
+    "message": "Sprache",
+    "description": "Language section title"
+  },
+  "optionsBack": {
+    "message": "← Zurück",
+    "description": "Back to main page button"
+  },
+  "optionsSave": {
+    "message": "Speichern",
+    "description": "Save button"
+  },
+  "optionsSaved": {
+    "message": "Gespeichert!",
+    "description": "Saved confirmation"
+  },
+  "optionsAboutVersion": {
+    "message": "Version {version}",
+    "description": "Version info"
+  },
+  "optionsAboutDesc": {
+    "message": "Lesezeichenleiste und Kanban-Board für deine Chrome-Startseite.",
+    "description": "About description"
+  },
+  "optionsAboutStorage": {
+    "message": "Board-Daten werden lokal in chrome.storage.local gespeichert. Einstellungen und API-Schlüssel in chrome.storage.sync (geräteübergreifend synchronisiert). Board-Daten werden über einen gewählten Anbieter (Google Drive oder Yandex Disk) synchronisiert.",
+    "description": "Storage info"
+  },
+  "optionsSupportTitle": {
+    "message": "Projekt unterstützen",
+    "description": "Support section title"
+  },
+  "optionsSupportDesc": {
+    "message": "Wenn dir diese Erweiterung gefällt, kannst du ihre Entwicklung unterstützen:",
+    "description": "Support section description"
+  },
+  "optionsSupportOkx": {
+    "message": "OKX (Krypto)",
+    "description": "OKX donate button label"
+  },
+  "optionsSupportOkxHint": {
+    "message": "QR-Code für Überweisung",
+    "description": "OKX donate hint"
+  },
+  "optionsSupportOkxModalTitle": {
+    "message": "Unterstützung via OKX",
+    "description": "OKX QR modal title"
+  },
+  "optionsSupportOkxModalDesc": {
+    "message": "Scanne den QR-Code in der OKX-App, um zu überweisen:",
+    "description": "OKX QR modal description"
+  },
+  "cardOldTooltip": {
+    "message": "Aufgabe ist älter als 7 Tage",
+    "description": "Snail tooltip for old cards in first column"
+  },
+  "cardFireTooltip": {
+    "message": "Aufgabe ist älter als 22 Tage",
+    "description": "Fire tooltip for very old cards in first column"
+  },
+  "cardTagsPlaceholder": {
+    "message": "Alle Tags",
+    "description": "Card tags placeholder"
+  },
+  "cardTagsDropdownHeader": {
+    "message": "Tags auswählen",
+    "description": "Tags dropdown header"
+  },
+  "cardTagsDropdownClear": {
+    "message": "Löschen",
+    "description": "Clear tags button"
+  },
+  "cardTagsRemoveTitle": {
+    "message": "Tag entfernen",
+    "description": "Remove tag tooltip"
+  },
+  "widgetsClock": {
+    "message": "Uhr",
+    "description": "Clock widget label"
+  },
+  "widgetsWeather": {
+    "message": "Wetter",
+    "description": "Weather widget label"
+  },
+  "weatherCity": {
+    "message": "Stadt",
+    "description": "Weather city label"
+  },
+  "weatherCityPlaceholder": {
+    "message": "z.B. Berlin",
+    "description": "Weather city placeholder"
+  },
+  "weatherUnit": {
+    "message": "Einheiten",
+    "description": "Weather unit label"
+  },
+  "weatherCelsius": {
+    "message": "°C",
+    "description": "Celsius option"
+  },
+  "weatherFahrenheit": {
+    "message": "°F",
+    "description": "Fahrenheit option"
+  },
+  "weatherError": {
+    "message": "Keine Daten",
+    "description": "Weather error message"
+  },
+  "weatherLoading": {
+    "message": "Lädt...",
+    "description": "Weather loading message"
+  },
+  "optionsWidgetsTitle": {
+    "message": "Widgets",
+    "description": "Widgets section title"
+  },
+  "optionsBookmarksTitle": {
+    "message": "Lesezeichen",
+    "description": "Bookmarks section title"
+  },
+  "optionsBookmarksSlots": {
+    "message": "Anzahl der Lesezeichen:",
+    "description": "Bookmark slots label"
+  },
+  "optionsBookmarksSlotsHint": {
+    "message": "Maximal 22. Muss eine gerade Zahl sein.",
+    "description": "Bookmark slots hint"
+  },
+  "homepageModalTitle": {
+    "message": "Als Startseite festlegen",
+    "description": "Homepage modal title"
+  },
+  "homepageModalDesc": {
+    "message": "Kopiere diese URL und füge sie in deinen Browsereinstellungen als Schnellzugriffsseite oder Startseite ein.",
+    "description": "Homepage modal description"
+  },
+  "homepageModalCopy": {
+    "message": "Kopieren",
+    "description": "Copy button"
+  },
+  "homepageModalCopied": {
+    "message": "Kopiert!",
+    "description": "Copied confirmation"
+  },
+  "homepageModalClose": {
+    "message": "Schließen",
+    "description": "Close button"
+  },
+  "homepageHint": {
+    "message": "Als Startseite festlegen",
+    "description": "Homepage info button tooltip"
+  }
+}

@@ -87,7 +87,6 @@
   "optionsSyncYadiskOauthOpened": { "message": "Страница авторизации Яндекса открыта в новой вкладке. После авторизации скопируйте токен из адресной строки и вставьте в поле «OAuth-токен» ниже, затем нажмите «Сохранить токен».", "description": "OAuth page opened message" },
   "optionsSyncYadiskClientHint": { "message": "Для подключения Яндекс.Диска зарегистрируйте приложение на oauth.yandex.ru и введите ClientID:", "description": "Client ID hint text" },
   "optionsSyncYadiskClientStep2": { "message": "Создайте приложение → тип «Веб-сервис»", "description": "Step 2" },
-  "optionsSyncYadiskClientStep3": { "message": "В поле Redirect URI укажите:", "description": "Step 3" },
   "optionsSyncYadiskClientStep4": { "message": "Добавьте права cloud_api:disk.write и cloud_api:disk.read", "description": "Step 4" },
   "optionsSyncYadiskClientStep5": { "message": "Скопируйте ClientID (не Client Secret!) и вставьте ниже", "description": "Step 5" },
   "optionsSyncYadiskClientSave": { "message": "Сохранить ClientID", "description": "Save client ID button" },

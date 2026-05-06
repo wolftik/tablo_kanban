@@ -431,7 +431,7 @@ const KanbanBoard = (() => {
     if (!col.cards || col.cards.length === 0) return;
 
     const lang = I18n.getLang();
-    const phraseMap = { ru: 'очистить', en: 'clear', zh: '清空' };
+    const phraseMap = { en: 'clear', es: 'vaciar', de: 'leeren', fr: 'vider', pt: 'limpar', nl: 'leegmaken', zh: '清空', ru: 'очистить', it: 'svuota', hi: 'साफ़ करें' };
     const phrase = phraseMap[lang] || 'clear';
 
     const input = prompt(I18n.t('column.clear.cards.confirm', { phrase }), '');

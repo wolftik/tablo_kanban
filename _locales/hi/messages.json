@@ -1,0 +1,590 @@
+{
+  "appName": {
+    "message": "Tablo Kanban",
+    "description": "Extension name"
+  },
+  "appDescription": {
+    "message": "बुकमार्क बार और Kanban बोर्ड नए टैब पेज के रूप में",
+    "description": "Extension description"
+  },
+  "bookmarkAddTitle": {
+    "message": "बुकमार्क जोड़ें",
+    "description": "Add bookmark dialog title"
+  },
+  "bookmarkUrlPlaceholder": {
+    "message": "URL (https://example.com)",
+    "description": "Bookmark URL input placeholder"
+  },
+  "bookmarkTitlePlaceholder": {
+    "message": "शीर्षक",
+    "description": "Bookmark title input placeholder"
+  },
+  "bookmarkCancel": {
+    "message": "रद्द करें",
+    "description": "Cancel button"
+  },
+  "bookmarkSave": {
+    "message": "सहेजें",
+    "description": "Save button"
+  },
+  "bookmarkEditTitle": {
+    "message": "बुकमार्क संपादित करें",
+    "description": "Edit bookmark dialog title"
+  },
+  "bookmarkEditUrlPlaceholder": {
+    "message": "URL",
+    "description": "Edit bookmark URL placeholder"
+  },
+  "bookmarkEditTitlePlaceholder": {
+    "message": "शीर्षक",
+    "description": "Edit bookmark title placeholder"
+  },
+  "bookmarkContextEdit": {
+    "message": "संपादित करें",
+    "description": "Context menu edit action"
+  },
+  "bookmarkContextDelete": {
+    "message": "हटाएं",
+    "description": "Context menu delete action"
+  },
+  "cardPlaceholderAddSite": {
+    "message": "साइट जोड़ें",
+    "description": "Add site placeholder"
+  },
+  "filterAllAssignees": {
+    "message": "सभी असाइनी",
+    "description": "Filter: all assignees option"
+  },
+  "filterAllAuthors": {
+    "message": "सभी लेखक",
+    "description": "Filter: all authors option"
+  },
+  "filterAllPriorities": {
+    "message": "सभी प्राथमिकताएँ",
+    "description": "Filter: all priorities option"
+  },
+  "filterSearchPlaceholder": {
+    "message": "कार्य खोजें...",
+    "description": "Filter search placeholder"
+  },
+  "filterClearTitle": {
+    "message": "फ़िल्टर साफ़ करें",
+    "description": "Clear filters button title"
+  },
+  "priorityLow": {
+    "message": "कम",
+    "description": "Low priority"
+  },
+  "priorityMedium": {
+    "message": "मध्यम",
+    "description": "Medium priority"
+  },
+  "priorityHigh": {
+    "message": "उच्च",
+    "description": "High priority"
+  },
+  "priorityUrgent": {
+    "message": "अत्यावश्यक",
+    "description": "Urgent priority"
+  },
+  "tagsFilterAll": {
+    "message": "सभी टैग",
+    "description": "Tags filter: all"
+  },
+  "tagsFilterSelected": {
+    "message": "$count$ चयनित",
+    "description": "Tags filter: selected count",
+    "placeholders": {
+      "count": {
+        "content": "$1"
+      }
+    }
+  },
+  "tagsRemoveTitle": {
+    "message": "फ़िल्टर हटाएं",
+    "description": "Remove tag filter tooltip"
+  },
+  "modalTask": {
+    "message": "कार्य",
+    "description": "Modal title"
+  },
+  "modalTitlePlaceholder": {
+    "message": "कार्य शीर्षक",
+    "description": "Modal title input placeholder"
+  },
+  "modalDescPlaceholder": {
+    "message": "विवरण",
+    "description": "Modal description placeholder"
+  },
+  "modalAssignee": {
+    "message": "असाइनी:",
+    "description": "Assignee label"
+  },
+  "modalNotAssigned": {
+    "message": "असाइन नहीं किया गया",
+    "description": "Not assigned option"
+  },
+  "modalAuthor": {
+    "message": "लेखक:",
+    "description": "Author label"
+  },
+  "modalNotSpecified": {
+    "message": "निर्दिष्ट नहीं",
+    "description": "Not specified option"
+  },
+  "modalTags": {
+    "message": "टैग:",
+    "description": "Tags label"
+  },
+  "modalTagsSelect": {
+    "message": "टैग चुनें",
+    "description": "Tags select tooltip"
+  },
+  "modalPriority": {
+    "message": "प्राथमिकता:",
+    "description": "Priority label"
+  },
+  "modalNoPriority": {
+    "message": "कोई प्राथमिकता नहीं",
+    "description": "No priority option"
+  },
+  "modalDelete": {
+    "message": "हटाएं",
+    "description": "Delete button"
+  },
+  "modalCancel": {
+    "message": "रद्द करें",
+    "description": "Cancel button"
+  },
+  "modalSave": {
+    "message": "सहेजें",
+    "description": "Save button"
+  },
+  "modalNewTask": {
+    "message": "नया कार्य",
+    "description": "New task modal title"
+  },
+  "modalEditTask": {
+    "message": "कार्य संपादित करें",
+    "description": "Edit task modal title"
+  },
+  "columnAddCard": {
+    "message": "+ कार्ड जोड़ें",
+    "description": "Add card button"
+  },
+  "columnAddColumn": {
+    "message": "+ कॉलम जोड़ें",
+    "description": "Add column button"
+  },
+  "columnAddTitle": {
+    "message": "नया कॉलम",
+    "description": "Add column dialog title"
+  },
+  "columnAddCreate": {
+    "message": "बनाएं",
+    "description": "Create column button"
+  },
+  "columnNewColumn": {
+    "message": "नया कॉलम",
+    "description": "New column default name"
+  },
+  "columnNewPlaceholder": {
+    "message": "कॉलम का नाम",
+    "description": "New column input placeholder"
+  },
+  "columnNewColor": {
+    "message": "रंग:",
+    "description": "Color picker label"
+  },
+  "columnDelete": {
+    "message": "हटाएं",
+    "description": "Delete column button"
+  },
+  "columnDeleteConfirm": {
+    "message": "कॉलम \"$title$\" और उसके सभी कार्ड हटाएं?",
+    "description": "Column delete confirmation",
+    "placeholders": {
+      "title": {
+        "content": "$1"
+      }
+    }
+  },
+  "columnDeleteCardConfirm": {
+    "message": "कार्य \"$title$\" हटाएं?",
+    "description": "Card delete confirmation",
+    "placeholders": {
+      "title": {
+        "content": "$1"
+      }
+    }
+  },
+  "columnNoTags": {
+    "message": "कोई टैग नहीं",
+    "description": "No tags fallback"
+  },
+  "columnClearCards": {
+    "message": "सभी कार्ड साफ़ करें",
+    "description": "Clear cards button"
+  },
+  "columnClearCardsConfirm": {
+    "message": "पुष्टि करने के लिए \"$phrase$\" टाइप करें",
+    "description": "Clear cards prompt",
+    "placeholders": {
+      "phrase": {
+        "content": "$1"
+      }
+    }
+  },
+  "columnClearCardsWrong": {
+    "message": "गलत वाक्यांश",
+    "description": "Clear cards wrong phrase error"
+  },
+  "settingsTitle": {
+    "message": "सेटिंग्स",
+    "description": "Settings button title"
+  },
+  "settingsOpen": {
+    "message": "Tablo Kanban खोलें",
+    "description": "Open extension text"
+  },
+  "optionsTitle": {
+    "message": "सेटिंग्स — Tablo Kanban",
+    "description": "Options page title"
+  },
+  "optionsTabColumns": {
+    "message": "कॉलम",
+    "description": "Columns tab button"
+  },
+  "optionsTabTags": {
+    "message": "टैग",
+    "description": "Tags tab button"
+  },
+  "optionsTabPerformers": {
+    "message": "निष्पादक",
+    "description": "Performers tab button"
+  },
+  "optionsTabAuthors": {
+    "message": "लेखक",
+    "description": "Authors tab button"
+  },
+  "optionsTabAppearance": {
+    "message": "दिखावट",
+    "description": "Appearance tab button"
+  },
+  "optionsTabSync": {
+    "message": "सिंक",
+    "description": "Sync tab button"
+  },
+  "optionsSyncTitle": {
+    "message": "सिंक",
+    "description": "Sync section title"
+  },
+  "optionsSyncProvider": {
+    "message": "सिंक प्रदाता:",
+    "description": "Sync provider label"
+  },
+  "optionsSyncProviderGoogle": {
+    "message": "Google Drive",
+    "description": "Google Drive option"
+  },
+  "optionsSyncProviderYandex": {
+    "message": "Yandex Disk",
+    "description": "Yandex Disk option"
+  },
+  "optionsSyncDescGoogle": {
+    "message": "Kanban बोर्ड डेटा आपके Google Drive के माध्यम से उपकरणों में सिंक होगा। Google Drive सिंक केवल Chrome में काम करता है।",
+    "description": "Google Drive sync description"
+  },
+  "optionsSyncDescYandex": {
+    "message": "Kanban बोर्ड डेटा आपके Yandex Disk के माध्यम से उपकरणों में सिंक होगा।",
+    "description": "Yandex Disk sync description"
+  },
+  "optionsSyncChecking": {
+    "message": "स्थिति जाँच रहा है...",
+    "description": "Sync status checking"
+  },
+  "optionsSyncConnected": {
+    "message": "सिंक कनेक्टेड",
+    "description": "Sync connected status"
+  },
+  "optionsSyncDisconnected": {
+    "message": "सिंक कनेक्टेड नहीं",
+    "description": "Sync disconnected status"
+  },
+  "optionsSyncSignin": {
+    "message": "कनेक्ट करें",
+    "description": "Sign in button"
+  },
+  "optionsSyncSignout": {
+    "message": "सिंक डिस्कनेक्ट करें",
+    "description": "Sign out button"
+  },
+  "optionsSyncFailed": {
+    "message": "कनेक्शन विफल",
+    "description": "Sync failed status"
+  },
+  "optionsSyncError": {
+    "message": "स्थिति जाँच विफल",
+    "description": "Sync error status"
+  },
+  "optionsSyncTokenExpired": {
+    "message": "Yandex Disk टोकन समाप्त या अमान्य है। कृपया एक नया टोकन दर्ज करें।",
+    "description": "Token expired message"
+  },
+  "optionsSyncYadiskApply": {
+    "message": "टोकन सहेजें",
+    "description": "Save token button"
+  },
+  "optionsSyncYadiskClear": {
+    "message": "टोकन साफ़ करें",
+    "description": "Clear token button"
+  },
+  "optionsSyncYadiskOauthGet": {
+    "message": "OAuth टोकन प्राप्त करें",
+    "description": "Get OAuth token button"
+  },
+  "optionsSyncYadiskOauthOpened": {
+    "message": "Yandex प्राधिकरण पृष्ठ एक नए टैब में खोला गया। प्राधिकरण के बाद, एड्रेस बार से टोकन कॉपी करें, नीचे 'OAuth टोकन' फ़ील्ड में पेस्ट करें, फिर 'टोकन सहेजें' पर क्लिक करें।",
+    "description": "OAuth page opened message"
+  },
+  "optionsSyncYadiskClientHint": {
+    "message": "Yandex Disk कनेक्ट करने के लिए, oauth.yandex.ru पर एक ऐप पंजीकृत करें और ClientID दर्ज करें:",
+    "description": "Client ID hint text"
+  },
+  "optionsSyncYadiskClientStep2": {
+    "message": "एक ऐप बनाएं → प्रकार «Web service»",
+    "description": "Step 2"
+  },
+  "optionsSyncYadiskClientStep4": {
+    "message": "अनुमतियाँ cloud_api:disk.write और cloud_api:disk.read जोड़ें",
+    "description": "Step 4"
+  },
+  "optionsSyncYadiskClientStep5": {
+    "message": "ClientID कॉपी करें (Client Secret नहीं!) और नीचे पेस्ट करें",
+    "description": "Step 5"
+  },
+  "optionsSyncYadiskClientSave": {
+    "message": "ClientID सहेजें",
+    "description": "Save client ID button"
+  },
+  "optionsColumnsTitle": {
+    "message": "बोर्ड कॉलम",
+    "description": "Columns section title"
+  },
+  "optionsColumnsDesc": {
+    "message": "पुनर्क्रमित करने के लिए खींचें। हटाने के लिए × पर क्लिक करें।",
+    "description": "Columns section description"
+  },
+  "optionsColumnsAdd": {
+    "message": "कॉलम जोड़ें",
+    "description": "Add column button"
+  },
+  "optionsColumnsNew": {
+    "message": "नया कॉलम",
+    "description": "New column placeholder"
+  },
+  "optionsTagsTitle": {
+    "message": "टैग",
+    "description": "Tags section title"
+  },
+  "optionsTagsAdd": {
+    "message": "टैग जोड़ें",
+    "description": "Add tag button"
+  },
+  "optionsTagsNew": {
+    "message": "नया टैग",
+    "description": "New tag placeholder"
+  },
+  "optionsPerformersTitle": {
+    "message": "निष्पादक",
+    "description": "Performers section title"
+  },
+  "optionsPerformersAdd": {
+    "message": "निष्पादक जोड़ें",
+    "description": "Add performer button"
+  },
+  "optionsPerformersNew": {
+    "message": "नया निष्पादक",
+    "description": "New performer placeholder"
+  },
+  "optionsAuthorsTitle": {
+    "message": "लेखक",
+    "description": "Authors section title"
+  },
+  "optionsAuthorsAdd": {
+    "message": "लेखक जोड़ें",
+    "description": "Add author button"
+  },
+  "optionsAuthorsNew": {
+    "message": "नया लेखक",
+    "description": "New author placeholder"
+  },
+  "optionsAppearanceTheme": {
+    "message": "थीम",
+    "description": "Theme section title"
+  },
+  "optionsAppearanceLight": {
+    "message": "हल्का",
+    "description": "Light theme option"
+  },
+  "optionsAppearanceDark": {
+    "message": "गहरा",
+    "description": "Dark theme option"
+  },
+  "optionsAppearanceSystem": {
+    "message": "सिस्टम",
+    "description": "System theme option"
+  },
+  "optionsAppearanceLanguage": {
+    "message": "भाषा",
+    "description": "Language section title"
+  },
+  "optionsBack": {
+    "message": "← वापस",
+    "description": "Back to main page button"
+  },
+  "optionsSave": {
+    "message": "सहेजें",
+    "description": "Save button"
+  },
+  "optionsSaved": {
+    "message": "सहेजा गया!",
+    "description": "Saved confirmation"
+  },
+  "optionsAboutVersion": {
+    "message": "संस्करण {version}",
+    "description": "Version info"
+  },
+  "optionsAboutDesc": {
+    "message": "Chrome के नए टैब पेज के लिए बुकमार्क बार और Kanban बोर्ड।",
+    "description": "About description"
+  },
+  "optionsAboutStorage": {
+    "message": "बोर्ड डेटा chrome.storage.local में स्थानीय रूप से संग्रहीत होता है। सेटिंग्स और API कुंजियाँ chrome.storage.sync (उपकरणों में सिंक) में हैं। बोर्ड डेटा चुने गए प्रदाता (Google Drive या Yandex Disk) के माध्यम से सिंक होता है।",
+    "description": "Storage info"
+  },
+  "optionsSupportTitle": {
+    "message": "परियोजना का समर्थन करें",
+    "description": "Support section title"
+  },
+  "optionsSupportDesc": {
+    "message": "यदि आपको यह एक्सटेंशन उपयोगी लगता है, तो आप इसके विकास का समर्थन कर सकते हैं:",
+    "description": "Support section description"
+  },
+  "optionsSupportOkx": {
+    "message": "OKX (क्रिप्टो)",
+    "description": "OKX donate button label"
+  },
+  "optionsSupportOkxHint": {
+    "message": "स्थानांतरण के लिए QR कोड",
+    "description": "OKX donate hint"
+  },
+  "optionsSupportOkxModalTitle": {
+    "message": "OKX के माध्यम से समर्थन करें",
+    "description": "OKX QR modal title"
+  },
+  "optionsSupportOkxModalDesc": {
+    "message": "QR कोड को OKX ऐप में स्कैन करके स्थानांतरित करें:",
+    "description": "OKX QR modal description"
+  },
+  "cardOldTooltip": {
+    "message": "कार्य 7 दिनों से अधिक पुराना है",
+    "description": "Snail tooltip for old cards in first column"
+  },
+  "cardFireTooltip": {
+    "message": "कार्य 22 दिनों से अधिक पुराना है",
+    "description": "Fire tooltip for very old cards in first column"
+  },
+  "cardTagsPlaceholder": {
+    "message": "सभी टैग",
+    "description": "Card tags placeholder"
+  },
+  "cardTagsDropdownHeader": {
+    "message": "टैग चुनें",
+    "description": "Tags dropdown header"
+  },
+  "cardTagsDropdownClear": {
+    "message": "साफ़ करें",
+    "description": "Clear tags button"
+  },
+  "cardTagsRemoveTitle": {
+    "message": "टैग हटाएं",
+    "description": "Remove tag tooltip"
+  },
+  "widgetsClock": {
+    "message": "घड़ी",
+    "description": "Clock widget label"
+  },
+  "widgetsWeather": {
+    "message": "मौसम",
+    "description": "Weather widget label"
+  },
+  "weatherCity": {
+    "message": "शहर",
+    "description": "Weather city label"
+  },
+  "weatherCityPlaceholder": {
+    "message": "जैसे मुंबई",
+    "description": "Weather city placeholder"
+  },
+  "weatherUnit": {
+    "message": "इकाइयाँ",
+    "description": "Weather unit label"
+  },
+  "weatherCelsius": {
+    "message": "°C",
+    "description": "Celsius option"
+  },
+  "weatherFahrenheit": {
+    "message": "°F",
+    "description": "Fahrenheit option"
+  },
+  "weatherError": {
+    "message": "कोई डेटा नहीं",
+    "description": "Weather error message"
+  },
+  "weatherLoading": {
+    "message": "लोड हो रहा है...",
+    "description": "Weather loading message"
+  },
+  "optionsWidgetsTitle": {
+    "message": "विजेट",
+    "description": "Widgets section title"
+  },
+  "optionsBookmarksTitle": {
+    "message": "बुकमार्क",
+    "description": "Bookmarks section title"
+  },
+  "optionsBookmarksSlots": {
+    "message": "बुकमार्क की संख्या:",
+    "description": "Bookmark slots label"
+  },
+  "optionsBookmarksSlotsHint": {
+    "message": "अधिकतम 22। एक सम संख्या होनी चाहिए।",
+    "description": "Bookmark slots hint"
+  },
+  "homepageModalTitle": {
+    "message": "होमपेज के रूप में सेट करें",
+    "description": "Homepage modal title"
+  },
+  "homepageModalDesc": {
+    "message": "इस URL को कॉपी करें और अपने ब्राउज़र सेटिंग्स में त्वरित एक्सेस पेज या होमपेज के रूप में पेस्ट करें।",
+    "description": "Homepage modal description"
+  },
+  "homepageModalCopy": {
+    "message": "कॉपी करें",
+    "description": "Copy button"
+  },
+  "homepageModalCopied": {
+    "message": "कॉपी किया गया!",
+    "description": "Copied confirmation"
+  },
+  "homepageModalClose": {
+    "message": "बंद करें",
+    "description": "Close button"
+  },
+  "homepageHint": {
+    "message": "होमपेज के रूप में सेट करें",
+    "description": "Homepage info button tooltip"
+  },
+}

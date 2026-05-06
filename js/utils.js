@@ -51,7 +51,7 @@ function generateId() {
 function getDefaultSettings() {
   return {
     theme: 'system',
-    language: 'ru',
+    language: 'en',
     showFavicon: true,
     visibleBookmarks: [],
     bookmarkSlots: 22,

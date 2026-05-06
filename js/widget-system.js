@@ -74,7 +74,7 @@ const ClockWidget = {
     const update = () => {
       const now = new Date();
       const lang = I18n.getLang();
-      const locale = lang === 'ru' ? 'ru-RU' : lang === 'zh' ? 'zh-CN' : 'en-US';
+      const locale = I18n.localeToBCP47(lang);
       el.querySelector('.clock-time').textContent = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
       el.querySelector('.clock-date').textContent = now.toLocaleDateString(locale, { day: 'numeric', month: 'long', weekday: 'short' });
     };

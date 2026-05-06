@@ -87,7 +87,6 @@
   "optionsSyncYadiskOauthOpened": { "message": "Yandex authorization page opened in a new tab. After authorization, copy the token from the address bar, paste it in the 'OAuth token' field below, then click 'Save token'.", "description": "OAuth page opened message" },
   "optionsSyncYadiskClientHint": { "message": "To connect Yandex Disk, register an app at oauth.yandex.ru and enter ClientID:", "description": "Client ID hint text" },
   "optionsSyncYadiskClientStep2": { "message": "Create an app → type «Web service»", "description": "Step 2" },
-  "optionsSyncYadiskClientStep3": { "message": "In Redirect URI field specify:", "description": "Step 3" },
   "optionsSyncYadiskClientStep4": { "message": "Add permissions cloud_api:disk.write and cloud_api:disk.read", "description": "Step 4" },
   "optionsSyncYadiskClientStep5": { "message": "Copy ClientID (not Client Secret!) and paste below", "description": "Step 5" },
   "optionsSyncYadiskClientSave": { "message": "Save ClientID", "description": "Save client ID button" },
