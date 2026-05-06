@@ -13,7 +13,6 @@
     }
   },
   "permissions": [
-    "bookmarks",
     "storage",
     "identity",
     "tabs"

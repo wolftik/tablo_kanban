@@ -127,48 +127,9 @@ const BookmarksManager = (() => {
 
     await loadDisplayedBookmarks();
 
-    const settings = await _loadSettings();
-    const visibleIds = settings.visibleBookmarks || [];
-
-    const bookmarksToRender = [];
-    for (let i = 0; i < _bookmarkSlots; i++) {
-      bookmarksToRender[i] = _displayedBookmarks[i] || null;
-    }
-
-    if (visibleIds.length > 0 && typeof chrome !== 'undefined' && chrome.bookmarks) {
-      const folders = await _getAllChromeBookmarks();
-      const allBookmarks = _flattenBookmarks(folders);
-      const visibleBookmarks = allBookmarks.filter(bm => visibleIds.includes(bm.id));
-
-      let vi = 0;
-      for (let i = 0; i < _bookmarkSlots; i++) {
-        if (bookmarksToRender[i] === null && vi < visibleBookmarks.length) {
-          bookmarksToRender[i] = visibleBookmarks[vi++];
-        }
-      }
-    }
+    const bookmarksToRender = [..._displayedBookmarks];
 
     _renderBookmarks(container, bookmarksToRender);
-  }
-
-  function _getAllChromeBookmarks() {
-    return new Promise((resolve) => {
-      if (typeof chrome === 'undefined' || !chrome.bookmarks) {
-        resolve([]);
-        return;
-      }
-      chrome.bookmarks.getTree((result) => resolve(result));
-    });
-  }
-
-  function _flattenBookmarks(nodes, result = []) {
-    for (const node of nodes) {
-      if (node.url) {
-        result.push({ id: node.id, url: node.url, title: node.title || node.url, dateAdded: node.dateAdded });
-      }
-      if (node.children) _flattenBookmarks(node.children, result);
-    }
-    return result;
   }
 
   function _renderBookmarks(container, bookmarks) {

@@ -543,7 +543,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     settings = {
       theme,
       language,
-      visibleBookmarks: settings.visibleBookmarks || [],
+
       showFavicon: settings.showFavicon !== undefined ? settings.showFavicon : true,
       bookmarkSlots: Math.min(22, Math.max(2, parseInt(document.getElementById('bookmark-slots')?.value) || 22)),
       widgets: {

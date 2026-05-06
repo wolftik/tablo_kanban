@@ -80,7 +80,7 @@ function getDefaultSettings() {
     theme: 'system',
     language: 'en',
     showFavicon: true,
-    visibleBookmarks: [],
+
     bookmarkSlots: 22,
     widgets: { clock: true, weather: false, weatherCity: 'Moscow', weatherUnit: 'metric' }
   };
