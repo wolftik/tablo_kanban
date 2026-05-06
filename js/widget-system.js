@@ -5,7 +5,6 @@ const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';
 
 const WidgetSystem = (() => {
   const _widgets = new Map();
-  let _initialized = false;
 
   function register(name, widget) {
     if (_widgets.has(name)) {
@@ -16,9 +15,6 @@ const WidgetSystem = (() => {
   }
 
   async function initAll() {
-    if (_initialized) return;
-    _initialized = true;
-
     for (const [name, widget] of _widgets) {
       try {
         if (widget.init) await widget.init();
@@ -39,7 +35,6 @@ const WidgetSystem = (() => {
     for (const [name] of _widgets) {
       unregister(name);
     }
-    _initialized = false;
   }
 
   function getWidgets() {
@@ -159,22 +154,32 @@ const WeatherWidget = {
   async _fetchWeather(city, unit) {
     try {
       const geoResp = await fetch(`${GEOCODING_URL}?name=${encodeURIComponent(city)}&count=1&language=${I18n.getLang()}&format=json`);
-      if (!geoResp.ok) return null;
+      if (!geoResp.ok) {
+        console.warn('[WeatherWidget] Geocoding API error:', geoResp.status, geoResp.statusText);
+        return null;
+      }
       const geoJson = await geoResp.json();
-      if (!geoJson.results || geoJson.results.length === 0) return null;
+      if (!geoJson.results || geoJson.results.length === 0) {
+        console.warn('[WeatherWidget] City not found:', city);
+        return null;
+      }
 
       const { latitude, longitude } = geoJson.results[0];
 
       const tempUnit = unit === 'imperial' ? 'fahrenheit' : 'celsius';
       const forecastResp = await fetch(`${FORECAST_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&temperature_unit=${tempUnit}`);
-      if (!forecastResp.ok) return null;
+      if (!forecastResp.ok) {
+        console.warn('[WeatherWidget] Forecast API error:', forecastResp.status, forecastResp.statusText);
+        return null;
+      }
       const forecastJson = await forecastResp.json();
 
       return {
         temp: forecastJson.current.temperature_2m,
         code: forecastJson.current.weather_code
       };
-    } catch {
+    } catch (e) {
+      console.warn('[WeatherWidget] Network error fetching weather:', e);
       return null;
     }
   },

@@ -235,6 +235,10 @@
       }
     }
   },
+  "columnClearCardsPhrase": {
+    "message": "svuota",
+    "description": "Clear cards prompt phrase"
+  },
   "columnClearCardsWrong": {
     "message": "Frase errata",
     "description": "Clear cards wrong phrase error"

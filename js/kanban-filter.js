@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Stateful filter for kanban cards (search, priority, assignee, author, tags).
+ * @namespace KanbanFilter
+ */
 const KanbanFilter = (() => {
   let _state = { search: '', priority: '', assignee: '', author: '', tags: [] };
   let _onChange = null;

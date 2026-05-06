@@ -58,6 +58,7 @@ const I18n = (() => {
     'column.clear.cards.confirm': 'columnClearCardsConfirm',
 
     'column.clear.cards.wrong': 'columnClearCardsWrong',
+    'column.clear.cards.phrase': 'columnClearCardsPhrase',
 
     'settings.title': 'settingsTitle',
     'settings.open': 'settingsOpen',

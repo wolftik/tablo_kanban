@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Abstract sync provider — delegates to DriveSync or YadiskSync based on user selection.
+ * @namespace SyncProvider
+ */
 const SyncProvider = (() => {
   const STORAGE_KEY = 'sync_provider';
 

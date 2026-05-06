@@ -1,5 +1,10 @@
 'use strict';
 
+/**
+ * In-memory data store for the kanban board.
+ * Manages columns, cards, tags, performers, and authors.
+ * @namespace KanbanStore
+ */
 const KanbanStore = (() => {
   let _columns = [];
   let _tags = [];
@@ -41,19 +46,19 @@ const KanbanStore = (() => {
   }
 
   function getColumns() {
-    return _columns;
+    return [..._columns];
   }
 
   function getTags() {
-    return _tags;
+    return [..._tags];
   }
 
   function getPerformers() {
-    return _performers;
+    return [..._performers];
   }
 
   function getAuthors() {
-    return _authors;
+    return [..._authors];
   }
 
   function getFilter() {
@@ -99,7 +104,7 @@ const KanbanStore = (() => {
     return true;
   }
 
-  function moveCard(fromColumnId, toColumnId, cardId) {
+  function moveCard(fromColumnId, toColumnId, cardId, insertIndex) {
     const fromCol = _columns.find(c => c.id === fromColumnId);
     const toCol = _columns.find(c => c.id === toColumnId);
     if (!fromCol || !toCol) return;
@@ -109,53 +114,24 @@ const KanbanStore = (() => {
 
     const [card] = fromCol.cards.splice(cardIndex, 1);
 
-    const placeholder = document.querySelector('.kanban-column[data-column-id="' + toColumnId + '"] .drop-placeholder');
-    let insertIndex;
-    if (placeholder) {
-      const prevSibling = placeholder.previousElementSibling;
-      if (prevSibling && prevSibling.classList.contains('kanban-card')) {
-        const prevCardId = prevSibling.dataset.cardId;
-        const prevIndex = toCol.cards.findIndex(c => c.id === prevCardId);
-        insertIndex = prevIndex !== -1 ? prevIndex + 1 : toCol.cards.length;
-      } else {
-        const firstVisible = placeholder.parentElement.querySelector('.kanban-card');
-        if (firstVisible) {
-          const firstCardId = firstVisible.dataset.cardId;
-          const firstIndex = toCol.cards.findIndex(c => c.id === firstCardId);
-          insertIndex = firstIndex !== -1 ? firstIndex : 0;
-        } else {
-          insertIndex = toCol.cards.length;
-        }
-      }
-    } else {
+    if (insertIndex === undefined || insertIndex === null) {
       insertIndex = toCol.cards.length;
     }
-
     toCol.cards.splice(insertIndex, 0, card);
     toCol.cards.forEach((c, i) => { c.order = i; });
   }
 
-  function reorderCardInColumn(columnId, cardId) {
+  function reorderCardInColumn(columnId, cardId, insertIndex) {
     const col = _columns.find(c => c.id === columnId);
     if (!col) return;
-
-    const placeholder = document.querySelector('.kanban-column[data-column-id="' + columnId + '"] .drop-placeholder');
-    if (!placeholder) return;
-
-    const prevSibling = placeholder.previousElementSibling;
-    let insertIndex;
-    if (prevSibling && prevSibling.classList.contains('kanban-card')) {
-      const prevCardId = prevSibling.dataset.cardId;
-      const prevIndex = col.cards.findIndex(c => c.id === prevCardId);
-      insertIndex = prevIndex !== -1 ? prevIndex + 1 : col.cards.length;
-    } else {
-      insertIndex = 0;
-    }
 
     const cardIndex = col.cards.findIndex(c => c.id === cardId);
     if (cardIndex === -1) return;
     const [card] = col.cards.splice(cardIndex, 1);
 
+    if (insertIndex === undefined || insertIndex === null) {
+      insertIndex = col.cards.length;
+    }
     const adjustedIndex = cardIndex < insertIndex ? insertIndex - 1 : insertIndex;
     col.cards.splice(adjustedIndex, 0, card);
     col.cards.forEach((c, i) => { c.order = i; });

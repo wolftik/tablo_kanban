@@ -131,7 +131,7 @@ const KanbanRenderer = (() => {
       if (existing) {
         _updateCardElement(existing, card, col.id);
         if (existing.nextElementSibling !== insertBeforeCard) {
-          if (insertBeforeCard) {
+          if (insertBeforeCard && container.contains(insertBeforeCard)) {
             container.insertBefore(existing, insertBeforeCard);
           } else {
             container.appendChild(existing);
@@ -141,7 +141,7 @@ const KanbanRenderer = (() => {
         const cardEl = KanbanCard.create(card, col.id, performers, KanbanStore.getTags(), tagById);
         if (_onCardDragStart) _bindCardDrag(cardEl);
         cardEl.addEventListener('click', () => { if (_onEditCard) _onEditCard(card, col.id); });
-        if (insertBeforeCard) {
+        if (insertBeforeCard && container.contains(insertBeforeCard)) {
           container.insertBefore(cardEl, insertBeforeCard);
         } else {
           container.appendChild(cardEl);
@@ -188,7 +188,7 @@ const KanbanRenderer = (() => {
     const isFirst = columns.length > 0 && columns[0].id === columnId;
     if (card.createdAt && isFirst) {
       const age = Date.now() - card.createdAt;
-      if (age > 22 * 24 * 60 * 60 * 1000) {
+      if (age > KanbanConstants.AGING_FIRE_MS) {
         if (!agingEl || !agingEl.classList.contains('card-fire')) {
           if (agingEl) agingEl.remove();
           const fire = document.createElement('span');
@@ -197,7 +197,7 @@ const KanbanRenderer = (() => {
           fire.title = I18n.t('card.fire.tooltip');
           cardEl.insertBefore(fire, cardEl.firstChild);
         }
-      } else if (age > 7 * 24 * 60 * 60 * 1000) {
+      } else if (age > KanbanConstants.AGING_SNAIL_MS) {
         if (!agingEl || !agingEl.classList.contains('card-snail')) {
           if (agingEl) agingEl.remove();
           const snail = document.createElement('span');

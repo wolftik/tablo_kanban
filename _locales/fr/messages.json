@@ -235,6 +235,10 @@
       }
     }
   },
+  "columnClearCardsPhrase": {
+    "message": "vider",
+    "description": "Clear cards prompt phrase"
+  },
   "columnClearCardsWrong": {
     "message": "Mauvaise phrase",
     "description": "Clear cards wrong phrase error"

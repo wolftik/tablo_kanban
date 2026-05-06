@@ -55,6 +55,7 @@
   "columnNoTags": { "message": "Нет тегов", "description": "No tags fallback" },
   "columnClearCards": { "message": "Очистить задачи", "description": "Clear cards button" },
   "columnClearCardsConfirm": { "message": "Введите \"$phrase$\" для подтверждения", "description": "Clear cards prompt", "placeholders": { "phrase": { "content": "$1" } } },
+  "columnClearCardsPhrase": { "message": "очистить", "description": "Clear cards prompt phrase" },
   "columnClearCardsWrong": { "message": "Неверная фраза", "description": "Clear cards wrong phrase error" },
 
   "settingsTitle": { "message": "Настройки", "description": "Settings button title" },

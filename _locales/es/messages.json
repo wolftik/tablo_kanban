@@ -235,6 +235,10 @@
       }
     }
   },
+  "columnClearCardsPhrase": {
+    "message": "vaciar",
+    "description": "Clear cards prompt phrase"
+  },
   "columnClearCardsWrong": {
     "message": "Frase incorrecta",
     "description": "Clear cards wrong phrase error"
@@ -586,5 +590,5 @@
   "homepageHint": {
     "message": "Establecer como página de inicio",
     "description": "Homepage info button tooltip"
-  },
+  }
 }

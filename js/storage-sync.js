@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Abstraction over chrome.storage.sync with localStorage fallback.
+ * @namespace StorageSync
+ */
 const StorageSync = (() => {
   const _useSync = typeof chrome !== 'undefined' && chrome.storage && chrome.storage.sync;
 

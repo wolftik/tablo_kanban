@@ -235,6 +235,10 @@
       }
     }
   },
+  "columnClearCardsPhrase": {
+    "message": "leegmaken",
+    "description": "Clear cards prompt phrase"
+  },
   "columnClearCardsWrong": {
     "message": "Onjuiste frase",
     "description": "Clear cards wrong phrase error"

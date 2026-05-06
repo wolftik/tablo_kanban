@@ -235,6 +235,10 @@
       }
     }
   },
+  "columnClearCardsPhrase": {
+    "message": "साफ़ करें",
+    "description": "Clear cards prompt phrase"
+  },
   "columnClearCardsWrong": {
     "message": "गलत वाक्यांश",
     "description": "Clear cards wrong phrase error"
@@ -586,5 +590,5 @@
   "homepageHint": {
     "message": "होमपेज के रूप में सेट करें",
     "description": "Homepage info button tooltip"
-  },
+  }
 }

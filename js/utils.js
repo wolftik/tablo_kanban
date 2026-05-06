@@ -20,27 +20,54 @@ function getDragAfterElement(container, y, selector) {
 }
 
 function createRafDragAfterElement() {
+  // Two-phase approach to eliminate micro-freezes on dragover:
+  // Phase 1 (synchronous, on each dragover) — save cursor coords only, no DOM reads/writes
+  // Phase 2 (requestAnimationFrame) — compute getBoundingClientRect + move placeholder,
+  //   runs at most 60x/s instead of potentially hundreds of dragover events per second.
+  //
+  // The returned function receives a callback `updatePlaceholderFn(container, afterElement)`
+  // that applies the DOM mutation inside the same rAF tick, so even the insertBefore/appendChild
+  // happens layout-cold (browser coalesces all style/layout changes into the next frame).
   let _rafId = null;
-  let _lastResult = null;
   let _pendingContainer = null;
   let _pendingY = 0;
   let _pendingSelector = '';
+  /** @type {Function|null} */
+  let _pendingPlaceholderFn = null;
+  /** @type {Map<Element,{lastResult:Element|null}>} */
+  const _cache = new Map();
+  /** @type {Set<Element>} */
+  const _dirtyContainers = new Set();
 
   function _process() {
     _rafId = null;
-    if (_pendingContainer) {
-      _lastResult = getDragAfterElement(_pendingContainer, _pendingY, _pendingSelector);
+    const container = _pendingContainer;
+    const fn = _pendingPlaceholderFn;
+    if (container) {
+      const result = getDragAfterElement(container, _pendingY, _pendingSelector);
+      _cache.set(container, { lastResult: result });
+      if (fn) {
+        fn(container, result);
+      }
     }
+    _pendingPlaceholderFn = null;
+    _dirtyContainers.clear();
   }
 
-  return function throttledGetDragAfterElement(container, y, selector) {
+  /**
+   * @param {Element} container
+   * @param {number} y
+   * @param {string} selector
+   * @param {Function} updateFn - called inside rAF: updateFn(container, afterElement)
+   */
+  return function throttledGetDragAfterElement(container, y, selector, updateFn) {
     _pendingContainer = container;
     _pendingY = y;
     _pendingSelector = selector;
+    _pendingPlaceholderFn = updateFn;
     if (!_rafId) {
       _rafId = requestAnimationFrame(_process);
     }
-    return _lastResult;
   };
 }
 

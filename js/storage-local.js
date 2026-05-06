@@ -1,5 +1,9 @@
 'use strict';
 
+/**
+ * Abstraction over chrome.storage.local with localStorage fallback.
+ * @namespace StorageLocal
+ */
 const StorageLocal = (() => {
   const _useLocal = typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local;
 

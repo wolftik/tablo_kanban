@@ -55,6 +55,7 @@
   "columnNoTags": { "message": "无标签", "description": "No tags fallback" },
   "columnClearCards": { "message": "清空卡片", "description": "Clear cards button" },
   "columnClearCardsConfirm": { "message": "输入\"$phrase$\"确认", "description": "Clear cards prompt", "placeholders": { "phrase": { "content": "$1" } } },
+  "columnClearCardsPhrase": { "message": "清空", "description": "Clear cards prompt phrase" },
   "columnClearCardsWrong": { "message": "短语错误", "description": "Clear cards wrong phrase error" },
 
   "settingsTitle": { "message": "设置", "description": "Settings button title" },

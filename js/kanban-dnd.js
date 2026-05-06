@@ -45,21 +45,51 @@ const KanbanDnD = (() => {
     });
   }
 
-  function bindColumnDragDrop(colEl, cardsContainer, columnId) {
-    cardsContainer.addEventListener('dragover', (e) => {
-      e.preventDefault();
-      e.dataTransfer.dropEffect = 'move';
+  function _getInsertIndex(container, columnId) {
+    const placeholder = container.querySelector('.drop-placeholder');
+    if (!placeholder) return null;
 
-      const afterElement = _rafGetDragAfterElement(cardsContainer, e.clientY, '.kanban-card:not(.dragging)');
-      let placeholder = cardsContainer.querySelector('.drop-placeholder');
+    const col = KanbanStore.getColumns().find(c => c.id === columnId);
+    if (!col) return null;
+
+    const prevSibling = placeholder.previousElementSibling;
+    if (prevSibling && prevSibling.classList.contains('kanban-card')) {
+      const prevCardId = prevSibling.dataset.cardId;
+      const prevIndex = col.cards.findIndex(c => c.id === prevCardId);
+      return prevIndex !== -1 ? prevIndex + 1 : col.cards.length;
+    }
+
+    const firstVisible = container.querySelector('.kanban-card');
+    if (firstVisible) {
+      const firstCardId = firstVisible.dataset.cardId;
+      const firstIndex = col.cards.findIndex(c => c.id === firstCardId);
+      return firstIndex !== -1 ? firstIndex : 0;
+    }
+
+    return col.cards.length;
+  }
+
+  function bindColumnDragDrop(colEl, cardsContainer, columnId) {
+    // Writes to DOM happen ONLY inside this rAF-driven function, never directly
+    // on dragover. This guarantees DOM is mutated at most 60x/s and the browser
+    // can coalesce all layout invalidations into the next frame.
+    function _updatePlaceholder(container, afterElement) {
+      let placeholder = container.querySelector('.drop-placeholder');
       if (!placeholder) {
         placeholder = KanbanCard.createPlaceholder();
       }
-      if (afterElement == null) {
-        cardsContainer.appendChild(placeholder);
+      if (afterElement == null || !container.contains(afterElement)) {
+        container.appendChild(placeholder);
       } else {
-        cardsContainer.insertBefore(placeholder, afterElement);
+        container.insertBefore(placeholder, afterElement);
       }
+    }
+
+    cardsContainer.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      // Phase 1 — save cursor, return instantly (no DOM, no layout query)
+      _rafGetDragAfterElement(cardsContainer, e.clientY, '.kanban-card:not(.dragging)', _updatePlaceholder);
     });
 
     cardsContainer.addEventListener('dragleave', (e) => {
@@ -74,13 +104,15 @@ const KanbanDnD = (() => {
       if (!_draggedCard) return;
 
       const { cardId, fromColumnId } = _draggedCard;
+      const insertIndex = _getInsertIndex(cardsContainer, columnId);
       if (fromColumnId === columnId) {
-        KanbanStore.reorderCardInColumn(columnId, cardId);
+        KanbanStore.reorderCardInColumn(columnId, cardId, insertIndex);
       } else {
-        KanbanStore.moveCard(fromColumnId, columnId, cardId);
+        KanbanStore.moveCard(fromColumnId, columnId, cardId, insertIndex);
       }
 
       document.querySelectorAll('.drop-placeholder').forEach(p => p.remove());
+      KanbanRenderer.renderBoard(KanbanStore.getColumns());
       KanbanRenderer.updateColumnCounts();
       if (_onSave) _onSave();
       _draggedCard = null;
@@ -111,7 +143,7 @@ const KanbanDnD = (() => {
     let _colRafId = null;
     let _colX = 0;
 
-    board.addEventListener('dragover', (e) => {
+    const onDragOver = (e) => {
       if (!_draggedColumn) return;
       if (KanbanStore.isFirstColumn(_draggedColumn)) return;
       e.preventDefault();
@@ -141,9 +173,9 @@ const KanbanDnD = (() => {
           board.insertBefore(draggingCol, afterElement);
         }
       });
-    });
+    };
 
-    board.addEventListener('drop', (e) => {
+    const onDrop = (e) => {
       if (!_draggedColumn) return;
       if (KanbanStore.isFirstColumn(_draggedColumn)) return;
       e.preventDefault();
@@ -153,13 +185,23 @@ const KanbanDnD = (() => {
       KanbanStore.reorderColumns(columnIds);
       if (_onSave) _onSave();
       _draggedColumn = null;
-    });
+    };
+
+    board.addEventListener('dragover', onDragOver);
+    board.addEventListener('drop', onDrop);
+
+    return () => {
+      board.removeEventListener('dragover', onDragOver);
+      board.removeEventListener('drop', onDrop);
+    };
   }
 
   function bindColumnHeaderDrag(board) {
-    if (!board) return;
-    board.addEventListener('dragstart', (e) => {
-      const header = e.target.closest('.column-header');
+    if (!board) return () => {};
+
+    const onDragStart = (e) => {
+      const target = e.target?.nodeType === Node.ELEMENT_NODE ? e.target : e.target?.parentElement;
+      const header = target?.closest('.column-header');
       if (!header) return;
       const colEl = header.closest('.kanban-column');
       if (!colEl) return;
@@ -171,13 +213,21 @@ const KanbanDnD = (() => {
       colEl.classList.add('dragging');
       e.dataTransfer.effectAllowed = 'move';
       e.dataTransfer.setData('text/plain', 'column:' + colEl.dataset.columnId);
-    });
+    };
 
-    board.addEventListener('dragend', () => {
+    const onDragEnd = () => {
       _draggedColumn = null;
       board.querySelectorAll('.kanban-column').forEach(c => c.classList.remove('dragging'));
       board.querySelectorAll('.drag-over-column').forEach(c => c.classList.remove('drag-over-column'));
-    });
+    };
+
+    board.addEventListener('dragstart', onDragStart);
+    board.addEventListener('dragend', onDragEnd);
+
+    return () => {
+      board.removeEventListener('dragstart', onDragStart);
+      board.removeEventListener('dragend', onDragEnd);
+    };
   }
 
   function setDraggedCard(cardId, fromColumnId) {

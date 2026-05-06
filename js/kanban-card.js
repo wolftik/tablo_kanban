@@ -38,13 +38,13 @@ const KanbanCard = (() => {
 
     if (card.createdAt && _isFirstColumn(columnId)) {
       const age = Date.now() - card.createdAt;
-      if (age > 22 * 24 * 60 * 60 * 1000) {
+      if (age > KanbanConstants.AGING_FIRE_MS) {
         const fire = document.createElement('span');
         fire.className = 'card-aging-badge card-fire';
         fire.textContent = '\uD83D\uDD25';
         fire.title = I18n.t('card.fire.tooltip');
         cardEl.appendChild(fire);
-      } else if (age > 7 * 24 * 60 * 60 * 1000) {
+      } else if (age > KanbanConstants.AGING_SNAIL_MS) {
         const snail = document.createElement('span');
         snail.className = 'card-aging-badge card-snail';
         snail.textContent = '\uD83D\uDC0C';

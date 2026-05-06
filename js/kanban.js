@@ -6,9 +6,27 @@ const KanbanBoard = (() => {
   let _editingColumnId = null;
 
   let _dom = {};
-  let _boundDocKeydown = null;
-  let _boundDocClickFilter = null;
-  let _boundDocClickTags = null;
+  let _boundEvents = [];
+  let _cleanupFns = [];
+
+  function _clearEvents() {
+    _boundEvents.forEach(({ el, type, handler, options }) => {
+      try { el.removeEventListener(type, handler, options); } catch {}
+    });
+    _boundEvents = [];
+    _cleanupFns.forEach(fn => { try { fn(); } catch {} });
+    _cleanupFns = [];
+  }
+
+  function _addEvent(el, type, handler, options) {
+    if (!el) return;
+    el.addEventListener(type, handler, options);
+    _boundEvents.push({ el, type, handler, options });
+  }
+
+  function _addCleanup(fn) {
+    _cleanupFns.push(fn);
+  }
   let _driveSyncing = false;
 
   let _saveTimer = null;
@@ -58,16 +76,21 @@ const KanbanBoard = (() => {
       if (driveModified <= localModified) return;
 
       _driveSyncing = true;
-      const driveData = await SyncProvider.download();
-      if (driveData && driveData.columns) {
-        saved.columns = driveData.columns;
-        saved.tags = driveData.tags;
-        saved.performers = driveData.performers;
-        saved.authors = driveData.authors;
-        saved.kanbanFilter = driveData.kanbanFilter;
-        saved._modified = driveModified;
-        await StorageLocal.set(KanbanConstants.STORAGE_KEY, saved);
-      }
+      const rawDriveData = await SyncProvider.download();
+      if (!rawDriveData || !rawDriveData.columns) return;
+      // Deep clone to avoid reference sharing between store and storage
+      const driveData = JSON.parse(JSON.stringify(rawDriveData));
+      const cloned = {
+        columns: driveData.columns,
+        tags: driveData.tags,
+        performers: driveData.performers,
+        authors: driveData.authors,
+        kanbanFilter: driveData.kanbanFilter,
+        _modified: driveModified
+      };
+      await StorageLocal.set(KanbanConstants.STORAGE_KEY, cloned);
+      // Reload store with fresh data
+      KanbanStore.loadData(cloned);
     } catch (e) {
       console.warn('[KanbanBoard] Drive sync load failed:', e, e?.message || JSON.stringify(e));
     } finally {
@@ -83,8 +106,12 @@ const KanbanBoard = (() => {
       const saved = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
 
       await _tryLoadFromDrive(saved);
-      _migrateFromSync(saved);
-      KanbanStore.loadData(saved);
+      // Re-read after potential drive load (drive load calls KanbanStore.loadData internally)
+      const finalSaved = _driveSyncing ? (await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {}) : saved;
+      _migrateFromSync(finalSaved);
+      if (!_driveSyncing) {
+        KanbanStore.loadData(finalSaved);
+      }
 
       const filter = KanbanStore.getFilter();
       KanbanFilter.init(filter, _onFilterChange);
@@ -137,38 +164,58 @@ const KanbanBoard = (() => {
     await StorageLocal.set(KanbanConstants.STORAGE_KEY, saved);
   }
 
-  async function _flushSave() {
-    const data = _pendingSave;
-    _pendingSave = null;
-    if (!data) return;
-    await StorageLocal.set(KanbanConstants.STORAGE_KEY, data);
+  let _lastSaveTime = 0;
+  const _SAVE_THROTTLE_MS = 1000;
+  let _saveInFlight = false;
 
-    if (_driveSyncing) {
-      if (_pendingSave) {
-        _saveTimer = setTimeout(_flushSave, 300);
-      }
+  async function _flushSave() {
+    _saveTimer = null;
+    const data = _pendingSave;
+    if (!data) return;
+
+    const now = Date.now();
+    if (now - _lastSaveTime < _SAVE_THROTTLE_MS) {
+      _scheduleFlush();
       return;
     }
-    try {
-      const signedIn = await SyncProvider.isSignedIn();
-      if (!signedIn) return;
 
-      _driveSyncing = true;
-      await SyncProvider.upload(data);
-    } catch (e) {
-      console.warn('[KanbanBoard] Sync save failed:', e);
-    } finally {
-      _driveSyncing = false;
-      if (_pendingSave) {
-        _saveTimer = setTimeout(_flushSave, 300);
+    _pendingSave = null;
+    _saveInFlight = true;
+    try {
+      await StorageLocal.set(KanbanConstants.STORAGE_KEY, data);
+      _lastSaveTime = now;
+
+      if (!_driveSyncing) {
+        try {
+          const signedIn = await SyncProvider.isSignedIn();
+          if (!signedIn) return;
+
+          _driveSyncing = true;
+          await SyncProvider.upload(data);
+        } catch (e) {
+          console.warn('[KanbanBoard] Sync save failed:', e);
+        } finally {
+          _driveSyncing = false;
+        }
       }
+    } finally {
+      _saveInFlight = false;
     }
+
+    if (_pendingSave) {
+      _scheduleFlush();
+    }
+  }
+
+  function _scheduleFlush() {
+    if (_saveTimer) clearTimeout(_saveTimer);
+    if (_saveInFlight) return;
+    _saveTimer = setTimeout(_flushSave, 300);
   }
 
   function save() {
     _pendingSave = KanbanStore.toSaveData();
-    if (_saveTimer) clearTimeout(_saveTimer);
-    _saveTimer = setTimeout(_flushSave, 300);
+    _scheduleFlush();
   }
 
   function getColumns() {
@@ -368,7 +415,7 @@ const KanbanBoard = (() => {
 
   function _deleteCard() {
     if (!_editingCard || _editingCard._isTemporary) return;
-    if (!confirm(I18n.t('column.delete.card.confirm', { title: escapeHtml(_editingCard.title) }))) return;
+    if (!confirm(I18n.t('column.delete.card.confirm', { title: _editingCard.title }))) return;
 
     KanbanStore.deleteCard(_editingColumnId, _editingCard.id);
 
@@ -430,9 +477,7 @@ const KanbanBoard = (() => {
     if (!col) return;
     if (!col.cards || col.cards.length === 0) return;
 
-    const lang = I18n.getLang();
-    const phraseMap = { en: 'clear', es: 'vaciar', de: 'leeren', fr: 'vider', pt: 'limpar', nl: 'leegmaken', zh: '清空', ru: 'очистить', it: 'svuota', hi: 'साफ़ करें' };
-    const phrase = phraseMap[lang] || 'clear';
+    const phrase = I18n.t('column.clear.cards.phrase');
 
     const input = prompt(I18n.t('column.clear.cards.confirm', { phrase }), '');
     if (input === null) return;
@@ -453,7 +498,7 @@ const KanbanBoard = (() => {
     if (!col) return;
     if (KanbanStore.getColumns().length <= 1) return;
 
-    if (!confirm(I18n.t('column.delete.confirm', { title: escapeHtml(col.title) }))) return;
+    if (!confirm(I18n.t('column.delete.confirm', { title: col.title }))) return;
 
     KanbanStore.deleteColumn(columnId);
     KanbanRenderer.renderBoard(KanbanStore.getColumns());
@@ -461,27 +506,27 @@ const KanbanBoard = (() => {
   }
 
   function _bindEvents() {
-    KanbanDnD.bindColumnReorder(_dom.board);
-    KanbanDnD.bindColumnHeaderDrag(_dom.board);
+    _clearEvents();
 
-    document.getElementById('card-save').addEventListener('click', () => _saveCard());
-    document.getElementById('card-cancel').addEventListener('click', () => _closeModal());
-    _dom.cardDeleteBtn.addEventListener('click', () => _deleteCard());
+    _addCleanup(KanbanDnD.bindColumnReorder(_dom.board));
+    _addCleanup(KanbanDnD.bindColumnHeaderDrag(_dom.board));
 
-    _dom.cardTitle.addEventListener('keydown', (e) => {
+    _addEvent(document.getElementById('card-save'), 'click', () => _saveCard());
+    _addEvent(document.getElementById('card-cancel'), 'click', () => _closeModal());
+    _addEvent(_dom.cardDeleteBtn, 'click', () => _deleteCard());
+
+    _addEvent(_dom.cardTitle, 'keydown', (e) => {
       if (e.key === 'Enter') _saveCard();
       if (e.key === 'Escape') _closeModal();
     });
 
-    _dom.modal.addEventListener('mousedown', (e) => {
+    _addEvent(_dom.modal, 'mousedown', (e) => {
       if (e.target.classList.contains('modal-overlay')) _closeModal();
     });
 
-    if (_boundDocKeydown) document.removeEventListener('keydown', _boundDocKeydown);
-    _boundDocKeydown = (e) => {
+    _addEvent(document, 'keydown', (e) => {
       if (e.key === 'Escape') _closeModal();
-    };
-    document.addEventListener('keydown', _boundDocKeydown);
+    });
 
     const filterSearch = _dom.filterSearch;
     const filterPriority = _dom.filterPriority;
@@ -492,7 +537,7 @@ const KanbanBoard = (() => {
 
     if (filterSearch) {
       let _searchTimer = null;
-      filterSearch.addEventListener('input', () => {
+      _addEvent(filterSearch, 'input', () => {
         if (_searchTimer) clearTimeout(_searchTimer);
         _searchTimer = setTimeout(() => {
           _searchTimer = null;
@@ -512,25 +557,25 @@ const KanbanBoard = (() => {
     }
 
     if (filterPriority) {
-      filterPriority.addEventListener('change', () => {
+      _addEvent(filterPriority, 'change', () => {
         KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority.value, filterAssignee?.value || '', filterAuthor?.value || '');
         _debouncedFilterRender();
       });
     }
     if (filterAssignee) {
-      filterAssignee.addEventListener('change', () => {
+      _addEvent(filterAssignee, 'change', () => {
         KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee.value, filterAuthor?.value || '');
         _debouncedFilterRender();
       });
     }
     if (filterAuthor) {
-      filterAuthor.addEventListener('change', () => {
+      _addEvent(filterAuthor, 'change', () => {
         KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee?.value || '', filterAuthor.value);
         _debouncedFilterRender();
       });
     }
     if (filterClear) {
-      filterClear.addEventListener('click', () => {
+      _addEvent(filterClear, 'click', () => {
         KanbanFilter.clear();
         if (filterSearch) filterSearch.value = '';
         if (filterPriority) filterPriority.value = '';
@@ -544,7 +589,7 @@ const KanbanBoard = (() => {
 
     const tagsLabel = _dom.filterTagsLabel;
     if (tagsLabel) {
-      tagsLabel.addEventListener('click', () => {
+      _addEvent(tagsLabel, 'click', () => {
         const dropdown = _dom.filterTagsDropdown;
         if (!dropdown) return;
         const isVisible = dropdown.style.display === 'block';
@@ -554,20 +599,18 @@ const KanbanBoard = (() => {
       });
     }
 
-    if (_boundDocClickFilter) document.removeEventListener('click', _boundDocClickFilter);
-    _boundDocClickFilter = (e) => {
+    _addEvent(document, 'click', (e) => {
       const dropdown = _dom.filterTagsDropdown;
       const label = _dom.filterTagsLabel;
       if (dropdown && label && !dropdown.contains(e.target) && !label.contains(e.target)) {
         dropdown.style.display = 'none';
         label.classList.remove('active');
       }
-    };
-    document.addEventListener('click', _boundDocClickFilter);
+    });
 
     const tagsDisplay = _dom.tagsDisplay;
     if (tagsDisplay) {
-      tagsDisplay.addEventListener('click', (e) => {
+      _addEvent(tagsDisplay, 'click', (e) => {
         e.stopPropagation();
         _toggleTagsDropdown();
       });
@@ -575,21 +618,19 @@ const KanbanBoard = (() => {
 
     const tagsClearBtn = _dom.tagsDropdownClear;
     if (tagsClearBtn) {
-      tagsClearBtn.addEventListener('click', (e) => {
+      _addEvent(tagsClearBtn, 'click', (e) => {
         e.stopPropagation();
         document.querySelectorAll('.card-tag-option input[type="checkbox"]').forEach(cb => cb.checked = false);
         _updateTagsDisplay();
       });
     }
 
-    if (_boundDocClickTags) document.removeEventListener('click', _boundDocClickTags);
-    _boundDocClickTags = (e) => {
+    _addEvent(document, 'click', (e) => {
       const wrapper = _dom.tagsDropdownWrapper;
       if (wrapper && wrapper.classList.contains('active') && !wrapper.contains(e.target)) {
         _closeTagsDropdown();
       }
-    };
-    document.addEventListener('click', _boundDocClickTags);
+    });
   }
 
   return { init, save, getColumns };

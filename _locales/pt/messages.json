@@ -55,6 +55,7 @@
   "columnNoTags": { "message": "Sem tags", "description": "No tags fallback" },
   "columnClearCards": { "message": "Limpar todos os cartões", "description": "Clear cards button" },
   "columnClearCardsConfirm": { "message": "Digite \"$phrase$\" para confirmar", "description": "Clear cards prompt", "placeholders": { "phrase": { "content": "$1" } } },
+  "columnClearCardsPhrase": { "message": "limpar", "description": "Clear cards prompt phrase" },
   "columnClearCardsWrong": { "message": "Frase incorreta", "description": "Clear cards wrong phrase error" },
 
   "settingsTitle": { "message": "Configurações", "description": "Settings button title" },

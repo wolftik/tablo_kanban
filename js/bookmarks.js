@@ -199,16 +199,18 @@ const BookmarksManager = (() => {
         } catch {
           hostname = 'unknown';
         }
+        let _faviconFallbackTried = false;
         favicon.src = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
         favicon.onerror = () => {
-          if (favicon.src.startsWith('chrome://favicon')) {
+          if (_faviconFallbackTried) {
             favicon.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';
-          } else {
-            try {
-              favicon.src = 'chrome://favicon/' + new URL(bm.url).origin;
-            } catch {
-              favicon.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';
-            }
+            return;
+          }
+          _faviconFallbackTried = true;
+          try {
+            favicon.src = 'chrome://favicon/' + new URL(bm.url).origin;
+          } catch {
+            favicon.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';
           }
         };
 
@@ -263,8 +265,33 @@ const BookmarksManager = (() => {
     }
   }
 
+  function _createRafBookmarkSlotFinder(container) {
+    let _rafId = null;
+    let _pendingX = 0;
+    let _pendingY = 0;
+
+    function _process() {
+      _rafId = null;
+      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
+      const targetSlot = _getSlotFromCoordinates(container, _pendingX, _pendingY);
+      if (targetSlot !== null) {
+        const slotEl = container.children[targetSlot];
+        if (slotEl) slotEl.classList.add('drag-over');
+      }
+    }
+
+    return function(x, y) {
+      _pendingX = x;
+      _pendingY = y;
+      if (!_rafId) {
+        _rafId = requestAnimationFrame(_process);
+      }
+    };
+  }
+
   function _initDragDrop(container) {
     let sourceIndex = null;
+    const _rafSlotFinder = _createRafBookmarkSlotFinder(container);
 
     container.addEventListener('dragstart', (e) => {
       const slot = e.target.closest('.bookmark-slot');
@@ -284,13 +311,7 @@ const BookmarksManager = (() => {
     container.addEventListener('dragover', (e) => {
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
-
-      const targetSlot = _getSlotFromCoordinates(container, e.clientX, e.clientY);
-      container.querySelectorAll('.bookmark-slot.drag-over').forEach(el => el.classList.remove('drag-over'));
-      if (targetSlot !== null) {
-        const slotEl = container.children[targetSlot];
-        if (slotEl) slotEl.classList.add('drag-over');
-      }
+      _rafSlotFinder(e.clientX, e.clientY);
     });
 
     container.addEventListener('dragleave', (e) => {
