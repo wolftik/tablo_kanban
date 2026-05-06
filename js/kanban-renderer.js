@@ -220,13 +220,14 @@ const KanbanRenderer = (() => {
 
     const descEl = cardEl.querySelector('.card-description');
     if (card.description) {
+      const html = _renderMarkdown(card.description);
       if (!descEl) {
         const d = document.createElement('div');
         d.className = 'card-description';
-        d.textContent = card.description;
+        d.innerHTML = html;
         cardEl.insertBefore(d, cardEl.querySelector('.card-meta'));
-      } else if (descEl.textContent !== card.description) {
-        descEl.textContent = card.description;
+      } else if (descEl.innerHTML !== html) {
+        descEl.innerHTML = html;
       }
     } else if (descEl) {
       descEl.remove();
@@ -557,6 +558,44 @@ const KanbanRenderer = (() => {
     const btn = _dom.filterClear;
     if (!btn) return;
     btn.classList.toggle('visible', KanbanFilter.hasActiveFilters());
+  }
+
+  function _renderMarkdown(text) {
+    if (!text) return '';
+    let html = escapeHtml(text);
+    html = html.replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
+    html = html.replace(/\*(.+?)\*/g, '<i>$1</i>');
+    const lines = html.split('\n');
+    let result = '';
+    let inUl = false;
+    let inOl = false;
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const ulMatch = line.match(/^-\s+(.*)/);
+      const olMatch = line.match(/^\d+\.\s+(.*)/);
+      if (ulMatch) {
+        if (inOl) { result += '</ol>\n'; inOl = false; }
+        if (!inUl) { result += '<ul>\n'; inUl = true; }
+        result += '<li>' + ulMatch[1] + '</li>\n';
+      } else if (olMatch) {
+        if (inUl) { result += '</ul>\n'; inUl = false; }
+        if (!inOl) { result += '<ol>\n'; inOl = true; }
+        result += '<li>' + olMatch[1] + '</li>\n';
+      } else {
+        if (inUl) { result += '</ul>\n'; inUl = false; }
+        if (inOl) { result += '</ol>\n'; inOl = false; }
+        if (line.trim() === '') {
+          result += '\n';
+        } else {
+          result += line + '\n';
+        }
+      }
+    }
+    if (inUl) result += '</ul>\n';
+    if (inOl) result += '</ol>\n';
+    result = result.replace(/\n{3,}/g, '\n\n').trim();
+    result = result.replace(/\n/g, '<br>');
+    return result;
   }
 
   function getDom() {

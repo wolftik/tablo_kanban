@@ -278,9 +278,27 @@ html, body {
   margin: 0 0 0 8px;
   word-break: break-word;
   display: -webkit-box;
-  -webkit-line-clamp: 3;
+  -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
   overflow: hidden;
+}
+
+.card-description ul,
+.card-description ol {
+  margin: 2px 0;
+  padding-left: 16px;
+}
+
+.card-description li {
+  margin-bottom: 1px;
+}
+
+.card-description b {
+  font-weight: 600;
+}
+
+.card-description i {
+  font-style: italic;
 }
 
 .card-meta {
@@ -695,11 +713,11 @@ html, body {
 
 .tags-display {
   padding: 6px 12px;
-  border: 1px solid var(--border);
+  border: 1px solid var(--bookmarks-border);
   border-radius: 6px;
-  background: var(--bg-input, #ffffff);
-  color: var(--card-text);
-  font-size: 13px;
+  background: var(--bookmarks-bg);
+  color: var(--bookmark-text);
+  font-size: 14px;
   cursor: pointer;
   min-height: 36px;
   display: flex;
@@ -895,16 +913,7 @@ html, body {
 
 /* Card modal assignee select */
 #card-assignee-select {
-  width: 100%;
-  padding: 8px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: var(--bg-input, #ffffff);
-  color: var(--card-text);
-  font-size: 13px;
-  outline: none;
   cursor: pointer;
-  transition: border-color 0.15s;
 }
 
 #card-assignee-select:focus {
@@ -976,6 +985,35 @@ html, body {
   border-radius: 6px;
   cursor: pointer;
   background: none;
+}
+
+/* Edit card modal sizing */
+#edit-card-modal .modal.edit-card-modal-inner {
+  min-width: 560px;
+  max-width: 700px;
+  width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+#card-desc-input {
+  min-height: 160px;
+  resize: vertical;
+  font-size: 14px;
+  line-height: 1.5;
+  font-family: inherit;
+}
+
+/* Responsive: narrower modal on small screens */
+@media (max-width: 600px) {
+  #edit-card-modal .modal.edit-card-modal-inner {
+    min-width: 90vw;
+    max-width: 95vw;
+    padding: 16px;
+  }
+  #card-desc-input {
+    min-height: 120px;
+  }
 }
 
 

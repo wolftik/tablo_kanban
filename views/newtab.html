@@ -66,10 +66,10 @@
 
     <!-- Edit Card Modal -->
     <div id="edit-card-modal" class="modal-overlay" style="display:none">
-      <div class="modal">
+      <div class="modal edit-card-modal-inner">
         <h3 id="modal-title" data-i18n="modal.task">Задача</h3>
         <input type="text" id="card-title-input" data-i18n-placeholder="modal.title.placeholder" placeholder="Название задачи" maxlength="200">
-        <textarea id="card-desc-input" data-i18n-placeholder="modal.desc.placeholder" placeholder="Описание" rows="3" maxlength="1000"></textarea>
+        <textarea id="card-desc-input" data-i18n-placeholder="modal.desc.placeholder" placeholder="Описание" rows="8" maxlength="5000"></textarea>
         <span class="tags-label" data-i18n="modal.assignee">Исполнитель:</span>
         <select id="card-assignee-select">
           <option value="" data-i18n="modal.not.assigned">Не назначен</option>
