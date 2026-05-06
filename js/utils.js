@@ -71,6 +71,57 @@ function createRafDragAfterElement() {
   };
 }
 
+/**
+ * Snowball-based Russian stemmer.
+ * Port of the classic algorithm by Nikita Kronrod / Ilya Segalovich.
+ */
+const RussianStemmer = {
+  stem(word) {
+    const a = word.toLowerCase();
+    const RV_RE = /^(.*?[аеиоуыэюя])(.*)$/i;
+    const PERFECTIVE_GERUND_RE = /(ив|ивши|ившись|ыв|ывши|ывшись|в|вши|вшись)$/;
+    const ADJECTIVE_RE = /(ее|ие|ые|ое|ими|ыми|ей|ий|ый|ой|ем|им|ым|ом|его|ого|ему|ому|их|ых|ую|юю|ая|яя|ою|ею)$/;
+    const PARTICIPLE_RE = /(ем|нн|вш|ющ|щ|вш|ющ|ем|нн|т)$/;
+    const REFLEXIVE_RE = /(ся|сь)$/;
+    const VERB_RE = /(ла|на|ете|йте|ли|й|л|ем|н|ло|но|ет|ют|ны|ть|ешь|нно|ла|на|ете|йте|ли|й|л|ем|н|ло|но|ет|ют|ны|ть|ешь|нно)$/;
+    const NOUN_RE = /(а|ев|ов|ие|ье|е|иями|ями|ами|еи|ии|и|ией|ей|ой|ий|й|иям|ям|ием|ем|ам|ом|о|у|ах|иях|ях|ы|ь|ию|ью|ю|ия|ья|я)$/;
+    const DERIVATIONAL_RE = /(ость|ост)$/;
+    const SUPERLATIVE_RE = /(ейш|ейше)$/;
+    const I_RE = /и$/;
+
+    let rv = a.replace(RV_RE, '$2');
+    if (!rv) rv = a;
+
+    if (PERFECTIVE_GERUND_RE.test(rv)) {
+      rv = rv.replace(PERFECTIVE_GERUND_RE, '');
+    } else {
+      if (REFLEXIVE_RE.test(rv)) rv = rv.replace(REFLEXIVE_RE, '');
+      if (ADJECTIVE_RE.test(rv)) {
+        rv = rv.replace(ADJECTIVE_RE, '');
+        rv = rv.replace(PARTICIPLE_RE, '');
+      } else if (VERB_RE.test(rv)) {
+        rv = rv.replace(VERB_RE, '');
+      } else if (NOUN_RE.test(rv)) {
+        rv = rv.replace(NOUN_RE, '');
+      }
+    }
+
+    rv = rv.replace(I_RE, '');
+
+    if (DERIVATIONAL_RE.test(rv)) {
+      rv = rv.replace(DERIVATIONAL_RE, '');
+    }
+
+    if (SUPERLATIVE_RE.test(rv)) {
+      rv = rv.replace(SUPERLATIVE_RE, '');
+    }
+
+    rv = rv.replace(/нн$/, 'н');
+
+    return rv;
+  }
+};
+
 function generateId() {
   return crypto.randomUUID ? crypto.randomUUID() : Date.now().toString(36) + Math.random().toString(36).substr(2);
 }

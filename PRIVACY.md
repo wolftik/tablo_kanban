@@ -38,11 +38,11 @@ When enabled, your Kanban board data is uploaded to **your personal Yandex Disk*
 #### Weather Widget (Open-Meteo)
 The optional weather widget sends your configured city name to the [Open-Meteo](https://open-meteo.com/) geocoding and forecast APIs. Open-Meteo is a free, privacy-friendly service that does not require an API key and does not log requests.
 
-#### Favicon Service (Google)
-The extension loads favicon images from `www.google.com/s2/favicons` based on the domain names of your bookmarks.
+#### Favicon Services
+The extension loads favicon images for your bookmarks via DuckDuckGo's favicon service (`icons.duckduckgo.com`), falling back to Google's favicon service (`www.google.com/s2/favicons`). If both fail, a local SVG placeholder is shown.
 
 ### Bookmark Data
-The extension reads your Chrome bookmarks only to let you display them on the new tab page. **We never send your bookmarks or URLs to any server.** The favicon request sends only the domain to Google's public favicon service.
+The extension reads your Chrome bookmarks only to let you display them on the new tab page. **We never send your bookmarks or URLs to any server.** The domain of each bookmark is sent to DuckDuckGo first, and only as a fallback to Google's favicon service.
 
 ## Data Sharing
 

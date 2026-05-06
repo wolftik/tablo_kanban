@@ -160,18 +160,19 @@ const BookmarksManager = (() => {
         } catch {
           hostname = 'unknown';
         }
-        let _faviconFallbackTried = false;
-        favicon.src = `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`;
+        const _faviconSources = [
+          `https://icons.duckduckgo.com/ip3/${hostname}.ico`,
+          `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`,
+        ];
+        let _faviconIndex = 0;
+        const FALLBACK_SVG = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';
+        favicon.src = _faviconSources[0];
         favicon.onerror = () => {
-          if (_faviconFallbackTried) {
-            favicon.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';
-            return;
-          }
-          _faviconFallbackTried = true;
-          try {
-            favicon.src = 'chrome://favicon/' + new URL(bm.url).origin;
-          } catch {
-            favicon.src = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';
+          _faviconIndex++;
+          if (_faviconIndex < _faviconSources.length) {
+            favicon.src = _faviconSources[_faviconIndex];
+          } else {
+            favicon.src = FALLBACK_SVG;
           }
         };
 

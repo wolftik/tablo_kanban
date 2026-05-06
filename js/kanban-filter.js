@@ -51,13 +51,30 @@ const KanbanFilter = (() => {
 
   function filterCards(cards) {
     const f = _state;
+    const query = f.search;
+    const queryWords = query ? (query.match(/[а-яёА-ЯЁa-zA-Z]+/g) || []) : [];
+    const russianQueryWords = queryWords.filter(w => /[а-яё]/i.test(w));
+    const stemmedQueryWords = russianQueryWords.map(w => RussianStemmer.stem(w));
+
     return cards.filter(card => {
-      if (f.search) {
-        const q = f.search.toLowerCase();
-        if (!card.title.toLowerCase().includes(q) &&
-            !(card.description || '').toLowerCase().includes(q) &&
-            !(card.assignee || '').toLowerCase().includes(q) &&
-            !(card.author || '').toLowerCase().includes(q)) {
+      if (query) {
+        const q = query.toLowerCase();
+        const fields = [
+          card.title,
+          card.description || '',
+          card.assignee || '',
+          card.author || ''
+        ];
+
+        const exactMatch = fields.some(field => field.toLowerCase().includes(q));
+
+        if (!exactMatch && russianQueryWords.length > 0) {
+          const cardWords = fields.flatMap(field => field.match(/[а-яёА-ЯЁa-zA-Z]+/g) || []);
+          const russianCardWords = cardWords.filter(w => /[а-яё]/i.test(w));
+          const stemmedCardWords = russianCardWords.map(w => RussianStemmer.stem(w));
+          const stemMatch = stemmedQueryWords.some(sqw => stemmedCardWords.includes(sqw));
+          if (!stemMatch) return false;
+        } else if (!exactMatch) {
           return false;
         }
       }
