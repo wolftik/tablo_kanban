@@ -21,13 +21,17 @@ const StorageManager = (() => {
     _modePromise = null;
   }
 
+  async function getLocalCached(key) {
+    return await StorageLocal.get(key);
+  }
+
   async function get(key) {
     const mode = await getMode();
     if (mode === 'cloud') {
       try {
         const data = await SyncProvider.download();
         if (data) {
-          StorageLocal.set(key, data);
+          _safeLocalCache(key, data);
         }
         return data;
       } catch (e) {
@@ -39,12 +43,52 @@ const StorageManager = (() => {
     }
   }
 
+  function _safeLocalCache(key, value) {
+    try {
+      localStorage.setItem('kanban_' + key, JSON.stringify(value));
+    } catch (e) {
+      if (e.name !== 'QuotaExceededError' && e.code !== 22) {
+        console.warn('[StorageManager] Local cache write failed:', e);
+        return;
+      }
+      const allCards = [];
+      value.columns.forEach(col => {
+        col.cards.forEach(card => {
+          allCards.push({ card, columnId: col.id });
+        });
+      });
+      allCards.sort((a, b) => (b.card.createdAt || 0) - (a.card.createdAt || 0));
+
+      const storageInfo = StorageLocal.getStorageInfo();
+      const baseColumns = value.columns.map(c => ({ ...c, cards: [] }));
+      const baseSize = JSON.stringify({ columns: baseColumns }).length;
+      let available = storageInfo.free - baseSize;
+
+      const selectedCards = [];
+      for (const item of allCards) {
+        const cardSize = JSON.stringify(item.card).length;
+        if (cardSize <= available) {
+          selectedCards.push(item);
+          available -= cardSize;
+        }
+      }
+
+      value.columns.forEach(col => {
+        col.cards = selectedCards
+          .filter(item => item.columnId === col.id)
+          .map(item => item.card);
+      });
+
+      localStorage.setItem('kanban_' + key, JSON.stringify(value));
+    }
+  }
+
   async function set(key, value, onError) {
     const mode = await getMode();
     if (mode === 'cloud') {
       try {
         await SyncProvider.upload(value);
-        StorageLocal.set(key, value);
+        _safeLocalCache(key, value);
         return true;
       } catch (e) {
         if (onError) onError(e);
@@ -147,5 +191,5 @@ const StorageManager = (() => {
     return StorageLocal.getStorageInfo();
   }
 
-  return { getMode, resetMode, get, set, migrateToCloud, migrateToLocal, getStorageInfo };
+  return { getMode, resetMode, get, set, getLocalCached, migrateToCloud, migrateToLocal, getStorageInfo };
 })();

@@ -14,6 +14,7 @@ const KanbanBoard = (() => {
 
   let _initialized = false;
   let _loading = false;
+  let _syncingFromCloud = false;
 
   function _clearEvents() {
     _boundEvents.forEach(({ el, type, handler, options }) => {
@@ -89,56 +90,135 @@ const KanbanBoard = (() => {
     }
   }
 
+  async function _loadAndRender(saved) {
+    _migrateFromSync(saved);
+    KanbanStore.loadData(saved);
+
+    KanbanFilter.init(null, _onFilterChange);
+
+    if (!_initialized) {
+      _cacheDoms();
+      if (_dom.board) {
+        _dom.board.innerHTML = '';
+        _dom.board.classList.remove('kanban-initialized');
+      }
+      KanbanRenderer.init(_dom, {
+        onEditCard: _openEditCardModal,
+        onAddCard: _openNewCardModal,
+        onAddColumn: _addColumn,
+        onClearColumn: _clearColumnCards,
+        onDeleteColumn: _deleteColumn,
+        onFilterTagToggle: (tagId) => {
+          KanbanFilter.toggleTag(tagId);
+          _onFilterChange();
+        },
+        onFilterTagRemove: (tagId) => {
+          KanbanFilter.removeTag(tagId);
+          _onFilterChange();
+        },
+        onCardDragStart: (cardId, columnId) => {
+          KanbanDnD.setDraggedCard(cardId, columnId);
+        },
+        onCardDragEnd: () => {
+          KanbanDnD.clearDraggedCard();
+        }
+      });
+      KanbanDnD.init(() => save());
+      _bindEvents();
+      _initialized = true;
+    }
+
+    KanbanRenderer.renderBoard(KanbanStore.getColumns());
+    KanbanRenderer.renderFilterUI();
+    KanbanRenderer.updateClearButton();
+  }
+
+  function _safeLocalCache(cloudData) {
+    try {
+      localStorage.setItem('kanban_' + KanbanConstants.STORAGE_KEY, JSON.stringify(cloudData));
+    } catch (e) {
+      if (e.name !== 'QuotaExceededError' && e.code !== 22) {
+        console.warn('[KanbanBoard] Local cache write failed:', e);
+        return;
+      }
+      const allCards = [];
+      cloudData.columns.forEach(col => {
+        col.cards.forEach(card => {
+          allCards.push({ card, columnId: col.id });
+        });
+      });
+      allCards.sort((a, b) => (b.card.createdAt || 0) - (a.card.createdAt || 0));
+
+      const storageInfo = StorageLocal.getStorageInfo();
+      const baseColumns = cloudData.columns.map(c => ({ ...c, cards: [] }));
+      const baseSize = JSON.stringify({ columns: baseColumns }).length;
+      let available = storageInfo.free - baseSize;
+
+      const selectedCards = [];
+      for (const item of allCards) {
+        const cardSize = JSON.stringify(item.card).length;
+        if (cardSize <= available) {
+          selectedCards.push(item);
+          available -= cardSize;
+        }
+      }
+
+      cloudData.columns.forEach(col => {
+        col.cards = selectedCards
+          .filter(item => item.columnId === col.id)
+          .map(item => item.card);
+      });
+
+      localStorage.setItem('kanban_' + KanbanConstants.STORAGE_KEY, JSON.stringify(cloudData));
+    }
+  }
+
+  async function _syncFromCloud() {
+    _syncingFromCloud = true;
+    try {
+      const cloudData = await SyncProvider.download();
+      if (!cloudData || !cloudData.columns) return;
+
+      _safeLocalCache(cloudData);
+
+      const localModified = KanbanStore.toSaveData()._modified || 0;
+      const cloudModified = cloudData._modified || 0;
+
+      if (cloudModified <= localModified) return;
+
+      KanbanStore.loadData(cloudData);
+      KanbanRenderer.renderBoard(KanbanStore.getColumns());
+      KanbanRenderer.renderFilterUI();
+      KanbanRenderer.updateClearButton();
+    } catch (e) {
+      console.warn('[KanbanBoard] Background cloud sync failed:', e);
+    } finally {
+      _syncingFromCloud = false;
+    }
+  }
+
   async function init() {
     if (_loading) return;
     _loading = true;
     try {
       _settings = await StorageSync.get('settings') || getDefaultSettings();
-
       await _migrateFromChromeStorage();
 
-      const saved = await StorageManager.get(KanbanConstants.STORAGE_KEY) || {};
+      const mode = await StorageManager.getMode();
+      const localData = await StorageManager.getLocalCached(KanbanConstants.STORAGE_KEY);
 
-      _migrateFromSync(saved);
-      KanbanStore.loadData(saved);
-
-      KanbanFilter.init(null, _onFilterChange);
-
-      if (!_initialized) {
-        _cacheDoms();
-        if (_dom.board) {
-          _dom.board.innerHTML = '';
-          _dom.board.classList.remove('kanban-initialized');
+      if (mode === 'cloud') {
+        if (localData && localData.columns) {
+          _loadAndRender(localData);
+          _syncFromCloud();
+        } else {
+          const saved = await StorageManager.get(KanbanConstants.STORAGE_KEY) || {};
+          _loadAndRender(saved);
         }
-        KanbanRenderer.init(_dom, {
-          onEditCard: _openEditCardModal,
-          onAddCard: _openNewCardModal,
-          onAddColumn: _addColumn,
-          onClearColumn: _clearColumnCards,
-          onDeleteColumn: _deleteColumn,
-          onFilterTagToggle: (tagId) => {
-            KanbanFilter.toggleTag(tagId);
-            _onFilterChange();
-          },
-          onFilterTagRemove: (tagId) => {
-            KanbanFilter.removeTag(tagId);
-            _onFilterChange();
-          },
-          onCardDragStart: (cardId, columnId) => {
-            KanbanDnD.setDraggedCard(cardId, columnId);
-          },
-          onCardDragEnd: () => {
-            KanbanDnD.clearDraggedCard();
-          }
-        });
-        KanbanDnD.init(() => save());
-        _bindEvents();
-        _initialized = true;
+      } else {
+        const saved = await StorageManager.get(KanbanConstants.STORAGE_KEY) || {};
+        _loadAndRender(saved);
       }
-
-      KanbanRenderer.renderBoard(KanbanStore.getColumns());
-      KanbanRenderer.renderFilterUI();
-      KanbanRenderer.updateClearButton();
 
       await _autoArchive();
     } finally {
@@ -165,6 +245,11 @@ const KanbanBoard = (() => {
 
     const now = Date.now();
     if (now - _lastSaveTime < _SAVE_THROTTLE_MS) {
+      _scheduleFlush();
+      return;
+    }
+
+    if (_syncingFromCloud) {
       _scheduleFlush();
       return;
     }
