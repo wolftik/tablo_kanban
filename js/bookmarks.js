@@ -161,8 +161,8 @@ const BookmarksManager = (() => {
           hostname = 'unknown';
         }
         const _faviconSources = [
-          `https://icons.duckduckgo.com/ip3/${hostname}.ico`,
           `https://www.google.com/s2/favicons?domain=${hostname}&sz=64`,
+          `https://icons.duckduckgo.com/ip3/${hostname}.ico`,
         ];
         let _faviconIndex = 0;
         const FALLBACK_SVG = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="%2394a3b8"/></svg>';

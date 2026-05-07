@@ -9,6 +9,12 @@ const KanbanBoard = (() => {
   let _boundEvents = [];
   let _cleanupFns = [];
 
+  let _saveTimer = null;
+  let _pendingSave = null;
+
+  let _initialized = false;
+  let _loading = false;
+
   function _clearEvents() {
     _boundEvents.forEach(({ el, type, handler, options }) => {
       try { el.removeEventListener(type, handler, options); } catch {}
@@ -27,13 +33,6 @@ const KanbanBoard = (() => {
   function _addCleanup(fn) {
     _cleanupFns.push(fn);
   }
-  let _driveSyncing = false;
-
-  let _saveTimer = null;
-  let _pendingSave = null;
-
-  let _initialized = false;
-  let _loading = false;
 
   function _cacheDoms() {
     _dom = {
@@ -60,41 +59,33 @@ const KanbanBoard = (() => {
       filterTagsDropdown: document.getElementById('filter-tags-dropdown'),
       filterTagsList: document.getElementById('filter-tags-list'),
       filterTagsChips: document.getElementById('filter-tags-chips'),
-      tagsDropdownClear: document.getElementById('tags-dropdown-clear')
+      tagsDropdownClear: document.getElementById('tags-dropdown-clear'),
+      filterDateFrom: document.getElementById('filter-date-from'),
+      filterDateTo: document.getElementById('filter-date-to'),
+      archiveBtn: document.getElementById('archive-btn'),
+      archiveModal: document.getElementById('archive-modal'),
+      archiveList: document.getElementById('archive-list'),
+      archiveCount: document.getElementById('archive-count')
     };
   }
 
-  async function _tryLoadFromDrive(saved) {
-    if (_driveSyncing) return;
+  async function _migrateFromChromeStorage() {
     try {
-      const signedIn = await SyncProvider.isSignedIn();
-      if (!signedIn) return;
+      const chromeStorageAvailable = typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local;
+      if (!chromeStorageAvailable) return;
 
-      const driveModified = await SyncProvider.getLastModified();
-      if (driveModified === 0) return;
-      const localModified = saved._modified || 0;
-      if (driveModified <= localModified) return;
+      const existingLocal = await StorageLocal.get(KanbanConstants.STORAGE_KEY);
+      if (existingLocal && existingLocal.columns) return;
 
-      _driveSyncing = true;
-      const rawDriveData = await SyncProvider.download();
-      if (!rawDriveData || !rawDriveData.columns) return;
-      // Deep clone to avoid reference sharing between store and storage
-      const driveData = JSON.parse(JSON.stringify(rawDriveData));
-      const cloned = {
-        columns: driveData.columns,
-        tags: driveData.tags,
-        performers: driveData.performers,
-        authors: driveData.authors,
-        kanbanFilter: driveData.kanbanFilter,
-        _modified: driveModified
-      };
-      await StorageLocal.set(KanbanConstants.STORAGE_KEY, cloned);
-      // Reload store with fresh data
-      KanbanStore.loadData(cloned);
+      const result = await chrome.storage.local.get(KanbanConstants.STORAGE_KEY);
+      const chromeData = result[KanbanConstants.STORAGE_KEY];
+      if (!chromeData || !chromeData.columns) return;
+
+      await StorageLocal.set(KanbanConstants.STORAGE_KEY, chromeData);
+      await chrome.storage.local.remove(KanbanConstants.STORAGE_KEY);
+      console.log('[KanbanBoard] Migrated data from chrome.storage.local to localStorage');
     } catch (e) {
-      console.warn('[KanbanBoard] Drive sync load failed:', e, e?.message || JSON.stringify(e));
-    } finally {
-      _driveSyncing = false;
+      console.warn('[KanbanBoard] Migration from chrome.storage.local failed:', e);
     }
   }
 
@@ -103,15 +94,13 @@ const KanbanBoard = (() => {
     _loading = true;
     try {
       _settings = await StorageSync.get('settings') || getDefaultSettings();
-      const saved = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
 
-      await _tryLoadFromDrive(saved);
-      // Re-read after potential drive load (drive load calls KanbanStore.loadData internally)
-      const finalSaved = _driveSyncing ? (await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {}) : saved;
-      _migrateFromSync(finalSaved);
-      if (!_driveSyncing) {
-        KanbanStore.loadData(finalSaved);
-      }
+      await _migrateFromChromeStorage();
+
+      const saved = await StorageManager.get(KanbanConstants.STORAGE_KEY) || {};
+
+      _migrateFromSync(saved);
+      KanbanStore.loadData(saved);
 
       const filter = KanbanStore.getFilter();
       KanbanFilter.init(filter, _onFilterChange);
@@ -151,6 +140,8 @@ const KanbanBoard = (() => {
       KanbanRenderer.renderBoard(KanbanStore.getColumns());
       KanbanRenderer.renderFilterUI();
       KanbanRenderer.updateClearButton();
+
+      await _autoArchive();
     } finally {
       _loading = false;
     }
@@ -161,7 +152,7 @@ const KanbanBoard = (() => {
     if (!_settings.columns) return;
     saved.columns = saved.columns || _settings.columns || [];
     saved._modified = Date.now();
-    await StorageLocal.set(KanbanConstants.STORAGE_KEY, saved);
+    await StorageManager.set(KanbanConstants.STORAGE_KEY, saved);
   }
 
   let _lastSaveTime = 0;
@@ -182,22 +173,8 @@ const KanbanBoard = (() => {
     _pendingSave = null;
     _saveInFlight = true;
     try {
-      await StorageLocal.set(KanbanConstants.STORAGE_KEY, data);
+      await StorageManager.set(KanbanConstants.STORAGE_KEY, data, _showStorageError);
       _lastSaveTime = now;
-
-      if (!_driveSyncing) {
-        try {
-          const signedIn = await SyncProvider.isSignedIn();
-          if (!signedIn) return;
-
-          _driveSyncing = true;
-          await SyncProvider.upload(data);
-        } catch (e) {
-          console.warn('[KanbanBoard] Sync save failed:', e);
-        } finally {
-          _driveSyncing = false;
-        }
-      }
     } finally {
       _saveInFlight = false;
     }
@@ -216,6 +193,11 @@ const KanbanBoard = (() => {
   function save() {
     _pendingSave = KanbanStore.toSaveData();
     _scheduleFlush();
+  }
+
+  async function saveAndArchive() {
+    save();
+    await _autoArchive();
   }
 
   function getColumns() {
@@ -541,12 +523,22 @@ const KanbanBoard = (() => {
         if (_searchTimer) clearTimeout(_searchTimer);
         _searchTimer = setTimeout(() => {
           _searchTimer = null;
-          KanbanFilter.applyFilters(filterSearch.value, filterPriority?.value || '', filterAssignee?.value || '', filterAuthor?.value || '');
+          _applyFilterFromDOM();
           KanbanRenderer.renderBoard(KanbanStore.getColumns());
           KanbanRenderer.updateClearButton();
         }, 150);
       });
     }
+
+    function _applyFilterFromDOM() {
+      KanbanFilter.applyFilters(
+        filterSearch?.value || '',
+        filterPriority?.value || '',
+        filterAssignee?.value || '',
+        filterAuthor?.value || ''
+      );
+    }
+
     function _debouncedFilterRender() {
       if (_filterChangeTimer) clearTimeout(_filterChangeTimer);
       _filterChangeTimer = setTimeout(() => {
@@ -558,19 +550,19 @@ const KanbanBoard = (() => {
 
     if (filterPriority) {
       _addEvent(filterPriority, 'change', () => {
-        KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority.value, filterAssignee?.value || '', filterAuthor?.value || '');
+        _applyFilterFromDOM();
         _debouncedFilterRender();
       });
     }
     if (filterAssignee) {
       _addEvent(filterAssignee, 'change', () => {
-        KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee.value, filterAuthor?.value || '');
+        _applyFilterFromDOM();
         _debouncedFilterRender();
       });
     }
     if (filterAuthor) {
       _addEvent(filterAuthor, 'change', () => {
-        KanbanFilter.applyFilters(filterSearch?.value || '', filterPriority?.value || '', filterAssignee?.value || '', filterAuthor.value);
+        _applyFilterFromDOM();
         _debouncedFilterRender();
       });
     }
@@ -581,6 +573,8 @@ const KanbanBoard = (() => {
         if (filterPriority) filterPriority.value = '';
         if (filterAssignee) filterAssignee.value = '';
         if (filterAuthor) filterAuthor.value = '';
+        if (_dom.filterDateFrom) _dom.filterDateFrom.value = '';
+        if (_dom.filterDateTo) _dom.filterDateTo.value = '';
         KanbanRenderer.renderBoard(KanbanStore.getColumns());
         KanbanRenderer.renderFilterUI();
         KanbanRenderer.updateClearButton();
@@ -631,6 +625,148 @@ const KanbanBoard = (() => {
         _closeTagsDropdown();
       }
     });
+
+    // Date filter events
+    const dateFrom = _dom.filterDateFrom;
+    const dateTo = _dom.filterDateTo;
+    if (dateFrom) {
+      let _dateTimer = null;
+      _addEvent(dateFrom, 'change', () => {
+        if (_dateTimer) clearTimeout(_dateTimer);
+        _dateTimer = setTimeout(() => {
+          _dateTimer = null;
+          KanbanFilter.setDateRange(dateFrom.value || null, dateTo?.value || null);
+          _onFilterChange();
+        }, 300);
+      });
+    }
+    if (dateTo) {
+      let _dateTimer2 = null;
+      _addEvent(dateTo, 'change', () => {
+        if (_dateTimer2) clearTimeout(_dateTimer2);
+        _dateTimer2 = setTimeout(() => {
+          _dateTimer2 = null;
+          KanbanFilter.setDateRange(dateFrom?.value || null, dateTo.value || null);
+          _onFilterChange();
+        }, 300);
+      });
+    }
+
+    // Archive events
+    const archiveBtn = _dom.archiveBtn;
+    if (archiveBtn) {
+      _addEvent(archiveBtn, 'click', () => _openArchiveModal());
+    }
+  }
+
+  // ===== Archive =====
+
+  async function _autoArchive() {
+    const mode = await StorageManager.getMode();
+    if (mode !== 'local') return;
+
+    const columns = KanbanStore.getColumns();
+    const result = await ArchiveManager.archiveOldCards(columns);
+    if (result.archivedCount > 0) {
+      save();
+      _showArchiveToast(result.archivedCount);
+    }
+  }
+
+  function _showArchiveToast(count) {
+    const toast = document.createElement('div');
+    toast.className = 'archive-toast';
+    toast.textContent = I18n.t('storage.archived', { count });
+    document.body.appendChild(toast);
+    requestAnimationFrame(() => toast.classList.add('show'));
+    setTimeout(() => {
+      toast.classList.remove('show');
+      setTimeout(() => toast.remove(), 300);
+    }, 5000);
+  }
+
+  async function _openArchiveModal() {
+    const archiveInfo = await ArchiveManager.getArchiveInfo();
+    const list = _dom.archiveList;
+    const countEl = _dom.archiveCount;
+    const modal = _dom.archiveModal;
+    if (!list || !modal) return;
+
+    if (countEl) countEl.textContent = String(archiveInfo.count);
+
+    list.innerHTML = '';
+
+    if (archiveInfo.count === 0) {
+      list.innerHTML = '<div class="archive-empty">' + I18n.t('archive.empty') + '</div>';
+    } else {
+      const archive = await ArchiveManager.getArchive();
+      for (const card of archive.cards) {
+        const item = document.createElement('div');
+        item.className = 'archive-item';
+
+        const title = document.createElement('div');
+        title.className = 'archive-item-title';
+        title.textContent = card.title || I18n.t('modal.no.title');
+
+        const meta = document.createElement('div');
+        meta.className = 'archive-item-meta';
+        const colTitle = card._originalColumnTitle || 'Unknown';
+        const archivedDate = card._archivedAt ? new Date(card._archivedAt).toLocaleDateString() : '?';
+        meta.textContent = colTitle + ' — ' + archivedDate;
+
+        const actions = document.createElement('div');
+        actions.className = 'archive-item-actions';
+
+        const restoreBtn = document.createElement('button');
+        restoreBtn.className = 'archive-restore-btn';
+        restoreBtn.textContent = I18n.t('archive.restore');
+        restoreBtn.addEventListener('click', async () => {
+          const restored = await ArchiveManager.restoreCard(card.id);
+          if (restored) {
+            const colId = restored._originalColumnId;
+            const cols = KanbanStore.getColumns();
+            const targetCol = cols.find(c => c.id === colId) || cols[0];
+            KanbanStore.addCard(targetCol.id, {
+              title: restored.title,
+              description: restored.description,
+              priority: restored.priority,
+              assignee: restored.assignee,
+              author: restored.author,
+              tags: restored.tags
+            });
+            KanbanRenderer.renderBoard(KanbanStore.getColumns());
+            save();
+            _openArchiveModal();
+          }
+        });
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.className = 'archive-delete-btn';
+        deleteBtn.textContent = I18n.t('archive.delete');
+        deleteBtn.addEventListener('click', async () => {
+          const archive = await ArchiveManager.getArchive();
+          archive.cards = archive.cards.filter(c => c.id !== card.id);
+          archive._modified = Date.now();
+          await ArchiveManager.saveArchive(archive);
+          _openArchiveModal();
+        });
+
+        actions.appendChild(restoreBtn);
+        actions.appendChild(deleteBtn);
+
+        item.appendChild(title);
+        item.appendChild(meta);
+        item.appendChild(actions);
+        list.appendChild(item);
+      }
+    }
+
+    modal.style.display = 'flex';
+  }
+
+  function _closeArchiveModal() {
+    const modal = _dom.archiveModal;
+    if (modal) modal.style.display = 'none';
   }
 
   return { init, save, getColumns };

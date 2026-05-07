@@ -1,11 +1,7 @@
 'use strict';
 
-/**
- * Stateful filter for kanban cards (search, priority, assignee, author, tags).
- * @namespace KanbanFilter
- */
 const KanbanFilter = (() => {
-  let _state = { search: '', priority: '', assignee: '', author: '', tags: [] };
+  let _state = { search: '', priority: '', assignee: '', author: '', tags: [], dateFrom: null, dateTo: null };
   let _onChange = null;
 
   function init(state, onChange) {
@@ -25,6 +21,18 @@ const KanbanFilter = (() => {
     _notify();
   }
 
+  function setDateRange(fromISO, toISO) {
+    _state.dateFrom = fromISO ? new Date(fromISO + 'T00:00:00').getTime() : null;
+    _state.dateTo = toISO ? new Date(toISO + 'T23:59:59.999').getTime() : null;
+    _notify();
+  }
+
+  function clearDateRange() {
+    _state.dateFrom = null;
+    _state.dateTo = null;
+    _notify();
+  }
+
   function toggleTag(tagId) {
     const idx = _state.tags.indexOf(tagId);
     if (idx >= 0) {
@@ -41,12 +49,12 @@ const KanbanFilter = (() => {
   }
 
   function clear() {
-    _state = { search: '', priority: '', assignee: '', author: '', tags: [] };
+    _state = { search: '', priority: '', assignee: '', author: '', tags: [], dateFrom: null, dateTo: null };
     _notify();
   }
 
   function hasActiveFilters() {
-    return !!( _state.search || _state.priority || _state.assignee || _state.author || _state.tags.length > 0);
+    return !!(_state.search || _state.priority || _state.assignee || _state.author || _state.tags.length > 0 || _state.dateFrom || _state.dateTo);
   }
 
   function filterCards(cards) {
@@ -78,6 +86,8 @@ const KanbanFilter = (() => {
           return false;
         }
       }
+      if (f.dateFrom && card.createdAt && card.createdAt < f.dateFrom) return false;
+      if (f.dateTo && card.createdAt && card.createdAt > f.dateTo) return false;
       if (f.priority && card.priority !== f.priority) return false;
       if (f.assignee && card.assignee !== f.assignee) return false;
       if (f.author && card.author !== f.author) return false;
@@ -97,5 +107,5 @@ const KanbanFilter = (() => {
     if (_onChange) _onChange(getState());
   }
 
-  return { init, getState, applyFilters, toggleTag, removeTag, clear, hasActiveFilters, filterCards, toJSON };
+  return { init, getState, applyFilters, setDateRange, clearDateRange, toggleTag, removeTag, clear, hasActiveFilters, filterCards, toJSON };
 })();

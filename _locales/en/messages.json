@@ -115,7 +115,7 @@
   "optionsSaved": { "message": "Saved!", "description": "Saved confirmation" },
   "optionsAboutVersion": { "message": "Version {version}", "description": "Version info" },
   "optionsAboutDesc": { "message": "Bookmarks bar and Kanban board for your Chrome new tab page.", "description": "About description" },
-  "optionsAboutStorage": { "message": "Board data is stored locally in chrome.storage.local. Settings and API keys are in chrome.storage.sync (synced across devices). Board data is synced via a chosen provider (Google Drive or Yandex Disk).", "description": "Storage info" },
+  "optionsAboutStorage": { "message": "Board data is stored locally in localStorage (no sync) or in the cloud (Google Drive / Yandex Disk) when sync is active. Settings and API keys are in chrome.storage.sync.", "description": "Storage info" },
   "optionsSupportTitle": { "message": "Support the Project", "description": "Support section title" },
   "optionsSupportDesc": { "message": "If you find this extension useful, you can support its development:", "description": "Support section description" },
   "optionsSupportOkx": { "message": "OKX (crypto)", "description": "OKX donate button label" },
@@ -147,5 +147,18 @@
   "homepageModalCopy": { "message": "Copy", "description": "Copy button" },
   "homepageModalCopied": { "message": "Copied!", "description": "Copied confirmation" },
   "homepageModalClose": { "message": "Close", "description": "Close button" },
-  "homepageHint": { "message": "Set as homepage", "description": "Homepage info button tooltip" }
+  "homepageHint": { "message": "Set as homepage", "description": "Homepage info button tooltip" },
+  "storageErrorQuota": { "message": "Storage quota exceeded. Delete old cards or clear data.", "description": "Storage quota exceeded error" },
+  "storageErrorGeneral": { "message": "Failed to save data. Please try again.", "description": "General storage error" },
+  "storageIndicator": { "message": "Storage:", "description": "Storage indicator label" },
+  "storageArchived": { "message": "Archived {count} old card(s) due to storage limits.", "description": "Archive toast notification" },
+  "filterDateFrom": { "message": "From date", "description": "Date from filter title" },
+  "filterDateTo": { "message": "To date", "description": "Date to filter title" },
+  "archiveButton": { "message": "Archive", "description": "Archive button label" },
+  "archiveTitle": { "message": "Archive", "description": "Archive modal title" },
+  "archiveEmpty": { "message": "No archived cards", "description": "Archive empty message" },
+  "archiveRestore": { "message": "Restore", "description": "Restore card button" },
+  "archiveDelete": { "message": "Delete permanently", "description": "Delete card from archive button" },
+  "optionsStorageUsage": { "message": "Storage usage: {used} KB / {total} KB ({pct}%)", "description": "Storage usage in options sync tab" },
+  "optionsStorageLocal": { "message": "Local storage", "description": "Local storage label in options sync tab" }
 }

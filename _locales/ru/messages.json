@@ -115,7 +115,7 @@
   "optionsSaved": { "message": "Сохранено!", "description": "Saved confirmation" },
   "optionsAboutVersion": { "message": "Версия {version}", "description": "Version info" },
   "optionsAboutDesc": { "message": "Панель закладок и канбан-доска для новой вкладки Chrome.", "description": "About description" },
-  "optionsAboutStorage": { "message": "Данные доски хранятся локально в chrome.storage.local. Настройки и ключи API — в chrome.storage.sync (синхронизация между устройствами). Данные доски синхронизируются через выбранного провайдера (Google Drive или Яндекс.Диск).", "description": "Storage info" },
+  "optionsAboutStorage": { "message": "Данные доски хранятся локально в localStorage (без синхронизации) или в облаке (Google Drive / Яндекс.Диск) при активной синхронизации. Настройки и ключи API — в chrome.storage.sync.", "description": "Storage info" },
   "optionsSupportTitle": { "message": "Поддержать проект", "description": "Support section title" },
   "optionsSupportDesc": { "message": "Если расширение вам полезно, вы можете поддержать его развитие:", "description": "Support section description" },
   "optionsSupportOkx": { "message": "OKX (крипта)", "description": "OKX donate button label" },
@@ -147,5 +147,18 @@
   "homepageModalCopy": { "message": "Копировать", "description": "Copy button" },
   "homepageModalCopied": { "message": "Скопировано!", "description": "Copied confirmation" },
   "homepageModalClose": { "message": "Закрыть", "description": "Close button" },
-  "homepageHint": { "message": "Установить как домашнюю страницу", "description": "Homepage info button tooltip" }
+  "homepageHint": { "message": "Установить как домашнюю страницу", "description": "Homepage info button tooltip" },
+  "storageErrorQuota": { "message": "Превышен лимит хранилища. Удалите старые карточки или очистите данные.", "description": "Storage quota exceeded error" },
+  "storageErrorGeneral": { "message": "Не удалось сохранить данные. Попробуйте ещё раз.", "description": "General storage error" },
+  "storageIndicator": { "message": "Хранилище:", "description": "Storage indicator label" },
+  "storageArchived": { "message": "Архивировано {count} старых карточек.", "description": "Archive toast notification" },
+  "filterDateFrom": { "message": "Дата от", "description": "Date from filter title" },
+  "filterDateTo": { "message": "Дата до", "description": "Date to filter title" },
+  "archiveButton": { "message": "Архив", "description": "Archive button label" },
+  "archiveTitle": { "message": "Архив", "description": "Archive modal title" },
+  "archiveEmpty": { "message": "Нет архивных карточек", "description": "Archive empty message" },
+  "archiveRestore": { "message": "Восстановить", "description": "Restore card button" },
+  "archiveDelete": { "message": "Удалить навсегда", "description": "Delete card from archive button" },
+  "optionsStorageUsage": { "message": "Использовано: {used} КБ / {total} КБ ({pct}%)", "description": "Storage usage in options sync tab" },
+  "optionsStorageLocal": { "message": "Локальное хранилище", "description": "Local storage label in options sync tab" }
 }

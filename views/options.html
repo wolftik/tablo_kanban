@@ -130,8 +130,16 @@
       <!-- Sync Tab -->
       <div id="tab-sync" class="tab-content">
         <div class="setting-group">
+          <div id="local-storage-section">
+            <h3 data-i18n="options.storage.local">Локальное хранилище</h3>
+            <div id="storage-usage" class="sync-storage-info"></div>
+            <hr class="sync-section-divider">
+          </div>
+          
           <h3 data-i18n="options.sync.title">Синхронизация</h3>
-
+          <div id="sync-status" class="sync-status">
+            <span id="sync-status-text" data-i18n="options.sync.checking">Проверка статуса...</span>
+          </div>
           <label class="sync-provider-label" data-i18n="options.sync.provider">Провайдер синхронизации:</label>
           <select id="sync-provider-select" class="sync-provider-select">
             <option value="google_drive" data-i18n="options.sync.provider.google">Google Drive</option>
@@ -141,10 +149,8 @@
           <div id="sync-provider-info" class="sync-provider-info">
             <p id="sync-provider-desc" data-i18n="options.sync.desc.google">Данные канбан-доски будут синхронизироваться между устройствами через ваш Google Drive. Синхронизация c Google Drive работает только в Chrome.</p>
           </div>
+          
 
-          <div id="sync-status" class="sync-status">
-            <span id="sync-status-text" data-i18n="options.sync.checking">Проверка статуса...</span>
-          </div>
           <div class="sync-actions">
             <button id="sync-sign-in" class="btn-primary" style="display:none" data-i18n="options.sync.signin">Подключить</button>
             <button id="sync-sign-out" class="btn-secondary" style="display:none" data-i18n="options.sync.signout">Отключить синхронизацию</button>
@@ -220,7 +226,7 @@
             <h3 data-i18n="app.name">Tablo Kanban</h3>
             <p data-i18n="options.about.version"></p>
             <p data-i18n="options.about.desc">Панель закладок и канбан-доска для новой вкладки Chrome.</p>
-            <p data-i18n="options.about.storage">Данные хранятся локально в <strong>chrome.storage.local</strong>. Настройки и ключи API хранятся в <strong>chrome.storage.sync</strong> (синхронизация между устройствами). Данные доски синхронизируются через выбранного провайдера (Google Drive или Яндекс.Диск).</p>
+            <p data-i18n="options.about.storage">Данные доски хранятся локально в <strong>localStorage</strong> (без синхронизации) или в <strong>облаке</strong> (Google Drive / Яндекс.Диск) при активной синхронизации. Настройки и ключи API — в <strong>chrome.storage.sync</strong>.</p>
 
         </div>
       </div>
@@ -241,6 +247,7 @@
   <script defer src="../js/drive-sync.js"></script>
   <script defer src="../js/yadisk-sync.js"></script>
   <script defer src="../js/sync-provider.js"></script>
+  <script defer src="../js/storage-manager.js"></script>
   <script defer src="../js/kanban-constants.js"></script>
   <script defer src="../js/options.js"></script>
 </body>

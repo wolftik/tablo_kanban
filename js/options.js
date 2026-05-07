@@ -20,6 +20,27 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
   _setVersion();
 
+  async function _updateStorageUsage() {
+    const el = document.getElementById('storage-usage');
+    const section = document.getElementById('local-storage-section');
+    if (!el || !section) return;
+    const mode = await StorageManager.getMode();
+    if (mode === 'cloud') {
+      section.style.display = 'none';
+      return;
+    }
+    section.style.display = '';
+    try {
+      const info = StorageManager.getStorageInfo();
+      const pct = ((info.used / info.quota) * 100).toFixed(1);
+      const usedKB = (info.used / 1024).toFixed(1);
+      const totalKB = (info.quota / 1024).toFixed(0);
+      el.innerHTML = '<span class="setting-hint">' + I18n.t('options.storage.usage', { used: usedKB, total: totalKB, pct: pct }) + '</span>';
+    } catch {
+      el.innerHTML = '';
+    }
+  }
+
   function _setupTabs() {
     const tabs = document.querySelectorAll('.tab-btn');
     const contents = document.querySelectorAll('.tab-content');
@@ -455,6 +476,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     await _updateSyncUI();
+    await _updateStorageUsage();
 
     providerSelect.addEventListener('change', async () => {
       const newProvider = providerSelect.value;
@@ -486,8 +508,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     signOutBtn.addEventListener('click', async () => {
+      try {
+        const result = await StorageManager.migrateToLocal();
+        if (result) {
+          console.log('[Options] Migrated from cloud to local:', result.saved + '/' + result.total + ' cards saved, ' + result.archived + ' archived');
+        }
+      } catch (e) {
+        console.warn('[Options] Migration to local failed:', e);
+      }
       await SyncProvider.signOut();
       await _updateSyncUI();
+      await _updateStorageUsage();
     });
 
     tokenApply.addEventListener('click', async () => {
@@ -496,13 +527,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         await YadiskSync.setToken(token);
         await SyncProvider.setProvider('yandex_disk');
-        const kanbanData = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
-        if (kanbanData.columns) {
-          kanbanData._modified = Date.now();
-          await YadiskSync.upload(kanbanData);
-        }
+        await StorageManager.migrateToCloud();
         tokenInput.value = '';
-        await _updateSyncUI();
+    await _updateSyncUI();
+    await _updateStorageUsage();
       } catch (e) {
         const msg = e?.message || String(e);
         console.error('[Options] Yandex Disk token apply failed:', e);
@@ -522,6 +550,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     tokenClear.addEventListener('click', async () => {
       await YadiskSync.removeToken();
       await _updateSyncUI();
+      await _updateStorageUsage();
     });
   })();
 
@@ -555,7 +584,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     };
 
     await StorageSync.set('settings', settings);
-    await StorageLocal.set('kanban_data', {
+    await StorageManager.set(KanbanConstants.STORAGE_KEY, {
       columns: columns,
       tags: tags,
       performers: performers,
@@ -569,6 +598,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderPerformersList();
     renderAuthorsList();
     renderColumnsList();
+    _updateStorageUsage();
 
     const originalText = $saveBtn.textContent;
     $saveBtn.textContent = I18n.t('options.saved');

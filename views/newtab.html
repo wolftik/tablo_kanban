@@ -59,8 +59,14 @@
           <div id="filter-tags-list" class="filter-tags-list"></div>
         </div>
       </div>
+      <div class="filter-date-range">
+        <input type="date" id="filter-date-from" class="filter-date-input" data-i18n-title="filter.date.from">
+        <span class="filter-date-sep">&mdash;</span>
+        <input type="date" id="filter-date-to" class="filter-date-input" data-i18n-title="filter.date.to">
+      </div>
       <input type="text" id="filter-search" data-i18n-placeholder="filter.search.placeholder" placeholder="Поиск задач..." class="filter-input">
       <button id="filter-clear" class="filter-clear-btn" data-i18n-title="filter.clear.title" title="Очистить фильтры">&#10005;</button>
+      <button id="archive-btn" class="archive-btn" data-i18n="archive.button" style="display:none">&#128230; Архив (0)</button>
     </div>
     <div id="kanban-board"></div>
 
@@ -142,6 +148,21 @@
         </div>
       </div>
     </div>
+
+    <!-- Archive Modal -->
+    <div id="archive-modal" class="modal-overlay" style="display:none">
+      <div class="modal archive-modal-inner">
+        <div class="archive-header">
+          <h3 data-i18n="archive.title">Архив</h3>
+          <span id="archive-count" class="archive-count">0</span>
+        </div>
+        <div id="archive-list"></div>
+        <div class="modal-actions">
+          <button id="archive-modal-close" data-i18n="modal.cancel">Закрыть</button>
+        </div>
+      </div>
+    </div>
+
   </div>
 
   <script defer src="../js/i18n.js"></script>
@@ -151,6 +172,8 @@
   <script defer src="../js/drive-sync.js"></script>
   <script defer src="../js/yadisk-sync.js"></script>
   <script defer src="../js/sync-provider.js"></script>
+  <script defer src="../js/storage-manager.js"></script>
+  <script defer src="../js/archive-manager.js"></script>
   <script defer src="../js/kanban-constants.js"></script>
   <script defer src="../js/kanban-filter.js"></script>
   <script defer src="../js/kanban-card.js"></script>

@@ -149,7 +149,20 @@ const I18n = (() => {
     'homepage.modal.copy': 'homepageModalCopy',
     'homepage.modal.copied': 'homepageModalCopied',
     'homepage.modal.close': 'homepageModalClose',
-    'homepage.hint': 'homepageHint'
+    'homepage.hint': 'homepageHint',
+    'storage.error.quota': 'storageErrorQuota',
+    'storage.error.general': 'storageErrorGeneral',
+    'storage.indicator': 'storageIndicator',
+    'storage.archived': 'storageArchived',
+    'filter.date.from': 'filterDateFrom',
+    'filter.date.to': 'filterDateTo',
+    'archive.button': 'archiveButton',
+    'archive.title': 'archiveTitle',
+    'archive.empty': 'archiveEmpty',
+    'archive.restore': 'archiveRestore',
+    'archive.delete': 'archiveDelete',
+    'options.storage.usage': 'optionsStorageUsage',
+    'options.storage.local': 'optionsStorageLocal'
   };
 
   let _currentLang = null;

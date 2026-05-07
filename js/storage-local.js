@@ -1,52 +1,61 @@
 'use strict';
 
-/**
- * Abstraction over chrome.storage.local with localStorage fallback.
- * @namespace StorageLocal
- */
 const StorageLocal = (() => {
-  const _useLocal = typeof chrome !== 'undefined' && chrome.storage && chrome.storage.local;
+  const PREFIX = 'kanban_';
 
   async function get(key) {
-    if (_useLocal) {
-      try {
-        const result = await chrome.storage.local.get(key);
-        if (result[key] !== undefined) return result[key];
-      } catch {}
-    }
     try {
-      const val = localStorage.getItem('_local_' + key);
+      const val = localStorage.getItem(PREFIX + key);
       return val ? JSON.parse(val) : undefined;
-    } catch {
+    } catch (e) {
+      console.error('StorageLocal.get failed:', e);
       return undefined;
     }
   }
 
-  async function set(key, value) {
-    if (_useLocal) {
-      try {
-        await chrome.storage.local.set({ [key]: value });
-      } catch (e) {
-        console.warn('StorageLocal.set (local) failed:', e);
-      }
-    } else {
-      try {
-        localStorage.setItem('_local_' + key, JSON.stringify(value));
-      } catch {}
+  async function set(key, value, onError) {
+    try {
+      localStorage.setItem(PREFIX + key, JSON.stringify(value));
+      return true;
+    } catch (e) {
+      console.error('StorageLocal.set failed:', e);
+      if (onError) onError(e);
+      return false;
     }
   }
 
   async function remove(key) {
-    if (_useLocal) {
-      try {
-        await chrome.storage.local.remove(key);
-      } catch {}
-    } else {
-      try {
-        localStorage.removeItem('_local_' + key);
-      } catch {}
+    try {
+      localStorage.removeItem(PREFIX + key);
+      return true;
+    } catch (e) {
+      console.error('StorageLocal.remove failed:', e);
+      return false;
     }
   }
 
-  return { get, set, remove };
+  function getStorageInfo() {
+    let used = 0;
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(PREFIX)) {
+        used += (localStorage.getItem(key) || '').length;
+      }
+    }
+    const quota = 5 * 1024 * 1024;
+    return { used, free: quota - used, quota };
+  }
+
+  function clear() {
+    const keysToRemove = [];
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith(PREFIX)) {
+        keysToRemove.push(key);
+      }
+    }
+    keysToRemove.forEach(key => localStorage.removeItem(key));
+  }
+
+  return { get, set, remove, getStorageInfo, clear };
 })();
