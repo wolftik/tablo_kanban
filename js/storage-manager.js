@@ -24,7 +24,16 @@ const StorageManager = (() => {
   async function get(key) {
     const mode = await getMode();
     if (mode === 'cloud') {
-      return await SyncProvider.download();
+      try {
+        const data = await SyncProvider.download();
+        if (data) {
+          StorageLocal.set(key, data);
+        }
+        return data;
+      } catch (e) {
+        console.warn('[StorageManager] Cloud download failed, using local cache:', e);
+        return await StorageLocal.get(key);
+      }
     } else {
       return await StorageLocal.get(key);
     }
@@ -35,6 +44,7 @@ const StorageManager = (() => {
     if (mode === 'cloud') {
       try {
         await SyncProvider.upload(value);
+        StorageLocal.set(key, value);
         return true;
       } catch (e) {
         if (onError) onError(e);
@@ -64,7 +74,13 @@ const StorageManager = (() => {
   }
 
   async function migrateToLocal() {
-    const cloudData = await SyncProvider.download();
+    let cloudData;
+    try {
+      cloudData = await SyncProvider.download();
+    } catch (e) {
+      console.warn('[StorageManager] Cloud download failed during migration:', e);
+      return;
+    }
     if (!cloudData || !cloudData.columns) return;
 
     const allCards = [];

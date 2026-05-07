@@ -102,8 +102,7 @@ const KanbanBoard = (() => {
       _migrateFromSync(saved);
       KanbanStore.loadData(saved);
 
-      const filter = KanbanStore.getFilter();
-      KanbanFilter.init(filter, _onFilterChange);
+      KanbanFilter.init(null, _onFilterChange);
 
       if (!_initialized) {
         _cacheDoms();
@@ -205,7 +204,6 @@ const KanbanBoard = (() => {
   }
 
   function _onFilterChange() {
-    KanbanStore.setFilter(KanbanFilter.toJSON());
     KanbanRenderer.renderBoard(KanbanStore.getColumns());
     KanbanRenderer.renderFilterUI();
     KanbanRenderer.updateClearButton();

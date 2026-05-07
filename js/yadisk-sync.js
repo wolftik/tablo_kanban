@@ -134,19 +134,26 @@ const YadiskSync = (() => {
   }
 
   async function download() {
-    const downloadUrl = await _getDownloadUrl();
-    console.log('[YadiskSync] Downloading from', downloadUrl);
-    const token = await _getToken();
-    const res = await fetch(downloadUrl, {
-      headers: { Authorization: 'OAuth ' + token }
-    });
-    console.log('[YadiskSync] Download response', res.status);
-    if (!res.ok) {
-      const text = await res.text();
-      console.warn('[YadiskSync] Download error body:', text);
-      throw new Error('Yandex Disk download error ' + res.status + ': ' + text);
+    try {
+      const downloadUrl = await _getDownloadUrl();
+      console.log('[YadiskSync] Downloading from', downloadUrl);
+      const token = await _getToken();
+      const res = await fetch(downloadUrl, {
+        headers: { Authorization: 'OAuth ' + token }
+      });
+      console.log('[YadiskSync] Download response', res.status);
+      if (!res.ok) {
+        const text = await res.text();
+        console.warn('[YadiskSync] Download error body:', text);
+        throw new Error('Yandex Disk download error ' + res.status + ': ' + text);
+      }
+      return res.json();
+    } catch (err) {
+      if (err.message && err.message.includes('404')) {
+        return null;
+      }
+      throw err;
     }
-    return res.json();
   }
 
   async function getLastModified() {

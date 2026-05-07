@@ -17,6 +17,8 @@ Tablo Kanban is a Chrome/Edge/Yandex extension that provides a bookmarks bar and
 | Settings (theme, language, widget preferences, bookmark slots) | `chrome.storage.sync` | Settings sync across your Chrome devices |
 | Displayed bookmarks list | `chrome.storage.sync` | Which bookmarks you have placed on the board |
 | Yandex Disk OAuth token | `chrome.storage.sync` | Optional cloud sync via Yandex Disk |
+| Yandex Disk Client ID | `chrome.storage.sync` | Required for Yandex Disk OAuth flow |
+| Sync provider selection | `chrome.storage.sync` | Which sync provider is selected (Google Drive / Yandex Disk) |
 
 All data stays in your browser. Kanban board data in `localStorage` is not synced or transmitted anywhere. Settings in `chrome.storage.sync` are synced across your Chrome devices through your Google account — Chrome encrypts this data at rest.
 
@@ -24,7 +26,7 @@ All data stays in your browser. Kanban board data in `localStorage` is not synce
 
 | Permission | Justification |
 |---|---|---|
-| `storage` | Required for `chrome.storage.sync` (settings, bookmarks display, Yandex Disk OAuth token). Kanban board data uses `localStorage` and does not require this permission. |
+| `storage` | Required for `chrome.storage.sync` (settings, bookmarks display, Yandex Disk OAuth token and Client ID, sync provider preference). Kanban board data uses `localStorage` and does not require this permission. |
 | `identity` | Used solely for Google Drive OAuth (optional cloud sync). Authenticates you to your own Google Drive. |
 
 
@@ -40,10 +42,10 @@ When enabled, your Kanban board data is uploaded to **your personal Yandex Disk*
 The optional weather widget sends your configured city name to the [Open-Meteo](https://open-meteo.com/) geocoding and forecast APIs. Open-Meteo is a free, privacy-friendly service that does not require an API key and does not log requests.
 
 #### Favicon Services
-The extension loads favicon images for your bookmarks via DuckDuckGo's favicon service (`icons.duckduckgo.com`), falling back to Google's favicon service (`www.google.com/s2/favicons`). If both fail, a local SVG placeholder is shown.
+The extension loads favicon images for your bookmarks via Google's favicon service (`www.google.com/s2/favicons`), falling back to DuckDuckGo's favicon service (`icons.duckduckgo.com`). If both fail, a local SVG placeholder is shown.
 
 ### Bookmark Data
-Bookmarks are added manually by the user via an inline form — the extension does not access the Chrome Bookmarks API. **We never send your bookmarks or URLs to any server.** The domain of each bookmark is sent to DuckDuckGo first, and only as a fallback to Google's favicon service to fetch its favicon.
+Bookmarks are added manually by the user via an inline form — the extension does not access the Chrome Bookmarks API. **We never send your bookmarks or URLs to any server.** The domain of each bookmark is sent to Google first, and only as a fallback to DuckDuckGo's favicon service to fetch its favicon.
 
 ## Data Sharing
 

@@ -10,7 +10,6 @@ const KanbanStore = (() => {
   let _tags = [];
   let _performers = [];
   let _authors = [];
-  let _kanbanFilter = null;
   let _tagsIndex = null;
 
   function _updateTagsIndex() {
@@ -22,7 +21,7 @@ const KanbanStore = (() => {
   }
 
   function getState() {
-    return { columns: _columns, tags: _tags, performers: _performers, authors: _authors, kanbanFilter: _kanbanFilter };
+    return { columns: _columns, tags: _tags, performers: _performers, authors: _authors };
   }
 
   function loadData(saved) {
@@ -31,7 +30,6 @@ const KanbanStore = (() => {
     _tags = saved.tags || KanbanConstants.DEFAULT_TAGS.map(t => ({ ...t, id: generateId() }));
     _performers = saved.performers || KanbanConstants.DEFAULT_PERFORMERS.map(p => ({ ...p, id: generateId() }));
     _authors = saved.authors || [];
-    _kanbanFilter = saved.kanbanFilter || { search: '', priority: '', assignee: '', author: '', tags: [] };
     _updateTagsIndex();
   }
 
@@ -59,14 +57,6 @@ const KanbanStore = (() => {
 
   function getAuthors() {
     return [..._authors];
-  }
-
-  function getFilter() {
-    return _kanbanFilter;
-  }
-
-  function setFilter(f) {
-    _kanbanFilter = f;
   }
 
   function getCardsForColumn(columnId) {
@@ -191,7 +181,6 @@ const KanbanStore = (() => {
     _columns.forEach((col, i) => { col.order = i; });
     return {
       columns: _columns,
-      kanbanFilter: _kanbanFilter,
       tags: _tags,
       performers: _performers,
       authors: _authors,
@@ -201,7 +190,7 @@ const KanbanStore = (() => {
 
   return {
     getState, loadData, getColumns, getTags, getPerformers, getAuthors,
-    getFilter, setFilter, getCardsForColumn,
+    getCardsForColumn,
     addCard, updateCard, deleteCard, moveCard, reorderCardInColumn,
     addColumn, deleteColumn, clearColumnCards, reorderColumns,
     toSaveData, tagById, isFirstColumn, isLastColumn
