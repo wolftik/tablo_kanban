@@ -25,7 +25,7 @@ All data stored via `chrome.storage` is **encrypted at rest** by Chrome and is n
 |---|---|---|
 | `storage` | Required for `chrome.storage.sync` and `chrome.storage.local` to save your board data and settings. |
 | `identity` | Used solely for Google Drive OAuth (optional cloud sync). Authenticates you to your own Google Drive. |
-| `tabs` | Used to open the extension page when the extension icon is clicked. |
+
 
 ### External Services (Optional)
 

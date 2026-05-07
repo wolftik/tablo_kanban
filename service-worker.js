@@ -1,7 +1,7 @@
 const NEWTAB = chrome.runtime.getURL('views/newtab.html');
 
 // Open on extension icon click
-chrome.action.onClicked.addListener((tab) => {
+chrome.action.onClicked.addListener(() => {
   chrome.tabs.create({ url: NEWTAB });
 });
 

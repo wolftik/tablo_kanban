@@ -14,8 +14,7 @@
   },
   "permissions": [
     "storage",
-    "identity",
-    "tabs"
+    "identity"
   ],
   "oauth2": {
     "client_id": "1043800479318-eia8n50tct7i8bd80f443ah5pvb22qro.apps.googleusercontent.com",
