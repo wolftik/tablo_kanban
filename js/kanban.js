@@ -173,7 +173,7 @@ const KanbanBoard = (() => {
     _pendingSave = null;
     _saveInFlight = true;
     try {
-      await StorageManager.set(KanbanConstants.STORAGE_KEY, data, _showStorageError);
+      await StorageManager.set(KanbanConstants.STORAGE_KEY, data, (e) => console.error('Storage save error:', e));
       _lastSaveTime = now;
     } finally {
       _saveInFlight = false;
