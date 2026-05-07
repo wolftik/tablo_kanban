@@ -159,5 +159,6 @@
   "modalNoTitle": { "message": "Без названия", "description": "Fallback title when card has no title" },
   "optionsSyncCspError": { "message": "Возможно, запросы к Яндекс.Диску заблокированы политикой безопасности.", "description": "CSP error" },
   "optionsSyncTokenInvalid": { "message": "Проверьте правильность токена и права доступа.", "description": "Invalid token" },
-  "optionsSyncTokenForbidden": { "message": "Недостаточно прав доступа.", "description": "Token forbidden" }
+  "optionsSyncTokenForbidden": { "message": "Недостаточно прав доступа.", "description": "Token forbidden" },
+  "migrationOverflowLost": { "message": "$count$ из $total$ карточек будут безвозвратно потеряны, так как не помещаются в локальное хранилище. Продолжить и потерять их?", "description": "Предупреждение при миграции из облака, когда карточки не помещаются в localStorage", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } }
 }

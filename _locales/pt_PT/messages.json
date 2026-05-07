@@ -153,5 +153,6 @@
   "storageWarningFull": { "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.", "description": "Storage warning tooltip when localStorage is near full" },
   "optionsSyncCspError": { "message": "Erro de CSP — verifique as permissões", "description": "CSP error message for sync" },
   "optionsSyncTokenInvalid": { "message": "Token inválido", "description": "Invalid token error message" },
-  "optionsSyncTokenForbidden": { "message": "Token sem permissões suficientes", "description": "Forbidden token error message" }
+  "optionsSyncTokenForbidden": { "message": "Token sem permissões suficientes", "description": "Forbidden token error message" },
+  "migrationOverflowLost": { "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?", "description": "Warning when cloud-to-local migration cannot fit all cards", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } }
 }

@@ -611,5 +611,13 @@
   "optionsSyncTokenForbidden": {
     "message": "टोकन में अपर्याप्त अनुमतियाँ",
     "description": "Forbidden token error message"
+  },
+  "migrationOverflowLost": {
+    "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?",
+    "description": "Warning when cloud-to-local migration cannot fit all cards",
+    "placeholders": {
+      "count": { "content": "$1" },
+      "total": { "content": "$2" }
+    }
   }
 }

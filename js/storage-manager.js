@@ -77,7 +77,7 @@ const StorageManager = (() => {
     _modePromise = null;
   }
 
-  async function migrateToLocal() {
+  async function migrateToLocal(force) {
     let cloudData;
     try {
       cloudData = await SyncProvider.download();
@@ -114,25 +114,22 @@ const StorageManager = (() => {
       }
     }
 
+    if (overflowCards.length > 0) {
+      if (!force) {
+        return {
+          total: allCards.length,
+          saved: selectedCards.length,
+          lost: overflowCards.length,
+          aborted: true
+        };
+      }
+    }
+
     cloudData.columns.forEach(col => {
       col.cards = selectedCards
         .filter(item => item.columnId === col.id)
         .map(item => item.card);
     });
-
-    if (overflowCards.length > 0) {
-      const existingArchive = await StorageLocal.get('kanban_archive') || { cards: [] };
-      overflowCards.forEach(item => {
-        const col = cloudData.columns.find(c => c.id === item.columnId);
-        existingArchive.cards.push({
-          ...item.card,
-          _archivedAt: Date.now(),
-          _originalColumnId: item.columnId,
-          _originalColumnTitle: col ? col.title : 'Unknown'
-        });
-      });
-      await StorageLocal.set('kanban_archive', existingArchive);
-    }
 
     cloudData._modified = Date.now();
     await StorageLocal.set(KanbanConstants.STORAGE_KEY, cloudData);
@@ -143,7 +140,8 @@ const StorageManager = (() => {
     return {
       total: allCards.length,
       saved: selectedCards.length,
-      archived: overflowCards.length
+      lost: overflowCards.length,
+      aborted: false
     };
   }
 

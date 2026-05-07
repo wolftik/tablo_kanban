@@ -510,11 +510,19 @@ document.addEventListener('DOMContentLoaded', async () => {
     signOutBtn.addEventListener('click', async () => {
       try {
         const result = await StorageManager.migrateToLocal();
-        if (result) {
-          console.log('[Options] Migrated from cloud to local:', result.saved + '/' + result.total + ' cards saved, ' + result.archived + ' overflow cards moved to archival storage');
+        if (!result) return;
+        if (result.aborted) {
+          const msg = I18n.t('migrationOverflowLost', { count: result.lost, total: result.total });
+          if (!confirm(msg)) return;
+          const forced = await StorageManager.migrateToLocal(true);
+          if (!forced || forced.aborted) {
+            console.warn('[Options] Forced migration failed');
+            return;
+          }
         }
       } catch (e) {
         console.warn('[Options] Migration to local failed:', e);
+        return;
       }
       await SyncProvider.signOut();
       await _updateSyncUI();

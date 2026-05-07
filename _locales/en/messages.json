@@ -159,5 +159,6 @@
   "modalNoTitle": { "message": "Untitled", "description": "Fallback title when card has no title" },
   "optionsSyncCspError": { "message": "Requests to Yandex Disk may be blocked by security policy.", "description": "CSP error" },
   "optionsSyncTokenInvalid": { "message": "Check the token and access rights.", "description": "Invalid token" },
-  "optionsSyncTokenForbidden": { "message": "Insufficient access rights.", "description": "Token forbidden" }
+  "optionsSyncTokenForbidden": { "message": "Insufficient access rights.", "description": "Token forbidden" },
+  "migrationOverflowLost": { "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?", "description": "Warning when cloud-to-local migration cannot fit all cards", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } }
 }

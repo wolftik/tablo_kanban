@@ -153,5 +153,6 @@
   "storageWarningFull": { "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.", "description": "Storage warning tooltip when localStorage is near full" },
   "optionsSyncCspError": { "message": "CSP 错误 — 请检查权限", "description": "CSP error message for sync" },
   "optionsSyncTokenInvalid": { "message": "无效的令牌", "description": "Invalid token error message" },
-  "optionsSyncTokenForbidden": { "message": "令牌权限不足", "description": "Forbidden token error message" }
+  "optionsSyncTokenForbidden": { "message": "令牌权限不足", "description": "Forbidden token error message" },
+  "migrationOverflowLost": { "message": "$total$ 张卡片中的 $count$ 将永久丢失，因为它们无法放入本地存储。继续并丢失它们？", "description": "云到本地迁移时部分卡片无法放入存储的警告", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } }
 }

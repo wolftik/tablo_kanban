@@ -595,5 +595,6 @@
   "storageWarningFull": { "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.", "description": "Storage warning tooltip when localStorage is near full" },
   "optionsSyncCspError": { "message": "Anfragen an Yandex Disk könnten durch die Sicherheitsrichtlinie blockiert werden.", "description": "CSP error" },
   "optionsSyncTokenInvalid": { "message": "Überprüfen Sie den Token und die Zugriffsrechte.", "description": "Invalid token" },
-  "optionsSyncTokenForbidden": { "message": "Nicht genügend Zugriffsrechte.", "description": "Token forbidden" }
+  "optionsSyncTokenForbidden": { "message": "Nicht genügend Zugriffsrechte.", "description": "Token forbidden" },
+  "migrationOverflowLost": { "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?", "description": "Warning when cloud-to-local migration cannot fit all cards", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } }
 }
