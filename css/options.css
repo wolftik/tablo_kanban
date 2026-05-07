@@ -590,6 +590,26 @@ footer {
   font-size: 13px;
 }
 
+.sync-storage-info.storage-warning-bg {
+  background: #fef2f2;
+  border-color: #fca5a5;
+}
+
+[data-theme="dark"] .sync-storage-info.storage-warning-bg {
+  background: #450a0a;
+  border-color: #991b1b;
+}
+
+.sync-storage-info .setting-hint.storage-warning {
+  color: #dc2626;
+  font-weight: 600;
+  cursor: help;
+}
+
+[data-theme="dark"] .sync-storage-info .setting-hint.storage-warning {
+  color: #fca5a5;
+}
+
 .sync-provider-label {
   display: block;
   font-size: 14px;

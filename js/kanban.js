@@ -63,10 +63,7 @@ const KanbanBoard = (() => {
       tagsDropdownClear: document.getElementById('tags-dropdown-clear'),
       filterDateFrom: document.getElementById('filter-date-from'),
       filterDateTo: document.getElementById('filter-date-to'),
-      archiveBtn: document.getElementById('archive-btn'),
-      archiveModal: document.getElementById('archive-modal'),
-      archiveList: document.getElementById('archive-list'),
-      archiveCount: document.getElementById('archive-count')
+
     };
   }
 
@@ -100,7 +97,6 @@ const KanbanBoard = (() => {
       _cacheDoms();
       if (_dom.board) {
         _dom.board.innerHTML = '';
-        _dom.board.classList.remove('kanban-initialized');
       }
       KanbanRenderer.init(_dom, {
         onEditCard: _openEditCardModal,
@@ -133,53 +129,13 @@ const KanbanBoard = (() => {
     KanbanRenderer.updateClearButton();
   }
 
-  function _safeLocalCache(cloudData) {
-    try {
-      localStorage.setItem('kanban_' + KanbanConstants.STORAGE_KEY, JSON.stringify(cloudData));
-    } catch (e) {
-      if (e.name !== 'QuotaExceededError' && e.code !== 22) {
-        console.warn('[KanbanBoard] Local cache write failed:', e);
-        return;
-      }
-      const allCards = [];
-      cloudData.columns.forEach(col => {
-        col.cards.forEach(card => {
-          allCards.push({ card, columnId: col.id });
-        });
-      });
-      allCards.sort((a, b) => (b.card.createdAt || 0) - (a.card.createdAt || 0));
-
-      const storageInfo = StorageLocal.getStorageInfo();
-      const baseColumns = cloudData.columns.map(c => ({ ...c, cards: [] }));
-      const baseSize = JSON.stringify({ columns: baseColumns }).length;
-      let available = storageInfo.free - baseSize;
-
-      const selectedCards = [];
-      for (const item of allCards) {
-        const cardSize = JSON.stringify(item.card).length;
-        if (cardSize <= available) {
-          selectedCards.push(item);
-          available -= cardSize;
-        }
-      }
-
-      cloudData.columns.forEach(col => {
-        col.cards = selectedCards
-          .filter(item => item.columnId === col.id)
-          .map(item => item.card);
-      });
-
-      localStorage.setItem('kanban_' + KanbanConstants.STORAGE_KEY, JSON.stringify(cloudData));
-    }
-  }
-
   async function _syncFromCloud() {
     _syncingFromCloud = true;
     try {
       const cloudData = await SyncProvider.download();
       if (!cloudData || !cloudData.columns) return;
 
-      _safeLocalCache(cloudData);
+      safeLocalCache(KanbanConstants.STORAGE_KEY, cloudData);
 
       const localModified = KanbanStore.toSaveData()._modified || 0;
       const cloudModified = cloudData._modified || 0;
@@ -220,7 +176,6 @@ const KanbanBoard = (() => {
         _loadAndRender(saved);
       }
 
-      await _autoArchive();
     } finally {
       _loading = false;
     }
@@ -279,11 +234,6 @@ const KanbanBoard = (() => {
     _scheduleFlush();
   }
 
-  async function saveAndArchive() {
-    save();
-    await _autoArchive();
-  }
-
   function getColumns() {
     return KanbanStore.getColumns();
   }
@@ -297,17 +247,17 @@ const KanbanBoard = (() => {
   function _openNewCardModal(columnId) {
     _editingCard = { title: '', description: '', priority: '', columnId, assignee: '', author: '', tags: [] };
     _editingColumnId = columnId;
-    _populateModal(I18n.t('modal.new.task'), columnId, null);
+    _populateModal(I18n.t('modal.new.task'), null);
   }
 
   function _openEditCardModal(card, columnId) {
     if (card._isTemporary) return;
     _editingCard = { ...card, tags: card.tags ? [...card.tags] : [] };
     _editingColumnId = columnId;
-    _populateModal(I18n.t('modal.edit.task'), columnId, card);
+    _populateModal(I18n.t('modal.edit.task'), card);
   }
 
-  function _populateModal(titleText, columnId, card) {
+  function _populateModal(titleText, card) {
     _dom.modalTitle.textContent = titleText;
     _dom.cardTitle.value = card ? (card.title || '') : '';
     _dom.cardDesc.value = card ? (card.description || '') : '';
@@ -734,122 +684,6 @@ const KanbanBoard = (() => {
         }, 300);
       });
     }
-
-    // Archive events
-    const archiveBtn = _dom.archiveBtn;
-    if (archiveBtn) {
-      _addEvent(archiveBtn, 'click', () => _openArchiveModal());
-    }
-  }
-
-  // ===== Archive =====
-
-  async function _autoArchive() {
-    const mode = await StorageManager.getMode();
-    if (mode !== 'local') return;
-
-    const columns = KanbanStore.getColumns();
-    const result = await ArchiveManager.archiveOldCards(columns);
-    if (result.archivedCount > 0) {
-      save();
-      _showArchiveToast(result.archivedCount);
-    }
-  }
-
-  function _showArchiveToast(count) {
-    const toast = document.createElement('div');
-    toast.className = 'archive-toast';
-    toast.textContent = I18n.t('storage.archived', { count });
-    document.body.appendChild(toast);
-    requestAnimationFrame(() => toast.classList.add('show'));
-    setTimeout(() => {
-      toast.classList.remove('show');
-      setTimeout(() => toast.remove(), 300);
-    }, 5000);
-  }
-
-  async function _openArchiveModal() {
-    const archiveInfo = await ArchiveManager.getArchiveInfo();
-    const list = _dom.archiveList;
-    const countEl = _dom.archiveCount;
-    const modal = _dom.archiveModal;
-    if (!list || !modal) return;
-
-    if (countEl) countEl.textContent = String(archiveInfo.count);
-
-    list.innerHTML = '';
-
-    if (archiveInfo.count === 0) {
-      list.innerHTML = '<div class="archive-empty">' + I18n.t('archive.empty') + '</div>';
-    } else {
-      const archive = await ArchiveManager.getArchive();
-      for (const card of archive.cards) {
-        const item = document.createElement('div');
-        item.className = 'archive-item';
-
-        const title = document.createElement('div');
-        title.className = 'archive-item-title';
-        title.textContent = card.title || I18n.t('modal.no.title');
-
-        const meta = document.createElement('div');
-        meta.className = 'archive-item-meta';
-        const colTitle = card._originalColumnTitle || 'Unknown';
-        const archivedDate = card._archivedAt ? new Date(card._archivedAt).toLocaleDateString() : '?';
-        meta.textContent = colTitle + ' — ' + archivedDate;
-
-        const actions = document.createElement('div');
-        actions.className = 'archive-item-actions';
-
-        const restoreBtn = document.createElement('button');
-        restoreBtn.className = 'archive-restore-btn';
-        restoreBtn.textContent = I18n.t('archive.restore');
-        restoreBtn.addEventListener('click', async () => {
-          const restored = await ArchiveManager.restoreCard(card.id);
-          if (restored) {
-            const colId = restored._originalColumnId;
-            const cols = KanbanStore.getColumns();
-            const targetCol = cols.find(c => c.id === colId) || cols[0];
-            KanbanStore.addCard(targetCol.id, {
-              title: restored.title,
-              description: restored.description,
-              priority: restored.priority,
-              assignee: restored.assignee,
-              author: restored.author,
-              tags: restored.tags
-            });
-            KanbanRenderer.renderBoard(KanbanStore.getColumns());
-            save();
-            _openArchiveModal();
-          }
-        });
-
-        const deleteBtn = document.createElement('button');
-        deleteBtn.className = 'archive-delete-btn';
-        deleteBtn.textContent = I18n.t('archive.delete');
-        deleteBtn.addEventListener('click', async () => {
-          const archive = await ArchiveManager.getArchive();
-          archive.cards = archive.cards.filter(c => c.id !== card.id);
-          archive._modified = Date.now();
-          await ArchiveManager.saveArchive(archive);
-          _openArchiveModal();
-        });
-
-        actions.appendChild(restoreBtn);
-        actions.appendChild(deleteBtn);
-
-        item.appendChild(title);
-        item.appendChild(meta);
-        item.appendChild(actions);
-        list.appendChild(item);
-      }
-    }
-
-    modal.style.display = 'flex';
-  }
-
-  function _closeArchiveModal() {
-    const modal = _dom.archiveModal;
-    if (modal) modal.style.display = 'none';
   }
 
   return { init, save, getColumns };

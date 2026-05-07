@@ -137,6 +137,46 @@ function getDefaultSettings() {
   };
 }
 
+function safeLocalCache(key, data) {
+  try {
+    localStorage.setItem('kanban_' + key, JSON.stringify(data));
+  } catch (e) {
+    if (e.name !== 'QuotaExceededError' && e.code !== 22) {
+      console.warn('[Utils] Local cache write failed:', e);
+      return;
+    }
+    const allCards = [];
+    data.columns.forEach(col => {
+      col.cards.forEach(card => {
+        allCards.push({ card, columnId: col.id });
+      });
+    });
+    allCards.sort((a, b) => (b.card.createdAt || 0) - (a.card.createdAt || 0));
+
+    const storageInfo = StorageLocal.getStorageInfo();
+    const baseColumns = data.columns.map(c => ({ ...c, cards: [] }));
+    const baseSize = JSON.stringify({ columns: baseColumns }).length;
+    let available = storageInfo.free - baseSize;
+
+    const selectedCards = [];
+    for (const item of allCards) {
+      const cardSize = JSON.stringify(item.card).length;
+      if (cardSize <= available) {
+        selectedCards.push(item);
+        available -= cardSize;
+      }
+    }
+
+    data.columns.forEach(col => {
+      col.cards = selectedCards
+        .filter(item => item.columnId === col.id)
+        .map(item => item.card);
+    });
+
+    localStorage.setItem('kanban_' + key, JSON.stringify(data));
+  }
+}
+
 function applyTheme(theme) {
   if (!theme || theme === 'system') {
     const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
@@ -177,7 +217,7 @@ function renderColoredList(container, items, { renderItem, onClick }) {
   container.appendChild(fragment);
 }
 
-function handleModal(modalEl, { onSave, onCancel, onClose } = {}) {
+function handleModal(modalEl, { onSave, onClose } = {}) {
   const cleanup = () => {
     modalEl.style.display = 'none';
     if (onClose) onClose();

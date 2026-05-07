@@ -590,5 +590,10 @@
   "homepageHint": {
     "message": "Définir comme page d'accueil",
     "description": "Homepage info button tooltip"
-  }
+  },
+  "modalNoTitle": { "message": "Sans titre", "description": "Fallback title when card has no title" },
+  "storageWarningFull": { "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.", "description": "Storage warning tooltip when localStorage is near full" },
+  "optionsSyncCspError": { "message": "Les requêtes vers Yandex Disk peuvent être bloquées par la politique de sécurité.", "description": "CSP error" },
+  "optionsSyncTokenInvalid": { "message": "Vérifiez le jeton et les droits d'accès.", "description": "Invalid token" },
+  "optionsSyncTokenForbidden": { "message": "Droits d'accès insuffisants.", "description": "Token forbidden" }
 }

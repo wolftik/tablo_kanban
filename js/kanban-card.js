@@ -2,7 +2,7 @@
 
 const KanbanCard = (() => {
 
-  function _hashToColor(str) {
+  function hashToColor(str) {
     let hash = 0;
     for (let i = 0; i < str.length; i++) {
       hash = str.charCodeAt(i) + ((hash << 5) - hash);
@@ -13,16 +13,11 @@ const KanbanCard = (() => {
     return `hsl(${h}, ${s}%, ${l}%)`;
   }
 
-  function _getTagsForDisplay(tagIds, tagById, tags) {
+  function getTagsForDisplay(tagIds, tagById, tags) {
     if (tagById) return tagIds.map(id => tagById(id)).filter(Boolean);
     if (!tags) return [];
     return tagIds.map(id => tags.find(t => t.id === id)).filter(Boolean);
   }
-  function _isFirstColumn(columnId) {
-    const columns = KanbanStore.getColumns();
-    return columns.length > 0 && columns[0].id === columnId;
-  }
-
   function create(card, columnId, performers, tags, tagById) {
     const cardEl = document.createElement('div');
     cardEl.className = 'kanban-card';
@@ -36,7 +31,7 @@ const KanbanCard = (() => {
       cardEl.appendChild(priorityBar);
     }
 
-    if (card.createdAt && _isFirstColumn(columnId)) {
+    if (card.createdAt && KanbanStore.isFirstColumn(columnId)) {
       const age = Date.now() - card.createdAt;
       if (age > KanbanConstants.AGING_FIRE_MS) {
         const fire = document.createElement('span');
@@ -92,7 +87,7 @@ const KanbanCard = (() => {
       const avatar = document.createElement('span');
       avatar.className = 'assignee-avatar';
       const performer = (performers || []).find(p => p.name === card.assignee);
-      avatar.style.background = performer ? performer.color : _hashToColor(card.assignee);
+      avatar.style.background = performer ? performer.color : hashToColor(card.assignee);
       avatar.textContent = initial;
       avatar.title = card.assignee;
       assigneeEl.appendChild(avatar);
@@ -102,7 +97,7 @@ const KanbanCard = (() => {
     if (card.tags && card.tags.length > 0) {
       const tagsContainer = document.createElement('div');
       tagsContainer.className = 'card-tags';
-      const displayTags = _getTagsForDisplay(card.tags, tagById, tags);
+      const displayTags = getTagsForDisplay(card.tags, tagById, tags);
       for (const tag of displayTags) {
         const badge = document.createElement('span');
         badge.className = 'tag-badge';
@@ -122,5 +117,5 @@ const KanbanCard = (() => {
     return ph;
   }
 
-  return { create, createPlaceholder, _hashToColor, _getTagsForDisplay };
+  return { create, createPlaceholder, hashToColor, getTagsForDisplay };
 })();

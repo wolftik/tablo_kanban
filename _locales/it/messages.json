@@ -590,5 +590,26 @@
   "homepageHint": {
     "message": "Imposta come homepage",
     "description": "Homepage info button tooltip"
+  },
+
+  "modalNoTitle": {
+    "message": "Senza titolo",
+    "description": "Fallback for empty card title"
+  },
+  "storageWarningFull": {
+    "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.",
+    "description": "Storage warning tooltip when localStorage is near full"
+  },
+  "optionsSyncCspError": {
+    "message": "Errore CSP — verifica le autorizzazioni",
+    "description": "CSP error message for sync"
+  },
+  "optionsSyncTokenInvalid": {
+    "message": "Token non valido",
+    "description": "Invalid token error message"
+  },
+  "optionsSyncTokenForbidden": {
+    "message": "Token con permessi insufficienti",
+    "description": "Forbidden token error message"
   }
 }

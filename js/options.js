@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   await I18n.init();
   let settings = await StorageSync.get('settings') || getDefaultSettings();
   let kanbanData = await StorageLocal.get(KanbanConstants.STORAGE_KEY) || {};
+  KanbanStore.loadData(kanbanData);
   let tags = kanbanData.tags || _getDefaultTags();
   let performers = kanbanData.performers || _getDefaultPerformers();
   let authors = kanbanData.authors || [];
@@ -32,10 +33,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     section.style.display = '';
     try {
       const info = StorageManager.getStorageInfo();
-      const pct = ((info.used / info.quota) * 100).toFixed(1);
+      const pct = ((info.used / info.quota) * 100);
+      const pctStr = pct.toFixed(1);
       const usedKB = (info.used / 1024).toFixed(1);
       const totalKB = (info.quota / 1024).toFixed(0);
-      el.innerHTML = '<span class="setting-hint">' + I18n.t('options.storage.usage', { used: usedKB, total: totalKB, pct: pct }) + '</span>';
+      const pct90 = pct >= 90;
+      el.innerHTML = '<span class="setting-hint' + (pct90 ? ' storage-warning' : '') + '"' + (pct90 ? ' title="' + I18n.t('storage.warning.full') + '"' : '') + '>' + I18n.t('options.storage.usage', { used: usedKB, total: totalKB, pct: pctStr }) + '</span>';
+      if (pct90) el.classList.add('storage-warning-bg');
+      else el.classList.remove('storage-warning-bg');
     } catch {
       el.innerHTML = '';
     }
@@ -196,11 +201,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   // ===== Columns tab =====
-  function _isFirstColumn(colId) {
-    const sorted = [...columns].sort((a, b) => (a.order || 0) - (b.order || 0));
-    return sorted.length > 0 && sorted[0].id === colId;
-  }
-
   function renderColumnsList() {
     const list = document.getElementById('columns-list');
     if (!list) return;
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       item.dataset.columnId = col.id;
       item.draggable = true;
 
-      const isFirst = _isFirstColumn(col.id);
+      const isFirst = KanbanStore.isFirstColumn(col.id);
 
       const dragHandle = document.createElement('span');
       dragHandle.className = 'col-drag-handle';
@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     list.addEventListener('dragstart', (e) => {
       const item = e.target.closest('.column-option-item');
       if (!item) return;
-      if (_isFirstColumn(item.dataset.columnId)) {
+      if (KanbanStore.isFirstColumn(item.dataset.columnId)) {
         e.preventDefault();
         return;
       }
@@ -291,9 +291,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault();
       const dragging = list.querySelector('.dragging');
       if (!dragging) return;
-      if (_isFirstColumn(dragging.dataset.columnId)) return;
+      if (KanbanStore.isFirstColumn(dragging.dataset.columnId)) return;
       const afterElement = getDragAfterElement(list, e.clientY, '.column-option-item:not(.dragging)');
-      if (afterElement == null || _isFirstColumn(afterElement.dataset.columnId)) {
+      if (afterElement == null || KanbanStore.isFirstColumn(afterElement.dataset.columnId)) {
         list.appendChild(dragging);
       } else {
         list.insertBefore(dragging, afterElement);
@@ -312,7 +312,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           newColumns.push(col);
         }
       });
-      const firstColIdx = newColumns.findIndex(c => _isFirstColumn(c.id));
+      const firstColIdx = newColumns.findIndex(c => KanbanStore.isFirstColumn(c.id));
       if (firstColIdx > 0) {
         const firstCol = newColumns.splice(firstColIdx, 1)[0];
         newColumns.unshift(firstCol);
@@ -511,7 +511,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       try {
         const result = await StorageManager.migrateToLocal();
         if (result) {
-          console.log('[Options] Migrated from cloud to local:', result.saved + '/' + result.total + ' cards saved, ' + result.archived + ' archived');
+          console.log('[Options] Migrated from cloud to local:', result.saved + '/' + result.total + ' cards saved, ' + result.archived + ' overflow cards moved to archival storage');
         }
       } catch (e) {
         console.warn('[Options] Migration to local failed:', e);

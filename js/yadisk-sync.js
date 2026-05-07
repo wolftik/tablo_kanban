@@ -70,7 +70,7 @@ const YadiskSync = (() => {
 
   async function _request(url, options = {}) {
     const token = await _getToken();
-    console.log('[YadiskSync] Request', options.method || 'GET', url);
+    console.debug('[YadiskSync] Request', options.method || 'GET', url);
     const res = await fetch(url, {
       ...options,
       headers: {
@@ -78,7 +78,7 @@ const YadiskSync = (() => {
         ...(options.headers || {})
       }
     });
-    console.log('[YadiskSync] Response', res.status, res.statusText);
+    console.debug('[YadiskSync] Response', res.status, res.statusText);
     if (!res.ok) {
       const text = await res.text();
       console.warn('[YadiskSync] Error body:', text);
@@ -114,13 +114,13 @@ const YadiskSync = (() => {
 
   async function upload(data) {
     const uploadUrl = await _getUploadUrl();
-    console.log('[YadiskSync] Uploading to', uploadUrl);
+    console.debug('[YadiskSync] Uploading to', uploadUrl);
     const res = await fetch(uploadUrl, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data)
     });
-    console.log('[YadiskSync] Upload response', res.status);
+    console.debug('[YadiskSync] Upload response', res.status);
     if (!res.ok) {
       const text = await res.text();
       console.warn('[YadiskSync] Upload error body:', text);
@@ -136,12 +136,12 @@ const YadiskSync = (() => {
   async function download() {
     try {
       const downloadUrl = await _getDownloadUrl();
-      console.log('[YadiskSync] Downloading from', downloadUrl);
+      console.debug('[YadiskSync] Downloading from', downloadUrl);
       const token = await _getToken();
       const res = await fetch(downloadUrl, {
         headers: { Authorization: 'OAuth ' + token }
       });
-      console.log('[YadiskSync] Download response', res.status);
+      console.debug('[YadiskSync] Download response', res.status);
       if (!res.ok) {
         const text = await res.text();
         console.warn('[YadiskSync] Download error body:', text);

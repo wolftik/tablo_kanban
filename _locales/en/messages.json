@@ -151,14 +151,13 @@
   "storageErrorQuota": { "message": "Storage quota exceeded. Delete old cards or clear data.", "description": "Storage quota exceeded error" },
   "storageErrorGeneral": { "message": "Failed to save data. Please try again.", "description": "General storage error" },
   "storageIndicator": { "message": "Storage:", "description": "Storage indicator label" },
-  "storageArchived": { "message": "Archived {count} old card(s) due to storage limits.", "description": "Archive toast notification" },
   "filterDateFrom": { "message": "From date", "description": "Date from filter title" },
   "filterDateTo": { "message": "To date", "description": "Date to filter title" },
-  "archiveButton": { "message": "Archive", "description": "Archive button label" },
-  "archiveTitle": { "message": "Archive", "description": "Archive modal title" },
-  "archiveEmpty": { "message": "No archived cards", "description": "Archive empty message" },
-  "archiveRestore": { "message": "Restore", "description": "Restore card button" },
-  "archiveDelete": { "message": "Delete permanently", "description": "Delete card from archive button" },
   "optionsStorageUsage": { "message": "Storage usage: {used} KB / {total} KB ({pct}%)", "description": "Storage usage in options sync tab" },
-  "optionsStorageLocal": { "message": "Local storage", "description": "Local storage label in options sync tab" }
+  "optionsStorageLocal": { "message": "Local storage", "description": "Local storage label in options sync tab" },
+  "storageWarningFull": { "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.", "description": "Storage warning tooltip when localStorage is near full" },
+  "modalNoTitle": { "message": "Untitled", "description": "Fallback title when card has no title" },
+  "optionsSyncCspError": { "message": "Requests to Yandex Disk may be blocked by security policy.", "description": "CSP error" },
+  "optionsSyncTokenInvalid": { "message": "Check the token and access rights.", "description": "Invalid token" },
+  "optionsSyncTokenForbidden": { "message": "Insufficient access rights.", "description": "Token forbidden" }
 }

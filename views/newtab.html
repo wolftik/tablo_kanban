@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title data-i18n="app.name">Новая вкладка</title>
+  <!-- CSS order matters: bookmarks.css (global/layout) → widgets.css → kanban.css (overrides) -->
   <link rel="stylesheet" href="../css/bookmarks.css">
   <link rel="stylesheet" href="../css/widgets.css">
   <link rel="stylesheet" href="../css/kanban.css">
@@ -66,7 +67,6 @@
       </div>
       <input type="text" id="filter-search" data-i18n-placeholder="filter.search.placeholder" placeholder="Поиск задач..." class="filter-input">
       <button id="filter-clear" class="filter-clear-btn" data-i18n-title="filter.clear.title" title="Очистить фильтры">&#10005;</button>
-      <button id="archive-btn" class="archive-btn" data-i18n="archive.button" style="display:none">&#128230; Архив (0)</button>
     </div>
     <div id="kanban-board"></div>
 
@@ -147,22 +147,6 @@
           <button id="homepage-modal-close" data-i18n="homepage.modal.close">Закрыть</button>
         </div>
       </div>
-    </div>
-
-    <!-- Archive Modal -->
-    <div id="archive-modal" class="modal-overlay" style="display:none">
-      <div class="modal archive-modal-inner">
-        <div class="archive-header">
-          <h3 data-i18n="archive.title">Архив</h3>
-          <span id="archive-count" class="archive-count">0</span>
-        </div>
-        <div id="archive-list"></div>
-        <div class="modal-actions">
-          <button id="archive-modal-close" data-i18n="modal.cancel">Закрыть</button>
-        </div>
-      </div>
-    </div>
-
   </div>
 
   <script defer src="../js/i18n.js"></script>
@@ -173,7 +157,6 @@
   <script defer src="../js/yadisk-sync.js"></script>
   <script defer src="../js/sync-provider.js"></script>
   <script defer src="../js/storage-manager.js"></script>
-  <script defer src="../js/archive-manager.js"></script>
   <script defer src="../js/kanban-constants.js"></script>
   <script defer src="../js/kanban-filter.js"></script>
   <script defer src="../js/kanban-card.js"></script>

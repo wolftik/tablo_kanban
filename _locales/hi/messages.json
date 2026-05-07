@@ -590,5 +590,26 @@
   "homepageHint": {
     "message": "होमपेज के रूप में सेट करें",
     "description": "Homepage info button tooltip"
+  },
+
+  "modalNoTitle": {
+    "message": "कोई शीर्षक नहीं",
+    "description": "Fallback for empty card title"
+  },
+  "storageWarningFull": {
+    "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.",
+    "description": "Storage warning tooltip when localStorage is near full"
+  },
+  "optionsSyncCspError": {
+    "message": "CSP त्रुटि — कृपया अनुमतियाँ जाँचें",
+    "description": "CSP error message for sync"
+  },
+  "optionsSyncTokenInvalid": {
+    "message": "अमान्य टोकन",
+    "description": "Invalid token error message"
+  },
+  "optionsSyncTokenForbidden": {
+    "message": "टोकन में अपर्याप्त अनुमतियाँ",
+    "description": "Forbidden token error message"
   }
 }

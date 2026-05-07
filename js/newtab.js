@@ -89,29 +89,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     modal.addEventListener('click', (e) => { if (e.target === modal) modal.style.display = 'none'; });
   }
 
-  // Archive modal
-  const archiveCloseBtn = document.getElementById('archive-modal-close');
-  const archiveModal = document.getElementById('archive-modal');
-  if (archiveCloseBtn && archiveModal) {
-    archiveCloseBtn.addEventListener('click', () => { archiveModal.style.display = 'none'; });
-    archiveModal.addEventListener('click', (e) => { if (e.target === archiveModal) archiveModal.style.display = 'none'; });
-  }
-
-  // Archive button visibility
-  (async function _updateArchiveBtn() {
-    const mode = await StorageManager.getMode();
-    const archiveBtn = document.getElementById('archive-btn');
-    if (archiveBtn) {
-      if (mode === 'local') {
-        const info = await ArchiveManager.getArchiveInfo();
-        archiveBtn.textContent = '\uD83D\uDCE6 ' + I18n.t('archive.button') + ' (' + info.count + ')';
-        archiveBtn.style.display = '';
-      } else {
-        archiveBtn.style.display = 'none';
-      }
-    }
-  })();
-
   if (typeof chrome !== 'undefined' && chrome.storage && chrome.storage.onChanged) {
     chrome.storage.onChanged.addListener((changes, areaName) => {
       if (areaName === 'sync' && changes.settings) {
@@ -142,15 +119,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       if (areaName === 'local' && changes.kanban_data) {
         KanbanBoard.init();
-      }
-      if (areaName === 'local' && changes.kanban_archive) {
-        (async function() {
-          const info = await ArchiveManager.getArchiveInfo();
-          const archiveBtn = document.getElementById('archive-btn');
-          if (archiveBtn) {
-            archiveBtn.textContent = '\uD83D\uDCE6 ' + I18n.t('archive.button') + ' (' + info.count + ')';
-          }
-        })();
       }
     });
   }

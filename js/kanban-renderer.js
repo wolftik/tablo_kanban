@@ -283,7 +283,7 @@ const KanbanRenderer = (() => {
       if (avatar) {
         const performers = KanbanStore.getPerformers();
         const performer = performers.find(p => p.name === card.assignee);
-        const bg = performer ? performer.color : KanbanCard._hashToColor(card.assignee);
+        const bg = performer ? performer.color : KanbanCard.hashToColor(card.assignee);
         if (avatar.style.background !== bg) avatar.style.background = bg;
         if (avatar.textContent !== card.assignee.charAt(0).toUpperCase()) avatar.textContent = card.assignee.charAt(0).toUpperCase();
         if (avatar.title !== card.assignee) avatar.title = card.assignee;
@@ -294,7 +294,7 @@ const KanbanRenderer = (() => {
 
     const tagsContainer = cardEl.querySelector('.card-tags');
     if (card.tags && card.tags.length > 0) {
-      const displayTags = KanbanCard._getTagsForDisplay(card.tags, KanbanStore.tagById, KanbanStore.getTags());
+      const displayTags = KanbanCard.getTagsForDisplay(card.tags, KanbanStore.tagById, KanbanStore.getTags());
       if (!tagsContainer) {
         const tc = document.createElement('div');
         tc.className = 'card-tags';

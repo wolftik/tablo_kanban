@@ -147,5 +147,11 @@
   "homepageModalCopy": { "message": "Copiar", "description": "Copy button" },
   "homepageModalCopied": { "message": "Copiado!", "description": "Copied confirmation" },
   "homepageModalClose": { "message": "Fechar", "description": "Close button" },
-  "homepageHint": { "message": "Definir como página inicial", "description": "Homepage info button tooltip" }
+  "homepageHint": { "message": "Definir como página inicial", "description": "Homepage info button tooltip" },
+
+  "modalNoTitle": { "message": "Sem título", "description": "Fallback for empty card title" },
+  "storageWarningFull": { "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.", "description": "Storage warning tooltip when localStorage is near full" },
+  "optionsSyncCspError": { "message": "Erro de CSP — verifique as permissões", "description": "CSP error message for sync" },
+  "optionsSyncTokenInvalid": { "message": "Token inválido", "description": "Invalid token error message" },
+  "optionsSyncTokenForbidden": { "message": "Token sem permissões suficientes", "description": "Forbidden token error message" }
 }
