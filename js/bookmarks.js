@@ -48,11 +48,6 @@ const BookmarksManager = (() => {
     const index = _displayedBookmarks.findIndex(b => b && b.id === id);
     if (index !== -1) {
       _displayedBookmarks[index] = null;
-      const compacted = _displayedBookmarks.filter(b => b !== null && b !== undefined);
-      _displayedBookmarks = [];
-      for (let i = 0; i < _bookmarkSlots; i++) {
-        _displayedBookmarks[i] = compacted[i] || null;
-      }
       await saveDisplayedBookmarks(_displayedBookmarks);
     }
     return _displayedBookmarks;

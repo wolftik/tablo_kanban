@@ -103,6 +103,7 @@ const KanbanStore = (() => {
     if (cardIndex === -1) return;
 
     const [card] = fromCol.cards.splice(cardIndex, 1);
+    card.updatedAt = Date.now();
 
     if (insertIndex === undefined || insertIndex === null) {
       insertIndex = toCol.cards.length;
@@ -118,6 +119,7 @@ const KanbanStore = (() => {
     const cardIndex = col.cards.findIndex(c => c.id === cardId);
     if (cardIndex === -1) return;
     const [card] = col.cards.splice(cardIndex, 1);
+    card.updatedAt = Date.now();
 
     if (insertIndex === undefined || insertIndex === null) {
       insertIndex = col.cards.length;

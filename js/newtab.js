@@ -176,7 +176,7 @@ function _initBookmarkModal() {
     if (e.key === 'Escape') addCancelBtn.click();
   });
 
-  addModal.addEventListener('click', (e) => {
+  addModal.addEventListener('mousedown', (e) => {
     if (e.target === addModal) {
       addModal.style.display = 'none';
       addUrlInput.value = '';
@@ -234,7 +234,7 @@ function _initBookmarkEditModal() {
     editModal.style.display = 'none';
   });
 
-  editModal.addEventListener('click', (e) => {
+  editModal.addEventListener('mousedown', (e) => {
     if (e.target === editModal) editModal.style.display = 'none';
   });
 }

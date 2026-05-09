@@ -596,5 +596,12 @@
   "optionsSyncCspError": { "message": "Es posible que las solicitudes a Yandex Disk estén bloqueadas por la política de seguridad.", "description": "CSP error" },
   "optionsSyncTokenInvalid": { "message": "Verifique el token y los derechos de acceso.", "description": "Invalid token" },
   "optionsSyncTokenForbidden": { "message": "Derechos de acceso insuficientes.", "description": "Token forbidden" },
+  "storageErrorQuota": { "message": "Cuota de almacenamiento excedida. Elimine tarjetas antiguas o borre datos.", "description": "Storage quota exceeded error" },
+  "storageErrorGeneral": { "message": "Error al guardar los datos. Inténtelo de nuevo.", "description": "General storage error" },
+  "storageIndicator": { "message": "Almacenamiento:", "description": "Storage indicator label" },
+  "filterDateFrom": { "message": "Desde fecha", "description": "Date from filter title" },
+  "filterDateTo": { "message": "Hasta fecha", "description": "Date to filter title" },
+  "optionsStorageUsage": { "message": "Uso de almacenamiento: {used} KB / {total} KB ({pct}%)", "description": "Storage usage in options sync tab" },
+  "optionsStorageLocal": { "message": "Almacenamiento local", "description": "Local storage label in options sync tab" },
   "migrationOverflowLost": { "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?", "description": "Warning when cloud-to-local migration cannot fit all cards", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } }
 }

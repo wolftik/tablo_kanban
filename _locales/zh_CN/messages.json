@@ -154,5 +154,12 @@
   "optionsSyncCspError": { "message": "CSP 错误 — 请检查权限", "description": "CSP error message for sync" },
   "optionsSyncTokenInvalid": { "message": "无效的令牌", "description": "Invalid token error message" },
   "optionsSyncTokenForbidden": { "message": "令牌权限不足", "description": "Forbidden token error message" },
+  "storageErrorQuota": { "message": "存储配额已超限。请删除旧卡片或清除数据。", "description": "Storage quota exceeded error" },
+  "storageErrorGeneral": { "message": "保存数据失败。请重试。", "description": "General storage error" },
+  "storageIndicator": { "message": "存储：", "description": "Storage indicator label" },
+  "filterDateFrom": { "message": "开始日期", "description": "Date from filter title" },
+  "filterDateTo": { "message": "结束日期", "description": "Date to filter title" },
+  "optionsStorageUsage": { "message": "存储使用：{used} KB / {total} KB ({pct}%)", "description": "Storage usage in options sync tab" },
+  "optionsStorageLocal": { "message": "本地存储", "description": "Local storage label in options sync tab" },
   "migrationOverflowLost": { "message": "$total$ 张卡片中的 $count$ 将永久丢失，因为它们无法放入本地存储。继续并丢失它们？", "description": "云到本地迁移时部分卡片无法放入存储的警告", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } }
 }

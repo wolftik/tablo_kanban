@@ -612,6 +612,13 @@
     "message": "Token heeft onvoldoende rechten",
     "description": "Forbidden token error message"
   },
+  "storageErrorQuota": { "message": "Opslagquotum overschreden. Verwijder oude kaarten of wis gegevens.", "description": "Storage quota exceeded error" },
+  "storageErrorGeneral": { "message": "Gegevens opslaan mislukt. Probeer opnieuw.", "description": "General storage error" },
+  "storageIndicator": { "message": "Opslag:", "description": "Storage indicator label" },
+  "filterDateFrom": { "message": "Vanaf datum", "description": "Date from filter title" },
+  "filterDateTo": { "message": "Tot datum", "description": "Date to filter title" },
+  "optionsStorageUsage": { "message": "Opslaggebruik: {used} KB / {total} KB ({pct}%)", "description": "Storage usage in options sync tab" },
+  "optionsStorageLocal": { "message": "Lokale opslag", "description": "Local storage label in options sync tab" },
   "migrationOverflowLost": {
     "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?",
     "description": "Warning when cloud-to-local migration cannot fit all cards",

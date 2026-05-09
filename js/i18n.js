@@ -193,8 +193,11 @@ const I18n = (() => {
     return key;
   }
 
+  const LOCALE_DIR_MAP = { pt: 'pt_PT', zh: 'zh_CN' };
+
   async function _loadMessages(lang) {
-    const url = chrome.runtime.getURL('_locales/' + lang + '/messages.json');
+    const dir = LOCALE_DIR_MAP[lang] || lang;
+    const url = chrome.runtime.getURL('_locales/' + dir + '/messages.json');
     try {
       const resp = await fetch(url);
       const raw = await resp.json();

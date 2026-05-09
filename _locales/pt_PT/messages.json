@@ -154,5 +154,12 @@
   "optionsSyncCspError": { "message": "Erro de CSP — verifique as permissões", "description": "CSP error message for sync" },
   "optionsSyncTokenInvalid": { "message": "Token inválido", "description": "Invalid token error message" },
   "optionsSyncTokenForbidden": { "message": "Token sem permissões suficientes", "description": "Forbidden token error message" },
+  "storageErrorQuota": { "message": "Cota de armazenamento excedida. Apague cartões antigos ou limpe os dados.", "description": "Storage quota exceeded error" },
+  "storageErrorGeneral": { "message": "Falha ao guardar dados. Tente novamente.", "description": "General storage error" },
+  "storageIndicator": { "message": "Armazenamento:", "description": "Storage indicator label" },
+  "filterDateFrom": { "message": "A partir de", "description": "Date from filter title" },
+  "filterDateTo": { "message": "Até", "description": "Date to filter title" },
+  "optionsStorageUsage": { "message": "Uso de armazenamento: {used} KB / {total} KB ({pct}%)", "description": "Storage usage in options sync tab" },
+  "optionsStorageLocal": { "message": "Armazenamento local", "description": "Local storage label in options sync tab" },
   "migrationOverflowLost": { "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?", "description": "Warning when cloud-to-local migration cannot fit all cards", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } }
 }
