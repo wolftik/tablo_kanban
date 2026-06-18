@@ -170,5 +170,13 @@
   "cardDescItalicTooltip": { "message": "Курсив (Ctrl+I)" },
   "cardDescUlTooltip": { "message": "Маркированный список" },
   "cardDescOlTooltip": { "message": "Нумерованный список" },
-  "cardDescQuoteTooltip": { "message": "Цитата" }
+  "cardDescQuoteTooltip": { "message": "Цитата" },
+  "widgetsCurrency": { "message": "Курсы валют", "description": "Currency widget label" },
+  "widgetsStocks": { "message": "Биржевые индексы", "description": "Stocks widget label" },
+  "currencyLoading": { "message": "Загрузка...", "description": "Currency loading message" },
+  "currencyError": { "message": "Нет данных", "description": "Currency error message" },
+  "currencyBase": { "message": "Базовая валюта:", "description": "Base currency label" },
+  "stocksLoading": { "message": "Загрузка...", "description": "Stocks loading message" },
+  "stocksError": { "message": "Нет данных", "description": "Stocks error message" },
+  "widgetsStocksCurrencyTitle": { "message": "Валюты и биржи", "description": "Combined section title for options" }
 }

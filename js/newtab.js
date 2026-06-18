@@ -111,6 +111,8 @@ document.addEventListener('DOMContentLoaded', async () => {
           }
           WidgetSystem.register('clock', ClockWidget);
           WidgetSystem.register('weather', WeatherWidget);
+          WidgetSystem.register('currency', CurrencyWidget);
+          WidgetSystem.register('stocks', StocksWidget);
           WidgetSystem.initAll();
         }
       }

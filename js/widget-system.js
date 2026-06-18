@@ -206,3 +206,215 @@ const WeatherWidget = {
 };
 
 WidgetSystem.register('weather', WeatherWidget);
+
+const CurrencyWidget = {
+  _interval: null,
+  _el: null,
+
+  async init() {
+    const settings = await StorageSync.get('settings') || getDefaultSettings();
+    const enabled = settings.widgets?.currency === true;
+    const zone = document.getElementById('widgets-zone');
+    if (!zone) return;
+
+    if (!enabled) return;
+
+    this._el = document.createElement('div');
+    this._el.id = 'currency-widget';
+    this._el.className = 'widget currency-widget';
+    this._el.innerHTML = '<div class="market-loading">' + I18n.t('currency.loading') + '</div>';
+    zone.appendChild(this._el);
+    zone.classList.add('active');
+    zone.dataset.enabled = 'true';
+
+    const cached = await this._readCache();
+    if (cached) {
+      this._render(cached.rates, cached.base, cached.previousRates);
+    } else {
+      this._fetchAndRender(settings);
+    }
+    this._interval = setInterval(() => this._fetchAndRender(null), 300000);
+  },
+
+  _render(rates, base, previousRates) {
+    if (!this._el || !rates) {
+      if (this._el) this._el.innerHTML = '<div class="market-error">' + I18n.t('currency.error') + '</div>';
+      return;
+    }
+    const pairs = CurrencyProviders.filterPairs(base);
+    let html = '';
+    pairs.forEach(p => {
+      const rate = CurrencyProviders.computeRate(rates, p.base, p.quote);
+      const prevRate = previousRates ? CurrencyProviders.computeRate(previousRates, p.base, p.quote) : null;
+      const change = CurrencyProviders.formatChange(rate, prevRate);
+      const rateStr = CurrencyProviders.formatRate(rate);
+      html += '<div class="market-row">';
+      html += '<span class="market-pair">' + p.base + '/' + p.quote + '</span>';
+      html += '<span class="market-rate">' + rateStr + '</span>';
+      html += '<span class="market-change ' + change.sign + '">' + change.text + '</span>';
+      html += '</div>';
+    });
+    this._el.innerHTML = '<div class="market-section-title">' + I18n.t('widgets.currency') + '</div>' + html;
+  },
+
+  async _readCache() {
+    try {
+      const cached = await StorageLocal.get('currency_cache');
+      if (!cached) return null;
+      if (Date.now() - cached.timestamp < 300000) {
+        return cached;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  async _writeCache(rates, base, previousRates) {
+    try {
+      await StorageLocal.set('currency_cache', {
+        rates: rates,
+        base: base,
+        previousRates: previousRates,
+        timestamp: Date.now()
+      });
+    } catch (e) {
+      // Non-critical
+    }
+  },
+
+  async _fetchAndRender(settings) {
+    if (!settings) {
+      settings = await StorageSync.get('settings') || getDefaultSettings();
+    }
+    const base = settings.widgets?.currencyBase || 'USD';
+
+    const previousCache = await this._readCache();
+    const previousRates = previousCache ? previousCache.rates : null;
+
+    const rates = await CurrencyProviders.fetchRates();
+    if (!this._el) return;
+
+    if (!rates) {
+      this._el.innerHTML = '<div class="market-error">' + I18n.t('currency.error') + '</div>';
+      return;
+    }
+
+    this._render(rates, base, previousRates);
+    this._writeCache(rates, base, previousRates);
+  },
+
+  destroy() {
+    if (this._interval) {
+      clearInterval(this._interval);
+      this._interval = null;
+    }
+    if (this._el) {
+      this._el.remove();
+      this._el = null;
+    }
+  }
+};
+
+WidgetSystem.register('currency', CurrencyWidget);
+
+const StocksWidget = {
+  _interval: null,
+  _el: null,
+
+  async init() {
+    const settings = await StorageSync.get('settings') || getDefaultSettings();
+    const enabled = settings.widgets?.stocks === true;
+    const zone = document.getElementById('widgets-zone');
+    if (!zone) return;
+
+    if (!enabled) return;
+
+    this._el = document.createElement('div');
+    this._el.id = 'stocks-widget';
+    this._el.className = 'widget stocks-widget';
+    this._el.innerHTML = '<div class="market-loading">' + I18n.t('stocks.loading') + '</div>';
+    zone.appendChild(this._el);
+    zone.classList.add('active');
+    zone.dataset.enabled = 'true';
+
+    const cached = await this._readCache();
+    if (cached) {
+      this._render(cached.indices);
+    } else {
+      this._fetchAndRender();
+    }
+    this._interval = setInterval(() => this._fetchAndRender(), 300000);
+  },
+
+  _render(indices) {
+    if (!this._el || !indices || indices.length === 0) {
+      if (this._el) this._el.innerHTML = '<div class="market-error">' + I18n.t('stocks.error') + '</div>';
+      return;
+    }
+    let html = '<div class="market-section-title">' + I18n.t('widgets.stocks') + '</div>';
+    indices.forEach(idx => {
+      const priceStr = StockProviders.formatPrice(idx.price);
+      const changeStr = StockProviders.formatChange(idx.change);
+      const pctStr = StockProviders.formatChangePercent(idx.changePercent);
+      const cls = StockProviders.getChangeClass(idx.change);
+      html += '<div class="market-row">';
+      html += '<span class="market-flag">' + idx.flag + '</span>';
+      html += '<span class="market-label">' + idx.label + '</span>';
+      html += '<span class="market-price">' + priceStr + '</span>';
+      html += '<span class="market-change ' + cls + '">' + changeStr + ' (' + pctStr + ')</span>';
+      html += '</div>';
+    });
+    this._el.innerHTML = html;
+  },
+
+  async _readCache() {
+    try {
+      const cached = await StorageLocal.get('stocks_cache');
+      if (!cached) return null;
+      if (Date.now() - cached.timestamp < 300000) {
+        return cached;
+      }
+      return null;
+    } catch (e) {
+      return null;
+    }
+  },
+
+  async _writeCache(indices) {
+    try {
+      await StorageLocal.set('stocks_cache', {
+        indices: indices,
+        timestamp: Date.now()
+      });
+    } catch (e) {
+      // Non-critical
+    }
+  },
+
+  async _fetchAndRender() {
+    const indices = await StockProviders.fetchAllIndices();
+    if (!this._el) return;
+
+    if (!indices || indices.length === 0) {
+      this._el.innerHTML = '<div class="market-error">' + I18n.t('stocks.error') + '</div>';
+      return;
+    }
+
+    this._render(indices);
+    this._writeCache(indices);
+  },
+
+  destroy() {
+    if (this._interval) {
+      clearInterval(this._interval);
+      this._interval = null;
+    }
+    if (this._el) {
+      this._el.remove();
+      this._el = null;
+    }
+  }
+};
+
+WidgetSystem.register('stocks', StocksWidget);

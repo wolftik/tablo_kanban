@@ -379,6 +379,20 @@ document.addEventListener('DOMContentLoaded', async () => {
         weatherSettings.style.display = $weatherChk.checked ? 'block' : 'none';
       });
     }
+    const currencySettings = document.getElementById('currency-settings');
+    if ($currencyChk && currencySettings) {
+      $currencyChk.checked = settings.widgets?.currency === true;
+      currencySettings.style.display = $currencyChk.checked ? 'block' : 'none';
+      $currencyChk.addEventListener('change', () => {
+        currencySettings.style.display = $currencyChk.checked ? 'block' : 'none';
+      });
+    }
+    if ($currencyBase) {
+      $currencyBase.value = settings.widgets?.currencyBase || 'USD';
+    }
+    if ($stocksChk) {
+      $stocksChk.checked = settings.widgets?.stocks === true;
+    }
     if ($weatherCity) {
       $weatherCity.value = settings.widgets?.weatherCity || 'Moscow';
     }
@@ -592,6 +606,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const $weatherChk = document.getElementById('widget-weather');
   const $weatherCity = document.getElementById('weather-city');
   const $weatherUnit = document.getElementById('weather-unit');
+  const $currencyChk = document.getElementById('widget-currency');
+  const $currencyBase = document.getElementById('currency-base');
+  const $stocksChk = document.getElementById('widget-stocks');
 
   loadSettingsUI();
   applyTheme(settings.theme);
@@ -610,7 +627,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         clock: $clockChk ? $clockChk.checked : true,
         weather: $weatherChk ? $weatherChk.checked : false,
         weatherCity: $weatherCity ? $weatherCity.value.trim() || 'Moscow' : 'Moscow',
-        weatherUnit: $weatherUnit ? $weatherUnit.value : 'metric'
+        weatherUnit: $weatherUnit ? $weatherUnit.value : 'metric',
+        currency: $currencyChk ? $currencyChk.checked : false,
+        currencyBase: $currencyBase ? $currencyBase.value : 'USD',
+        stocks: $stocksChk ? $stocksChk.checked : false
       }
     };
 
