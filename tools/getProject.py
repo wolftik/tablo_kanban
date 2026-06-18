@@ -26,7 +26,7 @@ EXCLUDE_EXTENSIONS = {".zip"}
 
 
 def get_version() -> str:
-    with open(MANIFEST_PATH, "r", encoding="utf-8") as f:
+    with open(MANIFEST_PATH, "r", encoding="utf-8-sig") as f:
         manifest = json.load(f)
     return manifest["version"]
 
