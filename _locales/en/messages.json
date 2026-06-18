@@ -172,11 +172,11 @@
   "cardDescOlTooltip": { "message": "Numbered list" },
   "cardDescQuoteTooltip": { "message": "Quote" },
   "widgetsCurrency": { "message": "Exchange rates", "description": "Currency widget label" },
-  "widgetsStocks": { "message": "Stock indices", "description": "Stocks widget label" },
   "currencyLoading": { "message": "Loading...", "description": "Currency loading message" },
   "currencyError": { "message": "No data", "description": "Currency error message" },
   "currencyBase": { "message": "Base currency:", "description": "Base currency label" },
   "stocksLoading": { "message": "Loading...", "description": "Stocks loading message" },
   "stocksError": { "message": "No data", "description": "Stocks error message" },
-  "widgetsStocksCurrencyTitle": { "message": "Currencies & Stocks", "description": "Combined section title for options" }
+  "widgetsStocksCurrencyTitle": { "message": "Currencies & Stocks", "description": "Combined section title for options" },
+  "widgetsStocks": { "message": "Market Data", "description": "Stocks and commodities widget label" }
 }

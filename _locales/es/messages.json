@@ -617,5 +617,6 @@
   "widgetsCurrency": { "message": "Tipos de cambio", "description": "Currency widget label" },
   "currencyLoading": { "message": "Cargando...", "description": "Currency loading message" },
   "currencyError": { "message": "Sin datos", "description": "Currency error message" },
-  "currencyBase": { "message": "Moneda base:", "description": "Base currency label" }
+  "currencyBase": { "message": "Moneda base:", "description": "Base currency label" },
+  "widgetsStocks": { "message": "Datos de mercado", "description": "Stocks and commodities widget label" }
 }

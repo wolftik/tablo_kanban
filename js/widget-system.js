@@ -239,7 +239,13 @@ const CurrencyWidget = {
     this._el.id = 'currency-widget';
     this._el.className = 'widget currency-widget';
     this._el.innerHTML = '<div class="market-loading">' + I18n.t('currency.loading') + '</div>';
-    zone.appendChild(this._el);
+    const headBar = document.getElementById('head-bar');
+    const bm = document.getElementById('bookmarks-container');
+    if (headBar && bm) {
+      headBar.insertBefore(this._el, bm);
+    } else {
+      zone.appendChild(this._el);
+    }
     zone.classList.add('active');
     zone.dataset.enabled = 'true';
 
@@ -345,7 +351,13 @@ const StocksWidget = {
     this._el.id = 'stocks-widget';
     this._el.className = 'widget stocks-widget';
     this._el.innerHTML = '<div class="market-loading">' + I18n.t('stocks.loading') + '</div>';
-    zone.appendChild(this._el);
+    const headBar = document.getElementById('head-bar');
+    const bm = document.getElementById('bookmarks-container');
+    if (headBar && bm) {
+      headBar.insertBefore(this._el, bm);
+    } else {
+      zone.appendChild(this._el);
+    }
     zone.classList.add('active');
     zone.dataset.enabled = 'true';
 
@@ -363,7 +375,7 @@ const StocksWidget = {
       if (this._el) this._el.innerHTML = '<div class="market-error">' + I18n.t('stocks.error') + '</div>';
       return;
     }
-    let html = '<div class="market-section-title">' + I18n.t('widgets.stocks') + '</div>';
+    let html = '';
     indices.forEach(idx => {
       const priceStr = StockProviders.formatPrice(idx.price);
       const changeStr = StockProviders.formatChange(idx.change);

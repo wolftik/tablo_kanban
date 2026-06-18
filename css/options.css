@@ -450,13 +450,17 @@ footer {
   cursor: grabbing;
 }
 
-/* Weather settings */
-.weather-switch {
+/* Widget switches with extra settings */
+.weather-switch,
+.currency-switch,
+.stocks-switch {
   margin-top: 8px;
   gap: 10px;
 }
 
-.weather-switch > span:not(.switch) {
+.weather-switch > span:not(.switch),
+.currency-switch > span:not(.switch),
+.stocks-switch > span:not(.switch) {
   margin-left: 0;
 }
 

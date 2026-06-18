@@ -640,5 +640,6 @@
   "widgetsCurrency": { "message": "विनिमय दर", "description": "Currency widget label" },
   "currencyLoading": { "message": "लोड हो रहा है...", "description": "Currency loading message" },
   "currencyError": { "message": "कोई डेटा नहीं", "description": "Currency error message" },
-  "currencyBase": { "message": "आधार मुद्रा:", "description": "Base currency label" }
+  "currencyBase": { "message": "आधार मुद्रा:", "description": "Base currency label" },
+  "widgetsStocks": { "message": "बाजार डेटा", "description": "Stocks and commodities widget label" }
 }

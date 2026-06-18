@@ -172,7 +172,7 @@
   "cardDescOlTooltip": { "message": "Нумерованный список" },
   "cardDescQuoteTooltip": { "message": "Цитата" },
   "widgetsCurrency": { "message": "Курсы валют", "description": "Currency widget label" },
-  "widgetsStocks": { "message": "Биржевые индексы", "description": "Stocks widget label" },
+  "widgetsStocks": { "message": "Биржевые данные", "description": "Stocks and commodities widget label" },
   "currencyLoading": { "message": "Загрузка...", "description": "Currency loading message" },
   "currencyError": { "message": "Нет данных", "description": "Currency error message" },
   "currencyBase": { "message": "Базовая валюта:", "description": "Base currency label" },

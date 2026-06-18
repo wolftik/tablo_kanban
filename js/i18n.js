@@ -39,6 +39,7 @@ const I18n = (() => {
     'modal.tags.select': 'modalTagsSelect',
     'modal.priority': 'modalPriority',
     'modal.no.priority': 'modalNoPriority',
+    'widgets.stocks': 'widgetsStocks',
     'modal.delete': 'modalDelete',
     'modal.cancel': 'modalCancel',
     'modal.save': 'modalSave',

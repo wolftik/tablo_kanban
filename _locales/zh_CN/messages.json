@@ -175,5 +175,6 @@
   "widgetsCurrency": { "message": "汇率", "description": "Currency widget label" },
   "currencyLoading": { "message": "加载中...", "description": "Currency loading message" },
   "currencyError": { "message": "无数据", "description": "Currency error message" },
-  "currencyBase": { "message": "基准货币:", "description": "Base currency label" }
+  "currencyBase": { "message": "基准货币:", "description": "Base currency label" },
+  "widgetsStocks": { "message": "市场数据", "description": "Stocks and commodities widget label" }
 }
