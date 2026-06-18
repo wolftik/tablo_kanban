@@ -79,7 +79,7 @@ const KanbanRenderer = (() => {
   function _updateColumnElement(colEl, col) {
     const isFirst = KanbanStore.isFirstColumn(col.id);
     const header = colEl.querySelector('.column-header');
-    if (header) header.draggable = !isFirst;
+    if (header) header.draggable = !isFirst && !KanbanStore.isLastColumn(col.id);
 
     const titleContainer = colEl.querySelector('.column-title');
     if (titleContainer) {
@@ -186,8 +186,9 @@ const KanbanRenderer = (() => {
     const agingEl = cardEl.querySelector('.card-aging-badge');
     const columns = KanbanStore.getColumns();
     const isFirst = columns.length > 0 && columns[0].id === columnId;
-    if (card.createdAt && isFirst) {
-      const age = Date.now() - card.createdAt;
+    const isClosed = !!card.closedAt;
+    if (card.createdAt && (isFirst || isClosed)) {
+      const age = isClosed ? (card.closedAt - card.createdAt) : (Date.now() - card.createdAt);
       if (age > KanbanConstants.AGING_FIRE_MS) {
         if (!agingEl || !agingEl.classList.contains('card-fire')) {
           if (agingEl) agingEl.remove();
@@ -355,7 +356,7 @@ const KanbanRenderer = (() => {
 
     const header = document.createElement('div');
     header.className = 'column-header';
-    header.draggable = !KanbanStore.isFirstColumn(col.id);
+    header.draggable = !KanbanStore.isFirstColumn(col.id) && !KanbanStore.isLastColumn(col.id);
 
     const titleContainer = document.createElement('div');
     titleContainer.className = 'column-title';
@@ -395,7 +396,7 @@ const KanbanRenderer = (() => {
       e.stopPropagation();
       if (_onDeleteColumn) _onDeleteColumn(col.id);
     });
-    if (isFirstCol) deleteBtn.style.display = 'none';
+    if (isFirstCol || KanbanStore.isLastColumn(col.id)) deleteBtn.style.display = 'none';
 
     actions.appendChild(clearBtn);
     actions.appendChild(deleteBtn);

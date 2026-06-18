@@ -145,7 +145,7 @@ const KanbanDnD = (() => {
 
     const onDragOver = (e) => {
       if (!_draggedColumn) return;
-      if (KanbanStore.isFirstColumn(_draggedColumn)) return;
+      if (KanbanStore.isFirstColumn(_draggedColumn) || KanbanStore.isLastColumn(_draggedColumn)) return;
       e.preventDefault();
 
       if (_colRafId) cancelAnimationFrame(_colRafId);
@@ -157,7 +157,8 @@ const KanbanDnD = (() => {
 
         const allColumns = [...board.querySelectorAll('.kanban-column')];
         const firstCol = allColumns.find(el => KanbanStore.isFirstColumn(el.dataset.columnId));
-        const columns = allColumns.filter(el => !el.classList.contains('dragging') && el !== firstCol);
+        const lastCol = allColumns.find(el => KanbanStore.isLastColumn(el.dataset.columnId));
+        const columns = allColumns.filter(el => !el.classList.contains('dragging') && el !== firstCol && el !== lastCol);
         const afterElement = columns.reduce((closest, child) => {
           const box = child.getBoundingClientRect();
           const offset = _colX - box.left - box.width / 2;
@@ -168,7 +169,11 @@ const KanbanDnD = (() => {
         }, { offset: Number.NEGATIVE_INFINITY }).element;
 
         if (afterElement == null) {
-          board.appendChild(draggingCol);
+          if (lastCol) {
+            board.insertBefore(draggingCol, lastCol);
+          } else {
+            board.appendChild(draggingCol);
+          }
         } else {
           board.insertBefore(draggingCol, afterElement);
         }
@@ -177,7 +182,7 @@ const KanbanDnD = (() => {
 
     const onDrop = (e) => {
       if (!_draggedColumn) return;
-      if (KanbanStore.isFirstColumn(_draggedColumn)) return;
+      if (KanbanStore.isFirstColumn(_draggedColumn) || KanbanStore.isLastColumn(_draggedColumn)) return;
       e.preventDefault();
 
       const columnEls = [...board.querySelectorAll('.kanban-column')];
@@ -205,7 +210,7 @@ const KanbanDnD = (() => {
       if (!header) return;
       const colEl = header.closest('.kanban-column');
       if (!colEl) return;
-      if (KanbanStore.isFirstColumn(colEl.dataset.columnId)) {
+      if (KanbanStore.isFirstColumn(colEl.dataset.columnId) || KanbanStore.isLastColumn(colEl.dataset.columnId)) {
         e.preventDefault();
         return;
       }

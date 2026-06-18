@@ -74,6 +74,9 @@ const KanbanStore = (() => {
       createdAt: Date.now(),
       updatedAt: Date.now()
     };
+    if (isLastColumn(columnId)) {
+      card.closedAt = Date.now();
+    }
     col.cards.push(card);
     return card;
   }
@@ -104,6 +107,14 @@ const KanbanStore = (() => {
 
     const [card] = fromCol.cards.splice(cardIndex, 1);
     card.updatedAt = Date.now();
+
+    if (fromColumnId !== toColumnId) {
+      if (isLastColumn(toColumnId)) {
+        card.closedAt = Date.now();
+      } else {
+        delete card.closedAt;
+      }
+    }
 
     if (insertIndex === undefined || insertIndex === null) {
       insertIndex = toCol.cards.length;
@@ -138,20 +149,25 @@ const KanbanStore = (() => {
   }
 
   function addColumn(title, color) {
+    const insertPos = Math.max(0, _columns.length - 1);
     const newCol = {
       id: generateId(),
       title: title,
       color: color,
-      order: _columns.length,
+      order: insertPos,
       cards: []
     };
-    _columns.push(newCol);
+    _columns.splice(insertPos, 0, newCol);
+    for (let i = insertPos; i < _columns.length; i++) {
+      _columns[i].order = i;
+    }
     return newCol;
   }
 
   function deleteColumn(columnId) {
     if (_columns.length <= 1) return false;
     if (isFirstColumn(columnId)) return false;
+    if (isLastColumn(columnId)) return false;
     const idx = _columns.findIndex(c => c.id === columnId);
     if (idx === -1) return false;
     _columns.splice(idx, 1);
@@ -175,6 +191,11 @@ const KanbanStore = (() => {
     if (firstCol && newColumns.indexOf(firstCol) !== 0) {
       newColumns.splice(newColumns.indexOf(firstCol), 1);
       newColumns.unshift(firstCol);
+    }
+    const lastCol = newColumns.find(c => isLastColumn(c.id));
+    if (lastCol && newColumns.indexOf(lastCol) !== newColumns.length - 1) {
+      newColumns.splice(newColumns.indexOf(lastCol), 1);
+      newColumns.push(lastCol);
     }
     _columns = newColumns;
   }

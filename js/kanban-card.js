@@ -32,19 +32,23 @@ const KanbanCard = (() => {
     }
 
     if (card.createdAt) {
-      const age = Date.now() - card.createdAt;
-      if (age > KanbanConstants.AGING_FIRE_MS) {
-        const fire = document.createElement('span');
-        fire.className = 'card-aging-badge card-fire';
-        fire.textContent = '\uD83D\uDD25';
-        fire.title = I18n.t('card.fire.tooltip');
-        cardEl.appendChild(fire);
-      } else if (age > KanbanConstants.AGING_SNAIL_MS) {
-        const snail = document.createElement('span');
-        snail.className = 'card-aging-badge card-snail';
-        snail.textContent = '\uD83D\uDC0C';
-        snail.title = I18n.t('card.old.tooltip');
-        cardEl.appendChild(snail);
+      const isFirst = KanbanStore.isFirstColumn(columnId);
+      const isClosed = !!card.closedAt;
+      if (isFirst || isClosed) {
+        const age = isClosed ? (card.closedAt - card.createdAt) : (Date.now() - card.createdAt);
+        if (age > KanbanConstants.AGING_FIRE_MS) {
+          const fire = document.createElement('span');
+          fire.className = 'card-aging-badge card-fire';
+          fire.textContent = '\uD83D\uDD25';
+          fire.title = I18n.t('card.fire.tooltip');
+          cardEl.appendChild(fire);
+        } else if (age > KanbanConstants.AGING_SNAIL_MS) {
+          const snail = document.createElement('span');
+          snail.className = 'card-aging-badge card-snail';
+          snail.textContent = '\uD83D\uDC0C';
+          snail.title = I18n.t('card.old.tooltip');
+          cardEl.appendChild(snail);
+        }
       }
     }
 

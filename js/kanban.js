@@ -509,6 +509,7 @@ const KanbanBoard = (() => {
 
   function _deleteColumn(columnId) {
     if (KanbanStore.isFirstColumn(columnId)) return;
+    if (KanbanStore.isLastColumn(columnId)) return;
     const col = KanbanStore.getColumns().find(c => c.id === columnId);
     if (!col) return;
     if (KanbanStore.getColumns().length <= 1) return;

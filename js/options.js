@@ -212,14 +212,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       const item = document.createElement('div');
       item.className = 'column-option-item';
       item.dataset.columnId = col.id;
-      item.draggable = true;
-
-      const isFirst = KanbanStore.isFirstColumn(col.id);
+      const isPinned = KanbanStore.isFirstColumn(col.id) || KanbanStore.isLastColumn(col.id);
+      item.draggable = !isPinned;
 
       const dragHandle = document.createElement('span');
       dragHandle.className = 'col-drag-handle';
       dragHandle.textContent = '\u2630';
-      if (isFirst) dragHandle.style.display = 'none';
+      if (isPinned) dragHandle.style.display = 'none';
 
       const color = document.createElement('input');
       color.type = 'color';
@@ -234,7 +233,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const deleteBtn = document.createElement('button');
       deleteBtn.className = 'col-delete-btn';
       deleteBtn.innerHTML = '&times;';
-      if (isFirst) {
+      if (isPinned) {
         deleteBtn.style.display = 'none';
       } else {
         deleteBtn.addEventListener('click', () => {
@@ -260,6 +259,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       color.addEventListener('input', update);
 
       item.addEventListener('dragstart', (e) => {
+        if (isPinned) { e.preventDefault(); return; }
         e.dataTransfer.effectAllowed = 'move';
         e.dataTransfer.setData('text/plain', col.id);
         item.classList.add('dragging');
@@ -280,7 +280,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     list.addEventListener('dragstart', (e) => {
       const item = e.target.closest('.column-option-item');
       if (!item) return;
-      if (KanbanStore.isFirstColumn(item.dataset.columnId)) {
+      if (KanbanStore.isFirstColumn(item.dataset.columnId) || KanbanStore.isLastColumn(item.dataset.columnId)) {
         e.preventDefault();
         return;
       }
@@ -291,10 +291,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       e.preventDefault();
       const dragging = list.querySelector('.dragging');
       if (!dragging) return;
-      if (KanbanStore.isFirstColumn(dragging.dataset.columnId)) return;
+      if (KanbanStore.isFirstColumn(dragging.dataset.columnId) || KanbanStore.isLastColumn(dragging.dataset.columnId)) return;
+      const allItems = [...list.querySelectorAll('.column-option-item')];
+      const lastColEl = allItems.find(el => KanbanStore.isLastColumn(el.dataset.columnId));
       const afterElement = getDragAfterElement(list, e.clientY, '.column-option-item:not(.dragging)');
-      if (afterElement == null || KanbanStore.isFirstColumn(afterElement.dataset.columnId)) {
-        list.appendChild(dragging);
+      if (afterElement == null) {
+        if (lastColEl) {
+          list.insertBefore(dragging, lastColEl);
+        } else {
+          list.appendChild(dragging);
+        }
+      } else if (KanbanStore.isFirstColumn(afterElement.dataset.columnId)) {
+        if (lastColEl) {
+          list.insertBefore(dragging, lastColEl);
+        } else {
+          list.appendChild(dragging);
+        }
       } else {
         list.insertBefore(dragging, afterElement);
       }
@@ -317,8 +329,14 @@ document.addEventListener('DOMContentLoaded', async () => {
         const firstCol = newColumns.splice(firstColIdx, 1)[0];
         newColumns.unshift(firstCol);
       }
+      const lastColIdx = newColumns.findIndex(c => KanbanStore.isLastColumn(c.id));
+      if (lastColIdx > -1 && lastColIdx !== newColumns.length - 1) {
+        const lastCol = newColumns.splice(lastColIdx, 1)[0];
+        newColumns.push(lastCol);
+      }
       newColumns.forEach((c, i) => { c.order = i; });
       columns = newColumns;
+      KanbanStore.loadData({ columns, tags, performers, authors });
       dragId = null;
     });
   }
@@ -326,13 +344,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   renderColumnsList();
 
   document.getElementById('add-column-option').addEventListener('click', () => {
-    columns.push({
+    const insertPos = Math.max(0, columns.length - 1);
+    const newCol = {
       id: generateId(),
       title: I18n.t('options.columns.new'),
       color: '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'),
-      order: columns.length,
+      order: insertPos,
       cards: []
-    });
+    };
+    columns.splice(insertPos, 0, newCol);
+    for (let i = insertPos; i < columns.length; i++) {
+      columns[i].order = i;
+    }
     renderColumnsList();
   });
 
