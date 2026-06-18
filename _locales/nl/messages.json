@@ -597,7 +597,7 @@
     "description": "Fallback for empty card title"
   },
   "storageWarningFull": {
-    "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.",
+    "message": "Opslag is bijna vol (90%+). Schakel cloud-sync in of verwijder oude kaarten om ruimte vrij te maken.",
     "description": "Storage warning tooltip when localStorage is near full"
   },
   "optionsSyncCspError": {
@@ -620,30 +620,21 @@
   "optionsStorageUsage": { "message": "Opslaggebruik: {used} KB / {total} KB ({pct}%)", "description": "Storage usage in options sync tab" },
   "optionsStorageLocal": { "message": "Lokale opslag", "description": "Local storage label in options sync tab" },
   "migrationOverflowLost": {
-    "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?",
+    "message": "$count$ van $total$ kaarten gaan permanent verloren omdat ze niet in de lokale opslag passen. Doorgaan en verliezen?",
     "description": "Warning when cloud-to-local migration cannot fit all cards",
     "placeholders": {
       "count": { "content": "$1" },
       "total": { "content": "$2" }
     }
   },
-  "cardDescHeading": { "message": "Description" },
-  "cardLinksHeading": { "message": "Links" },
-  "cardLinksAdd": { "message": "Add" },
-  "cardLinksUrlPlaceholder": { "message": "URL" },
-  "cardLinksTitlePlaceholder": { "message": "Title (optional)" },
-  "cardLinksRemove": { "message": "Remove link" },
+  "cardDescHeading": { "message": "Beschrijving" },
   "cardChecklistHeading": { "message": "Checklist" },
-  "cardChecklistAdd": { "message": "+ Add item" },
-  "cardChecklistAddSub": { "message": "+ Sub-item" },
-  "cardChecklistProgress": { "message": "{done}/{total}", "placeholders": { "done": { "content": "$1" }, "total": { "content": "$2" } } },
-  "cardChecklistMore": { "message": "вЂ¦{count} more", "placeholders": { "count": { "content": "$1" } } },
-  "cardPropertiesHeading": { "message": "Properties" },
-  "cardDescBoldTooltip": { "message": "Bold (Ctrl+B)" },
-  "cardDescItalicTooltip": { "message": "Italic (Ctrl+I)" },
-  "cardDescUlTooltip": { "message": "Bulleted list" },
-  "cardDescOlTooltip": { "message": "Numbered list" },
-  "cardDescQuoteTooltip": { "message": "Quote" },
-  "modalEdit": { "message": "Edit" },
-  "modalHide": { "message": "Hide" }
+  "cardChecklistAdd": { "message": "+ Item toevoegen" },
+  "cardDescBoldTooltip": { "message": "Vet (Ctrl+B)" },
+  "cardDescItalicTooltip": { "message": "Cursief (Ctrl+I)" },
+  "cardDescUlTooltip": { "message": "Opsommingslijst" },
+  "cardDescOlTooltip": { "message": "Genummerde lijst" },
+  "cardDescQuoteTooltip": { "message": "Citaat" },
+  "modalEdit": { "message": "Bewerken" },
+  "modalHide": { "message": "Verbergen" }
 }

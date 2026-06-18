@@ -597,7 +597,7 @@
     "description": "Fallback for empty card title"
   },
   "storageWarningFull": {
-    "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.",
+    "message": "स्टोरेज लगभग भर गया है (90%+)। क्लाउड सिंक चालू करें या पुराने कार्ड हटाएँ।",
     "description": "Storage warning tooltip when localStorage is near full"
   },
   "optionsSyncCspError": {
@@ -620,30 +620,21 @@
   "optionsStorageUsage": { "message": "Р°В¤С‘Р°ТђРЊР°В¤СџР°ТђвЂ№Р°В¤В°Р°ТђвЂЎР°В¤Сљ Р°В¤вЂ°Р°В¤Р„Р°В¤Р‡Р°ТђвЂ№Р°В¤вЂ”: {used} KB / {total} KB ({pct}%)", "description": "Storage usage in options sync tab" },
   "optionsStorageLocal": { "message": "Р°В¤Р†Р°ТђвЂ№Р°В¤вЂўР°В¤Р† Р°В¤С‘Р°ТђРЊР°В¤СџР°ТђвЂ№Р°В¤В°Р°ТђвЂЎР°В¤Сљ", "description": "Local storage label in options sync tab" },
   "migrationOverflowLost": {
-    "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?",
+    "message": "$count$ में से $total$ कार्ड स्थायी रूप से खो जाएँगे क्योंकि वे स्थानीय स्टोरेज में नहीं समाते। आगे बढ़ें और उन्हें खोएँ?",
     "description": "Warning when cloud-to-local migration cannot fit all cards",
     "placeholders": {
       "count": { "content": "$1" },
       "total": { "content": "$2" }
     }
   },
-  "cardDescHeading": { "message": "Description" },
-  "cardLinksHeading": { "message": "Links" },
-  "cardLinksAdd": { "message": "Add" },
-  "cardLinksUrlPlaceholder": { "message": "URL" },
-  "cardLinksTitlePlaceholder": { "message": "Title (optional)" },
-  "cardLinksRemove": { "message": "Remove link" },
-  "cardChecklistHeading": { "message": "Checklist" },
-  "cardChecklistAdd": { "message": "+ Add item" },
-  "cardChecklistAddSub": { "message": "+ Sub-item" },
-  "cardChecklistProgress": { "message": "{done}/{total}", "placeholders": { "done": { "content": "$1" }, "total": { "content": "$2" } } },
-  "cardChecklistMore": { "message": "вЂ¦{count} more", "placeholders": { "count": { "content": "$1" } } },
-  "cardPropertiesHeading": { "message": "Properties" },
-  "cardDescBoldTooltip": { "message": "Bold (Ctrl+B)" },
-  "cardDescItalicTooltip": { "message": "Italic (Ctrl+I)" },
-  "cardDescUlTooltip": { "message": "Bulleted list" },
-  "cardDescOlTooltip": { "message": "Numbered list" },
-  "cardDescQuoteTooltip": { "message": "Quote" },
-  "modalEdit": { "message": "Edit" },
-  "modalHide": { "message": "Hide" }
+  "cardDescHeading": { "message": "विवरण" },
+  "cardChecklistHeading": { "message": "चेकलिस्ट" },
+  "cardChecklistAdd": { "message": "+ आइटम जोड़ें" },
+  "cardDescBoldTooltip": { "message": "बोल्ड (Ctrl+B)" },
+  "cardDescItalicTooltip": { "message": "इटैलिक (Ctrl+I)" },
+  "cardDescUlTooltip": { "message": "बुलेटेड सूची" },
+  "cardDescOlTooltip": { "message": "क्रमांकित सूची" },
+  "cardDescQuoteTooltip": { "message": "उद्धरण" },
+  "modalEdit": { "message": "संपादित करें" },
+  "modalHide": { "message": "छिपाएँ" }
 }
