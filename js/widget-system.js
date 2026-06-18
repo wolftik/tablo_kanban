@@ -1,7 +1,55 @@
-'use strict';
+﻿'use strict';
 
 const GEOCODING_URL = 'https://geocoding-api.open-meteo.com/v1/search';
 const FORECAST_URL = 'https://api.open-meteo.com/v1/forecast';
+const METNORWAY_URL = 'https://api.met.no/weatherapi/locationforecast/2.0/compact';
+
+const METNORWAY_WMO_MAP = {
+  'clearsky': 0,
+  'fair': 1,
+  'partlycloudy': 2,
+  'cloudy': 3,
+  'fog': 45,
+  'fog_patches': 48,
+  'lightdrizzle': 51,
+  'drizzle': 53,
+  'heavydrizzle': 55,
+  'lightfreezingdrizzle': 56,
+  'freezingdrizzle': 57,
+  'lightrain': 61,
+  'rain': 63,
+  'heavyrain': 65,
+  'lightfreezingrain': 66,
+  'freezingrain': 67,
+  'lightsleet': 71,
+  'sleet': 73,
+  'heavysleet': 75,
+  'lightsnow': 71,
+  'snow': 73,
+  'heavysnow': 75,
+  'lightrainshowers': 80,
+  'rainshowers': 81,
+  'heavyrainshowers': 82,
+  'lightsleetshowers': 85,
+  'sleetshowers': 86,
+  'heavysleetshowers': 86,
+  'lightsnowshowers': 85,
+  'snowshowers': 86,
+  'heavysnowshowers': 86,
+  'thunder': 95,
+  'rainandthunder': 95,
+  'sleetandthunder': 96,
+  'snowandthunder': 99,
+  'rainshowersandthunder': 95,
+  'sleetshowersandthunder': 96,
+  'snowshowersandthunder': 99
+};
+
+function _metNorwaySymbolToWMO(symbol) {
+  if (!symbol) return 1;
+  var base = symbol.replace(/_(day|night)$/, '');
+  return METNORWAY_WMO_MAP[base] || 1;
+}
 
 const WidgetSystem = (() => {
   const _widgets = new Map();
@@ -166,18 +214,53 @@ const WeatherWidget = {
 
       const { latitude, longitude } = geoJson.results[0];
 
+      // Try primary: Open-Meteo forecast
       const tempUnit = unit === 'imperial' ? 'fahrenheit' : 'celsius';
-      const forecastResp = await fetch(`${FORECAST_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&temperature_unit=${tempUnit}`);
-      if (!forecastResp.ok) {
-        console.warn('[WeatherWidget] Forecast API error:', forecastResp.status, forecastResp.statusText);
-        return null;
+      try {
+        const forecastResp = await fetch(`${FORECAST_URL}?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,weather_code&temperature_unit=${tempUnit}`);
+        if (forecastResp.ok) {
+          const forecastJson = await forecastResp.json();
+          return {
+            temp: forecastJson.current.temperature_2m,
+            code: forecastJson.current.weather_code
+          };
+        }
+        console.warn('[WeatherWidget] Open-Meteo forecast error:', forecastResp.status);
+      } catch (e) {
+        console.warn('[WeatherWidget] Open-Meteo forecast error:', e);
       }
-      const forecastJson = await forecastResp.json();
 
-      return {
-        temp: forecastJson.current.temperature_2m,
-        code: forecastJson.current.weather_code
-      };
+      // Fallback: MET Norway
+      try {
+        const metResp = await fetch(`${METNORWAY_URL}?lat=${latitude}&lon=${longitude}`);
+        if (metResp.ok) {
+          const metJson = await metResp.json();
+          var timeseries = metJson.properties && metJson.properties.timeseries;
+          if (timeseries && timeseries.length > 0) {
+            var current = timeseries[0].data.instant.details;
+            var next1h = timeseries[0].data.next_1_hours;
+            var next6h = timeseries[0].data.next_6_hours;
+            var next12h = timeseries[0].data.next_12_hours;
+            var symbolCode = (next1h && next1h.summary && next1h.summary.symbol_code) ||
+                             (next6h && next6h.summary && next6h.summary.symbol_code) ||
+                             (next12h && next12h.summary && next12h.summary.symbol_code) ||
+                             'cloudy';
+            var temp = current.air_temperature;
+            if (unit === 'imperial') {
+              temp = temp * 9 / 5 + 32;
+            }
+            return {
+              temp: temp,
+              code: _metNorwaySymbolToWMO(symbolCode)
+            };
+          }
+        }
+        console.warn('[WeatherWidget] MET Norway error:', metResp.status);
+      } catch (e) {
+        console.warn('[WeatherWidget] MET Norway error:', e);
+      }
+
+      return null;
     } catch (e) {
       console.warn('[WeatherWidget] Network error fetching weather:', e);
       return null;
