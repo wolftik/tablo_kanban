@@ -31,7 +31,7 @@ const KanbanCard = (() => {
       cardEl.appendChild(priorityBar);
     }
 
-    if (card.createdAt && KanbanStore.isFirstColumn(columnId)) {
+    if (card.createdAt) {
       const age = Date.now() - card.createdAt;
       if (age > KanbanConstants.AGING_FIRE_MS) {
         const fire = document.createElement('span');
