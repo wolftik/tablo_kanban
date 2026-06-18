@@ -167,13 +167,19 @@ function safeLocalCache(key, data) {
       }
     }
 
-    data.columns.forEach(col => {
-      col.cards = selectedCards
-        .filter(item => item.columnId === col.id)
-        .map(item => item.card);
-    });
-
-    localStorage.setItem('kanban_' + key, JSON.stringify(data));
+    const trimmedData = {
+      columns: data.columns.map(col => ({
+        ...col,
+        cards: selectedCards
+          .filter(item => item.columnId === col.id)
+          .map(item => item.card)
+      })),
+      tags: data.tags,
+      performers: data.performers,
+      authors: data.authors,
+      _modified: data._modified
+    };
+    localStorage.setItem('kanban_' + key, JSON.stringify(trimmedData));
   }
 }
 
