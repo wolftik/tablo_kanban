@@ -26,7 +26,7 @@
     "service_worker": "service-worker.js"
   },
   "content_security_policy": {
-    "extension_pages": "default-src 'self'; connect-src 'self' https://www.googleapis.com https://oauth.yandex.ru https://cloud-api.yandex.net https://downloader.disk.yandex.com https://downloader.disk.yandex.ru https://*.disk.yandex.net https://*.storage.yandex.net wss://mc.yandex.ru https://geocoding-api.open-meteo.com https://api.open-meteo.com https://api.met.no https://www.google.com; img-src 'self' https://www.google.com https://*.gstatic.com https://icons.duckduckgo.com data:; style-src 'self' 'unsafe-inline'"
+    "extension_pages": "default-src 'self'; connect-src 'self' https://www.googleapis.com https://oauth.yandex.ru https://cloud-api.yandex.net https://downloader.disk.yandex.com https://downloader.disk.yandex.ru https://*.disk.yandex.net https://*.storage.yandex.net wss://mc.yandex.ru https://geocoding-api.open-meteo.com https://api.open-meteo.com https://api.met.no https://www.7timer.info https://www.google.com; img-src 'self' https://www.google.com https://*.gstatic.com https://icons.duckduckgo.com data:; style-src 'self' 'unsafe-inline'"
   },
   "options_ui": {
     "page": "views/options.html",
