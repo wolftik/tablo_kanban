@@ -89,6 +89,10 @@ html, body {
   background: var(--drop-highlight);
 }
 
+.kanban-column.dragging {
+  opacity: 0.5;
+}
+
 .column-header {
   display: flex;
   align-items: center;
@@ -352,13 +356,23 @@ html, body {
   background: rgba(99,102,241,0.05);
 }
 
-/* Drop placeholder */
+/* Drop placeholder (cards) */
 .drop-placeholder {
   border: 2px dashed #6366f1;
   border-radius: var(--card-radius);
   background: var(--drop-highlight);
   min-height: 40px;
   transition: all 0.15s;
+}
+
+/* Column drop target — left edge highlight (insert BEFORE this column) */
+.column-drop-target-before {
+  box-shadow: inset 4px 0 0 0 #6366f1;
+}
+
+/* Column drop target — right edge highlight (insert AFTER this column) */
+.column-drop-target-after {
+  box-shadow: inset -4px 0 0 0 #6366f1;
 }
 
 /* Add column button */

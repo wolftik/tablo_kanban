@@ -140,43 +140,100 @@ const KanbanDnD = (() => {
   }
 
   function bindColumnReorder(board) {
-    let _colRafId = null;
-    let _colX = 0;
+    let _rafId = null;
+    let _cursorX = 0;
+    let _targetColumnId = null;
+    let _insertAfter = false;
+
+    /**
+     * Removes all column drop target highlights from the board.
+     */
+    function _clearDropTargets() {
+      board.querySelectorAll('.column-drop-target-before,.column-drop-target-after')
+        .forEach(el => {
+          el.classList.remove('column-drop-target-before');
+          el.classList.remove('column-drop-target-after');
+        });
+    }
+
+    /**
+     * Computes the target column and insertion side from cursor position.
+     * Only adds/removes CSS classes — never touches column DOM ordering.
+     */
+    function _updateDropTarget(cursorX) {
+      const allColumns = [...board.querySelectorAll('.kanban-column')];
+      const firstCol = allColumns.find(el => KanbanStore.isFirstColumn(el.dataset.columnId));
+      const lastCol = allColumns.find(el => KanbanStore.isLastColumn(el.dataset.columnId));
+      const columns = allColumns.filter(
+        el => !el.classList.contains('dragging') && el !== firstCol && el !== lastCol
+      );
+
+      // Find the element with cursor in its left half
+      const refElement = columns.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = cursorX - box.left - box.width / 2;
+        if (offset < 0 && offset > closest.offset) {
+          return { offset, element: child };
+        }
+        return closest;
+      }, { offset: Number.NEGATIVE_INFINITY }).element;
+
+      let newTarget = null;
+      let after = false;
+
+      if (refElement) {
+        const draggedCol = board.querySelector('.kanban-column.dragging');
+        const draggedRect = draggedCol ? draggedCol.getBoundingClientRect() : null;
+        const targetRect = refElement.getBoundingClientRect();
+        const cursorInLeftHalf = cursorX < targetRect.left + targetRect.width / 2;
+
+        if (cursorInLeftHalf) {
+          if (draggedRect && targetRect.left > draggedRect.left && columns.indexOf(refElement) === 0) {
+            // LEFT-to-RIGHT into the FIRST element to the right → insert AFTER it
+            newTarget = refElement.dataset.columnId;
+            after = true;
+          } else {
+            // RIGHT-to-LEFT (or non-first element) → insert BEFORE it
+            newTarget = refElement.dataset.columnId;
+            after = false;
+          }
+        } else {
+          // Cursor in right half → insert AFTER this element
+          newTarget = refElement.dataset.columnId;
+          after = true;
+        }
+      } else if (lastCol) {
+        // Cursor past all elements → insert before last column
+        newTarget = lastCol.dataset.columnId;
+        after = false;
+      }
+
+      // Only update DOM classes if target changed
+      if (newTarget !== _targetColumnId || after !== _insertAfter) {
+        _clearDropTargets();
+        _targetColumnId = newTarget;
+        _insertAfter = after;
+
+        if (newTarget) {
+          const targetEl = board.querySelector(`.kanban-column[data-column-id="${newTarget}"]`);
+          if (targetEl) {
+            targetEl.classList.add(after ? 'column-drop-target-after' : 'column-drop-target-before');
+          }
+        }
+      }
+    }
 
     const onDragOver = (e) => {
       if (!_draggedColumn) return;
       if (KanbanStore.isFirstColumn(_draggedColumn) || KanbanStore.isLastColumn(_draggedColumn)) return;
       e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
 
-      if (_colRafId) cancelAnimationFrame(_colRafId);
-      _colX = e.clientX;
-      _colRafId = requestAnimationFrame(() => {
-        _colRafId = null;
-        const draggingCol = board.querySelector('.kanban-column.dragging');
-        if (!draggingCol) return;
-
-        const allColumns = [...board.querySelectorAll('.kanban-column')];
-        const firstCol = allColumns.find(el => KanbanStore.isFirstColumn(el.dataset.columnId));
-        const lastCol = allColumns.find(el => KanbanStore.isLastColumn(el.dataset.columnId));
-        const columns = allColumns.filter(el => !el.classList.contains('dragging') && el !== firstCol && el !== lastCol);
-        const afterElement = columns.reduce((closest, child) => {
-          const box = child.getBoundingClientRect();
-          const offset = _colX - box.left - box.width / 2;
-          if (offset < 0 && offset > closest.offset) {
-            return { offset, element: child };
-          }
-          return closest;
-        }, { offset: Number.NEGATIVE_INFINITY }).element;
-
-        if (afterElement == null) {
-          if (lastCol) {
-            board.insertBefore(draggingCol, lastCol);
-          } else {
-            board.appendChild(draggingCol);
-          }
-        } else {
-          board.insertBefore(draggingCol, afterElement);
-        }
+      _cursorX = e.clientX;
+      if (_rafId) cancelAnimationFrame(_rafId);
+      _rafId = requestAnimationFrame(() => {
+        _rafId = null;
+        _updateDropTarget(_cursorX);
       });
     };
 
@@ -185,11 +242,61 @@ const KanbanDnD = (() => {
       if (KanbanStore.isFirstColumn(_draggedColumn) || KanbanStore.isLastColumn(_draggedColumn)) return;
       e.preventDefault();
 
-      const columnEls = [...board.querySelectorAll('.kanban-column')];
-      const columnIds = columnEls.map(el => el.dataset.columnId);
-      KanbanStore.reorderColumns(columnIds);
+      // Always compute target from the actual drop position, not the last dragover
+      if (_rafId) {
+        cancelAnimationFrame(_rafId);
+        _rafId = null;
+      }
+      _updateDropTarget(e.clientX);
+
+      _clearDropTargets();
+
+      // Compute new column order for the store
+      if (_targetColumnId && _targetColumnId !== _draggedColumn) {
+        const allCols = KanbanStore.getColumns();
+        const targetIdx = allCols.findIndex(c => c.id === _targetColumnId);
+        if (targetIdx >= 0) {
+          const newOrder = allCols.filter(c => c.id !== _draggedColumn);
+          const insertAt = newOrder.findIndex(c => c.id === _targetColumnId);
+          const insertPos = _insertAfter ? insertAt + 1 : insertAt;
+          const draggedCol = allCols.find(c => c.id === _draggedColumn);
+          if (draggedCol) {
+            newOrder.splice(insertPos, 0, draggedCol);
+          }
+          KanbanStore.reorderColumns(newOrder.map(c => c.id));
+        }
+      }
+
+      // Sync order fields — reorderColumns changes array positions but not col.order,
+      // and renderBoard sorts by col.order so we must update them first.
+      const cols = KanbanStore.getColumns();
+      cols.forEach((col, i) => { col.order = i; });
+
+      // Re-render board and save.
+      // Note: renderBoard updates column content but does NOT move existing
+      // column elements in the DOM (virtual diffing). We must fix DOM order manually.
+      KanbanRenderer.renderBoard(cols);
+
+      const boardEl = document.getElementById('kanban-board');
+      const addBtn = boardEl ? boardEl.querySelector(':scope > .add-column-btn') : null;
+      if (addBtn) {
+        // Forward iteration + insertBefore(addBtn) stacks columns in correct order
+        const sorted = [...cols].sort((a, b) => (a.order || 0) - (b.order || 0));
+        sorted.forEach(col => {
+          const el = boardEl.querySelector(`.kanban-column[data-column-id="${col.id}"]`);
+          if (el) {
+            boardEl.insertBefore(el, addBtn);
+          }
+        });
+      }
+
+      KanbanRenderer.updateColumnCounts();
       if (_onSave) _onSave();
+
       _draggedColumn = null;
+      _targetColumnId = null;
+      _insertAfter = false;
+      _rafId = null;
     };
 
     board.addEventListener('dragover', onDragOver);
@@ -198,6 +305,7 @@ const KanbanDnD = (() => {
     return () => {
       board.removeEventListener('dragover', onDragOver);
       board.removeEventListener('drop', onDrop);
+      _clearDropTargets();
     };
   }
 
@@ -224,6 +332,10 @@ const KanbanDnD = (() => {
       _draggedColumn = null;
       board.querySelectorAll('.kanban-column').forEach(c => c.classList.remove('dragging'));
       board.querySelectorAll('.drag-over-column').forEach(c => c.classList.remove('drag-over-column'));
+      board.querySelectorAll('.column-drop-target-before,.column-drop-target-after').forEach(c => {
+        c.classList.remove('column-drop-target-before');
+        c.classList.remove('column-drop-target-after');
+      });
     };
 
     board.addEventListener('dragstart', onDragStart);
