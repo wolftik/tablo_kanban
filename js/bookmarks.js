@@ -10,7 +10,7 @@ const BookmarksManager = (() => {
 
   async function _loadSettings() {
     const settings = await StorageSync.get('settings') || getDefaultSettings();
-    _bookmarkSlots = settings.bookmarkSlots || 22;
+    _bookmarkSlots = settings.bookmarkSlots != null ? settings.bookmarkSlots : 22;
     _bookmarkGridColumns = _bookmarkSlots < 12 ? _bookmarkSlots : Math.ceil(_bookmarkSlots / 2);
     return settings;
   }
@@ -134,7 +134,16 @@ const BookmarksManager = (() => {
     container.style.gridTemplateRows = isSingleRow ? 'repeat(1, var(--bookmark-slot-height))' : 'repeat(2, var(--bookmark-slot-height))';
     container.classList.toggle('single-row', isSingleRow);
     const headBar = document.getElementById('head-bar');
-    if (headBar) headBar.classList.toggle('single-row', isSingleRow);
+    if (headBar) {
+      headBar.classList.toggle('single-row', isSingleRow);
+      headBar.classList.toggle('no-bookmarks', _bookmarkSlots === 0);
+      if (_bookmarkSlots === 0) {
+        const _wz = document.getElementById('widgets-zone');
+        headBar.classList.toggle('no-widgets', !(_wz && _wz.classList.contains('active')));
+      } else {
+        headBar.classList.remove('no-widgets');
+      }
+    }
 
     for (let i = 0; i < _bookmarkSlots; i++) {
       const slot = document.createElement('div');
@@ -358,11 +367,19 @@ const BookmarksManager = (() => {
     return targetIndex < children.length ? parseInt(children[targetIndex].dataset.slotIndex) : null;
   }
 
+  function updateHeadBarCompactState() {
+    const headBar = document.getElementById('head-bar');
+    if (!headBar || !headBar.classList.contains('no-bookmarks')) return;
+    const wz = document.getElementById('widgets-zone');
+    headBar.classList.toggle('no-widgets', !(wz && wz.classList.contains('active')));
+  }
+
   return {
     render,
     loadDisplayedBookmarks,
     saveDisplayedBookmarks,
     addDisplayedBookmark,
-    removeDisplayedBookmark
+    removeDisplayedBookmark,
+    updateHeadBarCompactState
   };
 })();

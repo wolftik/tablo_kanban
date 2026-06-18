@@ -443,6 +443,26 @@
   height: 24px;
 }
 
+#head-bar.no-bookmarks {
+  min-height: auto;
+  padding: 8px 12px;
+}
+
+#head-bar.no-bookmarks #bookmarks-container {
+  display: none;
+}
+
+#head-bar.no-bookmarks.no-widgets {
+  padding: 6px 12px;
+  justify-content: flex-end;
+}
+
+#head-bar.no-bookmarks.no-widgets #settings-btn-wrapper {
+  flex-direction: row;
+  margin-left: 0;
+  gap: 8px;
+}
+
 @media (max-width: 600px) {
   #bookmarks-container {
     gap: 2px;

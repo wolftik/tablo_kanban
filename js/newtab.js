@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (widgetsZone && bmContainer && !widgetsZone.classList.contains('active')) {
     bmContainer.classList.add('centered');
   }
+  BookmarksManager.updateHeadBarCompactState();
 
   const settingsBtn = document.getElementById('settings-btn');
   if (settingsBtn) {
@@ -114,6 +115,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           WidgetSystem.register('weather', WeatherWidget);
           WidgetSystem.register('clock', ClockWidget);
           WidgetSystem.initAll();
+          BookmarksManager.updateHeadBarCompactState();
         }
       }
       if (areaName === 'sync' && changes.bookmarks_display) {
