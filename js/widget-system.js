@@ -55,11 +55,19 @@ const ClockWidget = {
       return;
     }
 
+    let sidebar = document.getElementById('widgets-sidebar');
+    if (!sidebar) {
+      sidebar = document.createElement('div');
+      sidebar.id = 'widgets-sidebar';
+      sidebar.className = 'widgets-sidebar';
+      zone.appendChild(sidebar);
+    }
+
     const el = document.createElement('div');
     el.id = 'clock-widget';
     el.className = 'widget clock-widget';
     el.innerHTML = '<div class="clock-time">--:--</div><div class="clock-date">---</div>';
-    zone.appendChild(el);
+    sidebar.appendChild(el);
     zone.classList.add('active');
     zone.dataset.enabled = 'true';
 
@@ -84,7 +92,7 @@ const ClockWidget = {
   }
 };
 
-WidgetSystem.register('clock', ClockWidget);
+// register moved to end of file
 
 const WMO_ICONS = {
   0: '\u2600\uFE0F',   1: '\uD83C\uDF24\uFE0F', 2: '\u26C5',
@@ -115,11 +123,19 @@ const WeatherWidget = {
 
     if (!enabled) return;
 
+    let sidebar = document.getElementById('widgets-sidebar');
+    if (!sidebar) {
+      sidebar = document.createElement('div');
+      sidebar.id = 'widgets-sidebar';
+      sidebar.className = 'widgets-sidebar';
+      zone.appendChild(sidebar);
+    }
+
     this._el = document.createElement('div');
     this._el.id = 'weather-widget';
     this._el.className = 'widget weather-widget';
     this._el.innerHTML = `<div class="weather-loading">${I18n.t('weather.loading')}</div>`;
-    zone.prepend(this._el);
+    sidebar.appendChild(this._el);
     zone.classList.add('active');
     zone.dataset.enabled = 'true';
 
@@ -205,7 +221,7 @@ const WeatherWidget = {
   }
 };
 
-WidgetSystem.register('weather', WeatherWidget);
+// register moved to end of file
 
 const CurrencyWidget = {
   _interval: null,
@@ -227,16 +243,16 @@ const CurrencyWidget = {
     zone.classList.add('active');
     zone.dataset.enabled = 'true';
 
-    const cached = await this._readCache();
+    const cached = await this._readCache(settings);
     if (cached) {
-      this._render(cached.rates, cached.base, cached.previousRates);
+      this._render(cached.rates, cached.base);
     } else {
       this._fetchAndRender(settings);
     }
-    this._interval = setInterval(() => this._fetchAndRender(null), 300000);
+    this._interval = setInterval(() => this._fetchAndRender(null), 3600000);
   },
 
-  _render(rates, base, previousRates) {
+  _render(rates, base) {
     if (!this._el || !rates) {
       if (this._el) this._el.innerHTML = '<div class="market-error">' + I18n.t('currency.error') + '</div>';
       return;
@@ -245,23 +261,22 @@ const CurrencyWidget = {
     let html = '';
     pairs.forEach(p => {
       const rate = CurrencyProviders.computeRate(rates, p.base, p.quote);
-      const prevRate = previousRates ? CurrencyProviders.computeRate(previousRates, p.base, p.quote) : null;
-      const change = CurrencyProviders.formatChange(rate, prevRate);
       const rateStr = CurrencyProviders.formatRate(rate);
       html += '<div class="market-row">';
       html += '<span class="market-pair">' + p.base + '/' + p.quote + '</span>';
       html += '<span class="market-rate">' + rateStr + '</span>';
-      html += '<span class="market-change ' + change.sign + '">' + change.text + '</span>';
       html += '</div>';
     });
-    this._el.innerHTML = '<div class="market-section-title">' + I18n.t('widgets.currency') + '</div>' + html;
+    this._el.innerHTML = html;
   },
 
-  async _readCache() {
+  async _readCache(settings) {
     try {
       const cached = await StorageLocal.get('currency_cache');
       if (!cached) return null;
-      if (Date.now() - cached.timestamp < 300000) {
+      const base = settings.widgets?.currencyBase || 'USD';
+      if (cached.base !== base) return null;
+      if (Date.now() - cached.timestamp < 3600000) {
         return cached;
       }
       return null;
@@ -270,12 +285,11 @@ const CurrencyWidget = {
     }
   },
 
-  async _writeCache(rates, base, previousRates) {
+  async _writeCache(rates, base) {
     try {
       await StorageLocal.set('currency_cache', {
         rates: rates,
         base: base,
-        previousRates: previousRates,
         timestamp: Date.now()
       });
     } catch (e) {
@@ -289,9 +303,6 @@ const CurrencyWidget = {
     }
     const base = settings.widgets?.currencyBase || 'USD';
 
-    const previousCache = await this._readCache();
-    const previousRates = previousCache ? previousCache.rates : null;
-
     const rates = await CurrencyProviders.fetchRates();
     if (!this._el) return;
 
@@ -300,8 +311,8 @@ const CurrencyWidget = {
       return;
     }
 
-    this._render(rates, base, previousRates);
-    this._writeCache(rates, base, previousRates);
+    this._render(rates, base);
+    this._writeCache(rates, base);
   },
 
   destroy() {
@@ -316,7 +327,7 @@ const CurrencyWidget = {
   }
 };
 
-WidgetSystem.register('currency', CurrencyWidget);
+// register moved to end of file
 
 const StocksWidget = {
   _interval: null,
@@ -417,4 +428,10 @@ const StocksWidget = {
   }
 };
 
+// Init order = DOM order in widgets-zone flex row.
+// stocks → currency → weather → clock
+// stocks and currency in widgets-zone; weather and clock in widgets-sidebar
 WidgetSystem.register('stocks', StocksWidget);
+WidgetSystem.register('currency', CurrencyWidget);
+WidgetSystem.register('weather', WeatherWidget);
+WidgetSystem.register('clock', ClockWidget);

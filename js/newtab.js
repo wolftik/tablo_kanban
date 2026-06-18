@@ -109,10 +109,10 @@ document.addEventListener('DOMContentLoaded', async () => {
             delete zone.dataset.enabled;
             WidgetSystem.destroyAll();
           }
-          WidgetSystem.register('clock', ClockWidget);
-          WidgetSystem.register('weather', WeatherWidget);
-          WidgetSystem.register('currency', CurrencyWidget);
           WidgetSystem.register('stocks', StocksWidget);
+          WidgetSystem.register('currency', CurrencyWidget);
+          WidgetSystem.register('weather', WeatherWidget);
+          WidgetSystem.register('clock', ClockWidget);
           WidgetSystem.initAll();
         }
       }

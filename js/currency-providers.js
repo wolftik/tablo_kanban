@@ -8,10 +8,15 @@ const CurrencyProviders = (() => {
     { base: 'EUR', quote: 'RUB' },
     { base: 'CNY', quote: 'RUB' },
     { base: 'USD', quote: 'CNY' },
-    { base: 'EUR', quote: 'USD' }
+    { base: 'EUR', quote: 'USD' },
+    { base: 'EUR', quote: 'CNY' },
+    { base: 'USD', quote: 'JPY' },
+    { base: 'EUR', quote: 'JPY' },
+    { base: 'RUB', quote: 'JPY' }
   ];
 
-  function _filterPairs(baseCurrency) {
+  function filterPairs(baseCurrency) {
+    if (baseCurrency === 'ALL') return FIXED_PAIRS;
     return FIXED_PAIRS.filter(p => p.base === baseCurrency || p.quote === baseCurrency);
   }
 
@@ -28,7 +33,8 @@ const CurrencyProviders = (() => {
         USD: 1,
         RUB: json.rates.RUB,
         EUR: json.rates.EUR,
-        CNY: json.rates.CNY
+        CNY: json.rates.CNY,
+        JPY: json.rates.JPY
       };
     } catch (e) {
       console.warn('[CurrencyProviders] Network error:', e);
@@ -49,13 +55,5 @@ const CurrencyProviders = (() => {
     return value.toFixed(5);
   }
 
-  function formatChange(current, previous) {
-    if (current == null || previous == null || previous === 0) return { text: '--', sign: '' };
-    const diff = current - previous;
-    const pct = (diff / previous) * 100;
-    const sign = diff >= 0 ? '+' : '';
-    return { text: sign + pct.toFixed(2) + '%', sign: diff >= 0 ? 'positive' : 'negative' };
-  }
-
-  return { fetchRates, computeRate, formatRate, formatChange, filterPairs: _filterPairs, FIXED_PAIRS: FIXED_PAIRS };
+  return { fetchRates, computeRate, formatRate, filterPairs };
 })();

@@ -636,5 +636,9 @@
   "cardDescOlTooltip": { "message": "क्रमांकित सूची" },
   "cardDescQuoteTooltip": { "message": "उद्धरण" },
   "modalEdit": { "message": "संपादित करें" },
-  "modalHide": { "message": "छिपाएँ" }
+  "modalHide": { "message": "छिपाएँ" },
+  "widgetsCurrency": { "message": "विनिमय दर", "description": "Currency widget label" },
+  "currencyLoading": { "message": "लोड हो रहा है...", "description": "Currency loading message" },
+  "currencyError": { "message": "कोई डेटा नहीं", "description": "Currency error message" },
+  "currencyBase": { "message": "आधार मुद्रा:", "description": "Base currency label" }
 }

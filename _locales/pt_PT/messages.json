@@ -171,5 +171,9 @@
   "cardDescOlTooltip": { "message": "Lista numerada" },
   "cardDescQuoteTooltip": { "message": "Citação" },
   "modalEdit": { "message": "Editar" },
-  "modalHide": { "message": "Ocultar" }
+  "modalHide": { "message": "Ocultar" },
+  "widgetsCurrency": { "message": "Taxas de câmbio", "description": "Currency widget label" },
+  "currencyLoading": { "message": "A carregar...", "description": "Currency loading message" },
+  "currencyError": { "message": "Sem dados", "description": "Currency error message" },
+  "currencyBase": { "message": "Moeda base:", "description": "Base currency label" }
 }

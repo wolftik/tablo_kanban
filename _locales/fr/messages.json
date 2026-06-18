@@ -613,5 +613,9 @@
   "cardDescOlTooltip": { "message": "Liste numérotée" },
   "cardDescQuoteTooltip": { "message": "Citation" },
   "modalEdit": { "message": "Modifier" },
-  "modalHide": { "message": "Masquer" }
+  "modalHide": { "message": "Masquer" },
+  "widgetsCurrency": { "message": "Taux de change", "description": "Currency widget label" },
+  "currencyLoading": { "message": "Chargement...", "description": "Currency loading message" },
+  "currencyError": { "message": "Aucune donnée", "description": "Currency error message" },
+  "currencyBase": { "message": "Devise de base:", "description": "Base currency label" }
 }

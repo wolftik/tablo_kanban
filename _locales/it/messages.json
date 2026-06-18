@@ -636,5 +636,9 @@
   "cardDescOlTooltip": { "message": "Elenco numerato" },
   "cardDescQuoteTooltip": { "message": "Citazione" },
   "modalEdit": { "message": "Modifica" },
-  "modalHide": { "message": "Nascondi" }
+  "modalHide": { "message": "Nascondi" },
+  "widgetsCurrency": { "message": "Tassi di cambio", "description": "Currency widget label" },
+  "currencyLoading": { "message": "Caricamento...", "description": "Currency loading message" },
+  "currencyError": { "message": "Nessun dato", "description": "Currency error message" },
+  "currencyBase": { "message": "Valuta base:", "description": "Base currency label" }
 }

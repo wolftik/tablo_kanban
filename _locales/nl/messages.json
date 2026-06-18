@@ -636,5 +636,9 @@
   "cardDescOlTooltip": { "message": "Genummerde lijst" },
   "cardDescQuoteTooltip": { "message": "Citaat" },
   "modalEdit": { "message": "Bewerken" },
-  "modalHide": { "message": "Verbergen" }
+  "modalHide": { "message": "Verbergen" },
+  "widgetsCurrency": { "message": "Wisselkoersen", "description": "Currency widget label" },
+  "currencyLoading": { "message": "Laden...", "description": "Currency loading message" },
+  "currencyError": { "message": "Geen gegevens", "description": "Currency error message" },
+  "currencyBase": { "message": "Basisvaluta:", "description": "Base currency label" }
 }
