@@ -74,43 +74,83 @@
     <div id="edit-card-modal" class="modal-overlay" style="display:none">
       <div class="modal edit-card-modal-inner">
         <h3 id="modal-title" data-i18n="modal.task">Задача</h3>
+
+        <!-- Title -->
         <input type="text" id="card-title-input" data-i18n-placeholder="modal.title.placeholder" placeholder="Название задачи" maxlength="200">
-        <textarea id="card-desc-input" data-i18n-placeholder="modal.desc.placeholder" placeholder="Описание" rows="8" maxlength="5000"></textarea>
-        <span class="tags-label" data-i18n="modal.assignee">Исполнитель:</span>
-        <select id="card-assignee-select">
-          <option value="" data-i18n="modal.not.assigned">Не назначен</option>
-        </select>
-        <span class="tags-label" data-i18n="modal.author">Автор:</span>
-        <select id="card-author-select">
-          <option value="" data-i18n="modal.not.specified">Не указан</option>
-        </select>
-        <div id="card-tags-container">
-          <span class="tags-label" data-i18n="modal.tags">Теги:</span>
-          <div id="card-tags-dropdown-wrapper">
-            <div id="card-tags-display" class="tags-display" data-i18n-title="modal.tags.select" title="Выбрать теги">
-              <span class="tags-placeholder" data-i18n="card.tags.placeholder">Все теги</span>
-            </div>
-            <div id="card-tags-dropdown" class="tags-dropdown">
-              <div class="card-tags-dropdown-header">
-                <span data-i18n="card.tags.dropdown.header">Выберите теги</span>
-                <button id="tags-dropdown-clear" class="tags-dropdown-clear" data-i18n-title="card.tags.dropdown.clear" data-i18n="card.tags.dropdown.clear" title="Очистить">Очистить</button>
+
+        <!-- Description block -->
+        <div class="card-section">
+          <div class="card-section-heading" data-i18n="cardDescHeading">Описание</div>
+          <div class="desc-editor-wrapper">
+            <div class="desc-toolbar">
+              <div class="tb-left">
+                <button type="button" class="tb-btn tb-bold" data-cmd="bold" data-i18n-title="cardDescBoldTooltip" title="Жирный (Ctrl+B)"><b>B</b></button>
+                <button type="button" class="tb-btn tb-italic" data-cmd="italic" data-i18n-title="cardDescItalicTooltip" title="Курсив (Ctrl+I)"><i>I</i></button>
+                <span class="tb-sep"></span>
+                <button type="button" class="tb-btn" data-cmd="insertUnorderedList" data-i18n-title="cardDescUlTooltip" title="Маркированный список">•≡</button>
+                <button type="button" class="tb-btn" data-cmd="insertOrderedList" data-i18n-title="cardDescOlTooltip" title="Нумерованный список">1≡</button>
+                <span class="tb-sep"></span>
+                <button type="button" class="tb-btn" data-cmd="quote" data-i18n-title="cardDescQuoteTooltip" title="Цитата">❝</button>
+                <span class="tb-sep"></span>
+                <button type="button" class="tb-btn" data-cmd="link" title="Вставить ссылку">🔗</button>
               </div>
-              <div id="card-tags-selected" class="card-tags-selected"></div>
-              <div id="card-tags-selector" class="tags-dropdown-list"></div>
+              <span id="char-counter" class="char-counter">0 / 10000</span>
             </div>
+            <div id="card-desc-editor" class="desc-editor" contenteditable="true" data-placeholder="Описание"></div>
           </div>
         </div>
-        <span class="tags-label" data-i18n="modal.priority">Приоритет:</span>
-        <select id="card-priority-select">
-          <option value="" data-i18n="modal.no.priority">Без приоритета</option>
-          <option value="low" data-i18n="priority.low">Низкий</option>
-          <option value="medium" data-i18n="priority.medium">Средний</option>
-          <option value="high" data-i18n="priority.high">Высокий</option>
-          <option value="urgent" data-i18n="priority.urgent">Срочный</option>
-        </select>
+
+        <!-- Checklist block -->
+        <div class="card-section">
+          <div class="card-section-heading" data-i18n="cardChecklistHeading">Чек-лист</div>
+          <div id="checklist-progress-bar" class="checklist-editor-progress" style="display:none">
+            <div id="checklist-progress-fill" class="checklist-editor-progress-fill"></div>
+          </div>
+          <div id="checklist-progress-text" class="checklist-progress-text" style="display:none"></div>
+          <div id="checklist-tree" class="checklist-tree"></div>
+          <button type="button" id="checklist-add-btn" class="checklist-add-btn" data-i18n="cardChecklistAdd">+ Добавить пункт</button>
+        </div>
+
+        <!-- Properties block -->
+        <div class="card-section">
+          <span class="tags-label" data-i18n="modal.assignee">Исполнитель:</span>
+          <select id="card-assignee-select">
+            <option value="" data-i18n="modal.not.assigned">Не назначен</option>
+          </select>
+          <span class="tags-label" data-i18n="modal.author">Автор:</span>
+          <select id="card-author-select">
+            <option value="" data-i18n="modal.not.specified">Не указан</option>
+          </select>
+          <div id="card-tags-container">
+            <span class="tags-label" data-i18n="modal.tags">Теги:</span>
+            <div id="card-tags-dropdown-wrapper">
+              <div id="card-tags-display" class="tags-display" data-i18n-title="modal.tags.select" title="Выбрать теги">
+                <span class="tags-placeholder" data-i18n="card.tags.placeholder">Все теги</span>
+              </div>
+              <div id="card-tags-dropdown" class="tags-dropdown">
+                <div class="card-tags-dropdown-header">
+                  <span data-i18n="card.tags.dropdown.header">Выберите теги</span>
+                  <button id="tags-dropdown-clear" class="tags-dropdown-clear" data-i18n-title="card.tags.dropdown.clear" data-i18n="card.tags.dropdown.clear" title="Очистить">Очистить</button>
+                </div>
+                <div id="card-tags-selected" class="card-tags-selected"></div>
+                <div id="card-tags-selector" class="tags-dropdown-list"></div>
+              </div>
+            </div>
+          </div>
+          <span class="tags-label" data-i18n="modal.priority">Приоритет:</span>
+          <select id="card-priority-select">
+            <option value="" data-i18n="modal.no.priority">Без приоритета</option>
+            <option value="low" data-i18n="priority.low">Низкий</option>
+            <option value="medium" data-i18n="priority.medium">Средний</option>
+            <option value="high" data-i18n="priority.high">Высокий</option>
+            <option value="urgent" data-i18n="priority.urgent">Срочный</option>
+          </select>
+        </div>
+
         <div class="modal-actions">
           <button id="card-delete-btn" class="btn-danger" style="margin-right:auto" data-i18n="modal.delete">Удалить</button>
           <button id="card-cancel" data-i18n="modal.cancel">Отмена</button>
+          <button id="card-edit-btn" style="display:none" data-i18n="modal.edit">Редактировать</button>
           <button id="card-save" data-i18n="modal.save">Сохранить</button>
         </div>
       </div>

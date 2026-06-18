@@ -52,7 +52,7 @@
     "description": "Add site placeholder"
   },
   "filterAllAssignees": {
-    "message": "Tous les assignés",
+    "message": "Tous les assignР“В©s",
     "description": "Filter: all assignees option"
   },
   "filterAllAuthors": {
@@ -60,11 +60,11 @@
     "description": "Filter: all authors option"
   },
   "filterAllPriorities": {
-    "message": "Toutes les priorités",
+    "message": "Toutes les prioritР“В©s",
     "description": "Filter: all priorities option"
   },
   "filterSearchPlaceholder": {
-    "message": "Rechercher des tâches...",
+    "message": "Rechercher des tР“Сћches...",
     "description": "Filter search placeholder"
   },
   "filterClearTitle": {
@@ -92,7 +92,7 @@
     "description": "Tags filter: all"
   },
   "tagsFilterSelected": {
-    "message": "$count$ sélectionné(s)",
+    "message": "$count$ sР“В©lectionnР“В©(s)",
     "description": "Tags filter: selected count",
     "placeholders": {
       "count": {
@@ -105,11 +105,11 @@
     "description": "Remove tag filter tooltip"
   },
   "modalTask": {
-    "message": "Tâche",
+    "message": "TР“Сћche",
     "description": "Modal title"
   },
   "modalTitlePlaceholder": {
-    "message": "Titre de la tâche",
+    "message": "Titre de la tР“Сћche",
     "description": "Modal title input placeholder"
   },
   "modalDescPlaceholder": {
@@ -117,11 +117,11 @@
     "description": "Modal description placeholder"
   },
   "modalAssignee": {
-    "message": "Assigné à :",
+    "message": "AssignР“В© Р“В  :",
     "description": "Assignee label"
   },
   "modalNotAssigned": {
-    "message": "Non assigné",
+    "message": "Non assignР“В©",
     "description": "Not assigned option"
   },
   "modalAuthor": {
@@ -129,7 +129,7 @@
     "description": "Author label"
   },
   "modalNotSpecified": {
-    "message": "Non spécifié",
+    "message": "Non spР“В©cifiР“В©",
     "description": "Not specified option"
   },
   "modalTags": {
@@ -137,15 +137,15 @@
     "description": "Tags label"
   },
   "modalTagsSelect": {
-    "message": "Sélectionner des tags",
+    "message": "SР“В©lectionner des tags",
     "description": "Tags select tooltip"
   },
   "modalPriority": {
-    "message": "Priorité :",
+    "message": "PrioritР“В© :",
     "description": "Priority label"
   },
   "modalNoPriority": {
-    "message": "Aucune priorité",
+    "message": "Aucune prioritР“В©",
     "description": "No priority option"
   },
   "modalDelete": {
@@ -161,11 +161,11 @@
     "description": "Save button"
   },
   "modalNewTask": {
-    "message": "Nouvelle tâche",
+    "message": "Nouvelle tР“Сћche",
     "description": "New task modal title"
   },
   "modalEditTask": {
-    "message": "Modifier la tâche",
+    "message": "Modifier la tР“Сћche",
     "description": "Edit task modal title"
   },
   "columnAddCard": {
@@ -181,7 +181,7 @@
     "description": "Add column dialog title"
   },
   "columnAddCreate": {
-    "message": "Créer",
+    "message": "CrР“В©er",
     "description": "Create column button"
   },
   "columnNewColumn": {
@@ -210,7 +210,7 @@
     }
   },
   "columnDeleteCardConfirm": {
-    "message": "Supprimer la tâche \"$title$\" ?",
+    "message": "Supprimer la tР“Сћche \"$title$\" ?",
     "description": "Card delete confirmation",
     "placeholders": {
       "title": {
@@ -244,7 +244,7 @@
     "description": "Clear cards wrong phrase error"
   },
   "settingsTitle": {
-    "message": "Paramètres",
+    "message": "ParamР“РЃtres",
     "description": "Settings button title"
   },
   "settingsOpen": {
@@ -252,7 +252,7 @@
     "description": "Open extension text"
   },
   "optionsTitle": {
-    "message": "Paramètres — Tablo Kanban",
+    "message": "ParamР“РЃtres РІР‚вЂќ Tablo Kanban",
     "description": "Options page title"
   },
   "optionsTabColumns": {
@@ -264,7 +264,7 @@
     "description": "Tags tab button"
   },
   "optionsTabPerformers": {
-    "message": "Exécutants",
+    "message": "ExР“В©cutants",
     "description": "Performers tab button"
   },
   "optionsTabAuthors": {
@@ -296,23 +296,23 @@
     "description": "Yandex Disk option"
   },
   "optionsSyncDescGoogle": {
-    "message": "Les données du tableau Kanban seront synchronisées entre vos appareils via Google Drive. La synchronisation Google Drive fonctionne uniquement dans Chrome.",
+    "message": "Les donnР“В©es du tableau Kanban seront synchronisР“В©es entre vos appareils via Google Drive. La synchronisation Google Drive fonctionne uniquement dans Chrome.",
     "description": "Google Drive sync description"
   },
   "optionsSyncDescYandex": {
-    "message": "Les données du tableau Kanban seront synchronisées entre vos appareils via Yandex Disk.",
+    "message": "Les donnР“В©es du tableau Kanban seront synchronisР“В©es entre vos appareils via Yandex Disk.",
     "description": "Yandex Disk sync description"
   },
   "optionsSyncChecking": {
-    "message": "Vérification du statut...",
+    "message": "VР“В©rification du statut...",
     "description": "Sync status checking"
   },
   "optionsSyncConnected": {
-    "message": "Synchronisation connectée",
+    "message": "Synchronisation connectР“В©e",
     "description": "Sync connected status"
   },
   "optionsSyncDisconnected": {
-    "message": "Synchronisation non connectée",
+    "message": "Synchronisation non connectР“В©e",
     "description": "Sync disconnected status"
   },
   "optionsSyncSignin": {
@@ -320,19 +320,19 @@
     "description": "Sign in button"
   },
   "optionsSyncSignout": {
-    "message": "Déconnecter la synchro",
+    "message": "DР“В©connecter la synchro",
     "description": "Sign out button"
   },
   "optionsSyncFailed": {
-    "message": "Échec de la connexion",
+    "message": "Р“вЂ°chec de la connexion",
     "description": "Sync failed status"
   },
   "optionsSyncError": {
-    "message": "Échec de la vérification",
+    "message": "Р“вЂ°chec de la vР“В©rification",
     "description": "Sync error status"
   },
   "optionsSyncTokenExpired": {
-    "message": "Le jeton Yandex Disk a expiré ou est invalide. Veuillez entrer un nouveau jeton.",
+    "message": "Le jeton Yandex Disk a expirР“В© ou est invalide. Veuillez entrer un nouveau jeton.",
     "description": "Token expired message"
   },
   "optionsSyncYadiskApply": {
@@ -348,7 +348,7 @@
     "description": "Get OAuth token button"
   },
   "optionsSyncYadiskOauthOpened": {
-    "message": "La page d'autorisation Yandex s'est ouverte dans un nouvel onglet. Après l'autorisation, copiez le jeton depuis la barre d'adresse, collez-le dans le champ \"Jeton OAuth\" ci-dessous, puis cliquez sur \"Enregistrer le jeton\".",
+    "message": "La page d'autorisation Yandex s'est ouverte dans un nouvel onglet. AprР“РЃs l'autorisation, copiez le jeton depuis la barre d'adresse, collez-le dans le champ \"Jeton OAuth\" ci-dessous, puis cliquez sur \"Enregistrer le jeton\".",
     "description": "OAuth page opened message"
   },
   "optionsSyncYadiskClientHint": {
@@ -356,7 +356,7 @@
     "description": "Client ID hint text"
   },
   "optionsSyncYadiskClientStep2": {
-    "message": "Créer une application → type « Web service »",
+    "message": "CrР“В©er une application РІвЂ вЂ™ type Р’В« Web service Р’В»",
     "description": "Step 2"
   },
   "optionsSyncYadiskClientStep4": {
@@ -376,7 +376,7 @@
     "description": "Columns section title"
   },
   "optionsColumnsDesc": {
-    "message": "Glisser pour réorganiser. Cliquer sur × pour supprimer.",
+    "message": "Glisser pour rР“В©organiser. Cliquer sur Р“вЂ” pour supprimer.",
     "description": "Columns section description"
   },
   "optionsColumnsAdd": {
@@ -400,15 +400,15 @@
     "description": "New tag placeholder"
   },
   "optionsPerformersTitle": {
-    "message": "Exécutants",
+    "message": "ExР“В©cutants",
     "description": "Performers section title"
   },
   "optionsPerformersAdd": {
-    "message": "Ajouter un exécutant",
+    "message": "Ajouter un exР“В©cutant",
     "description": "Add performer button"
   },
   "optionsPerformersNew": {
-    "message": "Nouvel exécutant",
+    "message": "Nouvel exР“В©cutant",
     "description": "New performer placeholder"
   },
   "optionsAuthorsTitle": {
@@ -424,7 +424,7 @@
     "description": "New author placeholder"
   },
   "optionsAppearanceTheme": {
-    "message": "Thème",
+    "message": "ThР“РЃme",
     "description": "Theme section title"
   },
   "optionsAppearanceLight": {
@@ -436,7 +436,7 @@
     "description": "Dark theme option"
   },
   "optionsAppearanceSystem": {
-    "message": "Système",
+    "message": "SystР“РЃme",
     "description": "System theme option"
   },
   "optionsAppearanceLanguage": {
@@ -444,7 +444,7 @@
     "description": "Language section title"
   },
   "optionsBack": {
-    "message": "← Retour",
+    "message": "РІвЂ С’ Retour",
     "description": "Back to main page button"
   },
   "optionsSave": {
@@ -452,7 +452,7 @@
     "description": "Save button"
   },
   "optionsSaved": {
-    "message": "Enregistré !",
+    "message": "EnregistrР“В© !",
     "description": "Saved confirmation"
   },
   "optionsAboutVersion": {
@@ -464,7 +464,7 @@
     "description": "About description"
   },
   "optionsAboutStorage": {
-    "message": "Les données du tableau sont stockées localement dans chrome.storage.local. Les paramètres et clés API sont dans chrome.storage.sync (synchronisés entre appareils). Les données du tableau sont synchronisées via un fournisseur choisi (Google Drive ou Yandex Disk).",
+    "message": "Les donnР“В©es du tableau sont stockР“В©es localement dans chrome.storage.local. Les paramР“РЃtres et clР“В©s API sont dans chrome.storage.sync (synchronisР“В©s entre appareils). Les donnР“В©es du tableau sont synchronisР“В©es via un fournisseur choisi (Google Drive ou Yandex Disk).",
     "description": "Storage info"
   },
   "optionsSupportTitle": {
@@ -472,7 +472,7 @@
     "description": "Support section title"
   },
   "optionsSupportDesc": {
-    "message": "Si vous trouvez cette extension utile, vous pouvez soutenir son développement :",
+    "message": "Si vous trouvez cette extension utile, vous pouvez soutenir son dР“В©veloppement :",
     "description": "Support section description"
   },
   "optionsSupportOkx": {
@@ -488,15 +488,15 @@
     "description": "OKX QR modal title"
   },
   "optionsSupportOkxModalDesc": {
-    "message": "Scannez le code QR dans l'application OKX pour transférer :",
+    "message": "Scannez le code QR dans l'application OKX pour transfР“В©rer :",
     "description": "OKX QR modal description"
   },
   "cardOldTooltip": {
-    "message": "La tâche a plus de 7 jours",
+    "message": "La tР“Сћche a plus de 7 jours",
     "description": "Snail tooltip for old cards in first column"
   },
   "cardFireTooltip": {
-    "message": "La tâche a plus de 22 jours",
+    "message": "La tР“Сћche a plus de 22 jours",
     "description": "Fire tooltip for very old cards in first column"
   },
   "cardTagsPlaceholder": {
@@ -504,7 +504,7 @@
     "description": "Card tags placeholder"
   },
   "cardTagsDropdownHeader": {
-    "message": "Sélectionner des tags",
+    "message": "SР“В©lectionner des tags",
     "description": "Tags dropdown header"
   },
   "cardTagsDropdownClear": {
@@ -520,7 +520,7 @@
     "description": "Clock widget label"
   },
   "widgetsWeather": {
-    "message": "Météo",
+    "message": "MР“В©tР“В©o",
     "description": "Weather widget label"
   },
   "weatherCity": {
@@ -532,19 +532,19 @@
     "description": "Weather city placeholder"
   },
   "weatherUnit": {
-    "message": "Unités",
+    "message": "UnitР“В©s",
     "description": "Weather unit label"
   },
   "weatherCelsius": {
-    "message": "°C",
+    "message": "Р’В°C",
     "description": "Celsius option"
   },
   "weatherFahrenheit": {
-    "message": "°F",
+    "message": "Р’В°F",
     "description": "Fahrenheit option"
   },
   "weatherError": {
-    "message": "Aucune donnée",
+    "message": "Aucune donnР“В©e",
     "description": "Weather error message"
   },
   "weatherLoading": {
@@ -564,15 +564,15 @@
     "description": "Bookmark slots label"
   },
   "optionsBookmarksSlotsHint": {
-    "message": "Maximum 22. Doit être un nombre pair.",
+    "message": "Maximum 22. Doit Р“Р„tre un nombre pair.",
     "description": "Bookmark slots hint"
   },
   "homepageModalTitle": {
-    "message": "Définir comme page d'accueil",
+    "message": "DР“В©finir comme page d'accueil",
     "description": "Homepage modal title"
   },
   "homepageModalDesc": {
-    "message": "Copiez cette URL et collez-la dans les paramètres de votre navigateur comme page d'accès rapide ou page d'accueil.",
+    "message": "Copiez cette URL et collez-la dans les paramР“РЃtres de votre navigateur comme page d'accР“РЃs rapide ou page d'accueil.",
     "description": "Homepage modal description"
   },
   "homepageModalCopy": {
@@ -580,7 +580,7 @@
     "description": "Copy button"
   },
   "homepageModalCopied": {
-    "message": "Copié !",
+    "message": "CopiР“В© !",
     "description": "Copied confirmation"
   },
   "homepageModalClose": {
@@ -588,20 +588,39 @@
     "description": "Close button"
   },
   "homepageHint": {
-    "message": "Définir comme page d'accueil",
+    "message": "DР“В©finir comme page d'accueil",
     "description": "Homepage info button tooltip"
   },
   "modalNoTitle": { "message": "Sans titre", "description": "Fallback title when card has no title" },
   "storageWarningFull": { "message": "Storage is almost full (90%+). Enable cloud sync or delete old cards to free up space.", "description": "Storage warning tooltip when localStorage is near full" },
-  "optionsSyncCspError": { "message": "Les requêtes vers Yandex Disk peuvent être bloquées par la politique de sécurité.", "description": "CSP error" },
-  "optionsSyncTokenInvalid": { "message": "Vérifiez le jeton et les droits d'accès.", "description": "Invalid token" },
-  "optionsSyncTokenForbidden": { "message": "Droits d'accès insuffisants.", "description": "Token forbidden" },
-  "storageErrorQuota": { "message": "Quota de stockage dépassée. Supprimez d'anciennes cartes ou effacez les données.", "description": "Storage quota exceeded error" },
-  "storageErrorGeneral": { "message": "Échec de la sauvegarde des données. Veuillez réessayer.", "description": "General storage error" },
+  "optionsSyncCspError": { "message": "Les requР“Р„tes vers Yandex Disk peuvent Р“Р„tre bloquР“В©es par la politique de sР“В©curitР“В©.", "description": "CSP error" },
+  "optionsSyncTokenInvalid": { "message": "VР“В©rifiez le jeton et les droits d'accР“РЃs.", "description": "Invalid token" },
+  "optionsSyncTokenForbidden": { "message": "Droits d'accР“РЃs insuffisants.", "description": "Token forbidden" },
+  "storageErrorQuota": { "message": "Quota de stockage dР“В©passР“В©e. Supprimez d'anciennes cartes ou effacez les donnР“В©es.", "description": "Storage quota exceeded error" },
+  "storageErrorGeneral": { "message": "Р“вЂ°chec de la sauvegarde des donnР“В©es. Veuillez rР“В©essayer.", "description": "General storage error" },
   "storageIndicator": { "message": "Stockage :", "description": "Storage indicator label" },
-  "filterDateFrom": { "message": "Date de début", "description": "Date from filter title" },
+  "filterDateFrom": { "message": "Date de dР“В©but", "description": "Date from filter title" },
   "filterDateTo": { "message": "Date de fin", "description": "Date to filter title" },
   "optionsStorageUsage": { "message": "Utilisation du stockage : {used} Ko / {total} Ko ({pct}%)", "description": "Storage usage in options sync tab" },
   "optionsStorageLocal": { "message": "Stockage local", "description": "Local storage label in options sync tab" },
-  "migrationOverflowLost": { "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?", "description": "Warning when cloud-to-local migration cannot fit all cards", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } }
+  "migrationOverflowLost": { "message": "$count$ out of $total$ cards will be permanently lost because they don't fit in local storage. Proceed and lose them?", "description": "Warning when cloud-to-local migration cannot fit all cards", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } },
+  "cardDescHeading": { "message": "Description" },
+  "cardLinksHeading": { "message": "Links" },
+  "cardLinksAdd": { "message": "Add" },
+  "cardLinksUrlPlaceholder": { "message": "URL" },
+  "cardLinksTitlePlaceholder": { "message": "Title (optional)" },
+  "cardLinksRemove": { "message": "Remove link" },
+  "cardChecklistHeading": { "message": "Checklist" },
+  "cardChecklistAdd": { "message": "+ Add item" },
+  "cardChecklistAddSub": { "message": "+ Sub-item" },
+  "cardChecklistProgress": { "message": "{done}/{total}", "placeholders": { "done": { "content": "$1" }, "total": { "content": "$2" } } },
+  "cardChecklistMore": { "message": "вЂ¦{count} more", "placeholders": { "count": { "content": "$1" } } },
+  "cardPropertiesHeading": { "message": "Properties" },
+  "cardDescBoldTooltip": { "message": "Bold (Ctrl+B)" },
+  "cardDescItalicTooltip": { "message": "Italic (Ctrl+I)" },
+  "cardDescUlTooltip": { "message": "Bulleted list" },
+  "cardDescOlTooltip": { "message": "Numbered list" },
+  "cardDescQuoteTooltip": { "message": "Quote" },
+  "modalEdit": { "message": "Edit" },
+  "modalHide": { "message": "Hide" }
 }

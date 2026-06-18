@@ -44,6 +44,8 @@ const I18n = (() => {
     'modal.save': 'modalSave',
     'modal.new.task': 'modalNewTask',
     'modal.edit.task': 'modalEditTask',
+    'modal.edit': 'modalEdit',
+    'modal.hide': 'modalHide',
     'column.add.card': 'columnAddCard',
     'column.add.column': 'columnAddColumn',
     'column.add.title': 'columnAddTitle',

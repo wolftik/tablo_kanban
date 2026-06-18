@@ -11,6 +11,7 @@ const KanbanRenderer = (() => {
   let _onFilterTagRemove = null;
   let _onCardDragStart = null;
   let _onCardDragEnd = null;
+  let _onChecklistToggle = null;
 
   function init(doms, callbacks) {
     _dom = doms;
@@ -23,6 +24,7 @@ const KanbanRenderer = (() => {
     _onFilterTagRemove = callbacks.onFilterTagRemove;
     _onCardDragStart = callbacks.onCardDragStart;
     _onCardDragEnd = callbacks.onCardDragEnd;
+    _onChecklistToggle = callbacks.onChecklistToggle;
   }
 
   function renderBoard(columns) {
@@ -141,6 +143,7 @@ const KanbanRenderer = (() => {
         const cardEl = KanbanCard.create(card, col.id, performers, KanbanStore.getTags(), tagById);
         if (_onCardDragStart) _bindCardDrag(cardEl);
         cardEl.addEventListener('click', () => { if (_onEditCard) _onEditCard(card, col.id); });
+        _bindCardChecklistToggle(cardEl, card, col.id);
         if (insertBeforeCard && container.contains(insertBeforeCard)) {
           container.insertBefore(cardEl, insertBeforeCard);
         } else {
@@ -221,7 +224,12 @@ const KanbanRenderer = (() => {
 
     const descEl = cardEl.querySelector('.card-description');
     if (card.description) {
-      const html = _renderMarkdown(card.description);
+      let html;
+      if (/<[a-z][\s\S]*>/i.test(card.description)) {
+        html = card.description;
+      } else {
+        html = _renderMarkdown(card.description);
+      }
       if (!descEl) {
         const d = document.createElement('div');
         d.className = 'card-description';
@@ -238,7 +246,8 @@ const KanbanRenderer = (() => {
     if (meta) {
       const dateEl = meta.querySelector('.card-date');
       if (card.createdAt) {
-        const dateStr = new Date(card.createdAt).toLocaleDateString(I18n.localeToBCP47(I18n.getLang()), { day: '2-digit', month: '2-digit' });
+        const dt = new Date(card.createdAt);
+        const dateStr = dt.getFullYear() + '-' + String(dt.getMonth() + 1).padStart(2, '0') + '-' + String(dt.getDate()).padStart(2, '0');
         if (!dateEl) {
           const d = document.createElement('span');
           d.className = 'card-date';
@@ -331,6 +340,196 @@ const KanbanRenderer = (() => {
     } else if (tagsContainer) {
       tagsContainer.remove();
     }
+
+    const linksContainer = cardEl.querySelector('.card-links');
+    if (card.links && card.links.length > 0) {
+      const maxLinks = 3;
+      const showLinks = card.links.slice(0, maxLinks);
+      const existingLinkEls = linksContainer ? linksContainer.querySelectorAll(':scope > .card-link-block') : [];
+      const existingUrls = new Map();
+      existingLinkEls.forEach(el => existingUrls.set(el.href, el));
+
+      let needsRebuild = existingLinkEls.length !== showLinks.length;
+      if (!needsRebuild) {
+        for (const link of showLinks) {
+          if (!existingUrls.has(link.url)) { needsRebuild = true; break; }
+        }
+      }
+
+      if (needsRebuild || !linksContainer) {
+        if (linksContainer) linksContainer.remove();
+        const lc = document.createElement('div');
+        lc.className = 'card-links';
+        for (const link of showLinks) {
+          const linkEl = document.createElement('a');
+          linkEl.className = 'card-link-block';
+          linkEl.href = link.url;
+          linkEl.target = '_blank';
+          linkEl.rel = 'noopener';
+          linkEl.addEventListener('click', (e) => e.stopPropagation());
+          let hostname = '';
+          try { hostname = new URL(link.url).hostname; } catch (e) { hostname = ''; }
+          const displayText = link.title || hostname + (new URL(link.url).pathname !== '/' ? '…' : '');
+          linkEl.innerHTML =
+            '<img class="card-link-favicon" src="https://www.google.com/s2/favicons?domain=' + escapeHtml(hostname) + '&sz=16" onerror="this.style.display=\'none\'">' +
+            '<span class="card-link-text">' + escapeHtml(displayText) + '</span>';
+          lc.appendChild(linkEl);
+        }
+        if (card.links.length > maxLinks) {
+          const more = document.createElement('span');
+          more.className = 'card-links-more';
+          more.textContent = '+' + (card.links.length - maxLinks);
+          lc.appendChild(more);
+        }
+        const metaEl = cardEl.querySelector('.card-meta');
+        const tagsEl = cardEl.querySelector('.card-tags');
+        const insertBefore = metaEl || tagsEl || cardEl.lastChild;
+        cardEl.insertBefore(lc, insertBefore);
+      }
+    } else if (linksContainer) {
+      linksContainer.remove();
+    }
+
+    const checklistEl = cardEl.querySelector('.card-checklist');
+    if (card.checklist && card.checklist.length > 0) {
+      const { done, total } = KanbanCard._countChecklistItems(card.checklist);
+      const maxVisible = 5;
+      const showItems = card.checklist.slice(0, maxVisible);
+      if (!checklistEl) {
+        const cl = document.createElement('div');
+        cl.className = 'card-checklist';
+        // Progress bar
+        if (total > 0) {
+          const bar = document.createElement('div');
+          bar.className = 'checklist-progress';
+          bar.title = done + '/' + total;
+          bar.innerHTML = '<div class="checklist-progress-fill" style="width:' + Math.round(done / total * 100) + '%"></div>';
+          cl.appendChild(bar);
+        }
+        // Items
+        for (const item of showItems) {
+          const ie = document.createElement('div');
+          ie.className = 'card-checklist-item';
+          ie.dataset.checklistItemId = item.id;
+          const chk = document.createElement('span');
+          chk.className = 'card-checklist-check' + (item.checked ? ' checked' : '');
+          chk.textContent = item.checked ? '\u2713' : '';
+          ie.appendChild(chk);
+          const txt = document.createElement('span');
+          txt.className = 'card-checklist-text';
+          txt.textContent = item.text || '';
+          ie.appendChild(txt);
+          cl.appendChild(ie);
+        }
+        if (card.checklist.length > maxVisible) {
+          const more = document.createElement('span');
+          more.className = 'card-checklist-more';
+          more.textContent = '+' + (card.checklist.length - maxVisible);
+          cl.appendChild(more);
+        }
+        cardEl.appendChild(cl);
+        _bindCardChecklistToggle(cardEl, card, columnId);
+      } else {
+        // Update existing — diff items by data-checklist-item-id
+        const existingItems = checklistEl.querySelectorAll(':scope > .card-checklist-item');
+        const existingMap = new Map();
+        existingItems.forEach(el => existingMap.set(el.dataset.checklistItemId, el));
+        const neededIds = new Set(showItems.map(i => i.id));
+        // Remove stale
+        for (const [id, el] of existingMap) {
+          if (!neededIds.has(id)) el.remove();
+        }
+        // Add/update items in order
+        let insertBefore = checklistEl.querySelector('.card-checklist-more');
+        for (let i = showItems.length - 1; i >= 0; i--) {
+          const item = showItems[i];
+          const existing = checklistEl.querySelector('[data-checklist-item-id="' + item.id + '"]');
+          if (existing) {
+            const chk = existing.querySelector('.card-checklist-check');
+            if (chk) {
+              chk.className = 'card-checklist-check' + (item.checked ? ' checked' : '');
+              chk.textContent = item.checked ? '\u2713' : '';
+            }
+            const txt = existing.querySelector('.card-checklist-text');
+            if (txt && txt.textContent !== item.text) txt.textContent = item.text || '';
+          } else {
+            const ie = document.createElement('div');
+            ie.className = 'card-checklist-item';
+            ie.dataset.checklistItemId = item.id;
+            const chk = document.createElement('span');
+            chk.className = 'card-checklist-check' + (item.checked ? ' checked' : '');
+            chk.textContent = item.checked ? '\u2713' : '';
+            ie.appendChild(chk);
+            const txt = document.createElement('span');
+            txt.className = 'card-checklist-text';
+            txt.textContent = item.text || '';
+            ie.appendChild(txt);
+            if (insertBefore && checklistEl.contains(insertBefore)) {
+              checklistEl.insertBefore(ie, insertBefore);
+            } else {
+              checklistEl.appendChild(ie);
+            }
+          }
+          insertBefore = checklistEl.querySelector('[data-checklist-item-id="' + item.id + '"]') || insertBefore;
+        }
+        // Update progress bar
+        let pBar = checklistEl.querySelector('.checklist-progress');
+        if (total > 0) {
+          if (!pBar) {
+            pBar = document.createElement('div');
+            pBar.className = 'checklist-progress';
+            checklistEl.prepend(pBar);
+          }
+          pBar.title = done + '/' + total;
+          let fill = pBar.querySelector('.checklist-progress-fill');
+          if (!fill) {
+            fill = document.createElement('div');
+            fill.className = 'checklist-progress-fill';
+            pBar.appendChild(fill);
+          }
+          fill.style.width = Math.round(done / total * 100) + '%';
+        } else if (pBar) {
+          pBar.remove();
+        }
+        // Update more indicator
+        let moreEl = checklistEl.querySelector('.card-checklist-more');
+        if (card.checklist.length > maxVisible) {
+          const newText = '+' + (card.checklist.length - maxVisible);
+          if (!moreEl) {
+            moreEl = document.createElement('span');
+            moreEl.className = 'card-checklist-more';
+            moreEl.textContent = newText;
+            checklistEl.appendChild(moreEl);
+          } else if (moreEl.textContent !== newText) {
+            moreEl.textContent = newText;
+          }
+        } else if (moreEl) {
+          moreEl.remove();
+        }
+        // Re-bind toggle handlers
+        _bindCardChecklistToggle(cardEl, card, columnId);
+      }
+    } else if (checklistEl) {
+      checklistEl.remove();
+    }
+  }
+
+  function _bindCardChecklistToggle(cardEl, card, columnId) {
+    cardEl.querySelectorAll('[data-checklist-item-id]').forEach(itemEl => {
+      const itemId = itemEl.dataset.checklistItemId;
+      const chk = itemEl.querySelector('.card-checklist-check');
+      if (!chk) return;
+      // Remove old listener by replacing clone (simple approach)
+      const newChk = chk.cloneNode(true);
+      chk.parentNode.replaceChild(newChk, chk);
+      newChk.addEventListener('click', (e) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (_onChecklistToggle) {
+          _onChecklistToggle(card.id, columnId, itemId);
+        }
+      });
+    });
   }
 
   function _bindCardDrag(cardEl) {
@@ -419,6 +618,7 @@ const KanbanRenderer = (() => {
       const cardEl = KanbanCard.create(card, col.id, performers, KanbanStore.getTags(), tagById);
       if (_onCardDragStart) _bindCardDrag(cardEl);
       cardEl.addEventListener('click', () => { if (_onEditCard) _onEditCard(card, col.id); });
+      _bindCardChecklistToggle(cardEl, card, col.id);
       fragment.appendChild(cardEl);
     }
     cardsContainer.appendChild(fragment);
@@ -570,21 +770,31 @@ const KanbanRenderer = (() => {
     let result = '';
     let inUl = false;
     let inOl = false;
+    let inBlockquote = false;
     for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
+      let line = lines[i];
+      const quoteMatch = line.match(/^>\s?(.*)/);
       const ulMatch = line.match(/^-\s+(.*)/);
       const olMatch = line.match(/^\d+\.\s+(.*)/);
-      if (ulMatch) {
+      if (quoteMatch) {
         if (inOl) { result += '</ol>\n'; inOl = false; }
+        if (inUl) { result += '</ul>\n'; inUl = false; }
+        if (!inBlockquote) { result += '<blockquote>'; inBlockquote = true; }
+        result += quoteMatch[1] + '\n';
+      } else if (ulMatch) {
+        if (inOl) { result += '</ol>\n'; inOl = false; }
+        if (inBlockquote) { result += '</blockquote>'; inBlockquote = false; }
         if (!inUl) { result += '<ul>\n'; inUl = true; }
         result += '<li>' + ulMatch[1] + '</li>\n';
       } else if (olMatch) {
         if (inUl) { result += '</ul>\n'; inUl = false; }
+        if (inBlockquote) { result += '</blockquote>'; inBlockquote = false; }
         if (!inOl) { result += '<ol>\n'; inOl = true; }
         result += '<li>' + olMatch[1] + '</li>\n';
       } else {
         if (inUl) { result += '</ul>\n'; inUl = false; }
         if (inOl) { result += '</ol>\n'; inOl = false; }
+        if (inBlockquote) { result += '</blockquote>'; inBlockquote = false; }
         if (line.trim() === '') {
           result += '\n';
         } else {
@@ -594,6 +804,7 @@ const KanbanRenderer = (() => {
     }
     if (inUl) result += '</ul>\n';
     if (inOl) result += '</ol>\n';
+    if (inBlockquote) result += '</blockquote>';
     result = result.replace(/\n{3,}/g, '\n\n').trim();
     result = result.replace(/\n/g, '<br>');
     return result;
