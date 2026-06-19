@@ -149,7 +149,7 @@ const WeatherProviders = (() => {
     }
   }
 
-  async function _fetch7Timer(lat, lon) {
+  async function _fetch7Timer(lat, lon, unit) {
     try {
       var resp = await fetch(SEVENTIMER_URL + '?lon=' + lon + '&lat=' + lat + '&product=civil&output=json');
       if (!resp.ok) {
@@ -160,8 +160,12 @@ const WeatherProviders = (() => {
       if (!json.dataseries || json.dataseries.length === 0) return null;
 
       var entry = json.dataseries[0];
+      var temp = entry.temp2m;
+      if (unit === 'imperial') {
+        temp = temp * 9 / 5 + 32;
+      }
       return {
-        temp: entry.temp2m,
+        temp: temp,
         code: _seventimerWeatherToWMO(entry.weather),
         provider: '7timer'
       };
@@ -177,7 +181,7 @@ const WeatherProviders = (() => {
 
     var result = await _fetchOpenMeteo(coords.latitude, coords.longitude, unit)
               || await _fetchMetNorway(coords.latitude, coords.longitude, unit)
-              || await _fetch7Timer(coords.latitude, coords.longitude);
+              || await _fetch7Timer(coords.latitude, coords.longitude, unit);
 
     if (result) {
       console.log('[WeatherProviders] Using provider:', result.provider);

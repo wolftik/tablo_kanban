@@ -175,6 +175,9 @@
   "widgetsCurrency": { "message": "汇率", "description": "Currency widget label" },
   "currencyLoading": { "message": "加载中...", "description": "Currency loading message" },
   "currencyError": { "message": "无数据", "description": "Currency error message" },
+  "stocksLoading": { "message": "加载中...", "description": "Stocks loading message" },
+  "stocksError": { "message": "无数据", "description": "Stocks error message" },
+  "widgetsStocksCurrencyTitle": { "message": "货币与股票", "description": "Combined section title for options" },
   "currencyBase": { "message": "基准货币:", "description": "Base currency label" },
   "widgetsStocks": { "message": "市场数据", "description": "Stocks and commodities widget label" }
 }

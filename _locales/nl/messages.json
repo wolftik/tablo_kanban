@@ -640,6 +640,9 @@
   "widgetsCurrency": { "message": "Wisselkoersen", "description": "Currency widget label" },
   "currencyLoading": { "message": "Laden...", "description": "Currency loading message" },
   "currencyError": { "message": "Geen gegevens", "description": "Currency error message" },
+  "stocksLoading": { "message": "Laden...", "description": "Stocks loading message" },
+  "stocksError": { "message": "Geen gegevens", "description": "Stocks error message" },
+  "widgetsStocksCurrencyTitle": { "message": "Valuta en beurzen", "description": "Combined section title for options" },
   "currencyBase": { "message": "Basisvaluta:", "description": "Base currency label" },
   "widgetsStocks": { "message": "Marktgegevens", "description": "Stocks and commodities widget label" }
 }

@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let performers = kanbanData.performers || _getDefaultPerformers();
   let authors = kanbanData.authors || [];
   let columns = kanbanData.columns || _getDefaultColumns();
+  let _columnDragBound = false;
 
   _setupTabs();
 
@@ -271,10 +272,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       });
     });
 
-    _bindColumnDragDrop(list);
   }
 
   function _bindColumnDragDrop(list) {
+    if (_columnDragBound) return;
+    _columnDragBound = true;
     let dragId = null;
 
     list.addEventListener('dragstart', (e) => {
@@ -342,6 +344,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   renderColumnsList();
+  _bindColumnDragDrop(document.getElementById('columns-list'));
 
   document.getElementById('add-column-option').addEventListener('click', () => {
     const insertPos = Math.max(0, columns.length - 1);

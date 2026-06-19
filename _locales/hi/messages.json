@@ -640,6 +640,9 @@
   "widgetsCurrency": { "message": "विनिमय दर", "description": "Currency widget label" },
   "currencyLoading": { "message": "लोड हो रहा है...", "description": "Currency loading message" },
   "currencyError": { "message": "कोई डेटा नहीं", "description": "Currency error message" },
+  "stocksLoading": { "message": "लोड हो रहा है...", "description": "Stocks loading message" },
+  "stocksError": { "message": "कोई डेटा नहीं", "description": "Stocks error message" },
+  "widgetsStocksCurrencyTitle": { "message": "मुद्राएं और स्टॉक", "description": "Combined section title for options" },
   "currencyBase": { "message": "आधार मुद्रा:", "description": "Base currency label" },
   "widgetsStocks": { "message": "बाजार डेटा", "description": "Stocks and commodities widget label" }
 }

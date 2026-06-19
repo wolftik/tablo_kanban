@@ -141,6 +141,8 @@ const I18n = (() => {
     'widgets.currency': 'widgetsCurrency',
     'currency.loading': 'currencyLoading',
     'currency.error': 'currencyError',
+    'stocks.loading': 'stocksLoading',
+    'stocks.error': 'stocksError',
     'currency.base': 'currencyBase',
     'weather.city': 'weatherCity',
     'weather.city.placeholder': 'weatherCityPlaceholder',

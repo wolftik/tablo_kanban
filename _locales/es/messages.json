@@ -617,6 +617,9 @@
   "widgetsCurrency": { "message": "Tipos de cambio", "description": "Currency widget label" },
   "currencyLoading": { "message": "Cargando...", "description": "Currency loading message" },
   "currencyError": { "message": "Sin datos", "description": "Currency error message" },
+  "stocksLoading": { "message": "Cargando...", "description": "Stocks loading message" },
+  "stocksError": { "message": "Sin datos", "description": "Stocks error message" },
+  "widgetsStocksCurrencyTitle": { "message": "Divisas y bolsas", "description": "Combined section title for options" },
   "currencyBase": { "message": "Moneda base:", "description": "Base currency label" },
   "widgetsStocks": { "message": "Datos de mercado", "description": "Stocks and commodities widget label" }
 }

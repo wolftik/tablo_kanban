@@ -226,6 +226,7 @@ function renderColoredList(container, items, { renderItem, onClick }) {
 function handleModal(modalEl, { onSave, onClose } = {}) {
   const cleanup = () => {
     modalEl.style.display = 'none';
+    document.removeEventListener('keydown', keyHandler);
     if (onClose) onClose();
   };
 

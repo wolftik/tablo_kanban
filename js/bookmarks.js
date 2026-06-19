@@ -128,22 +128,28 @@ const BookmarksManager = (() => {
   }
 
   function _renderBookmarks(container, bookmarks) {
+    const headBar = document.getElementById('head-bar');
+    if (headBar) {
+      headBar.classList.toggle('no-bookmarks', _bookmarkSlots === 0);
+      if (_bookmarkSlots === 0) {
+        const wz = document.getElementById('widgets-zone');
+        headBar.classList.toggle('no-widgets', !(wz && wz.classList.contains('active')));
+      } else {
+        headBar.classList.remove('no-widgets');
+      }
+    }
+
+    if (_bookmarkSlots === 0) {
+      container.innerHTML = '';
+      container.style.setProperty('--bookmark-grid-columns', '1');
+      return;
+    }
     container.innerHTML = '';
     container.style.setProperty('--bookmark-grid-columns', _bookmarkGridColumns);
     const isSingleRow = _bookmarkSlots < 12;
     container.style.gridTemplateRows = isSingleRow ? 'repeat(1, var(--bookmark-slot-height))' : 'repeat(2, var(--bookmark-slot-height))';
     container.classList.toggle('single-row', isSingleRow);
-    const headBar = document.getElementById('head-bar');
-    if (headBar) {
-      headBar.classList.toggle('single-row', isSingleRow);
-      headBar.classList.toggle('no-bookmarks', _bookmarkSlots === 0);
-      if (_bookmarkSlots === 0) {
-        const _wz = document.getElementById('widgets-zone');
-        headBar.classList.toggle('no-widgets', !(_wz && _wz.classList.contains('active')));
-      } else {
-        headBar.classList.remove('no-widgets');
-      }
-    }
+    if (headBar) headBar.classList.toggle('single-row', isSingleRow);
 
     for (let i = 0; i < _bookmarkSlots; i++) {
       const slot = document.createElement('div');

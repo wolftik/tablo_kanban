@@ -108,19 +108,20 @@ const StockProviders = (() => {
 
   function formatChange(value) {
     if (value == null) return '--';
-    const sign = value >= 0 ? '+' : '';
+    const sign = value > 0 ? '+' : '';
     return sign + value.toFixed(2);
   }
 
   function formatChangePercent(value) {
     if (value == null) return '--';
-    const sign = value >= 0 ? '+' : '';
+    const sign = value > 0 ? '+' : '';
     return sign + value.toFixed(2) + '%';
   }
 
   function getChangeClass(value) {
     if (value == null) return '';
-    return value >= 0 ? 'positive' : 'negative';
+    if (value === 0) return 'neutral';
+    return value > 0 ? 'positive' : 'negative';
   }
 
   return {
