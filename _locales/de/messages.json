@@ -8,7 +8,7 @@
                            "description":  "Extension description"
                        },
     "bookmarkAddTitle":  {
-                             "message":  "Lesezeichen hinzufР“Сgen",
+                             "message":  "Lesezeichen hinzufügen",
                              "description":  "Add bookmark dialog title"
                          },
     "bookmarkUrlPlaceholder":  {
@@ -44,11 +44,11 @@
                                 "description":  "Context menu edit action"
                             },
     "bookmarkContextDelete":  {
-                                  "message":  "LР“В¶schen",
+                                  "message":  "Löschen",
                                   "description":  "Context menu delete action"
                               },
     "cardPlaceholderAddSite":  {
-                                   "message":  "Seite hinzufР“Сgen",
+                                   "message":  "Seite hinzufügen",
                                    "description":  "Add site placeholder"
                                },
     "filterAllAssignees":  {
@@ -60,7 +60,7 @@
                              "description":  "Filter: all authors option"
                          },
     "filterAllPriorities":  {
-                                "message":  "Alle PrioritР“В¤ten",
+                                "message":  "Alle Prioritäten",
                                 "description":  "Filter: all priorities option"
                             },
     "filterSearchPlaceholder":  {
@@ -68,7 +68,7 @@
                                     "description":  "Filter search placeholder"
                                 },
     "filterClearTitle":  {
-                             "message":  "Filter zurР“Сcksetzen",
+                             "message":  "Filter zurücksetzen",
                              "description":  "Clear filters button title"
                          },
     "priorityLow":  {
@@ -92,7 +92,7 @@
                           "description":  "Tags filter: all"
                       },
     "tagsFilterSelected":  {
-                               "message":  "$count$ ausgewР“В¤hlt",
+                               "message":  "$count$ ausgewählt",
                                "description":  "Tags filter: selected count",
                                "placeholders":  {
                                                     "count":  {
@@ -137,19 +137,19 @@
                       "description":  "Tags label"
                   },
     "modalTagsSelect":  {
-                            "message":  "Tags auswР“В¤hlen",
+                            "message":  "Tags auswählen",
                             "description":  "Tags select tooltip"
                         },
     "modalPriority":  {
-                          "message":  "PrioritР“В¤t:",
+                          "message":  "Priorität:",
                           "description":  "Priority label"
                       },
     "modalNoPriority":  {
-                            "message":  "Keine PrioritР“В¤t",
+                            "message":  "Keine Priorität",
                             "description":  "No priority option"
                         },
     "modalDelete":  {
-                        "message":  "LР“В¶schen",
+                        "message":  "Löschen",
                         "description":  "Delete button"
                     },
     "modalCancel":  {
@@ -169,11 +169,11 @@
                           "description":  "Edit task modal title"
                       },
     "columnAddCard":  {
-                          "message":  "+ Karte hinzufР“Сgen",
+                          "message":  "+ Karte hinzufügen",
                           "description":  "Add card button"
                       },
     "columnAddColumn":  {
-                            "message":  "+ Spalte hinzufР“Сgen",
+                            "message":  "+ Spalte hinzufügen",
                             "description":  "Add column button"
                         },
     "columnAddTitle":  {
@@ -197,11 +197,11 @@
                            "description":  "Color picker label"
                        },
     "columnDelete":  {
-                         "message":  "LР“В¶schen",
+                         "message":  "Löschen",
                          "description":  "Delete column button"
                      },
     "columnDeleteConfirm":  {
-                                "message":  "Spalte \"$title$\" und alle Karten lР“В¶schen?",
+                                "message":  "Spalte \"$title$\" und alle Karten löschen?",
                                 "description":  "Column delete confirmation",
                                 "placeholders":  {
                                                      "title":  {
@@ -210,7 +210,7 @@
                                                  }
                             },
     "columnDeleteCardConfirm":  {
-                                    "message":  "Aufgabe \"$title$\" lР“В¶schen?",
+                                    "message":  "Aufgabe \"$title$\" löschen?",
                                     "description":  "Card delete confirmation",
                                     "placeholders":  {
                                                          "title":  {
@@ -227,7 +227,7 @@
                              "description":  "Clear cards button"
                          },
     "columnClearCardsConfirm":  {
-                                    "message":  "Gib \"$phrase$\" zur BestР“В¤tigung ein",
+                                    "message":  "Gib \"$phrase$\" zur Bestätigung ein",
                                     "description":  "Clear cards prompt",
                                     "placeholders":  {
                                                          "phrase":  {
@@ -248,11 +248,11 @@
                           "description":  "Settings button title"
                       },
     "settingsOpen":  {
-                         "message":  "Tablo Kanban Р“В¶ffnen",
+                         "message":  "Tablo Kanban öffnen",
                          "description":  "Open extension text"
                      },
     "optionsTitle":  {
-                         "message":  "Einstellungen РІР‚вЂќ Tablo Kanban",
+                         "message":  "Einstellungen — Tablo Kanban",
                          "description":  "Options page title"
                      },
     "optionsTabColumns":  {
@@ -264,7 +264,7 @@
                            "description":  "Tags tab button"
                        },
     "optionsTabPerformers":  {
-                                 "message":  "AusfР“Сhrende",
+                                 "message":  "Ausführende",
                                  "description":  "Performers tab button"
                              },
     "optionsTabAuthors":  {
@@ -296,15 +296,15 @@
                                       "description":  "Yandex Disk option"
                                   },
     "optionsSyncDescGoogle":  {
-                                  "message":  "Kanban-Board-Daten werden Р“Сber Google Drive zwischen GerР“В¤ten synchronisiert. Google Drive Sync funktioniert nur in Chrome.",
+                                  "message":  "Kanban-Board-Daten werden über Google Drive zwischen Geräten synchronisiert. Google Drive Sync funktioniert nur in Chrome.",
                                   "description":  "Google Drive sync description"
                               },
     "optionsSyncDescYandex":  {
-                                  "message":  "Kanban-Board-Daten werden Р“Сber Yandex Disk zwischen GerР“В¤ten synchronisiert.",
+                                  "message":  "Kanban-Board-Daten werden über Yandex Disk zwischen Geräten synchronisiert.",
                                   "description":  "Yandex Disk sync description"
                               },
     "optionsSyncChecking":  {
-                                "message":  "Status wird geprР“Сft...",
+                                "message":  "Status wird geprüft...",
                                 "description":  "Sync status checking"
                             },
     "optionsSyncConnected":  {
@@ -328,11 +328,11 @@
                               "description":  "Sync failed status"
                           },
     "optionsSyncError":  {
-                             "message":  "StatusprР“Сfung fehlgeschlagen",
+                             "message":  "Statusprüfung fehlgeschlagen",
                              "description":  "Sync error status"
                          },
     "optionsSyncTokenExpired":  {
-                                    "message":  "Yandex Disk Token ist abgelaufen oder ungР“Сltig. Bitte gib einen neuen Token ein.",
+                                    "message":  "Yandex Disk Token ist abgelaufen oder ungültig. Bitte gib einen neuen Token ein.",
                                     "description":  "Token expired message"
                                 },
     "optionsSyncYadiskApply":  {
@@ -340,7 +340,7 @@
                                    "description":  "Save token button"
                                },
     "optionsSyncYadiskClear":  {
-                                   "message":  "Token lР“В¶schen",
+                                   "message":  "Token löschen",
                                    "description":  "Clear token button"
                                },
     "optionsSyncYadiskOauthGet":  {
@@ -348,7 +348,7 @@
                                       "description":  "Get OAuth token button"
                                   },
     "optionsSyncYadiskOauthOpened":  {
-                                         "message":  "Die Yandex-Autorisierungsseite wurde in einem neuen Tab geР“В¶ffnet. Kopiere nach der Autorisierung den Token aus der Adressleiste, fР“Сge ihn unten in das Feld \"OAuth-Token\" ein und klicke auf \"Token speichern\".",
+                                         "message":  "Die Yandex-Autorisierungsseite wurde in einem neuen Tab geöffnet. Kopiere nach der Autorisierung den Token aus der Adressleiste, füge ihn unten in das Feld \"OAuth-Token\" ein und klicke auf \"Token speichern\".",
                                          "description":  "OAuth page opened message"
                                      },
     "optionsSyncYadiskClientHint":  {
@@ -356,15 +356,15 @@
                                         "description":  "Client ID hint text"
                                     },
     "optionsSyncYadiskClientStep2":  {
-                                         "message":  "App erstellen РІвЂ вЂ™ Typ Р’В«Web serviceР’В»",
+                                         "message":  "App erstellen → Typ «Web service»",
                                          "description":  "Step 2"
                                      },
     "optionsSyncYadiskClientStep4":  {
-                                         "message":  "Berechtigungen cloud_api:disk.write und cloud_api:disk.read hinzufР“Сgen",
+                                         "message":  "Berechtigungen cloud_api:disk.write und cloud_api:disk.read hinzufügen",
                                          "description":  "Step 4"
                                      },
     "optionsSyncYadiskClientStep5":  {
-                                         "message":  "ClientID kopieren (nicht Client Secret!) und unten einfР“Сgen",
+                                         "message":  "ClientID kopieren (nicht Client Secret!) und unten einfügen",
                                          "description":  "Step 5"
                                      },
     "optionsSyncYadiskClientSave":  {
@@ -376,11 +376,11 @@
                                 "description":  "Columns section title"
                             },
     "optionsColumnsDesc":  {
-                               "message":  "Zum Sortieren ziehen. Zum LР“В¶schen auf Р“вЂ” klicken.",
+                               "message":  "Zum Sortieren ziehen. Zum Löschen auf × klicken.",
                                "description":  "Columns section description"
                            },
     "optionsColumnsAdd":  {
-                              "message":  "Spalte hinzufР“Сgen",
+                              "message":  "Spalte hinzufügen",
                               "description":  "Add column button"
                           },
     "optionsColumnsNew":  {
@@ -392,7 +392,7 @@
                              "description":  "Tags section title"
                          },
     "optionsTagsAdd":  {
-                           "message":  "Tag hinzufР“Сgen",
+                           "message":  "Tag hinzufügen",
                            "description":  "Add tag button"
                        },
     "optionsTagsNew":  {
@@ -400,15 +400,15 @@
                            "description":  "New tag placeholder"
                        },
     "optionsPerformersTitle":  {
-                                   "message":  "AusfР“Сhrende",
+                                   "message":  "Ausführende",
                                    "description":  "Performers section title"
                                },
     "optionsPerformersAdd":  {
-                                 "message":  "AusfР“Сhrenden hinzufР“Сgen",
+                                 "message":  "Ausführenden hinzufügen",
                                  "description":  "Add performer button"
                              },
     "optionsPerformersNew":  {
-                                 "message":  "Neuer AusfР“Сhrender",
+                                 "message":  "Neuer Ausführender",
                                  "description":  "New performer placeholder"
                              },
     "optionsAuthorsTitle":  {
@@ -416,7 +416,7 @@
                                 "description":  "Authors section title"
                             },
     "optionsAuthorsAdd":  {
-                              "message":  "Autor hinzufР“Сgen",
+                              "message":  "Autor hinzufügen",
                               "description":  "Add author button"
                           },
     "optionsAuthorsNew":  {
@@ -444,7 +444,7 @@
                                       "description":  "Language section title"
                                   },
     "optionsBack":  {
-                        "message":  "РІвЂ С’ ZurР“Сck",
+                        "message":  "← Zurück",
                         "description":  "Back to main page button"
                     },
     "optionsSave":  {
@@ -460,19 +460,19 @@
                                 "description":  "Version info"
                             },
     "optionsAboutDesc":  {
-                             "message":  "Lesezeichenleiste und Kanban-Board fР“Сr deine Chrome-Startseite.",
+                             "message":  "Lesezeichenleiste und Kanban-Board für deine Chrome-Startseite.",
                              "description":  "About description"
                          },
     "optionsAboutStorage":  {
-                                "message":  "Board-Daten werden lokal in chrome.storage.local gespeichert. Einstellungen und API-SchlР“Сssel in chrome.storage.sync (gerР“В¤teР“Сbergreifend synchronisiert). Board-Daten werden Р“Сber einen gewР“В¤hlten Anbieter (Google Drive oder Yandex Disk) synchronisiert.",
+                                "message":  "Board-Daten werden lokal in chrome.storage.local gespeichert. Einstellungen und API-Schlüssel in chrome.storage.sync (geräteübergreifend synchronisiert). Board-Daten werden über einen gewählten Anbieter (Google Drive oder Yandex Disk) synchronisiert.",
                                 "description":  "Storage info"
                             },
     "optionsSupportTitle":  {
-                                "message":  "Projekt unterstР“Сtzen",
+                                "message":  "Projekt unterstützen",
                                 "description":  "Support section title"
                             },
     "optionsSupportDesc":  {
-                               "message":  "Wenn dir diese Erweiterung gefР“В¤llt, kannst du ihre Entwicklung unterstР“Сtzen:",
+                               "message":  "Wenn dir diese Erweiterung gefällt, kannst du ihre Entwicklung unterstützen:",
                                "description":  "Support section description"
                            },
     "optionsSupportOkx":  {
@@ -480,23 +480,23 @@
                               "description":  "OKX donate button label"
                           },
     "optionsSupportOkxHint":  {
-                                  "message":  "QR-Code fР“Сr Р“Сљberweisung",
+                                  "message":  "QR-Code für Überweisung",
                                   "description":  "OKX donate hint"
                               },
     "optionsSupportOkxModalTitle":  {
-                                        "message":  "UnterstР“Сtzung via OKX",
+                                        "message":  "Unterstützung via OKX",
                                         "description":  "OKX QR modal title"
                                     },
     "optionsSupportOkxModalDesc":  {
-                                       "message":  "Scanne den QR-Code in der OKX-App, um zu Р“Сberweisen:",
+                                       "message":  "Scanne den QR-Code in der OKX-App, um zu überweisen:",
                                        "description":  "OKX QR modal description"
                                    },
     "cardOldTooltip":  {
-                           "message":  "Aufgabe ist Р“В¤lter als 7 Tage",
+                           "message":  "Aufgabe ist älter als 7 Tage",
                            "description":  "Snail tooltip for old cards in first column"
                        },
     "cardFireTooltip":  {
-                            "message":  "Aufgabe ist Р“В¤lter als 22 Tage",
+                            "message":  "Aufgabe ist älter als 22 Tage",
                             "description":  "Fire tooltip for very old cards in first column"
                         },
     "cardTagsPlaceholder":  {
@@ -504,11 +504,11 @@
                                 "description":  "Card tags placeholder"
                             },
     "cardTagsDropdownHeader":  {
-                                   "message":  "Tags auswР“В¤hlen",
+                                   "message":  "Tags auswählen",
                                    "description":  "Tags dropdown header"
                                },
     "cardTagsDropdownClear":  {
-                                  "message":  "LР“В¶schen",
+                                  "message":  "Löschen",
                                   "description":  "Clear tags button"
                               },
     "cardTagsRemoveTitle":  {
@@ -536,11 +536,11 @@
                         "description":  "Weather unit label"
                     },
     "weatherCelsius":  {
-                           "message":  "Р’В°C",
+                           "message":  "°C",
                            "description":  "Celsius option"
                        },
     "weatherFahrenheit":  {
-                              "message":  "Р’В°F",
+                              "message":  "°F",
                               "description":  "Fahrenheit option"
                           },
     "weatherError":  {
@@ -548,7 +548,7 @@
                          "description":  "Weather error message"
                      },
     "weatherLoading":  {
-                           "message":  "LР“В¤dt...",
+                           "message":  "Lädt...",
                            "description":  "Weather loading message"
                        },
     "optionsWidgetsTitle":  {
@@ -572,7 +572,7 @@
                                "description":  "Homepage modal title"
                            },
     "homepageModalDesc":  {
-                              "message":  "Kopiere diese URL und fР“Сge sie in deinen Browsereinstellungen als Schnellzugriffsseite oder Startseite ein.",
+                              "message":  "Kopiere diese URL und füge sie in deinen Browsereinstellungen als Schnellzugriffsseite oder Startseite ein.",
                               "description":  "Homepage modal description"
                           },
     "homepageModalCopy":  {
@@ -584,7 +584,7 @@
                                 "description":  "Copied confirmation"
                             },
     "homepageModalClose":  {
-                               "message":  "SchlieР“Сџen",
+                               "message":  "Schließen",
                                "description":  "Close button"
                            },
     "homepageHint":  {
@@ -600,19 +600,19 @@
                                "description":  "Storage warning tooltip when localStorage is near full"
                            },
     "optionsSyncCspError":  {
-                                "message":  "Anfragen an Yandex Disk kР“В¶nnten durch die Sicherheitsrichtlinie blockiert werden.",
+                                "message":  "Anfragen an Yandex Disk könnten durch die Sicherheitsrichtlinie blockiert werden.",
                                 "description":  "CSP error"
                             },
     "optionsSyncTokenInvalid":  {
-                                    "message":  "Р“СљberprР“Сfen Sie den Token und die Zugriffsrechte.",
+                                    "message":  "Überprüfen Sie den Token und die Zugriffsrechte.",
                                     "description":  "Invalid token"
                                 },
     "optionsSyncTokenForbidden":  {
-                                      "message":  "Nicht genР“Сgend Zugriffsrechte.",
+                                      "message":  "Nicht genügend Zugriffsrechte.",
                                       "description":  "Token forbidden"
                                   },
     "storageErrorQuota":  {
-                              "message":  "Speicherkontingent Р“Сberschritten. Alte Karten lР“В¶schen oder Daten bereinigen.",
+                              "message":  "Speicherkontingent überschritten. Alte Karten löschen oder Daten bereinigen.",
                               "description":  "Storage quota exceeded error"
                           },
     "storageErrorGeneral":  {

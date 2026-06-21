@@ -4,11 +4,11 @@
                     "description":  "Extension name"
                 },
     "appDescription":  {
-                           "message":  "Рґв„–В¦Р·В­С•Р¶В РЏРµвЂ™РЉР·СљвЂ№Р¶СњС—Р№СњСћР¶СњС—РїСРЉРґР…СљРґС‘С”Р¶вЂ“В°Р¶В вЂЎР·В­С•Р№РЋВµРґР…С—Р·вЂќРЃ",
+                           "message":  "适用于 Chrome 新标签页的书签栏和看板面板",
                            "description":  "Extension description"
                        },
     "bookmarkAddTitle":  {
-                             "message":  "Р¶В·В»РµР‰В Рґв„–В¦Р·В­С•",
+                             "message":  "添加书签",
                              "description":  "Add bookmark dialog title"
                          },
     "bookmarkUrlPlaceholder":  {
@@ -16,19 +16,19 @@
                                    "description":  "Bookmark URL input placeholder"
                                },
     "bookmarkTitlePlaceholder":  {
-                                     "message":  "Р¶В вЂЎР№СћВ",
+                                     "message":  "标题",
                                      "description":  "Bookmark title input placeholder"
                                  },
     "bookmarkCancel":  {
-                           "message":  "РµРЏвЂ“Р¶В¶в‚¬",
+                           "message":  "取消",
                            "description":  "Cancel button"
                        },
     "bookmarkSave":  {
-                         "message":  "РґС—СњРµВ­В",
+                         "message":  "保存",
                          "description":  "Save button"
                      },
     "bookmarkEditTitle":  {
-                              "message":  "Р·СвЂ“РёС•вЂРґв„–В¦Р·В­С•",
+                              "message":  "编辑书签",
                               "description":  "Edit bookmark dialog title"
                           },
     "bookmarkEditUrlPlaceholder":  {
@@ -36,63 +36,63 @@
                                        "description":  "Edit bookmark URL placeholder"
                                    },
     "bookmarkEditTitlePlaceholder":  {
-                                         "message":  "Р¶В вЂЎР№СћВ",
+                                         "message":  "标题",
                                          "description":  "Edit bookmark title placeholder"
                                      },
     "bookmarkContextEdit":  {
-                                "message":  "Р·СвЂ“РёС•вЂ",
+                                "message":  "编辑",
                                 "description":  "Context menu edit action"
                             },
     "bookmarkContextDelete":  {
-                                  "message":  "Рµв‚¬В Р№в„ўВ¤",
+                                  "message":  "删除",
                                   "description":  "Context menu delete action"
                               },
     "cardPlaceholderAddSite":  {
-                                   "message":  "Р¶В·В»РµР‰В Р·Р…вЂР·В«в„ў",
+                                   "message":  "添加网站",
                                    "description":  "Add site placeholder"
                                },
     "filterAllAssignees":  {
-                               "message":  "Р¶вЂ°Р‚Р¶СљвЂ°Р¶вЂ°В§РёРЋРЉРёР‚вЂ¦",
+                               "message":  "所有执行者",
                                "description":  "Filter: all assignees option"
                            },
     "filterAllAuthors":  {
-                             "message":  "Р¶вЂ°Р‚Р¶СљвЂ°РґР…СљРёР‚вЂ¦",
+                             "message":  "所有作者",
                              "description":  "Filter: all authors option"
                          },
     "filterAllPriorities":  {
-                                "message":  "Р¶вЂ°Р‚Р¶СљвЂ°РґСВРµвЂ¦в‚¬Р·С”В§",
+                                "message":  "所有优先级",
                                 "description":  "Filter: all priorities option"
                             },
     "filterSearchPlaceholder":  {
-                                    "message":  "Р¶С’СљР·Т‘СћРґВ»В»РµР‰РЋ...",
+                                    "message":  "搜索任务...",
                                     "description":  "Filter search placeholder"
                                 },
     "filterClearTitle":  {
-                             "message":  "Р¶С‘вЂ¦Р№в„ўВ¤Р·В­вЂєР№Р‚вЂ°",
+                             "message":  "清除筛选",
                              "description":  "Clear filters button title"
                          },
     "priorityLow":  {
-                        "message":  "РґР…Р‹",
+                        "message":  "低",
                         "description":  "Low priority"
                     },
     "priorityMedium":  {
-                           "message":  "РґС‘В­",
+                           "message":  "中",
                            "description":  "Medium priority"
                        },
     "priorityHigh":  {
-                         "message":  "Р№В«В",
+                         "message":  "高",
                          "description":  "High priority"
                      },
     "priorityUrgent":  {
-                           "message":  "Р·Т‘В§Р¶Р‚Тђ",
+                           "message":  "紧急",
                            "description":  "Urgent priority"
                        },
     "tagsFilterAll":  {
-                          "message":  "Р¶вЂ°Р‚Р¶СљвЂ°Р¶В вЂЎР·В­С•",
+                          "message":  "所有标签",
                           "description":  "Tags filter: all"
                       },
     "tagsFilterSelected":  {
-                               "message":  "РµВ·Р†Р№Р‚вЂ°$count$Р№РЋв„–",
+                               "message":  "已选 $count$ 个",
                                "description":  "Tags filter: selected count",
                                "placeholders":  {
                                                     "count":  {
@@ -101,107 +101,115 @@
                                                 }
                            },
     "tagsRemoveTitle":  {
-                            "message":  "Р·В§В»Р№в„ўВ¤Р·В­вЂєР№Р‚вЂ°",
+                            "message":  "移除筛选",
                             "description":  "Remove tag filter tooltip"
                         },
     "modalTask":  {
-                      "message":  "РґВ»В»РµР‰РЋ",
+                      "message":  "任务",
                       "description":  "Modal title"
                   },
     "modalTitlePlaceholder":  {
-                                  "message":  "РґВ»В»РµР‰РЋР¶В вЂЎР№СћВ",
+                                  "message":  "任务标题",
                                   "description":  "Modal title input placeholder"
                               },
     "modalDescPlaceholder":  {
-                                 "message":  "Р¶РЏРЏРёС—В°",
+                                 "message":  "描述",
                                  "description":  "Modal description placeholder"
                              },
     "modalAssignee":  {
-                          "message":  "Р¶вЂ°В§РёРЋРЉРёР‚вЂ¦РїСС™",
+                          "message":  "执行者：",
                           "description":  "Assignee label"
                       },
     "modalNotAssigned":  {
-                             "message":  "Р¶СљР„Рµв‚¬вЂ Р№вЂ¦РЊ",
+                             "message":  "未指派",
                              "description":  "Not assigned option"
                          },
     "modalAuthor":  {
-                        "message":  "РґР…СљРёР‚вЂ¦РїСС™",
+                        "message":  "作者：",
                         "description":  "Author label"
                     },
     "modalNotSpecified":  {
-                              "message":  "Р¶СљР„Р¶РЉвЂЎРµВ®С™",
+                              "message":  "未指定",
                               "description":  "Not specified option"
                           },
     "modalTags":  {
-                      "message":  "Р¶В вЂЎР·В­С•РїСС™",
+                      "message":  "标签：",
                       "description":  "Tags label"
                   },
     "modalTagsSelect":  {
-                            "message":  "Р№Р‚вЂ°Р¶вЂ№В©Р¶В вЂЎР·В­С•",
+                            "message":  "选择标签",
                             "description":  "Tags select tooltip"
                         },
     "modalPriority":  {
-                          "message":  "РґСВРµвЂ¦в‚¬Р·С”В§РїСС™",
+                          "message":  "优先级：",
                           "description":  "Priority label"
                       },
     "modalNoPriority":  {
-                            "message":  "Р¶вЂ”В РґСВРµвЂ¦в‚¬Р·С”В§",
+                            "message":  "无优先级",
                             "description":  "No priority option"
                         },
     "modalDelete":  {
-                        "message":  "Рµв‚¬В Р№в„ўВ¤",
+                        "message":  "删除",
                         "description":  "Delete button"
                     },
     "modalCancel":  {
-                        "message":  "РµРЏвЂ“Р¶В¶в‚¬",
+                        "message":  "取消",
                         "description":  "Cancel button"
                     },
     "modalSave":  {
-                      "message":  "РґС—СњРµВ­В",
+                      "message":  "保存",
                       "description":  "Save button"
                   },
     "modalNewTask":  {
-                         "message":  "Р¶вЂ“В°РґВ»В»РµР‰РЋ",
+                         "message":  "新建任务",
                          "description":  "New task modal title"
                      },
     "modalEditTask":  {
-                          "message":  "Р·СвЂ“РёС•вЂРґВ»В»РµР‰РЋ",
+                          "message":  "编辑任务",
                           "description":  "Edit task modal title"
                       },
+    "modalEdit":  {
+                      "message":  "编辑",
+                      "description":  "Edit button"
+                  },
+    "modalHide":  {
+                      "message":  "隐藏",
+                      "description":  "Hide button in view mode"
+                  },
     "columnAddCard":  {
-                          "message":  "+ Р¶В·В»РµР‰В РµРЊРЋР·вЂ°вЂЎ",
+                          "message":  "+ 添加任务",
                           "description":  "Add card button"
                       },
     "columnAddColumn":  {
-                            "message":  "+ Р¶В·В»РµР‰В Рµв‚¬вЂ”",
+                            "message":  "+ 添加列",
                             "description":  "Add column button"
                         },
     "columnAddTitle":  {
-                           "message":  "Р¶вЂ“В°Рµв‚¬вЂ”",
+                           "message":  "新列",
                            "description":  "Add column dialog title"
                        },
     "columnAddCreate":  {
-                            "message":  "Рµв‚¬вЂєРµВ»С”",
+                            "message":  "创建",
                             "description":  "Create column button"
                         },
     "columnNewColumn":  {
-                            "message":  "Р¶вЂ“В°Рµв‚¬вЂ”",
+                            "message":  "新列",
                             "description":  "New column default name"
                         },
     "columnNewPlaceholder":  {
-                                 "message":  "Рµв‚¬вЂ”РµС’РЊР·В§В°",
+                                 "message":  "列名称",
                                  "description":  "New column input placeholder"
                              },
     "columnNewColor":  {
-                           "message":  "Р№СћСљРёвЂ°Р†РїСС™",
+                           "message":  "颜色：",
                            "description":  "Color picker label"
                        },
     "columnDelete":  {
-                         "message":  "Рµв‚¬В Р№в„ўВ¤",
+                         "message":  "删除",
                          "description":  "Delete column button"
                      },
     "columnDeleteConfirm":  {
-                                "message":  "Рµв‚¬В Р№в„ўВ¤Рµв‚¬вЂ”\"$title$\"РµРЏР‰РµвЂ¦В¶Р¶вЂ°Р‚Р¶СљвЂ°РµРЊРЋР·вЂ°вЂЎРїССџ",
+                                "message":  "删除列 \"$title$\" 及其所有任务？",
                                 "description":  "Column delete confirmation",
                                 "placeholders":  {
                                                      "title":  {
@@ -210,7 +218,7 @@
                                                  }
                             },
     "columnDeleteCardConfirm":  {
-                                    "message":  "Рµв‚¬В Р№в„ўВ¤РґВ»В»РµР‰РЋ\"$title$\"РїССџ",
+                                    "message":  "删除任务 \"$title$\"？",
                                     "description":  "Card delete confirmation",
                                     "placeholders":  {
                                                          "title":  {
@@ -219,15 +227,15 @@
                                                      }
                                 },
     "columnNoTags":  {
-                         "message":  "Р¶вЂ”В Р¶В вЂЎР·В­С•",
+                         "message":  "无标签",
                          "description":  "No tags fallback"
                      },
     "columnClearCards":  {
-                             "message":  "Р¶С‘вЂ¦Р·В©С”РµРЊРЋР·вЂ°вЂЎ",
+                             "message":  "清空任务",
                              "description":  "Clear cards button"
                          },
     "columnClearCardsConfirm":  {
-                                    "message":  "РёС•вЂњРµвЂ¦Тђ\"$phrase$\"Р·РЋВ®РёВ®В¤",
+                                    "message":  "输入 \"$phrase$\" 以确认",
                                     "description":  "Clear cards prompt",
                                     "placeholders":  {
                                                          "phrase":  {
@@ -236,55 +244,55 @@
                                                      }
                                 },
     "columnClearCardsPhrase":  {
-                                   "message":  "Р¶С‘вЂ¦Р·В©С”",
+                                   "message":  "清空",
                                    "description":  "Clear cards prompt phrase"
                                },
     "columnClearCardsWrong":  {
-                                  "message":  "Р·СџВ­РёР‡В­Р№вЂќв„ўРёР‡Р‡",
+                                  "message":  "短语错误",
                                   "description":  "Clear cards wrong phrase error"
                               },
     "settingsTitle":  {
-                          "message":  "РёВ®С•Р·Р…В®",
+                          "message":  "设置",
                           "description":  "Settings button title"
                       },
     "settingsOpen":  {
-                         "message":  "Р¶вЂ°вЂњРµСР‚ Tablo Kanban",
+                         "message":  "打开 Tablo Kanban",
                          "description":  "Open extension text"
                      },
     "optionsTitle":  {
-                         "message":  "РёВ®С•Р·Р…В® РІР‚вЂќ Tablo Kanban",
+                         "message":  "设置 — Tablo Kanban",
                          "description":  "Options page title"
                      },
     "optionsTabColumns":  {
-                              "message":  "Рµв‚¬вЂ”",
+                              "message":  "列",
                               "description":  "Columns tab button"
                           },
     "optionsTabTags":  {
-                           "message":  "Р¶В вЂЎР·В­С•",
+                           "message":  "标签",
                            "description":  "Tags tab button"
                        },
     "optionsTabPerformers":  {
-                                 "message":  "Р¶вЂ°В§РёРЋРЉРёР‚вЂ¦",
+                                 "message":  "执行者",
                                  "description":  "Performers tab button"
                              },
     "optionsTabAuthors":  {
-                              "message":  "РґР…СљРёР‚вЂ¦",
+                              "message":  "作者",
                               "description":  "Authors tab button"
                           },
     "optionsTabAppearance":  {
-                                 "message":  "РµВ¤вЂ“РёВ§вЂљ",
+                                 "message":  "外观",
                                  "description":  "Appearance tab button"
                              },
     "optionsTabSync":  {
-                           "message":  "РµС’РЉР¶В­Тђ",
+                           "message":  "同步",
                            "description":  "Sync tab button"
                        },
     "optionsSyncTitle":  {
-                             "message":  "РµС’РЉР¶В­Тђ",
+                             "message":  "同步",
                              "description":  "Sync section title"
                          },
     "optionsSyncProvider":  {
-                                "message":  "РµС’РЉР¶В­ТђР¶РЏС’РґС•вЂєРµвЂўвЂ РїСС™",
+                                "message":  "同步提供商：",
                                 "description":  "Sync provider label"
                             },
     "optionsSyncProviderGoogle":  {
@@ -296,243 +304,243 @@
                                       "description":  "Yandex Disk option"
                                   },
     "optionsSyncDescGoogle":  {
-                                  "message":  "Р·СљвЂ№Р¶СњС—Р¶вЂўВ°Р¶РЊВ®РµВ°вЂ Р№Р‚С™РёС—вЂЎР¶вЂљРЃР·С™вЂћ Google Drive РёВ·РЃРёВ®С•РµВ¤вЂЎРµС’РЉР¶В­ТђРіР‚вЂљGoogle Drive РµС’РЉР¶В­ТђРґВ»вЂ¦РµСљРЃ Chrome РґС‘В­Р¶СљвЂ°Р¶вЂўв‚¬РіР‚вЂљ",
+                                  "message":  "看板数据将通过 Google Drive 在设备之间同步。Google Drive 同步仅在 Chrome 中有效。",
                                   "description":  "Google Drive sync description"
                               },
     "optionsSyncDescYandex":  {
-                                  "message":  "Р·СљвЂ№Р¶СњС—Р¶вЂўВ°Р¶РЊВ®РµВ°вЂ Р№Р‚С™РёС—вЂЎР¶вЂљРЃР·С™вЂћ Yandex Disk РёВ·РЃРёВ®С•РµВ¤вЂЎРµС’РЉР¶В­ТђРіР‚вЂљ",
+                                  "message":  "看板数据将通过 Yandex Disk 在设备之间同步。",
                                   "description":  "Yandex Disk sync description"
                               },
     "optionsSyncChecking":  {
-                                "message":  "Р¶Р€Р‚Р¶СџТђР·Р‰В¶Р¶Р‚Рѓ...",
+                                "message":  "正在检查状态...",
                                 "description":  "Sync status checking"
                             },
     "optionsSyncConnected":  {
-                                 "message":  "РµС’РЉР¶В­ТђРµВ·Р†РёС—С›Р¶Р‹Тђ",
+                                 "message":  "同步已连接",
                                  "description":  "Sync connected status"
                              },
     "optionsSyncDisconnected":  {
-                                    "message":  "РµС’РЉР¶В­ТђР¶СљР„РёС—С›Р¶Р‹Тђ",
+                                    "message":  "同步未连接",
                                     "description":  "Sync disconnected status"
                                 },
     "optionsSyncSignin":  {
-                              "message":  "РёС—С›Р¶Р‹Тђ",
+                              "message":  "连接",
                               "description":  "Sign in button"
                           },
     "optionsSyncSignout":  {
-                               "message":  "Р¶вЂ“В­РµСР‚РµС’РЉР¶В­Тђ",
+                               "message":  "断开同步",
                                "description":  "Sign out button"
                            },
     "optionsSyncFailed":  {
-                              "message":  "РёС—С›Р¶Р‹ТђРµВ¤В±РёТ‘Тђ",
+                              "message":  "连接失败",
                               "description":  "Sync failed status"
                           },
     "optionsSyncError":  {
-                             "message":  "Р·Р‰В¶Р¶Р‚РѓР¶Р€Р‚Р¶СџТђРµВ¤В±РёТ‘Тђ",
+                             "message":  "检查错误",
                              "description":  "Sync error status"
                          },
     "optionsSyncTokenExpired":  {
-                                    "message":  "Yandex Disk РґВ»В¤Р·вЂ°РЉРµВ·Р†РёС—вЂЎР¶СљСџР¶в‚¬вЂ“Р¶вЂ”В Р¶вЂўв‚¬РіР‚вЂљРёР‡В·РёС•вЂњРµвЂ¦ТђР¶вЂ“В°РґВ»В¤Р·вЂ°РЉРіР‚вЂљ",
+                                    "message":  "Yandex Disk 的令牌已过期或无效。请输入新令牌。",
                                     "description":  "Token expired message"
                                 },
     "optionsSyncYadiskApply":  {
-                                   "message":  "РґС—СњРµВ­ВРґВ»В¤Р·вЂ°РЉ",
+                                   "message":  "保存令牌",
                                    "description":  "Save token button"
                                },
     "optionsSyncYadiskClear":  {
-                                   "message":  "Р¶С‘вЂ¦Р№в„ўВ¤РґВ»В¤Р·вЂ°РЉ",
+                                   "message":  "清除令牌",
                                    "description":  "Clear token button"
                                },
     "optionsSyncYadiskOauthGet":  {
-                                      "message":  "РёР‹В·РµРЏвЂ“ OAuth РґВ»В¤Р·вЂ°РЉ",
+                                      "message":  "获取 OAuth 令牌",
                                       "description":  "Get OAuth token button"
                                   },
     "optionsSyncYadiskOauthOpened":  {
-                                         "message":  "Yandex Р¶Р‹в‚¬Р¶СњС“Р№РЋВµР№СњСћРµВ·Р†РµСљРЃР¶вЂ“В°Р¶В вЂЎР·В­С•Р№РЋВµРґС‘В­Р¶вЂ°вЂњРµСР‚РіР‚вЂљР¶Р‹в‚¬Р¶СњС“РµС’Р‹РїСРЉРґВ»Р‹РµСљВ°РµСњР‚Р¶В РЏРµВ¤РЊРµв‚¬В¶РґВ»В¤Р·вЂ°РЉРїСРЉР·Р†ВРёТ‘Т‘Рµв‚¬В°РґС‘вЂ№Р№СњСћР·С™вЂћРіР‚РЉOAuth РґВ»В¤Р·вЂ°РЉРіР‚РЊРµВ­вЂ”Р¶В®ВµРїСРЉР·вЂћВ¶РµС’Р‹Р·вЂљв„–РµвЂЎВ»РіР‚РЉРґС—СњРµВ­ВРґВ»В¤Р·вЂ°РЉРіР‚РЊРіР‚вЂљ",
+                                         "message":  "Yandex 授权页面已在新标签页中打开。授权后，请从地址栏复制令牌，粘贴到下面的「OAuth 令牌」字段中，然后点击「保存令牌」。",
                                          "description":  "OAuth page opened message"
                                      },
     "optionsSyncYadiskClientHint":  {
-                                        "message":  "РёВ¦РѓРёС—С›Р¶Р‹Тђ Yandex DiskРїСРЉРёР‡В·РµСљРЃ oauth.yandex.ru Р¶С–РЃРµвЂ РЉРµС”вЂќР·вЂќРЃРµв„–В¶РёС•вЂњРµвЂ¦Тђ ClientIDРїСС™",
+                                        "message":  "要连接 Yandex Disk，请在 oauth.yandex.ru 注册应用并输入 ClientID：",
                                         "description":  "Client ID hint text"
                                     },
     "optionsSyncYadiskClientStep2":  {
-                                         "message":  "Рµв‚¬вЂєРµВ»С”РµС”вЂќР·вЂќРЃ РІвЂ вЂ™ Р·В±В»РµС›вЂ№РіР‚РЉWeb serviceРіР‚РЊ",
+                                         "message":  "创建应用 → 类型选择「Web 服务」",
                                          "description":  "Step 2"
                                      },
     "optionsSyncYadiskClientStep4":  {
-                                         "message":  "Р¶В·В»РµР‰В Р¶СњС“Р№в„ўС’ cloud_api:disk.write РµвЂ™РЉ cloud_api:disk.read",
+                                         "message":  "添加权限 cloud_api:disk.write 和 cloud_api:disk.read",
                                          "description":  "Step 4"
                                      },
     "optionsSyncYadiskClientStep5":  {
-                                         "message":  "РµВ¤РЊРµв‚¬В¶ ClientIDРїСв‚¬РґС‘РЊР¶ВР‡ Client SecretРїСРѓРїСвЂ°Рµв„–В¶Р·Р†ВРёТ‘Т‘Рµв‚¬В°РґС‘вЂ№Р¶вЂ“в„–",
+                                         "message":  "复制 ClientID（不是 Client Secret！）并粘贴到下方",
                                          "description":  "Step 5"
                                      },
     "optionsSyncYadiskClientSave":  {
-                                        "message":  "РґС—СњРµВ­В ClientID",
+                                        "message":  "保存 ClientID",
                                         "description":  "Save client ID button"
                                     },
     "optionsColumnsTitle":  {
-                                "message":  "Р·СљвЂ№Р¶СњС—Рµв‚¬вЂ”",
+                                "message":  "看板列",
                                 "description":  "Columns section title"
                             },
     "optionsColumnsDesc":  {
-                               "message":  "Р¶вЂ№вЂ“Р¶вЂ№Р…Р¶Р‹вЂ™РµС”РЏРіР‚вЂљР·вЂљв„–РµвЂЎВ» × Рµв‚¬В Р№в„ўВ¤РіР‚вЂљ",
+                               "message":  "拖拽以调整顺序。点击 × 删除。",
                                "description":  "Columns section description"
                            },
     "optionsColumnsAdd":  {
-                              "message":  "Р¶В·В»РµР‰В Рµв‚¬вЂ”",
+                              "message":  "添加列",
                               "description":  "Add column button"
                           },
     "optionsColumnsNew":  {
-                              "message":  "Р¶вЂ“В°Рµв‚¬вЂ”",
+                              "message":  "新列",
                               "description":  "New column placeholder"
                           },
     "optionsTagsTitle":  {
-                             "message":  "Р¶В вЂЎР·В­С•",
+                             "message":  "标签",
                              "description":  "Tags section title"
                          },
     "optionsTagsAdd":  {
-                           "message":  "Р¶В·В»РµР‰В Р¶В вЂЎР·В­С•",
+                           "message":  "添加标签",
                            "description":  "Add tag button"
                        },
     "optionsTagsNew":  {
-                           "message":  "Р¶вЂ“В°Р¶В вЂЎР·В­С•",
+                           "message":  "新标签",
                            "description":  "New tag placeholder"
                        },
     "optionsPerformersTitle":  {
-                                   "message":  "Р¶вЂ°В§РёРЋРЉРёР‚вЂ¦",
+                                   "message":  "执行者",
                                    "description":  "Performers section title"
                                },
     "optionsPerformersAdd":  {
-                                 "message":  "Р¶В·В»РµР‰В Р¶вЂ°В§РёРЋРЉРёР‚вЂ¦",
+                                 "message":  "添加执行者",
                                  "description":  "Add performer button"
                              },
     "optionsPerformersNew":  {
-                                 "message":  "Р¶вЂ“В°Р¶вЂ°В§РёРЋРЉРёР‚вЂ¦",
+                                 "message":  "新执行者",
                                  "description":  "New performer placeholder"
                              },
     "optionsAuthorsTitle":  {
-                                "message":  "РґР…СљРёР‚вЂ¦",
+                                "message":  "作者",
                                 "description":  "Authors section title"
                             },
     "optionsAuthorsAdd":  {
-                              "message":  "Р¶В·В»РµР‰В РґР…СљРёР‚вЂ¦",
+                              "message":  "添加作者",
                               "description":  "Add author button"
                           },
     "optionsAuthorsNew":  {
-                              "message":  "Р¶вЂ“В°РґР…СљРёР‚вЂ¦",
+                              "message":  "新作者",
                               "description":  "New author placeholder"
                           },
     "optionsAppearanceTheme":  {
-                                   "message":  "РґС‘В»Р№СћВ",
+                                   "message":  "主题",
                                    "description":  "Theme section title"
                                },
     "optionsAppearanceLight":  {
-                                   "message":  "Р¶ВµвЂ¦РёвЂ°Р†",
+                                   "message":  "浅色",
                                    "description":  "Light theme option"
                                },
     "optionsAppearanceDark":  {
-                                  "message":  "Р¶В·В±РёвЂ°Р†",
+                                  "message":  "深色",
                                   "description":  "Dark theme option"
                               },
     "optionsAppearanceSystem":  {
-                                    "message":  "Р·С–В»Р·В»Сџ",
+                                    "message":  "系统",
                                     "description":  "System theme option"
                                 },
     "optionsAppearanceLanguage":  {
-                                      "message":  "РёР‡В­РёРЃР‚",
+                                      "message":  "语言",
                                       "description":  "Language section title"
                                   },
     "optionsBack":  {
-                        "message":  "РІвЂ С’ РёС—вЂќРµвЂєС›",
+                        "message":  "← 返回",
                         "description":  "Back to main page button"
                     },
     "optionsSave":  {
-                        "message":  "РґС—СњРµВ­В",
+                        "message":  "保存",
                         "description":  "Save button"
                     },
     "optionsSaved":  {
-                         "message":  "РµВ·Р†РґС—СњРµВ­ВРїСРѓ",
+                         "message":  "已保存！",
                          "description":  "Saved confirmation"
                      },
     "optionsAboutVersion":  {
-                                "message":  "Р·вЂ°в‚¬Р¶СљВ¬ {version}",
+                                "message":  "版本 {version}",
                                 "description":  "Version info"
                             },
     "optionsAboutDesc":  {
-                             "message":  "Р№Р‚вЂљР·вЂќРЃРґС”Р‹ Chrome Р¶вЂ“В°Р¶В вЂЎР·В­С•Р№РЋВµР·С™вЂћРґв„–В¦Р·В­С•Р¶В РЏРµвЂ™РЉР·СљвЂ№Р¶СњС—Р№СњСћР¶СњС—РіР‚вЂљ",
+                             "message":  "适用于 Chrome 新标签页的书签栏和看板面板。",
                              "description":  "About description"
                          },
     "optionsAboutStorage":  {
-                                "message":  "Р·СљвЂ№Р¶СњС—Р¶вЂўВ°Р¶РЊВ®РµВ­ВРµвЂљРЃРµСљРЃ chrome.storage.localРіР‚вЂљРёВ®С•Р·Р…В®РµвЂ™РЉ API РµР‡вЂ Р№вЂ™ТђРµВ­ВРµвЂљРЃРµСљРЃ chrome.storage.syncРїСв‚¬РёВ·РЃРёВ®С•РµВ¤вЂЎРµС’РЉР¶В­ТђРїСвЂ°РіР‚вЂљР·СљвЂ№Р¶СњС—Р¶вЂўВ°Р¶РЊВ®Р№Р‚С™РёС—вЂЎР¶вЂ°Р‚Р№Р‚вЂ°Р¶РЏС’РґС•вЂєРµвЂўвЂ РїСв‚¬Google Drive Р¶в‚¬вЂ“ Yandex DiskРїСвЂ°РµС’РЉР¶В­ТђРіР‚вЂљ",
+                                "message":  "看板数据本地存储在 localStorage（无同步）或云端（Google Drive / Yandex Disk）在同步启用时。设置和 API 密钥存储在 chrome.storage.sync 中。",
                                 "description":  "Storage info"
                             },
     "optionsSupportTitle":  {
-                                "message":  "Р¶вЂќР‡Р¶РЉРѓР№РЋв„–Р·вЂєВ®",
+                                "message":  "支持项目",
                                 "description":  "Support section title"
                             },
     "optionsSupportDesc":  {
-                               "message":  "РµВ¦вЂљР¶С›СљР¶вЂљРЃРёВ§вЂ°РµС•вЂ”Р¶В­В¤Р¶вЂ°В©РµВ±вЂўР¶СљвЂ°Р·вЂќРЃРїСРЉРµРЏР‡РґВ»ТђР¶вЂќР‡Р¶РЉРѓРµвЂ¦В¶РµСР‚РµРЏвЂРїСС™",
+                               "message":  "如果您觉得此扩展有用，可以支持它的发展：",
                                "description":  "Support section description"
                            },
     "optionsSupportOkx":  {
-                              "message":  "OKX (РµР‰В РµР‡вЂ РёТ‘В§РµС‘Рѓ)",
+                              "message":  "OKX（加密货币）",
                               "description":  "OKX donate button label"
                           },
     "optionsSupportOkxHint":  {
-                                  "message":  "Р¶вЂ°В«Р·В РѓРёР…В¬РёТ‘В¦",
+                                  "message":  "扫码转账",
                                   "description":  "OKX donate hint"
                               },
     "optionsSupportOkxModalTitle":  {
-                                        "message":  "Р№Р‚С™РёС—вЂЎ OKX Р¶вЂќР‡Р¶РЉРѓ",
+                                        "message":  "通过 OKX 支持",
                                         "description":  "OKX QR modal title"
                                     },
     "optionsSupportOkxModalDesc":  {
-                                       "message":  "РµСљРЃ OKX РµС”вЂќР·вЂќРЃРґС‘В­Р¶вЂ°В«Р¶РЏРЏРґС”РЉР·В»Т‘Р·В РѓРёС—вЂєРёРЋРЉРёР…В¬РёТ‘В¦РїСС™",
+                                       "message":  "在 OKX 应用中扫描二维码进行转账：",
                                        "description":  "OKX QR modal description"
                                    },
     "cardOldTooltip":  {
-                           "message":  "РґВ»В»РµР‰РЋРµВ·Р†РёВ¶вЂ¦РёС—вЂЎ7РµВ¤В©",
+                           "message":  "任务已存在超过 7 天",
                            "description":  "Snail tooltip for old cards in first column"
                        },
     "cardFireTooltip":  {
-                            "message":  "РґВ»В»РµР‰РЋРµВ·Р†РёВ¶вЂ¦РёС—вЂЎ22РµВ¤В©",
+                            "message":  "任务已存在超过 22 天",
                             "description":  "Fire tooltip for very old cards in first column"
                         },
     "cardTagsPlaceholder":  {
-                                "message":  "Р¶вЂ°Р‚Р¶СљвЂ°Р¶В вЂЎР·В­С•",
+                                "message":  "所有标签",
                                 "description":  "Card tags placeholder"
                             },
     "cardTagsDropdownHeader":  {
-                                   "message":  "Р№Р‚вЂ°Р¶вЂ№В©Р¶В вЂЎР·В­С•",
+                                   "message":  "选择标签",
                                    "description":  "Tags dropdown header"
                                },
     "cardTagsDropdownClear":  {
-                                  "message":  "Р¶С‘вЂ¦Р№в„ўВ¤",
+                                  "message":  "清除",
                                   "description":  "Clear tags button"
                               },
     "cardTagsRemoveTitle":  {
-                                "message":  "Р·В§В»Р№в„ўВ¤Р¶В вЂЎР·В­С•",
+                                "message":  "移除标签",
                                 "description":  "Remove tag tooltip"
                             },
     "widgetsClock":  {
-                         "message":  "Р¶вЂ”В¶Р№вЂ™Сџ",
+                         "message":  "时钟",
                          "description":  "Clock widget label"
                      },
     "widgetsWeather":  {
-                           "message":  "РµВ¤В©Р¶В°вЂќ",
+                           "message":  "天气",
                            "description":  "Weather widget label"
                        },
     "weatherCity":  {
-                        "message":  "РµСџР‹РµС‘вЂљ",
+                        "message":  "城市",
                         "description":  "Weather city label"
                     },
     "weatherCityPlaceholder":  {
-                                   "message":  "РґС•вЂ№РµВ¦вЂљРїСС™РґС‘Р‰Р¶ВµВ·",
+                                   "message":  "例如：北京",
                                    "description":  "Weather city placeholder"
                                },
     "weatherUnit":  {
-                        "message":  "РµРЊвЂўРґР…РЊ",
+                        "message":  "单位",
                         "description":  "Weather unit label"
                     },
     "weatherCelsius":  {
@@ -544,104 +552,104 @@
                               "description":  "Fahrenheit option"
                           },
     "weatherError":  {
-                         "message":  "Р¶вЂ”В Р¶вЂўВ°Р¶РЊВ®",
+                         "message":  "无数据",
                          "description":  "Weather error message"
                      },
     "weatherLoading":  {
-                           "message":  "РµР‰В РёР…Р…РґС‘В­...",
+                           "message":  "加载中...",
                            "description":  "Weather loading message"
                        },
     "optionsWidgetsTitle":  {
-                                "message":  "Р·В»вЂћРґВ»В¶",
+                                "message":  "小组件",
                                 "description":  "Widgets section title"
                             },
     "optionsBookmarksTitle":  {
-                                  "message":  "Рґв„–В¦Р·В­С•",
+                                  "message":  "书签",
                                   "description":  "Bookmarks section title"
                               },
     "optionsBookmarksSlots":  {
-                                  "message":  "Рґв„–В¦Р·В­С•Р¶вЂўВ°Р№вЂЎРЏРїСС™",
+                                  "message":  "书签数量：",
                                   "description":  "Bookmark slots label"
                               },
     "optionsBookmarksSlotsHint":  {
-                                      "message":  "Р¶СљР‚РµВ¤С™ 22 РґС‘Р„РіР‚вЂљРµС—вЂ¦Р№РЋВ»РґС‘С”РµРѓВ¶Р¶вЂўВ°РіР‚вЂљ",
+                                      "message":  "最多 22 个。必须为偶数。",
                                       "description":  "Bookmark slots hint"
                                   },
     "homepageModalTitle":  {
-                               "message":  "РёВ®С•Р·Р…В®РґС‘С”РґС‘В»Р№РЋВµ",
+                               "message":  "设置快速访问页面",
                                "description":  "Homepage modal title"
                            },
     "homepageModalDesc":  {
-                              "message":  "РµВ¤РЊРµв‚¬В¶Р¶В­В¤ URL Рµв„–В¶РµВ°вЂ РµвЂ¦В¶Р·Р†ВРёТ‘Т‘Рµв‚¬В°Р¶ВµРЏРёВ§в‚¬Рµв„ўРЃРёВ®С•Р·Р…В®РґС‘В­РґР…СљРґС‘С”РµС—В«Р№Р‚СџРёВ®С—Р№вЂ”В®Р№РЋВµР№СњСћР¶в‚¬вЂ“РґС‘В»Р№РЋВµРіР‚вЂљ",
+                              "message":  "复制 URL 并在浏览器设置中粘贴为快速访问页面或主页。",
                               "description":  "Homepage modal description"
                           },
     "homepageModalCopy":  {
-                              "message":  "РµВ¤РЊРµв‚¬В¶",
+                              "message":  "复制",
                               "description":  "Copy button"
                           },
     "homepageModalCopied":  {
-                                "message":  "РµВ·Р†РµВ¤РЊРµв‚¬В¶РїСРѓ",
+                                "message":  "已复制！",
                                 "description":  "Copied confirmation"
                             },
     "homepageModalClose":  {
-                               "message":  "РµвЂ¦С–Р№вЂ”В­",
+                               "message":  "关闭",
                                "description":  "Close button"
                            },
     "homepageHint":  {
-                         "message":  "РёВ®С•РґС‘С”РґС‘В»Р№РЋВµ",
+                         "message":  "设为主页",
                          "description":  "Homepage info button tooltip"
                      },
-    "modalNoTitle":  {
-                         "message":  "Р¶вЂ”В Р¶В вЂЎР№СћВ",
-                         "description":  "Fallback for empty card title"
-                     },
-    "storageWarningFull":  {
-                               "message":  "存储空间几乎已满（90%+）。启用云同步或删除旧卡片以释放空间。",
-                               "description":  "Storage warning tooltip when localStorage is near full"
-                           },
-    "optionsSyncCspError":  {
-                                "message":  "CSP Р№вЂќв„ўРёР‡Р‡ РІР‚вЂќ РёР‡В·Р¶Р€Р‚Р¶СџТђР¶СњС“Р№в„ўС’",
-                                "description":  "CSP error message for sync"
-                            },
-    "optionsSyncTokenInvalid":  {
-                                    "message":  "Р¶вЂ”В Р¶вЂўв‚¬Р·С™вЂћРґВ»В¤Р·вЂ°РЉ",
-                                    "description":  "Invalid token error message"
-                                },
-    "optionsSyncTokenForbidden":  {
-                                      "message":  "РґВ»В¤Р·вЂ°РЉР¶СњС“Р№в„ўС’РґС‘РЊРёВ¶С–",
-                                      "description":  "Forbidden token error message"
-                                  },
     "storageErrorQuota":  {
-                              "message":  "РµВ­ВРµвЂљРЃР№вЂ¦РЊР№СћСњРµВ·Р†РёВ¶вЂ¦Р№в„ўС’РіР‚вЂљРёР‡В·Рµв‚¬В Р№в„ўВ¤Р¶вЂ”В§РµРЊРЋР·вЂ°вЂЎР¶в‚¬вЂ“Р¶С‘вЂ¦Р№в„ўВ¤Р¶вЂўВ°Р¶РЊВ®РіР‚вЂљ",
+                              "message":  "存储空间超限。请删除旧卡片或清除数据。",
                               "description":  "Storage quota exceeded error"
                           },
     "storageErrorGeneral":  {
-                                "message":  "РґС—СњРµВ­ВР¶вЂўВ°Р¶РЊВ®РµВ¤В±РёТ‘ТђРіР‚вЂљРёР‡В·Р№вЂЎРЊРёР‡вЂўРіР‚вЂљ",
+                                "message":  "保存数据失败。请重试。",
                                 "description":  "General storage error"
                             },
     "storageIndicator":  {
-                             "message":  "РµВ­ВРµвЂљРЃРїСС™",
+                             "message":  "存储：",
                              "description":  "Storage indicator label"
                          },
     "filterDateFrom":  {
-                           "message":  "РµСР‚РµВ§вЂ№Р¶вЂ”ТђР¶СљСџ",
+                           "message":  "起始日期",
                            "description":  "Date from filter title"
                        },
     "filterDateTo":  {
-                         "message":  "Р·В»вЂњР¶СњСџР¶вЂ”ТђР¶СљСџ",
+                         "message":  "截止日期",
                          "description":  "Date to filter title"
                      },
     "optionsStorageUsage":  {
-                                "message":  "РµВ­ВРµвЂљРЃРґР…С—Р·вЂќРЃРїСС™{used} KB / {total} KB ({pct}%)",
+                                "message":  "已使用：{used} KB / {total} KB（{pct}%）",
                                 "description":  "Storage usage in options sync tab"
                             },
     "optionsStorageLocal":  {
-                                "message":  "Р¶СљВ¬РµСљВ°РµВ­ВРµвЂљРЃ",
+                                "message":  "本地存储",
                                 "description":  "Local storage label in options sync tab"
                             },
+    "storageWarningFull":  {
+                               "message":  "存储空间几乎已满（90%+）。启用云同步或删除旧任务以释放空间。",
+                               "description":  "Storage warning tooltip when localStorage is near full"
+                           },
+    "modalNoTitle":  {
+                         "message":  "无标题",
+                         "description":  "Fallback title when card has no title"
+                     },
+    "optionsSyncCspError":  {
+                                "message":  "可能对 Yandex Disk 的请求被安全策略阻止。",
+                                "description":  "CSP error"
+                            },
+    "optionsSyncTokenInvalid":  {
+                                    "message":  "请检查令牌的正确性和访问权限。",
+                                    "description":  "Invalid token"
+                                },
+    "optionsSyncTokenForbidden":  {
+                                      "message":  "访问权限不足。",
+                                      "description":  "Token forbidden"
+                                  },
     "migrationOverflowLost":  {
-                                  "message":  "$total$ РµСВ РµРЊРЋР·вЂ°вЂЎРґС‘В­Р·С™вЂћ $count$ РµВ°вЂ Р¶В°С‘Рґв„–вЂ¦РґС‘СћРµВ¤В±РїСРЉРµвЂєВ РґС‘С”РµВ®С“РґВ»В¬Р¶вЂ”В Р¶С–вЂўР¶вЂќС•РµвЂ¦ТђР¶СљВ¬РµСљВ°РµВ­ВРµвЂљРЃРіР‚вЂљР·В»В§Р·В»В­Рµв„–В¶РґС‘СћРµВ¤В±РµВ®С“РґВ»В¬РїССџ",
-                                  "description":  "РґС”вЂРµв‚¬В°Р¶СљВ¬РµСљВ°РёС—РѓР·В§В»Р¶вЂ”В¶Р№С“РЃРµв‚¬вЂ РµРЊРЋР·вЂ°вЂЎР¶вЂ”В Р¶С–вЂўР¶вЂќС•РµвЂ¦ТђРµВ­ВРµвЂљРЃР·С™вЂћРёВ­В¦РµвЂР‰",
+                                  "message":  "$count$ 张卡片中的 $total$ 张将永久丢失，因为它们无法放入本地存储。是否继续并丢失它们？",
+                                  "description":  "Warning during cloud-to-local migration when cards don't fit in localStorage",
                                   "placeholders":  {
                                                        "count":  {
                                                                      "content":  "$1"
@@ -675,12 +683,6 @@
     "cardDescQuoteTooltip":  {
                                  "message":  "引用"
                              },
-    "modalEdit":  {
-                      "message":  "编辑"
-                  },
-    "modalHide":  {
-                      "message":  "隐藏"
-                  },
     "widgetsQuotes":  {
                           "message":  "名言",
                           "description":  "Quotes widget label"

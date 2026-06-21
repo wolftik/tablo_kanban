@@ -4,11 +4,11 @@
                     "description":  "Extension name"
                 },
     "appDescription":  {
-                           "message":  "Р°В¤В¬Р°ТђРѓР°В¤вЂўР°В¤В®Р°В¤С•Р°В¤В°Р°ТђРЊР°В¤вЂў Р°В¤В¬Р°В¤С•Р°В¤В° Р°В¤вЂќР°В¤В° Kanban Р°В¤В¬Р°ТђвЂ№Р°В¤В°Р°ТђРЊР°В¤РЋ Р°В¤РЃР°В¤РЏ Р°В¤СџР°Тђв‚¬Р°В¤В¬ Р°В¤Р„Р°ТђвЂЎР°В¤Сљ Р°В¤вЂўР°ТђвЂЎ Р°В¤В°Р°ТђвЂљР°В¤Р„ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ",
+                           "message":  "Chrome के नए टैब के लिए बुकमार्क बार और कानबन बोर्ड",
                            "description":  "Extension description"
                        },
     "bookmarkAddTitle":  {
-                             "message":  "Р°В¤В¬Р°ТђРѓР°В¤вЂўР°В¤В®Р°В¤С•Р°В¤В°Р°ТђРЊР°В¤вЂў Р°В¤СљР°ТђвЂ№Р°В¤РЋР°В¤СР°ТђвЂЎР°В¤вЂљ",
+                             "message":  "बुकमार्क जोड़ें",
                              "description":  "Add bookmark dialog title"
                          },
     "bookmarkUrlPlaceholder":  {
@@ -16,19 +16,19 @@
                                    "description":  "Bookmark URL input placeholder"
                                },
     "bookmarkTitlePlaceholder":  {
-                                     "message":  "Р°В¤В¶Р°ТђР‚Р°В¤В°Р°ТђРЊР°В¤В·Р°В¤вЂў",
+                                     "message":  "शीर्षक",
                                      "description":  "Bookmark title input placeholder"
                                  },
     "bookmarkCancel":  {
-                           "message":  "Р°В¤В°Р°В¤В¦Р°ТђРЊР°В¤В¦ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                           "message":  "रद्द करें",
                            "description":  "Cancel button"
                        },
     "bookmarkSave":  {
-                         "message":  "Р°В¤С‘Р°В¤в„–Р°ТђвЂЎР°В¤СљР°ТђвЂЎР°В¤вЂљ",
+                         "message":  "सहेजें",
                          "description":  "Save button"
                      },
     "bookmarkEditTitle":  {
-                              "message":  "Р°В¤В¬Р°ТђРѓР°В¤вЂўР°В¤В®Р°В¤С•Р°В¤В°Р°ТђРЊР°В¤вЂў Р°В¤С‘Р°В¤вЂљР°В¤Р„Р°В¤С•Р°В¤В¦Р°В¤С—Р°В¤В¤ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                              "message":  "बुकमार्क संपादित करें",
                               "description":  "Edit bookmark dialog title"
                           },
     "bookmarkEditUrlPlaceholder":  {
@@ -36,63 +36,63 @@
                                        "description":  "Edit bookmark URL placeholder"
                                    },
     "bookmarkEditTitlePlaceholder":  {
-                                         "message":  "Р°В¤В¶Р°ТђР‚Р°В¤В°Р°ТђРЊР°В¤В·Р°В¤вЂў",
+                                         "message":  "शीर्षक",
                                          "description":  "Edit bookmark title placeholder"
                                      },
     "bookmarkContextEdit":  {
-                                "message":  "Р°В¤С‘Р°В¤вЂљР°В¤Р„Р°В¤С•Р°В¤В¦Р°В¤С—Р°В¤В¤ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                                "message":  "संपादित करें",
                                 "description":  "Context menu edit action"
                             },
     "bookmarkContextDelete":  {
-                                  "message":  "Р°В¤в„–Р°В¤СџР°В¤С•Р°В¤РЏР°В¤вЂљ",
+                                  "message":  "हटाएँ",
                                   "description":  "Context menu delete action"
                               },
     "cardPlaceholderAddSite":  {
-                                   "message":  "Р°В¤С‘Р°В¤С•Р°В¤вЂЎР°В¤Сџ Р°В¤СљР°ТђвЂ№Р°В¤РЋР°В¤СР°ТђвЂЎР°В¤вЂљ",
+                                   "message":  "साइट जोड़ें",
                                    "description":  "Add site placeholder"
                                },
     "filterAllAssignees":  {
-                               "message":  "Р°В¤С‘Р°В¤В­Р°ТђР‚ Р°В¤вЂ¦Р°В¤С‘Р°В¤С•Р°В¤вЂЎР°В¤РЃР°ТђР‚",
+                               "message":  "सभी निष्पादक",
                                "description":  "Filter: all assignees option"
                            },
     "filterAllAuthors":  {
-                             "message":  "Р°В¤С‘Р°В¤В­Р°ТђР‚ Р°В¤Р†Р°ТђвЂЎР°В¤вЂ“Р°В¤вЂў",
+                             "message":  "सभी लेखक",
                              "description":  "Filter: all authors option"
                          },
     "filterAllPriorities":  {
-                                "message":  "Р°В¤С‘Р°В¤В­Р°ТђР‚ Р°В¤Р„Р°ТђРЊР°В¤В°Р°В¤С•Р°В¤ТђР°В¤В®Р°В¤С—Р°В¤вЂўР°В¤В¤Р°В¤С•Р°В¤РЏР°В¤Рѓ",
+                                "message":  "सभी प्राथमिकताएँ",
                                 "description":  "Filter: all priorities option"
                             },
     "filterSearchPlaceholder":  {
-                                    "message":  "Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤Р‡ Р°В¤вЂ“Р°ТђвЂ№Р°В¤СљР°ТђвЂЎР°В¤вЂљ...",
+                                    "message":  "कार्य खोजें...",
                                     "description":  "Filter search placeholder"
                                 },
     "filterClearTitle":  {
-                             "message":  "Р°В¤В«Р°В¤СР°В¤С—Р°В¤Р†Р°ТђРЊР°В¤СџР°В¤В° Р°В¤С‘Р°В¤С•Р°В¤В«Р°В¤С Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                             "message":  "फ़िल्टर साफ़ करें",
                              "description":  "Clear filters button title"
                          },
     "priorityLow":  {
-                        "message":  "Р°В¤вЂўР°В¤В®",
+                        "message":  "कम",
                         "description":  "Low priority"
                     },
     "priorityMedium":  {
-                           "message":  "Р°В¤В®Р°В¤В§Р°ТђРЊР°В¤Р‡Р°В¤В®",
+                           "message":  "मध्यम",
                            "description":  "Medium priority"
                        },
     "priorityHigh":  {
-                         "message":  "Р°В¤вЂ°Р°В¤С™Р°ТђРЊР°В¤С™",
+                         "message":  "उच्च",
                          "description":  "High priority"
                      },
     "priorityUrgent":  {
-                           "message":  "Р°В¤вЂ¦Р°В¤В¤Р°ТђРЊР°В¤Р‡Р°В¤С•Р°В¤ВµР°В¤В¶Р°ТђРЊР°В¤Р‡Р°В¤вЂў",
+                           "message":  "अत्यावश्यक",
                            "description":  "Urgent priority"
                        },
     "tagsFilterAll":  {
-                          "message":  "Р°В¤С‘Р°В¤В­Р°ТђР‚ Р°В¤СџР°Тђв‚¬Р°В¤вЂ”",
+                          "message":  "सभी टैग",
                           "description":  "Tags filter: all"
                       },
     "tagsFilterSelected":  {
-                               "message":  "$count$ Р°В¤С™Р°В¤Р‡Р°В¤РЃР°В¤С—Р°В¤В¤",
+                               "message":  "$count$ चयनित",
                                "description":  "Tags filter: selected count",
                                "placeholders":  {
                                                     "count":  {
@@ -101,107 +101,115 @@
                                                 }
                            },
     "tagsRemoveTitle":  {
-                            "message":  "Р°В¤В«Р°В¤СР°В¤С—Р°В¤Р†Р°ТђРЊР°В¤СџР°В¤В° Р°В¤в„–Р°В¤СџР°В¤С•Р°В¤РЏР°В¤вЂљ",
+                            "message":  "फ़िल्टर हटाएँ",
                             "description":  "Remove tag filter tooltip"
                         },
     "modalTask":  {
-                      "message":  "Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤Р‡",
+                      "message":  "कार्य",
                       "description":  "Modal title"
                   },
     "modalTitlePlaceholder":  {
-                                  "message":  "Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤Р‡ Р°В¤В¶Р°ТђР‚Р°В¤В°Р°ТђРЊР°В¤В·Р°В¤вЂў",
+                                  "message":  "कार्य शीर्षक",
                                   "description":  "Modal title input placeholder"
                               },
     "modalDescPlaceholder":  {
-                                 "message":  "Р°В¤ВµР°В¤С—Р°В¤ВµР°В¤В°Р°В¤Р€",
+                                 "message":  "विवरण",
                                  "description":  "Modal description placeholder"
                              },
     "modalAssignee":  {
-                          "message":  "Р°В¤вЂ¦Р°В¤С‘Р°В¤С•Р°В¤вЂЎР°В¤РЃР°ТђР‚:",
+                          "message":  "निष्पादक:",
                           "description":  "Assignee label"
                       },
     "modalNotAssigned":  {
-                             "message":  "Р°В¤вЂ¦Р°В¤С‘Р°В¤С•Р°В¤вЂЎР°В¤РЃ Р°В¤РЃР°В¤в„–Р°ТђР‚Р°В¤вЂљ Р°В¤вЂўР°В¤С—Р°В¤Р‡Р°В¤С• Р°В¤вЂ”Р°В¤Р‡Р°В¤С•",
+                             "message":  "नियुक्त नहीं",
                              "description":  "Not assigned option"
                          },
     "modalAuthor":  {
-                        "message":  "Р°В¤Р†Р°ТђвЂЎР°В¤вЂ“Р°В¤вЂў:",
+                        "message":  "लेखक:",
                         "description":  "Author label"
                     },
     "modalNotSpecified":  {
-                              "message":  "Р°В¤РЃР°В¤С—Р°В¤В°Р°ТђРЊР°В¤В¦Р°В¤С—Р°В¤В·Р°ТђРЊР°В¤Сџ Р°В¤РЃР°В¤в„–Р°ТђР‚Р°В¤вЂљ",
+                              "message":  "निर्दिष्ट नहीं",
                               "description":  "Not specified option"
                           },
     "modalTags":  {
-                      "message":  "Р°В¤СџР°Тђв‚¬Р°В¤вЂ”:",
+                      "message":  "टैग:",
                       "description":  "Tags label"
                   },
     "modalTagsSelect":  {
-                            "message":  "Р°В¤СџР°Тђв‚¬Р°В¤вЂ” Р°В¤С™Р°ТђРѓР°В¤РЃР°ТђвЂЎР°В¤вЂљ",
+                            "message":  "टैग चुनें",
                             "description":  "Tags select tooltip"
                         },
     "modalPriority":  {
-                          "message":  "Р°В¤Р„Р°ТђРЊР°В¤В°Р°В¤С•Р°В¤ТђР°В¤В®Р°В¤С—Р°В¤вЂўР°В¤В¤Р°В¤С•:",
+                          "message":  "प्राथमिकता:",
                           "description":  "Priority label"
                       },
     "modalNoPriority":  {
-                            "message":  "Р°В¤вЂўР°ТђвЂ№Р°В¤в‚¬ Р°В¤Р„Р°ТђРЊР°В¤В°Р°В¤С•Р°В¤ТђР°В¤В®Р°В¤С—Р°В¤вЂўР°В¤В¤Р°В¤С• Р°В¤РЃР°В¤в„–Р°ТђР‚Р°В¤вЂљ",
+                            "message":  "कोई प्राथमिकता नहीं",
                             "description":  "No priority option"
                         },
     "modalDelete":  {
-                        "message":  "Р°В¤в„–Р°В¤СџР°В¤С•Р°В¤РЏР°В¤вЂљ",
+                        "message":  "हटाएँ",
                         "description":  "Delete button"
                     },
     "modalCancel":  {
-                        "message":  "Р°В¤В°Р°В¤В¦Р°ТђРЊР°В¤В¦ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                        "message":  "रद्द करें",
                         "description":  "Cancel button"
                     },
     "modalSave":  {
-                      "message":  "Р°В¤С‘Р°В¤в„–Р°ТђвЂЎР°В¤СљР°ТђвЂЎР°В¤вЂљ",
+                      "message":  "सहेजें",
                       "description":  "Save button"
                   },
     "modalNewTask":  {
-                         "message":  "Р°В¤РЃР°В¤Р‡Р°В¤С• Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤Р‡",
+                         "message":  "नया कार्य",
                          "description":  "New task modal title"
                      },
     "modalEditTask":  {
-                          "message":  "Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤Р‡ Р°В¤С‘Р°В¤вЂљР°В¤Р„Р°В¤С•Р°В¤В¦Р°В¤С—Р°В¤В¤ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                          "message":  "कार्य संपादित करें",
                           "description":  "Edit task modal title"
                       },
+    "modalEdit":  {
+                      "message":  "संपादित करें",
+                      "description":  "Edit button"
+                  },
+    "modalHide":  {
+                      "message":  "छिपाएँ",
+                      "description":  "Hide button in view mode"
+                  },
     "columnAddCard":  {
-                          "message":  "+ Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤РЋ Р°В¤СљР°ТђвЂ№Р°В¤РЋР°В¤СР°ТђвЂЎР°В¤вЂљ",
+                          "message":  "+ कार्य जोड़ें",
                           "description":  "Add card button"
                       },
     "columnAddColumn":  {
-                            "message":  "+ Р°В¤вЂўР°ТђвЂ°Р°В¤Р†Р°В¤В® Р°В¤СљР°ТђвЂ№Р°В¤РЋР°В¤СР°ТђвЂЎР°В¤вЂљ",
+                            "message":  "+ कॉलम जोड़ें",
                             "description":  "Add column button"
                         },
     "columnAddTitle":  {
-                           "message":  "Р°В¤РЃР°В¤Р‡Р°В¤С• Р°В¤вЂўР°ТђвЂ°Р°В¤Р†Р°В¤В®",
+                           "message":  "नया कॉलम",
                            "description":  "Add column dialog title"
                        },
     "columnAddCreate":  {
-                            "message":  "Р°В¤В¬Р°В¤РЃР°В¤С•Р°В¤РЏР°В¤вЂљ",
+                            "message":  "बनाएँ",
                             "description":  "Create column button"
                         },
     "columnNewColumn":  {
-                            "message":  "Р°В¤РЃР°В¤Р‡Р°В¤С• Р°В¤вЂўР°ТђвЂ°Р°В¤Р†Р°В¤В®",
+                            "message":  "नया कॉलम",
                             "description":  "New column default name"
                         },
     "columnNewPlaceholder":  {
-                                 "message":  "Р°В¤вЂўР°ТђвЂ°Р°В¤Р†Р°В¤В® Р°В¤вЂўР°В¤С• Р°В¤РЃР°В¤С•Р°В¤В®",
+                                 "message":  "कॉलम का नाम",
                                  "description":  "New column input placeholder"
                              },
     "columnNewColor":  {
-                           "message":  "Р°В¤В°Р°В¤вЂљР°В¤вЂ”:",
+                           "message":  "रंग:",
                            "description":  "Color picker label"
                        },
     "columnDelete":  {
-                         "message":  "Р°В¤в„–Р°В¤СџР°В¤С•Р°В¤РЏР°В¤вЂљ",
+                         "message":  "हटाएँ",
                          "description":  "Delete column button"
                      },
     "columnDeleteConfirm":  {
-                                "message":  "Р°В¤вЂўР°ТђвЂ°Р°В¤Р†Р°В¤В® \"$title$\" Р°В¤вЂќР°В¤В° Р°В¤вЂ°Р°В¤С‘Р°В¤вЂўР°ТђвЂЎ Р°В¤С‘Р°В¤В­Р°ТђР‚ Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤РЋ Р°В¤в„–Р°В¤СџР°В¤С•Р°В¤РЏР°В¤вЂљ?",
+                                "message":  "कॉलम \"$title$\" और उसके सभी कार्य हटाएँ?",
                                 "description":  "Column delete confirmation",
                                 "placeholders":  {
                                                      "title":  {
@@ -210,7 +218,7 @@
                                                  }
                             },
     "columnDeleteCardConfirm":  {
-                                    "message":  "Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤Р‡ \"$title$\" Р°В¤в„–Р°В¤СџР°В¤С•Р°В¤РЏР°В¤вЂљ?",
+                                    "message":  "कार्य \"$title$\" हटाएँ?",
                                     "description":  "Card delete confirmation",
                                     "placeholders":  {
                                                          "title":  {
@@ -219,15 +227,15 @@
                                                      }
                                 },
     "columnNoTags":  {
-                         "message":  "Р°В¤вЂўР°ТђвЂ№Р°В¤в‚¬ Р°В¤СџР°Тђв‚¬Р°В¤вЂ” Р°В¤РЃР°В¤в„–Р°ТђР‚Р°В¤вЂљ",
+                         "message":  "कोई टैग नहीं",
                          "description":  "No tags fallback"
                      },
     "columnClearCards":  {
-                             "message":  "Р°В¤С‘Р°В¤В­Р°ТђР‚ Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤РЋ Р°В¤С‘Р°В¤С•Р°В¤В«Р°В¤С Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                             "message":  "कार्य साफ़ करें",
                              "description":  "Clear cards button"
                          },
     "columnClearCardsConfirm":  {
-                                    "message":  "Р°В¤Р„Р°ТђРѓР°В¤В·Р°ТђРЊР°В¤СџР°В¤С— Р°В¤вЂўР°В¤В°Р°В¤РЃР°ТђвЂЎ Р°В¤вЂўР°ТђвЂЎ Р°В¤Р†Р°В¤С—Р°В¤РЏ \"$phrase$\" Р°В¤СџР°В¤С•Р°В¤вЂЎР°В¤Р„ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                                    "message":  "पुष्टि के लिए \"$phrase$\" टाइप करें",
                                     "description":  "Clear cards prompt",
                                     "placeholders":  {
                                                          "phrase":  {
@@ -236,55 +244,55 @@
                                                      }
                                 },
     "columnClearCardsPhrase":  {
-                                   "message":  "Р°В¤С‘Р°В¤С•Р°В¤В«Р°В¤С Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                                   "message":  "साफ़ करें",
                                    "description":  "Clear cards prompt phrase"
                                },
     "columnClearCardsWrong":  {
-                                  "message":  "Р°В¤вЂ”Р°В¤Р†Р°В¤В¤ Р°В¤ВµР°В¤С•Р°В¤вЂўР°ТђРЊР°В¤Р‡Р°В¤С•Р°В¤вЂљР°В¤В¶",
+                                  "message":  "गलत वाक्यांश",
                                   "description":  "Clear cards wrong phrase error"
                               },
     "settingsTitle":  {
-                          "message":  "Р°В¤С‘Р°ТђвЂЎР°В¤СџР°В¤С—Р°В¤вЂљР°В¤вЂ”Р°ТђРЊР°В¤С‘",
+                          "message":  "सेटिंग्स",
                           "description":  "Settings button title"
                       },
     "settingsOpen":  {
-                         "message":  "Tablo Kanban Р°В¤вЂ“Р°ТђвЂ№Р°В¤Р†Р°ТђвЂЎР°В¤вЂљ",
+                         "message":  "Tablo Kanban खोलें",
                          "description":  "Open extension text"
                      },
     "optionsTitle":  {
-                         "message":  "Р°В¤С‘Р°ТђвЂЎР°В¤СџР°В¤С—Р°В¤вЂљР°В¤вЂ”Р°ТђРЊР°В¤С‘ РІР‚вЂќ Tablo Kanban",
+                         "message":  "सेटिंग्स — Tablo Kanban",
                          "description":  "Options page title"
                      },
     "optionsTabColumns":  {
-                              "message":  "Р°В¤вЂўР°ТђвЂ°Р°В¤Р†Р°В¤В®",
+                              "message":  "कॉलम",
                               "description":  "Columns tab button"
                           },
     "optionsTabTags":  {
-                           "message":  "Р°В¤СџР°Тђв‚¬Р°В¤вЂ”",
+                           "message":  "टैग",
                            "description":  "Tags tab button"
                        },
     "optionsTabPerformers":  {
-                                 "message":  "Р°В¤РЃР°В¤С—Р°В¤В·Р°ТђРЊР°В¤Р„Р°В¤С•Р°В¤В¦Р°В¤вЂў",
+                                 "message":  "निष्पादक",
                                  "description":  "Performers tab button"
                              },
     "optionsTabAuthors":  {
-                              "message":  "Р°В¤Р†Р°ТђвЂЎР°В¤вЂ“Р°В¤вЂў",
+                              "message":  "लेखक",
                               "description":  "Authors tab button"
                           },
     "optionsTabAppearance":  {
-                                 "message":  "Р°В¤В¦Р°В¤С—Р°В¤вЂ“Р°В¤С•Р°В¤ВµР°В¤Сџ",
+                                 "message":  "सेटिंग्स",
                                  "description":  "Appearance tab button"
                              },
     "optionsTabSync":  {
-                           "message":  "Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў",
+                           "message":  "सिंक",
                            "description":  "Sync tab button"
                        },
     "optionsSyncTitle":  {
-                             "message":  "Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў",
+                             "message":  "सिंक्रनाइज़ेशन",
                              "description":  "Sync section title"
                          },
     "optionsSyncProvider":  {
-                                "message":  "Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў Р°В¤Р„Р°ТђРЊР°В¤В°Р°В¤В¦Р°В¤С•Р°В¤В¤Р°В¤С•:",
+                                "message":  "सिंक प्रदाता:",
                                 "description":  "Sync provider label"
                             },
     "optionsSyncProviderGoogle":  {
@@ -296,349 +304,349 @@
                                       "description":  "Yandex Disk option"
                                   },
     "optionsSyncDescGoogle":  {
-                                  "message":  "Kanban Р°В¤В¬Р°ТђвЂ№Р°В¤В°Р°ТђРЊР°В¤РЋ Р°В¤РЋР°ТђвЂЎР°В¤СџР°В¤С• Р°В¤вЂ Р°В¤Р„Р°В¤вЂўР°ТђвЂЎ Google Drive Р°В¤вЂўР°ТђвЂЎ Р°В¤В®Р°В¤С•Р°В¤В§Р°ТђРЊР°В¤Р‡Р°В¤В® Р°В¤С‘Р°ТђвЂЎ Р°В¤вЂ°Р°В¤Р„Р°В¤вЂўР°В¤В°Р°В¤Р€Р°ТђвЂ№Р°В¤вЂљ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў Р°В¤в„–Р°ТђвЂ№Р°В¤вЂ”Р°В¤С•Р°ТђВ¤ Google Drive Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў Р°В¤вЂўР°ТђвЂЎР°В¤ВµР°В¤Р† Chrome Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤вЂўР°В¤С•Р°В¤В® Р°В¤вЂўР°В¤В°Р°В¤В¤Р°В¤С• Р°В¤в„–Р°Тђв‚¬Р°ТђВ¤",
+                                  "message":  "कानबन बोर्ड डेटा आपके Google Drive के माध्यम से उपकरणों के बीच सिंक होगा। Google Drive सिंक केवल Chrome में काम करता है।",
                                   "description":  "Google Drive sync description"
                               },
     "optionsSyncDescYandex":  {
-                                  "message":  "Kanban Р°В¤В¬Р°ТђвЂ№Р°В¤В°Р°ТђРЊР°В¤РЋ Р°В¤РЋР°ТђвЂЎР°В¤СџР°В¤С• Р°В¤вЂ Р°В¤Р„Р°В¤вЂўР°ТђвЂЎ Yandex Disk Р°В¤вЂўР°ТђвЂЎ Р°В¤В®Р°В¤С•Р°В¤В§Р°ТђРЊР°В¤Р‡Р°В¤В® Р°В¤С‘Р°ТђвЂЎ Р°В¤вЂ°Р°В¤Р„Р°В¤вЂўР°В¤В°Р°В¤Р€Р°ТђвЂ№Р°В¤вЂљ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў Р°В¤в„–Р°ТђвЂ№Р°В¤вЂ”Р°В¤С•Р°ТђВ¤",
+                                  "message":  "कानबन बोर्ड डेटा आपके Yandex Disk के माध्यम से उपकरणों के बीच सिंक होगा।",
                                   "description":  "Yandex Disk sync description"
                               },
     "optionsSyncChecking":  {
-                                "message":  "Р°В¤С‘Р°ТђРЊР°В¤ТђР°В¤С—Р°В¤В¤Р°В¤С— Р°В¤СљР°В¤С•Р°В¤РѓР°В¤С™ Р°В¤В°Р°В¤в„–Р°В¤С• Р°В¤в„–Р°Тђв‚¬...",
+                                "message":  "स्थिति जाँच रहा है...",
                                 "description":  "Sync status checking"
                             },
     "optionsSyncConnected":  {
-                                 "message":  "Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў Р°В¤вЂўР°В¤РЃР°ТђвЂЎР°В¤вЂўР°ТђРЊР°В¤СџР°ТђвЂЎР°В¤РЋ",
+                                 "message":  "सिंक कनेक्टेड",
                                  "description":  "Sync connected status"
                              },
     "optionsSyncDisconnected":  {
-                                    "message":  "Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў Р°В¤вЂўР°В¤РЃР°ТђвЂЎР°В¤вЂўР°ТђРЊР°В¤СџР°ТђвЂЎР°В¤РЋ Р°В¤РЃР°В¤в„–Р°ТђР‚Р°В¤вЂљ",
+                                    "message":  "सिंक कनेक्टेड नहीं",
                                     "description":  "Sync disconnected status"
                                 },
     "optionsSyncSignin":  {
-                              "message":  "Р°В¤вЂўР°В¤РЃР°ТђвЂЎР°В¤вЂўР°ТђРЊР°В¤Сџ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                              "message":  "कनेक्ट करें",
                               "description":  "Sign in button"
                           },
     "optionsSyncSignout":  {
-                               "message":  "Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў Р°В¤РЋР°В¤С—Р°В¤С‘Р°ТђРЊР°В¤вЂўР°В¤РЃР°ТђвЂЎР°В¤вЂўР°ТђРЊР°В¤Сџ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                               "message":  "सिंक बंद करें",
                                "description":  "Sign out button"
                            },
     "optionsSyncFailed":  {
-                              "message":  "Р°В¤вЂўР°В¤РЃР°ТђвЂЎР°В¤вЂўР°ТђРЊР°В¤В¶Р°В¤РЃ Р°В¤ВµР°В¤С—Р°В¤В«Р°В¤Р†",
+                              "message":  "कनेक्शन विफल",
                               "description":  "Sync failed status"
                           },
     "optionsSyncError":  {
-                             "message":  "Р°В¤С‘Р°ТђРЊР°В¤ТђР°В¤С—Р°В¤В¤Р°В¤С— Р°В¤СљР°В¤С•Р°В¤РѓР°В¤С™ Р°В¤ВµР°В¤С—Р°В¤В«Р°В¤Р†",
+                             "message":  "जाँच में त्रुटि",
                              "description":  "Sync error status"
                          },
     "optionsSyncTokenExpired":  {
-                                    "message":  "Yandex Disk Р°В¤СџР°ТђвЂ№Р°В¤вЂўР°В¤РЃ Р°В¤С‘Р°В¤В®Р°В¤С•Р°В¤Р„Р°ТђРЊР°В¤В¤ Р°В¤Р‡Р°В¤С• Р°В¤вЂ¦Р°В¤В®Р°В¤С•Р°В¤РЃР°ТђРЊР°В¤Р‡ Р°В¤в„–Р°Тђв‚¬Р°ТђВ¤ Р°В¤вЂўР°ТђС“Р°В¤Р„Р°В¤Р‡Р°В¤С• Р°В¤РЏР°В¤вЂў Р°В¤РЃР°В¤Р‡Р°В¤С• Р°В¤СџР°ТђвЂ№Р°В¤вЂўР°В¤РЃ Р°В¤В¦Р°В¤В°Р°ТђРЊР°В¤Сљ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљР°ТђВ¤",
+                                    "message":  "Yandex Disk टोकन समाप्त या अमान्य है। नया टोकन दर्ज करें।",
                                     "description":  "Token expired message"
                                 },
     "optionsSyncYadiskApply":  {
-                                   "message":  "Р°В¤СџР°ТђвЂ№Р°В¤вЂўР°В¤РЃ Р°В¤С‘Р°В¤в„–Р°ТђвЂЎР°В¤СљР°ТђвЂЎР°В¤вЂљ",
+                                   "message":  "टोकन सहेजें",
                                    "description":  "Save token button"
                                },
     "optionsSyncYadiskClear":  {
-                                   "message":  "Р°В¤СџР°ТђвЂ№Р°В¤вЂўР°В¤РЃ Р°В¤С‘Р°В¤С•Р°В¤В«Р°В¤С Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                                   "message":  "टोकन साफ़ करें",
                                    "description":  "Clear token button"
                                },
     "optionsSyncYadiskOauthGet":  {
-                                      "message":  "OAuth Р°В¤СџР°ТђвЂ№Р°В¤вЂўР°В¤РЃ Р°В¤Р„Р°ТђРЊР°В¤В°Р°В¤С•Р°В¤Р„Р°ТђРЊР°В¤В¤ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                                      "message":  "OAuth टोकन प्राप्त करें",
                                       "description":  "Get OAuth token button"
                                   },
     "optionsSyncYadiskOauthOpened":  {
-                                         "message":  "Yandex Р°В¤Р„Р°ТђРЊР°В¤В°Р°В¤С•Р°В¤В§Р°В¤С—Р°В¤вЂўР°В¤В°Р°В¤Р€ Р°В¤Р„Р°ТђС“Р°В¤В·Р°ТђРЊР°В¤В  Р°В¤РЏР°В¤вЂў Р°В¤РЃР°В¤РЏ Р°В¤СџР°Тђв‚¬Р°В¤В¬ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤вЂ“Р°ТђвЂ№Р°В¤Р†Р°В¤С• Р°В¤вЂ”Р°В¤Р‡Р°В¤С•Р°ТђВ¤ Р°В¤Р„Р°ТђРЊР°В¤В°Р°В¤С•Р°В¤В§Р°В¤С—Р°В¤вЂўР°В¤В°Р°В¤Р€ Р°В¤вЂўР°ТђвЂЎ Р°В¤В¬Р°В¤С•Р°В¤В¦, Р°В¤РЏР°В¤РЋР°ТђРЊР°В¤В°Р°ТђвЂЎР°В¤С‘ Р°В¤В¬Р°В¤С•Р°В¤В° Р°В¤С‘Р°ТђвЂЎ Р°В¤СџР°ТђвЂ№Р°В¤вЂўР°В¤РЃ Р°В¤вЂўР°ТђвЂ°Р°В¤Р„Р°ТђР‚ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ, Р°В¤РЃР°ТђР‚Р°В¤С™Р°ТђвЂЎ \u0027OAuth Р°В¤СџР°ТђвЂ№Р°В¤вЂўР°В¤РЃ\u0027 Р°В¤В«Р°В¤СР°ТђР‚Р°В¤Р†Р°ТђРЊР°В¤РЋ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤Р„Р°ТђвЂЎР°В¤С‘Р°ТђРЊР°В¤Сџ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ, Р°В¤В«Р°В¤С—Р°В¤В° \u0027Р°В¤СџР°ТђвЂ№Р°В¤вЂўР°В¤РЃ Р°В¤С‘Р°В¤в„–Р°ТђвЂЎР°В¤СљР°ТђвЂЎР°В¤вЂљ\u0027 Р°В¤Р„Р°В¤В° Р°В¤вЂўР°ТђРЊР°В¤Р†Р°В¤С—Р°В¤вЂў Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљР°ТђВ¤",
+                                         "message":  "Yandex प्राधिकरण पृष्ठ एक नए टैब में खुल गया है। प्राधिकरण के बाद, एड्रेस बार से टोकन कॉपी करें और नीचे 'OAuth टोकन' फ़ील्ड में पेस्ट करें, फिर 'टोकन सहेजें' पर क्लिक करें।",
                                          "description":  "OAuth page opened message"
                                      },
     "optionsSyncYadiskClientHint":  {
-                                        "message":  "Yandex Disk Р°В¤вЂўР°В¤РЃР°ТђвЂЎР°В¤вЂўР°ТђРЊР°В¤Сџ Р°В¤вЂўР°В¤В°Р°В¤РЃР°ТђвЂЎ Р°В¤вЂўР°ТђвЂЎ Р°В¤Р†Р°В¤С—Р°В¤РЏ, oauth.yandex.ru Р°В¤Р„Р°В¤В° Р°В¤РЏР°В¤вЂў Р°В¤С’Р°В¤Р„ Р°В¤Р„Р°В¤вЂљР°В¤СљР°ТђР‚Р°В¤вЂўР°ТђС“Р°В¤В¤ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ Р°В¤вЂќР°В¤В° ClientID Р°В¤В¦Р°В¤В°Р°ТђРЊР°В¤Сљ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ:",
+                                        "message":  "Yandex Disk कनेक्ट करने के लिए, oauth.yandex.ru पर एक ऐप रजिस्टर करें और ClientID दर्ज करें:",
                                         "description":  "Client ID hint text"
                                     },
     "optionsSyncYadiskClientStep2":  {
-                                         "message":  "Р°В¤РЏР°В¤вЂў Р°В¤С’Р°В¤Р„ Р°В¤В¬Р°В¤РЃР°В¤С•Р°В¤РЏР°В¤вЂљ РІвЂ вЂ™ Р°В¤Р„Р°ТђРЊР°В¤В°Р°В¤вЂўР°В¤С•Р°В¤В° Р’В«Web serviceР’В»",
+                                         "message":  "ऐप बनाएँ → प्रकार 'वेब सेवा'",
                                          "description":  "Step 2"
                                      },
     "optionsSyncYadiskClientStep4":  {
-                                         "message":  "Р°В¤вЂ¦Р°В¤РЃР°ТђРѓР°В¤В®Р°В¤В¤Р°В¤С—Р°В¤Р‡Р°В¤С•Р°В¤Рѓ cloud_api:disk.write Р°В¤вЂќР°В¤В° cloud_api:disk.read Р°В¤СљР°ТђвЂ№Р°В¤РЋР°В¤СР°ТђвЂЎР°В¤вЂљ",
+                                         "message":  "अनुमतियाँ cloud_api:disk.write और cloud_api:disk.read जोड़ें",
                                          "description":  "Step 4"
                                      },
     "optionsSyncYadiskClientStep5":  {
-                                         "message":  "ClientID Р°В¤вЂўР°ТђвЂ°Р°В¤Р„Р°ТђР‚ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ (Client Secret Р°В¤РЃР°В¤в„–Р°ТђР‚Р°В¤вЂљ!) Р°В¤вЂќР°В¤В° Р°В¤РЃР°ТђР‚Р°В¤С™Р°ТђвЂЎ Р°В¤Р„Р°ТђвЂЎР°В¤С‘Р°ТђРЊР°В¤Сџ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                                         "message":  "ClientID कॉपी करें (Client Secret नहीं!) और नीचे पेस्ट करें",
                                          "description":  "Step 5"
                                      },
     "optionsSyncYadiskClientSave":  {
-                                        "message":  "ClientID Р°В¤С‘Р°В¤в„–Р°ТђвЂЎР°В¤СљР°ТђвЂЎР°В¤вЂљ",
+                                        "message":  "ClientID सहेजें",
                                         "description":  "Save client ID button"
                                     },
     "optionsColumnsTitle":  {
-                                "message":  "Р°В¤В¬Р°ТђвЂ№Р°В¤В°Р°ТђРЊР°В¤РЋ Р°В¤вЂўР°ТђвЂ°Р°В¤Р†Р°В¤В®",
+                                "message":  "बोर्ड कॉलम",
                                 "description":  "Columns section title"
                             },
     "optionsColumnsDesc":  {
-                               "message":  "Р°В¤Р„Р°ТђРѓР°В¤РЃР°В¤В°Р°ТђРЊР°В¤вЂўР°ТђРЊР°В¤В°Р°В¤В®Р°В¤С—Р°В¤В¤ Р°В¤вЂўР°В¤В°Р°В¤РЃР°ТђвЂЎ Р°В¤вЂўР°ТђвЂЎ Р°В¤Р†Р°В¤С—Р°В¤РЏ Р°В¤вЂ“Р°ТђР‚Р°В¤вЂљР°В¤С™Р°ТђвЂЎР°В¤вЂљР°ТђВ¤ Р°В¤в„–Р°В¤СџР°В¤С•Р°В¤РЃР°ТђвЂЎ Р°В¤вЂўР°ТђвЂЎ Р°В¤Р†Р°В¤С—Р°В¤РЏ Р“вЂ” Р°В¤Р„Р°В¤В° Р°В¤вЂўР°ТђРЊР°В¤Р†Р°В¤С—Р°В¤вЂў Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљР°ТђВ¤",
+                               "message":  "क्रम बदलने के लिए खींचें। हटाने के लिए × दबाएँ।",
                                "description":  "Columns section description"
                            },
     "optionsColumnsAdd":  {
-                              "message":  "Р°В¤вЂўР°ТђвЂ°Р°В¤Р†Р°В¤В® Р°В¤СљР°ТђвЂ№Р°В¤РЋР°В¤СР°ТђвЂЎР°В¤вЂљ",
+                              "message":  "कॉलम जोड़ें",
                               "description":  "Add column button"
                           },
     "optionsColumnsNew":  {
-                              "message":  "Р°В¤РЃР°В¤Р‡Р°В¤С• Р°В¤вЂўР°ТђвЂ°Р°В¤Р†Р°В¤В®",
+                              "message":  "नया कॉलम",
                               "description":  "New column placeholder"
                           },
     "optionsTagsTitle":  {
-                             "message":  "Р°В¤СџР°Тђв‚¬Р°В¤вЂ”",
+                             "message":  "टैग",
                              "description":  "Tags section title"
                          },
     "optionsTagsAdd":  {
-                           "message":  "Р°В¤СџР°Тђв‚¬Р°В¤вЂ” Р°В¤СљР°ТђвЂ№Р°В¤РЋР°В¤СР°ТђвЂЎР°В¤вЂљ",
+                           "message":  "टैग जोड़ें",
                            "description":  "Add tag button"
                        },
     "optionsTagsNew":  {
-                           "message":  "Р°В¤РЃР°В¤Р‡Р°В¤С• Р°В¤СџР°Тђв‚¬Р°В¤вЂ”",
+                           "message":  "नया टैग",
                            "description":  "New tag placeholder"
                        },
     "optionsPerformersTitle":  {
-                                   "message":  "Р°В¤РЃР°В¤С—Р°В¤В·Р°ТђРЊР°В¤Р„Р°В¤С•Р°В¤В¦Р°В¤вЂў",
+                                   "message":  "निष्पादक",
                                    "description":  "Performers section title"
                                },
     "optionsPerformersAdd":  {
-                                 "message":  "Р°В¤РЃР°В¤С—Р°В¤В·Р°ТђРЊР°В¤Р„Р°В¤С•Р°В¤В¦Р°В¤вЂў Р°В¤СљР°ТђвЂ№Р°В¤РЋР°В¤СР°ТђвЂЎР°В¤вЂљ",
+                                 "message":  "निष्पादक जोड़ें",
                                  "description":  "Add performer button"
                              },
     "optionsPerformersNew":  {
-                                 "message":  "Р°В¤РЃР°В¤Р‡Р°В¤С• Р°В¤РЃР°В¤С—Р°В¤В·Р°ТђРЊР°В¤Р„Р°В¤С•Р°В¤В¦Р°В¤вЂў",
+                                 "message":  "नया निष्पादक",
                                  "description":  "New performer placeholder"
                              },
     "optionsAuthorsTitle":  {
-                                "message":  "Р°В¤Р†Р°ТђвЂЎР°В¤вЂ“Р°В¤вЂў",
+                                "message":  "लेखक",
                                 "description":  "Authors section title"
                             },
     "optionsAuthorsAdd":  {
-                              "message":  "Р°В¤Р†Р°ТђвЂЎР°В¤вЂ“Р°В¤вЂў Р°В¤СљР°ТђвЂ№Р°В¤РЋР°В¤СР°ТђвЂЎР°В¤вЂљ",
+                              "message":  "लेखक जोड़ें",
                               "description":  "Add author button"
                           },
     "optionsAuthorsNew":  {
-                              "message":  "Р°В¤РЃР°В¤Р‡Р°В¤С• Р°В¤Р†Р°ТђвЂЎР°В¤вЂ“Р°В¤вЂў",
+                              "message":  "नया लेखक",
                               "description":  "New author placeholder"
                           },
     "optionsAppearanceTheme":  {
-                                   "message":  "Р°В¤ТђР°ТђР‚Р°В¤В®",
+                                   "message":  "थीम",
                                    "description":  "Theme section title"
                                },
     "optionsAppearanceLight":  {
-                                   "message":  "Р°В¤в„–Р°В¤Р†Р°ТђРЊР°В¤вЂўР°В¤С•",
+                                   "message":  "हल्का",
                                    "description":  "Light theme option"
                                },
     "optionsAppearanceDark":  {
-                                  "message":  "Р°В¤вЂ”Р°В¤в„–Р°В¤В°Р°В¤С•",
+                                  "message":  "गहरा",
                                   "description":  "Dark theme option"
                               },
     "optionsAppearanceSystem":  {
-                                    "message":  "Р°В¤С‘Р°В¤С—Р°В¤С‘Р°ТђРЊР°В¤СџР°В¤В®",
+                                    "message":  "सिस्टम",
                                     "description":  "System theme option"
                                 },
     "optionsAppearanceLanguage":  {
-                                      "message":  "Р°В¤В­Р°В¤С•Р°В¤В·Р°В¤С•",
+                                      "message":  "भाषा",
                                       "description":  "Language section title"
                                   },
     "optionsBack":  {
-                        "message":  "РІвЂ С’ Р°В¤ВµР°В¤С•Р°В¤Р„Р°В¤С‘",
+                        "message":  "← वापस जाएँ",
                         "description":  "Back to main page button"
                     },
     "optionsSave":  {
-                        "message":  "Р°В¤С‘Р°В¤в„–Р°ТђвЂЎР°В¤СљР°ТђвЂЎР°В¤вЂљ",
+                        "message":  "सहेजें",
                         "description":  "Save button"
                     },
     "optionsSaved":  {
-                         "message":  "Р°В¤С‘Р°В¤в„–Р°ТђвЂЎР°В¤СљР°В¤С• Р°В¤вЂ”Р°В¤Р‡Р°В¤С•!",
+                         "message":  "सहेजा गया!",
                          "description":  "Saved confirmation"
                      },
     "optionsAboutVersion":  {
-                                "message":  "Р°В¤С‘Р°В¤вЂљР°В¤С‘Р°ТђРЊР°В¤вЂўР°В¤В°Р°В¤Р€ {version}",
+                                "message":  "संस्करण {version}",
                                 "description":  "Version info"
                             },
     "optionsAboutDesc":  {
-                             "message":  "Chrome Р°В¤вЂўР°ТђвЂЎ Р°В¤РЃР°В¤РЏ Р°В¤СџР°Тђв‚¬Р°В¤В¬ Р°В¤Р„Р°ТђвЂЎР°В¤Сљ Р°В¤вЂўР°ТђвЂЎ Р°В¤Р†Р°В¤С—Р°В¤РЏ Р°В¤В¬Р°ТђРѓР°В¤вЂўР°В¤В®Р°В¤С•Р°В¤В°Р°ТђРЊР°В¤вЂў Р°В¤В¬Р°В¤С•Р°В¤В° Р°В¤вЂќР°В¤В° Kanban Р°В¤В¬Р°ТђвЂ№Р°В¤В°Р°ТђРЊР°В¤РЋР°ТђВ¤",
+                             "message":  "Chrome के नए टैब के लिए बुकमार्क बार और कानबन बोर्ड।",
                              "description":  "About description"
                          },
     "optionsAboutStorage":  {
-                                "message":  "Р°В¤В¬Р°ТђвЂ№Р°В¤В°Р°ТђРЊР°В¤РЋ Р°В¤РЋР°ТђвЂЎР°В¤СџР°В¤С• chrome.storage.local Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤С‘Р°ТђРЊР°В¤ТђР°В¤С•Р°В¤РЃР°ТђР‚Р°В¤Р‡ Р°В¤В°Р°ТђвЂљР°В¤Р„ Р°В¤С‘Р°ТђвЂЎ Р°В¤С‘Р°В¤вЂљР°В¤вЂ”Р°ТђРЊР°В¤В°Р°В¤в„–Р°ТђР‚Р°В¤В¤ Р°В¤в„–Р°ТђвЂ№Р°В¤В¤Р°В¤С• Р°В¤в„–Р°Тђв‚¬Р°ТђВ¤ Р°В¤С‘Р°ТђвЂЎР°В¤СџР°В¤С—Р°В¤вЂљР°В¤вЂ”Р°ТђРЊР°В¤С‘ Р°В¤вЂќР°В¤В° API Р°В¤вЂўР°ТђРѓР°В¤вЂљР°В¤СљР°В¤С—Р°В¤Р‡Р°В¤С•Р°В¤Рѓ chrome.storage.sync (Р°В¤вЂ°Р°В¤Р„Р°В¤вЂўР°В¤В°Р°В¤Р€Р°ТђвЂ№Р°В¤вЂљ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў) Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤в„–Р°Тђв‚¬Р°В¤вЂљР°ТђВ¤ Р°В¤В¬Р°ТђвЂ№Р°В¤В°Р°ТђРЊР°В¤РЋ Р°В¤РЋР°ТђвЂЎР°В¤СџР°В¤С• Р°В¤С™Р°ТђРѓР°В¤РЃР°ТђвЂЎ Р°В¤вЂ”Р°В¤РЏ Р°В¤Р„Р°ТђРЊР°В¤В°Р°В¤В¦Р°В¤С•Р°В¤В¤Р°В¤С• (Google Drive Р°В¤Р‡Р°В¤С• Yandex Disk) Р°В¤вЂўР°ТђвЂЎ Р°В¤В®Р°В¤С•Р°В¤В§Р°ТђРЊР°В¤Р‡Р°В¤В® Р°В¤С‘Р°ТђвЂЎ Р°В¤С‘Р°В¤С—Р°В¤вЂљР°В¤вЂў Р°В¤в„–Р°ТђвЂ№Р°В¤В¤Р°В¤С• Р°В¤в„–Р°Тђв‚¬Р°ТђВ¤",
+                                "message":  "बोर्ड डेटा स्थानीय रूप से localStorage में (बिना सिंक) या क्लाउड (Google Drive / Yandex Disk) में सक्रिय सिंक के साथ संग्रहीत होता है। सेटिंग्स और API कुंजियाँ — chrome.storage.sync में।",
                                 "description":  "Storage info"
                             },
     "optionsSupportTitle":  {
-                                "message":  "Р°В¤Р„Р°В¤В°Р°В¤С—Р°В¤Р‡Р°ТђвЂ№Р°В¤СљР°В¤РЃР°В¤С• Р°В¤вЂўР°В¤С• Р°В¤С‘Р°В¤В®Р°В¤В°Р°ТђРЊР°В¤ТђР°В¤РЃ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                                "message":  "परियोजना का समर्थन करें",
                                 "description":  "Support section title"
                             },
     "optionsSupportDesc":  {
-                               "message":  "Р°В¤Р‡Р°В¤В¦Р°В¤С— Р°В¤вЂ Р°В¤Р„Р°В¤вЂўР°ТђвЂ№ Р°В¤Р‡Р°В¤в„– Р°В¤РЏР°В¤вЂўР°ТђРЊР°В¤С‘Р°В¤СџР°ТђвЂЎР°В¤вЂљР°В¤В¶Р°В¤РЃ Р°В¤вЂ°Р°В¤Р„Р°В¤Р‡Р°ТђвЂ№Р°В¤вЂ”Р°ТђР‚ Р°В¤Р†Р°В¤вЂ”Р°В¤В¤Р°В¤С• Р°В¤в„–Р°Тђв‚¬, Р°В¤В¤Р°ТђвЂ№ Р°В¤вЂ Р°В¤Р„ Р°В¤вЂЎР°В¤С‘Р°В¤вЂўР°ТђвЂЎ Р°В¤ВµР°В¤С—Р°В¤вЂўР°В¤С•Р°В¤С‘ Р°В¤вЂўР°В¤С• Р°В¤С‘Р°В¤В®Р°В¤В°Р°ТђРЊР°В¤ТђР°В¤РЃ Р°В¤вЂўР°В¤В° Р°В¤С‘Р°В¤вЂўР°В¤В¤Р°ТђвЂЎ Р°В¤в„–Р°Тђв‚¬Р°В¤вЂљ:",
+                               "message":  "यदि एक्सटेंशन आपके लिए उपयोगी है, तो आप इसके विकास में सहायता कर सकते हैं:",
                                "description":  "Support section description"
                            },
     "optionsSupportOkx":  {
-                              "message":  "OKX (Р°В¤вЂўР°ТђРЊР°В¤В°Р°В¤С—Р°В¤Р„Р°ТђРЊР°В¤СџР°ТђвЂ№)",
+                              "message":  "OKX (क्रिप्टो)",
                               "description":  "OKX donate button label"
                           },
     "optionsSupportOkxHint":  {
-                                  "message":  "Р°В¤С‘Р°ТђРЊР°В¤ТђР°В¤С•Р°В¤РЃР°В¤С•Р°В¤вЂљР°В¤В¤Р°В¤В°Р°В¤Р€ Р°В¤вЂўР°ТђвЂЎ Р°В¤Р†Р°В¤С—Р°В¤РЏ QR Р°В¤вЂўР°ТђвЂ№Р°В¤РЋ",
+                                  "message":  "स्थानांतरण के लिए QR कोड",
                                   "description":  "OKX donate hint"
                               },
     "optionsSupportOkxModalTitle":  {
-                                        "message":  "OKX Р°В¤вЂўР°ТђвЂЎ Р°В¤В®Р°В¤С•Р°В¤В§Р°ТђРЊР°В¤Р‡Р°В¤В® Р°В¤С‘Р°ТђвЂЎ Р°В¤С‘Р°В¤В®Р°В¤В°Р°ТђРЊР°В¤ТђР°В¤РЃ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                                        "message":  "OKX के माध्यम से समर्थन करें",
                                         "description":  "OKX QR modal title"
                                     },
     "optionsSupportOkxModalDesc":  {
-                                       "message":  "QR Р°В¤вЂўР°ТђвЂ№Р°В¤РЋ Р°В¤вЂўР°ТђвЂ№ OKX Р°В¤С’Р°В¤Р„ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤С‘Р°ТђРЊР°В¤вЂўР°Тђв‚¬Р°В¤РЃ Р°В¤вЂўР°В¤В°Р°В¤вЂўР°ТђвЂЎ Р°В¤С‘Р°ТђРЊР°В¤ТђР°В¤С•Р°В¤РЃР°В¤С•Р°В¤вЂљР°В¤В¤Р°В¤В°Р°В¤С—Р°В¤В¤ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ:",
+                                       "message":  "स्थानांतरण के लिए OKX ऐप में QR कोड स्कैन करें:",
                                        "description":  "OKX QR modal description"
                                    },
     "cardOldTooltip":  {
-                           "message":  "Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤Р‡ 7 Р°В¤В¦Р°В¤С—Р°В¤РЃР°ТђвЂ№Р°В¤вЂљ Р°В¤С‘Р°ТђвЂЎ Р°В¤вЂ¦Р°В¤В§Р°В¤С—Р°В¤вЂў Р°В¤Р„Р°ТђРѓР°В¤В°Р°В¤С•Р°В¤РЃР°В¤С• Р°В¤в„–Р°Тђв‚¬",
+                           "message":  "कार्य 7 दिनों से अधिक समय से लंबित है",
                            "description":  "Snail tooltip for old cards in first column"
                        },
     "cardFireTooltip":  {
-                            "message":  "Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤Р‡ 22 Р°В¤В¦Р°В¤С—Р°В¤РЃР°ТђвЂ№Р°В¤вЂљ Р°В¤С‘Р°ТђвЂЎ Р°В¤вЂ¦Р°В¤В§Р°В¤С—Р°В¤вЂў Р°В¤Р„Р°ТђРѓР°В¤В°Р°В¤С•Р°В¤РЃР°В¤С• Р°В¤в„–Р°Тђв‚¬",
+                            "message":  "कार्य 22 दिनों से अधिक समय से लंबित है",
                             "description":  "Fire tooltip for very old cards in first column"
                         },
     "cardTagsPlaceholder":  {
-                                "message":  "Р°В¤С‘Р°В¤В­Р°ТђР‚ Р°В¤СџР°Тђв‚¬Р°В¤вЂ”",
+                                "message":  "सभी टैग",
                                 "description":  "Card tags placeholder"
                             },
     "cardTagsDropdownHeader":  {
-                                   "message":  "Р°В¤СџР°Тђв‚¬Р°В¤вЂ” Р°В¤С™Р°ТђРѓР°В¤РЃР°ТђвЂЎР°В¤вЂљ",
+                                   "message":  "टैग चुनें",
                                    "description":  "Tags dropdown header"
                                },
     "cardTagsDropdownClear":  {
-                                  "message":  "Р°В¤С‘Р°В¤С•Р°В¤В«Р°В¤С Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                                  "message":  "साफ़ करें",
                                   "description":  "Clear tags button"
                               },
     "cardTagsRemoveTitle":  {
-                                "message":  "Р°В¤СџР°Тђв‚¬Р°В¤вЂ” Р°В¤в„–Р°В¤СџР°В¤С•Р°В¤РЏР°В¤вЂљ",
+                                "message":  "टैग हटाएँ",
                                 "description":  "Remove tag tooltip"
                             },
     "widgetsClock":  {
-                         "message":  "Р°В¤ВР°В¤РЋР°В¤СР°ТђР‚",
+                         "message":  "घड़ी",
                          "description":  "Clock widget label"
                      },
     "widgetsWeather":  {
-                           "message":  "Р°В¤В®Р°ТђРЉР°В¤С‘Р°В¤В®",
+                           "message":  "मौसम",
                            "description":  "Weather widget label"
                        },
     "weatherCity":  {
-                        "message":  "Р°В¤В¶Р°В¤в„–Р°В¤В°",
+                        "message":  "शहर",
                         "description":  "Weather city label"
                     },
     "weatherCityPlaceholder":  {
-                                   "message":  "Р°В¤СљР°Тђв‚¬Р°В¤С‘Р°ТђвЂЎ Р°В¤В®Р°ТђРѓР°В¤вЂљР°В¤В¬Р°В¤в‚¬",
+                                   "message":  "उदाहरण: मास्को",
                                    "description":  "Weather city placeholder"
                                },
     "weatherUnit":  {
-                        "message":  "Р°В¤вЂЎР°В¤вЂўР°В¤С•Р°В¤вЂЎР°В¤Р‡Р°В¤С•Р°В¤Рѓ",
+                        "message":  "इकाई",
                         "description":  "Weather unit label"
                     },
     "weatherCelsius":  {
-                           "message":  "Р’В°C",
+                           "message":  "°C",
                            "description":  "Celsius option"
                        },
     "weatherFahrenheit":  {
-                              "message":  "Р’В°F",
+                              "message":  "°F",
                               "description":  "Fahrenheit option"
                           },
     "weatherError":  {
-                         "message":  "Р°В¤вЂўР°ТђвЂ№Р°В¤в‚¬ Р°В¤РЋР°ТђвЂЎР°В¤СџР°В¤С• Р°В¤РЃР°В¤в„–Р°ТђР‚Р°В¤вЂљ",
+                         "message":  "कोई डेटा नहीं",
                          "description":  "Weather error message"
                      },
     "weatherLoading":  {
-                           "message":  "Р°В¤Р†Р°ТђвЂ№Р°В¤РЋ Р°В¤в„–Р°ТђвЂ№ Р°В¤В°Р°В¤в„–Р°В¤С• Р°В¤в„–Р°Тђв‚¬...",
+                           "message":  "लोड हो रहा है...",
                            "description":  "Weather loading message"
                        },
     "optionsWidgetsTitle":  {
-                                "message":  "Р°В¤ВµР°В¤С—Р°В¤СљР°ТђвЂЎР°В¤Сџ",
+                                "message":  "विजेट",
                                 "description":  "Widgets section title"
                             },
     "optionsBookmarksTitle":  {
-                                  "message":  "Р°В¤В¬Р°ТђРѓР°В¤вЂўР°В¤В®Р°В¤С•Р°В¤В°Р°ТђРЊР°В¤вЂў",
+                                  "message":  "बुकमार्क",
                                   "description":  "Bookmarks section title"
                               },
     "optionsBookmarksSlots":  {
-                                  "message":  "Р°В¤В¬Р°ТђРѓР°В¤вЂўР°В¤В®Р°В¤С•Р°В¤В°Р°ТђРЊР°В¤вЂў Р°В¤вЂўР°ТђР‚ Р°В¤С‘Р°В¤вЂљР°В¤вЂ“Р°ТђРЊР°В¤Р‡Р°В¤С•:",
+                                  "message":  "बुकमार्कों की संख्या:",
                                   "description":  "Bookmark slots label"
                               },
     "optionsBookmarksSlotsHint":  {
-                                      "message":  "Р°В¤вЂ¦Р°В¤В§Р°В¤С—Р°В¤вЂўР°В¤В¤Р°В¤В® 22Р°ТђВ¤ Р°В¤РЏР°В¤вЂў Р°В¤С‘Р°В¤В® Р°В¤С‘Р°В¤вЂљР°В¤вЂ“Р°ТђРЊР°В¤Р‡Р°В¤С• Р°В¤в„–Р°ТђвЂ№Р°В¤РЃР°ТђР‚ Р°В¤С™Р°В¤С•Р°В¤в„–Р°В¤С—Р°В¤РЏР°ТђВ¤",
+                                      "message":  "अधिकतम 22। सम संख्या होनी चाहिए।",
                                       "description":  "Bookmark slots hint"
                                   },
     "homepageModalTitle":  {
-                               "message":  "Р°В¤в„–Р°ТђвЂ№Р°В¤В®Р°В¤Р„Р°ТђвЂЎР°В¤Сљ Р°В¤вЂўР°ТђвЂЎ Р°В¤В°Р°ТђвЂљР°В¤Р„ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤С‘Р°ТђвЂЎР°В¤Сџ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                               "message":  "होम पेज सेट करना",
                                "description":  "Homepage modal title"
                            },
     "homepageModalDesc":  {
-                              "message":  "Р°В¤вЂЎР°В¤С‘ URL Р°В¤вЂўР°ТђвЂ№ Р°В¤вЂўР°ТђвЂ°Р°В¤Р„Р°ТђР‚ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ Р°В¤вЂќР°В¤В° Р°В¤вЂ¦Р°В¤Р„Р°В¤РЃР°ТђвЂЎ Р°В¤В¬Р°ТђРЊР°В¤В°Р°В¤С•Р°В¤вЂ°Р°В¤СљР°В¤СР°В¤В° Р°В¤С‘Р°ТђвЂЎР°В¤СџР°В¤С—Р°В¤вЂљР°В¤вЂ”Р°ТђРЊР°В¤С‘ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤В¤Р°ТђРЊР°В¤ВµР°В¤В°Р°В¤С—Р°В¤В¤ Р°В¤РЏР°В¤вЂўР°ТђРЊР°В¤С‘Р°ТђвЂЎР°В¤С‘ Р°В¤Р„Р°ТђвЂЎР°В¤Сљ Р°В¤Р‡Р°В¤С• Р°В¤в„–Р°ТђвЂ№Р°В¤В®Р°В¤Р„Р°ТђвЂЎР°В¤Сљ Р°В¤вЂўР°ТђвЂЎ Р°В¤В°Р°ТђвЂљР°В¤Р„ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤Р„Р°ТђвЂЎР°В¤С‘Р°ТђРЊР°В¤Сџ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљР°ТђВ¤",
+                              "message":  "URL कॉपी करें और इसे ब्राउज़र सेटिंग्स में त्वरित पहुँच पृष्ठ या होम पेज के रूप में पेस्ट करें।",
                               "description":  "Homepage modal description"
                           },
     "homepageModalCopy":  {
-                              "message":  "Р°В¤вЂўР°ТђвЂ°Р°В¤Р„Р°ТђР‚ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                              "message":  "कॉपी करें",
                               "description":  "Copy button"
                           },
     "homepageModalCopied":  {
-                                "message":  "Р°В¤вЂўР°ТђвЂ°Р°В¤Р„Р°ТђР‚ Р°В¤вЂўР°В¤С—Р°В¤Р‡Р°В¤С• Р°В¤вЂ”Р°В¤Р‡Р°В¤С•!",
+                                "message":  "कॉपी हो गया!",
                                 "description":  "Copied confirmation"
                             },
     "homepageModalClose":  {
-                               "message":  "Р°В¤В¬Р°В¤вЂљР°В¤В¦ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                               "message":  "बंद करें",
                                "description":  "Close button"
                            },
     "homepageHint":  {
-                         "message":  "Р°В¤в„–Р°ТђвЂ№Р°В¤В®Р°В¤Р„Р°ТђвЂЎР°В¤Сљ Р°В¤вЂўР°ТђвЂЎ Р°В¤В°Р°ТђвЂљР°В¤Р„ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤С‘Р°ТђвЂЎР°В¤Сџ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљ",
+                         "message":  "होम पेज के रूप में सेट करें",
                          "description":  "Homepage info button tooltip"
                      },
-    "modalNoTitle":  {
-                         "message":  "Р°В¤вЂўР°ТђвЂ№Р°В¤в‚¬ Р°В¤В¶Р°ТђР‚Р°В¤В°Р°ТђРЊР°В¤В·Р°В¤вЂў Р°В¤РЃР°В¤в„–Р°ТђР‚Р°В¤вЂљ",
-                         "description":  "Fallback for empty card title"
+    "storageErrorQuota":  {
+                              "message":  "स्टोरेज सीमा पार हो गई। पुराने कार्ड हटाएँ या डेटा साफ़ करें।",
+                              "description":  "Storage quota exceeded error"
+                          },
+    "storageErrorGeneral":  {
+                                "message":  "डेटा सहेजने में विफल। कृपया पुनः प्रयास करें।",
+                                "description":  "General storage error"
+                            },
+    "storageIndicator":  {
+                             "message":  "स्टोरेज:",
+                             "description":  "Storage indicator label"
+                         },
+    "filterDateFrom":  {
+                           "message":  "दिनांक से",
+                           "description":  "Date from filter title"
+                       },
+    "filterDateTo":  {
+                         "message":  "दिनांक तक",
+                         "description":  "Date to filter title"
                      },
+    "optionsStorageUsage":  {
+                                "message":  "उपयोग: {used} KB / {total} KB ({pct}%)",
+                                "description":  "Storage usage in options sync tab"
+                            },
+    "optionsStorageLocal":  {
+                                "message":  "स्थानीय स्टोरेज",
+                                "description":  "Local storage label in options sync tab"
+                            },
     "storageWarningFull":  {
                                "message":  "स्टोरेज लगभग भर गया है (90%+)। क्लाउड सिंक चालू करें या पुराने कार्ड हटाएँ।",
                                "description":  "Storage warning tooltip when localStorage is near full"
                            },
+    "modalNoTitle":  {
+                         "message":  "बिना शीर्षक",
+                         "description":  "Fallback title when card has no title"
+                     },
     "optionsSyncCspError":  {
-                                "message":  "CSP Р°В¤В¤Р°ТђРЊР°В¤В°Р°ТђРѓР°В¤СџР°В¤С— РІР‚вЂќ Р°В¤вЂўР°ТђС“Р°В¤Р„Р°В¤Р‡Р°В¤С• Р°В¤вЂ¦Р°В¤РЃР°ТђРѓР°В¤В®Р°В¤В¤Р°В¤С—Р°В¤Р‡Р°В¤С•Р°В¤Рѓ Р°В¤СљР°В¤С•Р°В¤РѓР°В¤С™Р°ТђвЂЎР°В¤вЂљ",
-                                "description":  "CSP error message for sync"
+                                "message":  "संभवतः Yandex Disk के अनुरोध सुरक्षा नीति द्वारा अवरुद्ध हैं।",
+                                "description":  "CSP error"
                             },
     "optionsSyncTokenInvalid":  {
-                                    "message":  "Р°В¤вЂ¦Р°В¤В®Р°В¤С•Р°В¤РЃР°ТђРЊР°В¤Р‡ Р°В¤СџР°ТђвЂ№Р°В¤вЂўР°В¤РЃ",
-                                    "description":  "Invalid token error message"
+                                    "message":  "टोकन की वैधता और अनुमतियाँ जाँचें।",
+                                    "description":  "Invalid token"
                                 },
     "optionsSyncTokenForbidden":  {
-                                      "message":  "Р°В¤СџР°ТђвЂ№Р°В¤вЂўР°В¤РЃ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤вЂ¦Р°В¤Р„Р°В¤В°Р°ТђРЊР°В¤Р‡Р°В¤С•Р°В¤Р„Р°ТђРЊР°В¤В¤ Р°В¤вЂ¦Р°В¤РЃР°ТђРѓР°В¤В®Р°В¤В¤Р°В¤С—Р°В¤Р‡Р°В¤С•Р°В¤Рѓ",
-                                      "description":  "Forbidden token error message"
+                                      "message":  "पर्याप्त अनुमतियाँ नहीं हैं।",
+                                      "description":  "Token forbidden"
                                   },
-    "storageErrorQuota":  {
-                              "message":  "Р°В¤С‘Р°ТђРЊР°В¤СџР°ТђвЂ№Р°В¤В°Р°ТђвЂЎР°В¤Сљ Р°В¤вЂўР°ТђвЂ№Р°В¤СџР°В¤С• Р°В¤Р„Р°В¤С•Р°В¤В° Р°В¤в„–Р°ТђвЂ№ Р°В¤вЂ”Р°В¤Р‡Р°В¤С•Р°ТђВ¤ Р°В¤Р„Р°ТђРѓР°В¤В°Р°В¤С•Р°В¤РЃР°ТђвЂЎ Р°В¤вЂўР°В¤С•Р°В¤В°Р°ТђРЊР°В¤РЋ Р°В¤в„–Р°В¤СџР°В¤С•Р°В¤РЏР°В¤вЂљ Р°В¤Р‡Р°В¤С• Р°В¤РЋР°ТђвЂЎР°В¤СџР°В¤С• Р°В¤С‘Р°В¤С•Р°В¤В«Р°В¤С Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљР°ТђВ¤",
-                              "description":  "Storage quota exceeded error"
-                          },
-    "storageErrorGeneral":  {
-                                "message":  "Р°В¤РЋР°ТђвЂЎР°В¤СџР°В¤С• Р°В¤С‘Р°В¤в„–Р°ТђвЂЎР°В¤СљР°В¤РЃР°ТђвЂЎ Р°В¤В®Р°ТђвЂЎР°В¤вЂљ Р°В¤ВµР°В¤С—Р°В¤В«Р°В¤Р†Р°ТђВ¤ Р°В¤вЂўР°ТђС“Р°В¤Р„Р°В¤Р‡Р°В¤С• Р°В¤Р„Р°ТђРѓР°В¤РЃР°В¤С“ Р°В¤Р„Р°ТђРЊР°В¤В°Р°В¤Р‡Р°В¤С•Р°В¤С‘ Р°В¤вЂўР°В¤В°Р°ТђвЂЎР°В¤вЂљР°ТђВ¤",
-                                "description":  "General storage error"
-                            },
-    "storageIndicator":  {
-                             "message":  "Р°В¤С‘Р°ТђРЊР°В¤СџР°ТђвЂ№Р°В¤В°Р°ТђвЂЎР°В¤Сљ:",
-                             "description":  "Storage indicator label"
-                         },
-    "filterDateFrom":  {
-                           "message":  "Р°В¤В¤Р°В¤С•Р°В¤В°Р°ТђР‚Р°В¤вЂ“ Р°В¤С‘Р°ТђвЂЎ",
-                           "description":  "Date from filter title"
-                       },
-    "filterDateTo":  {
-                         "message":  "Р°В¤В¤Р°В¤С•Р°В¤В°Р°ТђР‚Р°В¤вЂ“ Р°В¤В¤Р°В¤вЂў",
-                         "description":  "Date to filter title"
-                     },
-    "optionsStorageUsage":  {
-                                "message":  "Р°В¤С‘Р°ТђРЊР°В¤СџР°ТђвЂ№Р°В¤В°Р°ТђвЂЎР°В¤Сљ Р°В¤вЂ°Р°В¤Р„Р°В¤Р‡Р°ТђвЂ№Р°В¤вЂ”: {used} KB / {total} KB ({pct}%)",
-                                "description":  "Storage usage in options sync tab"
-                            },
-    "optionsStorageLocal":  {
-                                "message":  "Р°В¤Р†Р°ТђвЂ№Р°В¤вЂўР°В¤Р† Р°В¤С‘Р°ТђРЊР°В¤СџР°ТђвЂ№Р°В¤В°Р°ТђвЂЎР°В¤Сљ",
-                                "description":  "Local storage label in options sync tab"
-                            },
     "migrationOverflowLost":  {
                                   "message":  "$count$ में से $total$ कार्ड स्थायी रूप से खो जाएँगे क्योंकि वे स्थानीय स्टोरेज में नहीं समाते। आगे बढ़ें और उन्हें खोएँ?",
                                   "description":  "Warning when cloud-to-local migration cannot fit all cards",
@@ -675,12 +683,6 @@
     "cardDescQuoteTooltip":  {
                                  "message":  "उद्धरण"
                              },
-    "modalEdit":  {
-                      "message":  "संपादित करें"
-                  },
-    "modalHide":  {
-                      "message":  "छिपाएँ"
-                  },
     "widgetsQuotes":  {
                           "message":  "उद्धरण",
                           "description":  "Quotes widget label"

@@ -60,11 +60,11 @@
                              "description":  "Filter: all authors option"
                          },
     "filterAllPriorities":  {
-                                "message":  "Tutte le prioritР“В ",
+                                "message":  "Tutte le priorità",
                                 "description":  "Filter: all priorities option"
                             },
     "filterSearchPlaceholder":  {
-                                    "message":  "Cerca attivitР“В ...",
+                                    "message":  "Cerca attività...",
                                     "description":  "Filter search placeholder"
                                 },
     "filterClearTitle":  {
@@ -105,11 +105,11 @@
                             "description":  "Remove tag filter tooltip"
                         },
     "modalTask":  {
-                      "message":  "AttivitР“В ",
+                      "message":  "Attività",
                       "description":  "Modal title"
                   },
     "modalTitlePlaceholder":  {
-                                  "message":  "Titolo attivitР“В ",
+                                  "message":  "Titolo attività",
                                   "description":  "Modal title input placeholder"
                               },
     "modalDescPlaceholder":  {
@@ -141,11 +141,11 @@
                             "description":  "Tags select tooltip"
                         },
     "modalPriority":  {
-                          "message":  "PrioritР“В :",
+                          "message":  "Priorità:",
                           "description":  "Priority label"
                       },
     "modalNoPriority":  {
-                            "message":  "Nessuna prioritР“В ",
+                            "message":  "Nessuna priorità",
                             "description":  "No priority option"
                         },
     "modalDelete":  {
@@ -161,11 +161,11 @@
                       "description":  "Save button"
                   },
     "modalNewTask":  {
-                         "message":  "Nuova AttivitР“В ",
+                         "message":  "Nuova Attività",
                          "description":  "New task modal title"
                      },
     "modalEditTask":  {
-                          "message":  "Modifica AttivitР“В ",
+                          "message":  "Modifica Attività",
                           "description":  "Edit task modal title"
                       },
     "columnAddCard":  {
@@ -210,7 +210,7 @@
                                                  }
                             },
     "columnDeleteCardConfirm":  {
-                                    "message":  "Eliminare l\u0027attivitР“В  \"$title$\"?",
+                                    "message":  "Eliminare l\u0027attività \"$title$\"?",
                                     "description":  "Card delete confirmation",
                                     "placeholders":  {
                                                          "title":  {
@@ -252,7 +252,7 @@
                          "description":  "Open extension text"
                      },
     "optionsTitle":  {
-                         "message":  "Impostazioni РІР‚вЂќ Tablo Kanban",
+                         "message":  "Impostazioni — Tablo Kanban",
                          "description":  "Options page title"
                      },
     "optionsTabColumns":  {
@@ -356,7 +356,7 @@
                                         "description":  "Client ID hint text"
                                     },
     "optionsSyncYadiskClientStep2":  {
-                                         "message":  "Crea un\u0027app РІвЂ вЂ™ tipo Р’В«Web serviceР’В»",
+                                         "message":  "Crea un\u0027app → tipo «Web service»",
                                          "description":  "Step 2"
                                      },
     "optionsSyncYadiskClientStep4":  {
@@ -376,7 +376,7 @@
                                 "description":  "Columns section title"
                             },
     "optionsColumnsDesc":  {
-                               "message":  "Trascina per riordinare. Fai clic su Р“вЂ” per eliminare.",
+                               "message":  "Trascina per riordinare. Fai clic su × per eliminare.",
                                "description":  "Columns section description"
                            },
     "optionsColumnsAdd":  {
@@ -444,7 +444,7 @@
                                       "description":  "Language section title"
                                   },
     "optionsBack":  {
-                        "message":  "РІвЂ С’ Indietro",
+                        "message":  "← Indietro",
                         "description":  "Back to main page button"
                     },
     "optionsSave":  {
@@ -492,11 +492,11 @@
                                        "description":  "OKX QR modal description"
                                    },
     "cardOldTooltip":  {
-                           "message":  "L\u0027attivitР“В  Р“РЃ piР“в„– vecchia di 7 giorni",
+                           "message":  "L\u0027attività Ã più vecchia di 7 giorni",
                            "description":  "Snail tooltip for old cards in first column"
                        },
     "cardFireTooltip":  {
-                            "message":  "L\u0027attivitР“В  Р“РЃ piР“в„– vecchia di 22 giorni",
+                            "message":  "L\u0027attività Ã più vecchia di 22 giorni",
                             "description":  "Fire tooltip for very old cards in first column"
                         },
     "cardTagsPlaceholder":  {
@@ -524,7 +524,7 @@
                            "description":  "Weather widget label"
                        },
     "weatherCity":  {
-                        "message":  "CittР“В ",
+                        "message":  "Città",
                         "description":  "Weather city label"
                     },
     "weatherCityPlaceholder":  {
@@ -532,15 +532,15 @@
                                    "description":  "Weather city placeholder"
                                },
     "weatherUnit":  {
-                        "message":  "UnitР“В ",
+                        "message":  "Unità",
                         "description":  "Weather unit label"
                     },
     "weatherCelsius":  {
-                           "message":  "Р’В°C",
+                           "message":  "°C",
                            "description":  "Celsius option"
                        },
     "weatherFahrenheit":  {
-                              "message":  "Р’В°F",
+                              "message":  "°F",
                               "description":  "Fahrenheit option"
                           },
     "weatherError":  {
@@ -600,7 +600,7 @@
                                "description":  "Storage warning tooltip when localStorage is near full"
                            },
     "optionsSyncCspError":  {
-                                "message":  "Errore CSP РІР‚вЂќ verifica le autorizzazioni",
+                                "message":  "Errore CSP — verifica le autorizzazioni",
                                 "description":  "CSP error message for sync"
                             },
     "optionsSyncTokenInvalid":  {
