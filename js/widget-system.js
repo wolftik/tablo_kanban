@@ -103,6 +103,8 @@ function _wmoIcon(code) {
   return WMO_ICONS[code] || '\u2601\uFE0F';
 }
 
+const WEATHER_REFRESH_MS = 7200000;  // 2 hours
+
 const WeatherWidget = {
   _interval: null,
   _el: null,
@@ -129,7 +131,7 @@ const WeatherWidget = {
     } else {
       this._fetchAndRender(settings);
     }
-    this._interval = setInterval(() => this._fetchAndRender(null), 3600000);
+    this._interval = setInterval(() => this._fetchAndRender(null), WEATHER_REFRESH_MS);
   },
 
   _render(temp, code) {
@@ -147,7 +149,7 @@ const WeatherWidget = {
       const city = settings.widgets?.weatherCity || 'Moscow';
       const unit = settings.widgets?.weatherUnit || 'metric';
       if (cached.city !== city || cached.unit !== unit) return null;
-      if (Date.now() - cached.timestamp < 3600000) {
+      if (Date.now() - cached.timestamp < WEATHER_REFRESH_MS) {
         return cached;
       }
       return null;
