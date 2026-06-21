@@ -105,8 +105,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             delete zone.dataset.enabled;
             WidgetSystem.destroyAll();
           }
-          WidgetSystem.register('stocks', StocksWidget);
-          WidgetSystem.register('currency', CurrencyWidget);
+          WidgetSystem.register('quotes', QuotesWidget);
           WidgetSystem.register('weather', WeatherWidget);
           WidgetSystem.register('clock', ClockWidget);
           WidgetSystem.initAll();

@@ -223,13 +223,7 @@ const WeatherWidget = {
   }
 };
 
-// register moved to end of file
-
-// Market widgets (stocks, currency) are inserted directly into #head-bar
-// before #bookmarks-container rather than into #widgets-zone.
-// They are hidden by the responsive layout logic in bookmarks.js
-// alongside #widgets-zone when bookmarks overflow.
-function _insertMarketWidget(el, zone) {
+function _insertHeadBarWidget(el, zone) {
   const headBar = document.getElementById('head-bar');
   const bm = document.getElementById('bookmarks-container');
   if (headBar && bm) {
@@ -239,172 +233,50 @@ function _insertMarketWidget(el, zone) {
   }
 }
 
-const CurrencyWidget = {
+const QuotesWidget = {
   _interval: null,
   _el: null,
 
   async init() {
     const settings = await StorageSync.get('settings') || getDefaultSettings();
-    const enabled = settings.widgets?.currency === true;
+    const enabled = settings.widgets?.quotes !== false;
     const zone = document.getElementById('widgets-zone');
     if (!zone) return;
 
     if (!enabled) return;
 
     this._el = document.createElement('div');
-    this._el.id = 'currency-widget';
-    this._el.className = 'widget currency-widget';
-    this._el.innerHTML = '<div class="market-loading">' + I18n.t('currency.loading') + '</div>';
-    _insertMarketWidget(this._el, zone);
+    this._el.id = 'quotes-widget';
+    this._el.className = 'widget quotes-widget';
+    this._el.innerHTML = `<div class="quotes-loading">${I18n.t('quotes.loading')}</div>`;
+    _insertHeadBarWidget(this._el, zone);
     zone.classList.add('active');
     zone.dataset.enabled = 'true';
 
-    const cached = await this._readCache(settings);
+    const cached = await this._readCache();
     if (cached) {
-      this._render(cached.rates, cached.base);
+      this._render(cached.text, cached.author);
     } else {
-      this._fetchAndRender(settings);
+      await this._fetchAndRender();
     }
-    this._interval = setInterval(() => this._fetchAndRender(null), 3600000);
+
+    this._interval = setInterval(() => this._fetchAndRender(), QuotesProviders.CACHE_TTL);
   },
 
-  _render(rates, base) {
-    if (!this._el || !rates) {
-      if (this._el) this._el.innerHTML = '<div class="market-error">' + I18n.t('currency.error') + '</div>';
-      return;
-    }
-    const pairs = CurrencyProviders.filterPairs(base);
-    let html = '';
-    pairs.forEach(p => {
-      const rate = CurrencyProviders.computeRate(rates, p.base, p.quote);
-      const rateStr = CurrencyProviders.formatRate(rate);
-      html += '<div class="market-row">';
-      html += '<span class="market-pair">' + p.base + '/' + p.quote + '</span>';
-      html += '<span class="market-rate">' + rateStr + '</span>';
-      html += '</div>';
-    });
-    this._el.innerHTML = html;
-  },
-
-  async _readCache(settings) {
-    try {
-      const cached = await StorageLocal.get('currency_cache');
-      if (!cached) return null;
-      const base = settings.widgets?.currencyBase || 'USD';
-      if (cached.base !== base) return null;
-      if (Date.now() - cached.timestamp < 3600000) {
-        return cached;
-      }
-      return null;
-    } catch (e) {
-      return null;
-    }
-  },
-
-  async _writeCache(rates, base) {
-    try {
-      await StorageLocal.set('currency_cache', {
-        rates: rates,
-        base: base,
-        timestamp: Date.now()
-      });
-    } catch (e) {
-      // Non-critical
-    }
-  },
-
-  async _fetchAndRender(settings) {
-    if (!settings) {
-      settings = await StorageSync.get('settings') || getDefaultSettings();
-    }
-    const base = settings.widgets?.currencyBase || 'USD';
-
-    const rates = await CurrencyProviders.fetchRates();
+  _render(text, author) {
     if (!this._el) return;
-
-    if (!rates) {
-      this._el.innerHTML = '<div class="market-error">' + I18n.t('currency.error') + '</div>';
-      return;
-    }
-
-    this._render(rates, base);
-    this._writeCache(rates, base);
+    const authorStr = author ? `\u2014 ${escapeHtml(author)}` : '';
+    this._el.innerHTML = `<div class="quotes-bubble"><div class="quotes-text">${escapeHtml(text)}</div>${authorStr ? `<div class="quotes-author">${authorStr}</div>` : ''}</div>`;
   },
 
-  destroy() {
-    if (this._interval) {
-      clearInterval(this._interval);
-      this._interval = null;
-    }
-    if (this._el) {
-      this._el.remove();
-      this._el = null;
-    }
-  }
-};
-
-// register moved to end of file
-
-const StocksWidget = {
-  _interval: null,
-  _el: null,
-
-  async init() {
-    const settings = await StorageSync.get('settings') || getDefaultSettings();
-    const enabled = settings.widgets?.stocks === true;
-    const zone = document.getElementById('widgets-zone');
-    if (!zone) return;
-
-    if (!enabled) return;
-
-    this._el = document.createElement('div');
-    this._el.id = 'stocks-widget';
-    this._el.className = 'widget stocks-widget';
-    this._el.innerHTML = '<div class="market-loading">' + I18n.t('stocks.loading') + '</div>';
-    _insertMarketWidget(this._el, zone);
-    zone.classList.add('active');
-    zone.dataset.enabled = 'true';
-
-    const selectedSymbols = settings.widgets?.stocksSymbols;
-    const cached = await this._readCache(selectedSymbols);
-    if (cached) {
-      this._render(cached.indices);
-    } else {
-      this._fetchAndRender();
-    }
-    this._interval = setInterval(() => this._fetchAndRender(), 300000);
-  },
-
-  _render(indices) {
-    if (!this._el || !indices || indices.length === 0) {
-      if (this._el) this._el.innerHTML = '<div class="market-error">' + I18n.t('stocks.error') + '</div>';
-      return;
-    }
-    let html = '';
-    indices.forEach(idx => {
-      const priceStr = StockProviders.formatPrice(idx.price);
-      const changeStr = StockProviders.formatChange(idx.change);
-      const pctStr = StockProviders.formatChangePercent(idx.changePercent);
-      const cls = StockProviders.getChangeClass(idx.change);
-      html += '<div class="market-row">';
-      html += '<span class="market-label">' + idx.label + '</span>';
-      html += '<span class="market-price">' + priceStr + '</span>';
-      html += '<span class="market-change ' + cls + '">' + changeStr + ' (' + pctStr + ')</span>';
-      html += '</div>';
-    });
-    this._el.innerHTML = html;
-  },
-
-  _cacheKey(selectedSymbols) {
-    const key = selectedSymbols && selectedSymbols.length > 0 ? selectedSymbols.slice().sort().join(',') : 'all';
-    return 'stocks_cache_' + key;
-  },
-
-  async _readCache(selectedSymbols) {
+  async _readCache() {
     try {
-      const cached = await StorageLocal.get(this._cacheKey(selectedSymbols));
+      const cached = await StorageLocal.get('quotes_cache');
       if (!cached) return null;
-      if (Date.now() - cached.timestamp < 300000) {
+      const lang = I18n.getLang();
+      if (cached.lang !== lang) return null;
+      if (cached._v !== QuotesProviders.CACHE_VERSION) return null;
+      if (Date.now() - cached.timestamp < QuotesProviders.CACHE_TTL) {
         return cached;
       }
       return null;
@@ -413,10 +285,13 @@ const StocksWidget = {
     }
   },
 
-  async _writeCache(indices, selectedSymbols) {
+  async _writeCache(text, author, lang) {
     try {
-      await StorageLocal.set(this._cacheKey(selectedSymbols), {
-        indices: indices,
+      await StorageLocal.set('quotes_cache', {
+        _v: QuotesProviders.CACHE_VERSION,
+        text: text,
+        author: author,
+        lang: lang,
         timestamp: Date.now()
       });
     } catch (e) {
@@ -425,20 +300,16 @@ const StocksWidget = {
   },
 
   async _fetchAndRender() {
-    const settings = await StorageSync.get('settings') || getDefaultSettings();
-    const selectedSymbols = settings.widgets?.stocksSymbols;
-    const indices = selectedSymbols && selectedSymbols.length > 0
-      ? await StockProviders.fetchSelectedIndices(selectedSymbols)
-      : await StockProviders.fetchAllIndices();
+    const quote = await QuotesProviders.fetchQuote(I18n.getLang());
     if (!this._el) return;
 
-    if (!indices || indices.length === 0) {
-      this._el.innerHTML = '<div class="market-error">' + I18n.t('stocks.error') + '</div>';
+    if (!quote) {
+      this._el.innerHTML = `<div class="quotes-error">${I18n.t('quotes.error')}</div>`;
       return;
     }
 
-    this._render(indices);
-    this._writeCache(indices, selectedSymbols);
+    this._render(quote.text, quote.author);
+    this._writeCache(quote.text, quote.author, quote.lang);
   },
 
   destroy() {
@@ -453,11 +324,6 @@ const StocksWidget = {
   }
 };
 
-// Init order = DOM order in #head-bar flex row.
-// stocks → currency → bookmarks → widgets-zone → settings
-// stocks and currency are inserted directly into #head-bar before #bookmarks-container.
-// weather and clock go into #widgets-sidebar inside #widgets-zone.
-WidgetSystem.register('stocks', StocksWidget);
-WidgetSystem.register('currency', CurrencyWidget);
+WidgetSystem.register('quotes', QuotesWidget);
 WidgetSystem.register('weather', WeatherWidget);
 WidgetSystem.register('clock', ClockWidget);

@@ -133,7 +133,7 @@ function getDefaultSettings() {
     showFavicon: true,
 
     bookmarkSlots: 22,
-    widgets: { clock: true, weather: false, weatherCity: 'Moscow', weatherUnit: 'metric', currency: false, currencyBase: 'USD', stocks: false, stocksSymbols: ['^GSPC', 'IMOEX.ME', '000001.SS', '^STOXX50E', '^N225', 'GC=F', 'SI=F', 'BZ=F'] }
+    widgets: { clock: true, weather: false, weatherCity: 'Moscow', weatherUnit: 'metric', quotes: true }
   };
 }
 

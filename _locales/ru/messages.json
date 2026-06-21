@@ -1,185 +1,698 @@
 {
-  "appName": { "message": "Tablo Kanban", "description": "Extension name" },
-  "appDescription": { "message": "Панель закладок и канбан-доска для новой вкладки Chrome", "description": "Extension description" },
-  "bookmarkAddTitle": { "message": "Добавить закладку", "description": "Add bookmark dialog title" },
-  "bookmarkUrlPlaceholder": { "message": "URL (https://example.com)", "description": "Bookmark URL input placeholder" },
-  "bookmarkTitlePlaceholder": { "message": "Название", "description": "Bookmark title input placeholder" },
-  "bookmarkCancel": { "message": "Отмена", "description": "Cancel button" },
-  "bookmarkSave": { "message": "Сохранить", "description": "Save button" },
-  "bookmarkEditTitle": { "message": "Редактировать закладку", "description": "Edit bookmark dialog title" },
-  "bookmarkEditUrlPlaceholder": { "message": "URL", "description": "Edit bookmark URL placeholder" },
-  "bookmarkEditTitlePlaceholder": { "message": "Название", "description": "Edit bookmark title placeholder" },
-  "bookmarkContextEdit": { "message": "Редактировать", "description": "Context menu edit action" },
-  "bookmarkContextDelete": { "message": "Удалить", "description": "Context menu delete action" },
-  "cardPlaceholderAddSite": { "message": "Добавить сайт", "description": "Add site placeholder" },
-  "filterAllAssignees": { "message": "Все исполнители", "description": "Filter: all assignees option" },
-  "filterAllAuthors": { "message": "Все авторы", "description": "Filter: all authors option" },
-  "filterAllPriorities": { "message": "Все приоритеты", "description": "Filter: all priorities option" },
-
-  "filterSearchPlaceholder": { "message": "Поиск задач...", "description": "Filter search placeholder" },
-  "filterClearTitle": { "message": "Очистить фильтры", "description": "Clear filters button title" },
-  "priorityLow": { "message": "Низкий", "description": "Low priority" },
-  "priorityMedium": { "message": "Средний", "description": "Medium priority" },
-  "priorityHigh": { "message": "Высокий", "description": "High priority" },
-  "priorityUrgent": { "message": "Срочный", "description": "Urgent priority" },
-  "tagsFilterAll": { "message": "Все теги", "description": "Tags filter: all" },
-  "tagsFilterSelected": { "message": "$count$ выбрано", "description": "Tags filter: selected count", "placeholders": { "count": { "content": "$1" } } },
-  "tagsRemoveTitle": { "message": "Удалить фильтр", "description": "Remove tag filter tooltip" },
-  "modalTask": { "message": "Задача", "description": "Modal title" },
-  "modalTitlePlaceholder": { "message": "Название задачи", "description": "Modal title input placeholder" },
-  "modalDescPlaceholder": { "message": "Описание", "description": "Modal description placeholder" },
-  "modalAssignee": { "message": "Исполнитель:", "description": "Assignee label" },
-  "modalNotAssigned": { "message": "Не назначен", "description": "Not assigned option" },
-  "modalAuthor": { "message": "Автор:", "description": "Author label" },
-  "modalNotSpecified": { "message": "Не указан", "description": "Not specified option" },
-  "modalTags": { "message": "Теги:", "description": "Tags label" },
-
-  "modalTagsSelect": { "message": "Выбрать теги", "description": "Tags select tooltip" },
-  "modalPriority": { "message": "Приоритет:", "description": "Priority label" },
-  "modalNoPriority": { "message": "Без приоритета", "description": "No priority option" },
-  "modalDelete": { "message": "Удалить", "description": "Delete button" },
-  "modalCancel": { "message": "Отмена", "description": "Cancel button" },
-  "modalSave": { "message": "Сохранить", "description": "Save button" },
-  "modalNewTask": { "message": "Новая задача", "description": "New task modal title" },
-  "modalEditTask": { "message": "Редактировать задачу", "description": "Edit task modal title" },
-  "modalEdit": { "message": "Редактировать", "description": "Edit button" },
-  "modalHide": { "message": "Скрыть", "description": "Hide button in view mode" },
-  "columnAddCard": { "message": "+ Добавить задачу", "description": "Add card button" },
-  "columnAddColumn": { "message": "+ Добавить колонку", "description": "Add column button" },
-  "columnAddTitle": { "message": "Новая колонка", "description": "Add column dialog title" },
-  "columnAddCreate": { "message": "Создать", "description": "Create column button" },
-  "columnNewColumn": { "message": "Новая колонка", "description": "New column default name" },
-  "columnNewPlaceholder": { "message": "Название колонки", "description": "New column input placeholder" },
-  "columnNewColor": { "message": "Цвет:", "description": "Color picker label" },
-  "columnDelete": { "message": "Удалить", "description": "Delete column button" },
-  "columnDeleteConfirm": { "message": "Удалить колонку \"$title$\" и все её задачи?", "description": "Column delete confirmation", "placeholders": { "title": { "content": "$1" } } },
-  "columnDeleteCardConfirm": { "message": "Удалить задачу \"$title$\"?", "description": "Card delete confirmation", "placeholders": { "title": { "content": "$1" } } },
-  "columnNoTags": { "message": "Нет тегов", "description": "No tags fallback" },
-  "columnClearCards": { "message": "Очистить задачи", "description": "Clear cards button" },
-  "columnClearCardsConfirm": { "message": "Введите \"$phrase$\" для подтверждения", "description": "Clear cards prompt", "placeholders": { "phrase": { "content": "$1" } } },
-  "columnClearCardsPhrase": { "message": "очистить", "description": "Clear cards prompt phrase" },
-  "columnClearCardsWrong": { "message": "Неверная фраза", "description": "Clear cards wrong phrase error" },
-
-  "settingsTitle": { "message": "Настройки", "description": "Settings button title" },
-  "settingsOpen": { "message": "Открыть Tablo Kanban", "description": "Open extension text" },
-  "optionsTitle": { "message": "Настройки — Tablo Kanban", "description": "Options page title" },
-  "optionsTabColumns": { "message": "Колонки", "description": "Columns tab button" },
-  "optionsTabTags": { "message": "Теги", "description": "Tags tab button" },
-  "optionsTabPerformers": { "message": "Исполнители", "description": "Performers tab button" },
-  "optionsTabAuthors": { "message": "Авторы", "description": "Authors tab button" },
-  "optionsTabAppearance": { "message": "Настройки", "description": "Appearance tab button" },
-  "optionsTabSync": { "message": "Синхронизация", "description": "Sync tab button" },
-  "optionsSyncTitle": { "message": "Синхронизация", "description": "Sync section title" },
-  "optionsSyncProvider": { "message": "Провайдер синхронизации:", "description": "Sync provider label" },
-  "optionsSyncProviderGoogle": { "message": "Google Drive", "description": "Google Drive option" },
-  "optionsSyncProviderYandex": { "message": "Яндекс.Диск", "description": "Yandex Disk option" },
-  "optionsSyncDescGoogle": { "message": "Данные канбан-доски будут синхронизироваться между устройствами через ваш Google Drive. Синхронизация c Google Drive работает только в Chrome.", "description": "Google Drive sync description" },
-  "optionsSyncDescYandex": { "message": "Данные канбан-доски будут синхронизироваться между устройствами через ваш Яндекс.Диск.", "description": "Yandex Disk sync description" },
-  "optionsSyncChecking": { "message": "Проверка статуса...", "description": "Sync status checking" },
-  "optionsSyncConnected": { "message": "Синхронизация подключена", "description": "Sync connected status" },
-  "optionsSyncDisconnected": { "message": "Синхронизация не подключена", "description": "Sync disconnected status" },
-  "optionsSyncSignin": { "message": "Подключить", "description": "Sign in button" },
-  "optionsSyncSignout": { "message": "Отключить синхронизацию", "description": "Sign out button" },
-  "optionsSyncFailed": { "message": "Ошибка подключения", "description": "Sync failed status" },
-  "optionsSyncError": { "message": "Ошибка проверки", "description": "Sync error status" },
-  "optionsSyncTokenExpired": { "message": "Токен Яндекс.Диска устарел или недействителен. Введите новый токен.", "description": "Token expired message" },
-
-  "optionsSyncYadiskApply": { "message": "Сохранить токен", "description": "Save token button" },
-  "optionsSyncYadiskClear": { "message": "Очистить токен", "description": "Clear token button" },
-  "optionsSyncYadiskOauthGet": { "message": "Получить OAuth-токен", "description": "Get OAuth token button" },
-  "optionsSyncYadiskOauthOpened": { "message": "Страница авторизации Яндекса открыта в новой вкладке. После авторизации скопируйте токен из адресной строки и вставьте в поле «OAuth-токен» ниже, затем нажмите «Сохранить токен».", "description": "OAuth page opened message" },
-  "optionsSyncYadiskClientHint": { "message": "Для подключения Яндекс.Диска зарегистрируйте приложение на oauth.yandex.ru и введите ClientID:", "description": "Client ID hint text" },
-  "optionsSyncYadiskClientStep2": { "message": "Создайте приложение → тип «Веб-сервис»", "description": "Step 2" },
-  "optionsSyncYadiskClientStep4": { "message": "Добавьте права cloud_api:disk.write и cloud_api:disk.read", "description": "Step 4" },
-  "optionsSyncYadiskClientStep5": { "message": "Скопируйте ClientID (не Client Secret!) и вставьте ниже", "description": "Step 5" },
-  "optionsSyncYadiskClientSave": { "message": "Сохранить ClientID", "description": "Save client ID button" },
-
-  "optionsColumnsTitle": { "message": "Колонки доски", "description": "Columns section title" },
-  "optionsColumnsDesc": { "message": "Перетаскивайте для изменения порядка. Для удаления нажмите \u00D7.", "description": "Columns section description" },
-  "optionsColumnsAdd": { "message": "Добавить колонку", "description": "Add column button" },
-  "optionsColumnsNew": { "message": "Новая колонка", "description": "New column placeholder" },
-  "optionsTagsTitle": { "message": "Теги", "description": "Tags section title" },
-  "optionsTagsAdd": { "message": "Добавить тег", "description": "Add tag button" },
-  "optionsTagsNew": { "message": "Новый тег", "description": "New tag placeholder" },
-  "optionsPerformersTitle": { "message": "Исполнители", "description": "Performers section title" },
-  "optionsPerformersAdd": { "message": "Добавить исполнителя", "description": "Add performer button" },
-  "optionsPerformersNew": { "message": "Новый исполнитель", "description": "New performer placeholder" },
-  "optionsAuthorsTitle": { "message": "Авторы", "description": "Authors section title" },
-  "optionsAuthorsAdd": { "message": "Добавить автора", "description": "Add author button" },
-  "optionsAuthorsNew": { "message": "Новый автор", "description": "New author placeholder" },
-  "optionsAppearanceTheme": { "message": "Тема", "description": "Theme section title" },
-  "optionsAppearanceLight": { "message": "Светлая", "description": "Light theme option" },
-  "optionsAppearanceDark": { "message": "Тёмная", "description": "Dark theme option" },
-  "optionsAppearanceSystem": { "message": "Системная", "description": "System theme option" },
-  "optionsAppearanceLanguage": { "message": "Язык", "description": "Language section title" },
-  "optionsBack": { "message": "← Вернуться", "description": "Back to main page button" },
-  "optionsSave": { "message": "Сохранить", "description": "Save button" },
-  "optionsSaved": { "message": "Сохранено!", "description": "Saved confirmation" },
-  "optionsAboutVersion": { "message": "Версия {version}", "description": "Version info" },
-  "optionsAboutDesc": { "message": "Панель закладок и канбан-доска для новой вкладки Chrome.", "description": "About description" },
-  "optionsAboutStorage": { "message": "Данные доски хранятся локально в localStorage (без синхронизации) или в облаке (Google Drive / Яндекс.Диск) при активной синхронизации. Настройки и ключи API — в chrome.storage.sync.", "description": "Storage info" },
-  "optionsSupportTitle": { "message": "Поддержать проект", "description": "Support section title" },
-  "optionsSupportDesc": { "message": "Если расширение вам полезно, вы можете поддержать его развитие:", "description": "Support section description" },
-  "optionsSupportOkx": { "message": "OKX (крипта)", "description": "OKX donate button label" },
-  "optionsSupportOkxHint": { "message": "QR-код для перевода", "description": "OKX donate hint" },
-  "optionsSupportOkxModalTitle": { "message": "Поддержать через OKX", "description": "OKX QR modal title" },
-  "optionsSupportOkxModalDesc": { "message": "Отсканируйте QR-код в приложении OKX для перевода:", "description": "OKX QR modal description" },
-  "cardOldTooltip": { "message": "Задача висит больше 7 дней", "description": "Snail tooltip for old cards in first column" },
-  "cardFireTooltip": { "message": "Задача висит больше 22 дней", "description": "Fire tooltip for very old cards in first column" },
-  "cardTagsPlaceholder": { "message": "Все теги", "description": "Card tags placeholder" },
-  "cardTagsDropdownHeader": { "message": "Выберите теги", "description": "Tags dropdown header" },
-  "cardTagsDropdownClear": { "message": "Очистить", "description": "Clear tags button" },
-  "cardTagsRemoveTitle": { "message": "Удалить тег", "description": "Remove tag tooltip" },
-  "widgetsClock": { "message": "Часы", "description": "Clock widget label" },
-  "widgetsWeather": { "message": "Погода", "description": "Weather widget label" },
-  "weatherCity": { "message": "Город", "description": "Weather city label" },
-  "weatherCityPlaceholder": { "message": "Например: Москва", "description": "Weather city placeholder" },
-  "weatherUnit": { "message": "Единицы", "description": "Weather unit label" },
-  "weatherCelsius": { "message": "\u00B0C", "description": "Celsius option" },
-  "weatherFahrenheit": { "message": "\u00B0F", "description": "Fahrenheit option" },
-  "weatherError": { "message": "Нет данных", "description": "Weather error message" },
-  "weatherLoading": { "message": "Загрузка...", "description": "Weather loading message" },
-  "optionsWidgetsTitle": { "message": "Виджеты", "description": "Widgets section title" },
-  "optionsBookmarksTitle": { "message": "Закладки", "description": "Bookmarks section title" },
-  "optionsBookmarksSlots": { "message": "Количество закладок:", "description": "Bookmark slots label" },
-  "optionsBookmarksSlotsHint": { "message": "Максимум 22. Должно быть чётным числом.", "description": "Bookmark slots hint" },
-
-  "homepageModalTitle": { "message": "Установка страницы быстрого доступа", "description": "Homepage modal title" },
-  "homepageModalDesc": { "message": "Скопируйте URL и вставьте его в настройках браузера как страницу быстрого доступа или домашнюю страницу.", "description": "Homepage modal description" },
-  "homepageModalCopy": { "message": "Копировать", "description": "Copy button" },
-  "homepageModalCopied": { "message": "Скопировано!", "description": "Copied confirmation" },
-  "homepageModalClose": { "message": "Закрыть", "description": "Close button" },
-  "homepageHint": { "message": "Установить как домашнюю страницу", "description": "Homepage info button tooltip" },
-  "storageErrorQuota": { "message": "Превышен лимит хранилища. Удалите старые карточки или очистите данные.", "description": "Storage quota exceeded error" },
-  "storageErrorGeneral": { "message": "Не удалось сохранить данные. Попробуйте ещё раз.", "description": "General storage error" },
-  "storageIndicator": { "message": "Хранилище:", "description": "Storage indicator label" },
-  "filterDateFrom": { "message": "Дата от", "description": "Date from filter title" },
-  "filterDateTo": { "message": "Дата до", "description": "Date to filter title" },
-  "optionsStorageUsage": { "message": "Использовано: {used} КБ / {total} КБ ({pct}%)", "description": "Storage usage in options sync tab" },
-  "optionsStorageLocal": { "message": "Локальное хранилище", "description": "Local storage label in options sync tab" },
-  "storageWarningFull": { "message": "Хранилище почти заполнено (90%+). Включите облачную синхронизацию или удалите старые задачи.", "description": "Storage warning tooltip when localStorage is near full" },
-  "modalNoTitle": { "message": "Без названия", "description": "Fallback title when card has no title" },
-  "optionsSyncCspError": { "message": "Возможно, запросы к Яндекс.Диску заблокированы политикой безопасности.", "description": "CSP error" },
-  "optionsSyncTokenInvalid": { "message": "Проверьте правильность токена и права доступа.", "description": "Invalid token" },
-  "optionsSyncTokenForbidden": { "message": "Недостаточно прав доступа.", "description": "Token forbidden" },
-  "migrationOverflowLost": { "message": "$count$ из $total$ карточек будут безвозвратно потеряны, так как не помещаются в локальное хранилище. Продолжить и потерять их?", "description": "Предупреждение при миграции из облака, когда карточки не помещаются в localStorage", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } },
-  "cardDescHeading": { "message": "Описание" },
-  "cardChecklistHeading": { "message": "Чек-лист" },
-  "cardChecklistAdd": { "message": "+ Добавить пункт" },
-  "cardDescBoldTooltip": { "message": "Жирный (Ctrl+B)" },
-  "cardDescItalicTooltip": { "message": "Курсив (Ctrl+I)" },
-  "cardDescUlTooltip": { "message": "Маркированный список" },
-  "cardDescOlTooltip": { "message": "Нумерованный список" },
-  "cardDescQuoteTooltip": { "message": "Цитата" },
-  "widgetsCurrency": { "message": "Курсы валют", "description": "Currency widget label" },
-  "widgetsStocks": { "message": "Биржевые данные", "description": "Stocks and commodities widget label" },
-  "currencyLoading": { "message": "Загрузка...", "description": "Currency loading message" },
-  "currencyError": { "message": "Нет данных", "description": "Currency error message" },
-  "currencyBase": { "message": "Базовая валюта:", "description": "Base currency label" },
-  "stocksLoading": { "message": "Загрузка...", "description": "Stocks loading message" },
-  "stocksError": { "message": "Нет данных", "description": "Stocks error message" },
-  "stocksAll": { "message": "Все", "description": "All stocks selected" },
-  "stocksSelectedCount": { "message": "Выбрано: $count$", "description": "Number of selected stocks (e.g., 5 selected)", "placeholders": { "count": { "content": "$1" } } },
-  "widgetsStocksCurrencyTitle": { "message": "Валюты и биржи", "description": "Combined section title for options" },
-  "widgetsStocksSymbols": { "message": "Индексы и сырьё", "description": "Section title for choosing which indices to display" }
+    "appName":  {
+                    "message":  "Tablo Kanban",
+                    "description":  "Extension name"
+                },
+    "appDescription":  {
+                           "message":  "Панель закладок и канбан-доска для новой вкладки Chrome",
+                           "description":  "Extension description"
+                       },
+    "bookmarkAddTitle":  {
+                             "message":  "Добавить закладку",
+                             "description":  "Add bookmark dialog title"
+                         },
+    "bookmarkUrlPlaceholder":  {
+                                   "message":  "URL (https://example.com)",
+                                   "description":  "Bookmark URL input placeholder"
+                               },
+    "bookmarkTitlePlaceholder":  {
+                                     "message":  "Название",
+                                     "description":  "Bookmark title input placeholder"
+                                 },
+    "bookmarkCancel":  {
+                           "message":  "Отмена",
+                           "description":  "Cancel button"
+                       },
+    "bookmarkSave":  {
+                         "message":  "Сохранить",
+                         "description":  "Save button"
+                     },
+    "bookmarkEditTitle":  {
+                              "message":  "Редактировать закладку",
+                              "description":  "Edit bookmark dialog title"
+                          },
+    "bookmarkEditUrlPlaceholder":  {
+                                       "message":  "URL",
+                                       "description":  "Edit bookmark URL placeholder"
+                                   },
+    "bookmarkEditTitlePlaceholder":  {
+                                         "message":  "Название",
+                                         "description":  "Edit bookmark title placeholder"
+                                     },
+    "bookmarkContextEdit":  {
+                                "message":  "Редактировать",
+                                "description":  "Context menu edit action"
+                            },
+    "bookmarkContextDelete":  {
+                                  "message":  "Удалить",
+                                  "description":  "Context menu delete action"
+                              },
+    "cardPlaceholderAddSite":  {
+                                   "message":  "Добавить сайт",
+                                   "description":  "Add site placeholder"
+                               },
+    "filterAllAssignees":  {
+                               "message":  "Все исполнители",
+                               "description":  "Filter: all assignees option"
+                           },
+    "filterAllAuthors":  {
+                             "message":  "Все авторы",
+                             "description":  "Filter: all authors option"
+                         },
+    "filterAllPriorities":  {
+                                "message":  "Все приоритеты",
+                                "description":  "Filter: all priorities option"
+                            },
+    "filterSearchPlaceholder":  {
+                                    "message":  "Поиск задач...",
+                                    "description":  "Filter search placeholder"
+                                },
+    "filterClearTitle":  {
+                             "message":  "Очистить фильтры",
+                             "description":  "Clear filters button title"
+                         },
+    "priorityLow":  {
+                        "message":  "Низкий",
+                        "description":  "Low priority"
+                    },
+    "priorityMedium":  {
+                           "message":  "Средний",
+                           "description":  "Medium priority"
+                       },
+    "priorityHigh":  {
+                         "message":  "Высокий",
+                         "description":  "High priority"
+                     },
+    "priorityUrgent":  {
+                           "message":  "Срочный",
+                           "description":  "Urgent priority"
+                       },
+    "tagsFilterAll":  {
+                          "message":  "Все теги",
+                          "description":  "Tags filter: all"
+                      },
+    "tagsFilterSelected":  {
+                               "message":  "$count$ выбрано",
+                               "description":  "Tags filter: selected count",
+                               "placeholders":  {
+                                                    "count":  {
+                                                                  "content":  "$1"
+                                                              }
+                                                }
+                           },
+    "tagsRemoveTitle":  {
+                            "message":  "Удалить фильтр",
+                            "description":  "Remove tag filter tooltip"
+                        },
+    "modalTask":  {
+                      "message":  "Задача",
+                      "description":  "Modal title"
+                  },
+    "modalTitlePlaceholder":  {
+                                  "message":  "Название задачи",
+                                  "description":  "Modal title input placeholder"
+                              },
+    "modalDescPlaceholder":  {
+                                 "message":  "Описание",
+                                 "description":  "Modal description placeholder"
+                             },
+    "modalAssignee":  {
+                          "message":  "Исполнитель:",
+                          "description":  "Assignee label"
+                      },
+    "modalNotAssigned":  {
+                             "message":  "Не назначен",
+                             "description":  "Not assigned option"
+                         },
+    "modalAuthor":  {
+                        "message":  "Автор:",
+                        "description":  "Author label"
+                    },
+    "modalNotSpecified":  {
+                              "message":  "Не указан",
+                              "description":  "Not specified option"
+                          },
+    "modalTags":  {
+                      "message":  "Теги:",
+                      "description":  "Tags label"
+                  },
+    "modalTagsSelect":  {
+                            "message":  "Выбрать теги",
+                            "description":  "Tags select tooltip"
+                        },
+    "modalPriority":  {
+                          "message":  "Приоритет:",
+                          "description":  "Priority label"
+                      },
+    "modalNoPriority":  {
+                            "message":  "Без приоритета",
+                            "description":  "No priority option"
+                        },
+    "modalDelete":  {
+                        "message":  "Удалить",
+                        "description":  "Delete button"
+                    },
+    "modalCancel":  {
+                        "message":  "Отмена",
+                        "description":  "Cancel button"
+                    },
+    "modalSave":  {
+                      "message":  "Сохранить",
+                      "description":  "Save button"
+                  },
+    "modalNewTask":  {
+                         "message":  "Новая задача",
+                         "description":  "New task modal title"
+                     },
+    "modalEditTask":  {
+                          "message":  "Редактировать задачу",
+                          "description":  "Edit task modal title"
+                      },
+    "modalEdit":  {
+                      "message":  "Редактировать",
+                      "description":  "Edit button"
+                  },
+    "modalHide":  {
+                      "message":  "Скрыть",
+                      "description":  "Hide button in view mode"
+                  },
+    "columnAddCard":  {
+                          "message":  "+ Добавить задачу",
+                          "description":  "Add card button"
+                      },
+    "columnAddColumn":  {
+                            "message":  "+ Добавить колонку",
+                            "description":  "Add column button"
+                        },
+    "columnAddTitle":  {
+                           "message":  "Новая колонка",
+                           "description":  "Add column dialog title"
+                       },
+    "columnAddCreate":  {
+                            "message":  "Создать",
+                            "description":  "Create column button"
+                        },
+    "columnNewColumn":  {
+                            "message":  "Новая колонка",
+                            "description":  "New column default name"
+                        },
+    "columnNewPlaceholder":  {
+                                 "message":  "Название колонки",
+                                 "description":  "New column input placeholder"
+                             },
+    "columnNewColor":  {
+                           "message":  "Цвет:",
+                           "description":  "Color picker label"
+                       },
+    "columnDelete":  {
+                         "message":  "Удалить",
+                         "description":  "Delete column button"
+                     },
+    "columnDeleteConfirm":  {
+                                "message":  "Удалить колонку \"$title$\" и все её задачи?",
+                                "description":  "Column delete confirmation",
+                                "placeholders":  {
+                                                     "title":  {
+                                                                   "content":  "$1"
+                                                               }
+                                                 }
+                            },
+    "columnDeleteCardConfirm":  {
+                                    "message":  "Удалить задачу \"$title$\"?",
+                                    "description":  "Card delete confirmation",
+                                    "placeholders":  {
+                                                         "title":  {
+                                                                       "content":  "$1"
+                                                                   }
+                                                     }
+                                },
+    "columnNoTags":  {
+                         "message":  "Нет тегов",
+                         "description":  "No tags fallback"
+                     },
+    "columnClearCards":  {
+                             "message":  "Очистить задачи",
+                             "description":  "Clear cards button"
+                         },
+    "columnClearCardsConfirm":  {
+                                    "message":  "Введите \"$phrase$\" для подтверждения",
+                                    "description":  "Clear cards prompt",
+                                    "placeholders":  {
+                                                         "phrase":  {
+                                                                        "content":  "$1"
+                                                                    }
+                                                     }
+                                },
+    "columnClearCardsPhrase":  {
+                                   "message":  "очистить",
+                                   "description":  "Clear cards prompt phrase"
+                               },
+    "columnClearCardsWrong":  {
+                                  "message":  "Неверная фраза",
+                                  "description":  "Clear cards wrong phrase error"
+                              },
+    "settingsTitle":  {
+                          "message":  "Настройки",
+                          "description":  "Settings button title"
+                      },
+    "settingsOpen":  {
+                         "message":  "Открыть Tablo Kanban",
+                         "description":  "Open extension text"
+                     },
+    "optionsTitle":  {
+                         "message":  "Настройки — Tablo Kanban",
+                         "description":  "Options page title"
+                     },
+    "optionsTabColumns":  {
+                              "message":  "Колонки",
+                              "description":  "Columns tab button"
+                          },
+    "optionsTabTags":  {
+                           "message":  "Теги",
+                           "description":  "Tags tab button"
+                       },
+    "optionsTabPerformers":  {
+                                 "message":  "Исполнители",
+                                 "description":  "Performers tab button"
+                             },
+    "optionsTabAuthors":  {
+                              "message":  "Авторы",
+                              "description":  "Authors tab button"
+                          },
+    "optionsTabAppearance":  {
+                                 "message":  "Настройки",
+                                 "description":  "Appearance tab button"
+                             },
+    "optionsTabSync":  {
+                           "message":  "Синхронизация",
+                           "description":  "Sync tab button"
+                       },
+    "optionsSyncTitle":  {
+                             "message":  "Синхронизация",
+                             "description":  "Sync section title"
+                         },
+    "optionsSyncProvider":  {
+                                "message":  "Провайдер синхронизации:",
+                                "description":  "Sync provider label"
+                            },
+    "optionsSyncProviderGoogle":  {
+                                      "message":  "Google Drive",
+                                      "description":  "Google Drive option"
+                                  },
+    "optionsSyncProviderYandex":  {
+                                      "message":  "Яндекс.Диск",
+                                      "description":  "Yandex Disk option"
+                                  },
+    "optionsSyncDescGoogle":  {
+                                  "message":  "Данные канбан-доски будут синхронизироваться между устройствами через ваш Google Drive. Синхронизация c Google Drive работает только в Chrome.",
+                                  "description":  "Google Drive sync description"
+                              },
+    "optionsSyncDescYandex":  {
+                                  "message":  "Данные канбан-доски будут синхронизироваться между устройствами через ваш Яндекс.Диск.",
+                                  "description":  "Yandex Disk sync description"
+                              },
+    "optionsSyncChecking":  {
+                                "message":  "Проверка статуса...",
+                                "description":  "Sync status checking"
+                            },
+    "optionsSyncConnected":  {
+                                 "message":  "Синхронизация подключена",
+                                 "description":  "Sync connected status"
+                             },
+    "optionsSyncDisconnected":  {
+                                    "message":  "Синхронизация не подключена",
+                                    "description":  "Sync disconnected status"
+                                },
+    "optionsSyncSignin":  {
+                              "message":  "Подключить",
+                              "description":  "Sign in button"
+                          },
+    "optionsSyncSignout":  {
+                               "message":  "Отключить синхронизацию",
+                               "description":  "Sign out button"
+                           },
+    "optionsSyncFailed":  {
+                              "message":  "Ошибка подключения",
+                              "description":  "Sync failed status"
+                          },
+    "optionsSyncError":  {
+                             "message":  "Ошибка проверки",
+                             "description":  "Sync error status"
+                         },
+    "optionsSyncTokenExpired":  {
+                                    "message":  "Токен Яндекс.Диска устарел или недействителен. Введите новый токен.",
+                                    "description":  "Token expired message"
+                                },
+    "optionsSyncYadiskApply":  {
+                                   "message":  "Сохранить токен",
+                                   "description":  "Save token button"
+                               },
+    "optionsSyncYadiskClear":  {
+                                   "message":  "Очистить токен",
+                                   "description":  "Clear token button"
+                               },
+    "optionsSyncYadiskOauthGet":  {
+                                      "message":  "Получить OAuth-токен",
+                                      "description":  "Get OAuth token button"
+                                  },
+    "optionsSyncYadiskOauthOpened":  {
+                                         "message":  "Страница авторизации Яндекса открыта в новой вкладке. После авторизации скопируйте токен из адресной строки и вставьте в поле «OAuth-токен» ниже, затем нажмите «Сохранить токен».",
+                                         "description":  "OAuth page opened message"
+                                     },
+    "optionsSyncYadiskClientHint":  {
+                                        "message":  "Для подключения Яндекс.Диска зарегистрируйте приложение на oauth.yandex.ru и введите ClientID:",
+                                        "description":  "Client ID hint text"
+                                    },
+    "optionsSyncYadiskClientStep2":  {
+                                         "message":  "Создайте приложение → тип «Веб-сервис»",
+                                         "description":  "Step 2"
+                                     },
+    "optionsSyncYadiskClientStep4":  {
+                                         "message":  "Добавьте права cloud_api:disk.write и cloud_api:disk.read",
+                                         "description":  "Step 4"
+                                     },
+    "optionsSyncYadiskClientStep5":  {
+                                         "message":  "Скопируйте ClientID (не Client Secret!) и вставьте ниже",
+                                         "description":  "Step 5"
+                                     },
+    "optionsSyncYadiskClientSave":  {
+                                        "message":  "Сохранить ClientID",
+                                        "description":  "Save client ID button"
+                                    },
+    "optionsColumnsTitle":  {
+                                "message":  "Колонки доски",
+                                "description":  "Columns section title"
+                            },
+    "optionsColumnsDesc":  {
+                               "message":  "Перетаскивайте для изменения порядка. Для удаления нажмите ×.",
+                               "description":  "Columns section description"
+                           },
+    "optionsColumnsAdd":  {
+                              "message":  "Добавить колонку",
+                              "description":  "Add column button"
+                          },
+    "optionsColumnsNew":  {
+                              "message":  "Новая колонка",
+                              "description":  "New column placeholder"
+                          },
+    "optionsTagsTitle":  {
+                             "message":  "Теги",
+                             "description":  "Tags section title"
+                         },
+    "optionsTagsAdd":  {
+                           "message":  "Добавить тег",
+                           "description":  "Add tag button"
+                       },
+    "optionsTagsNew":  {
+                           "message":  "Новый тег",
+                           "description":  "New tag placeholder"
+                       },
+    "optionsPerformersTitle":  {
+                                   "message":  "Исполнители",
+                                   "description":  "Performers section title"
+                               },
+    "optionsPerformersAdd":  {
+                                 "message":  "Добавить исполнителя",
+                                 "description":  "Add performer button"
+                             },
+    "optionsPerformersNew":  {
+                                 "message":  "Новый исполнитель",
+                                 "description":  "New performer placeholder"
+                             },
+    "optionsAuthorsTitle":  {
+                                "message":  "Авторы",
+                                "description":  "Authors section title"
+                            },
+    "optionsAuthorsAdd":  {
+                              "message":  "Добавить автора",
+                              "description":  "Add author button"
+                          },
+    "optionsAuthorsNew":  {
+                              "message":  "Новый автор",
+                              "description":  "New author placeholder"
+                          },
+    "optionsAppearanceTheme":  {
+                                   "message":  "Тема",
+                                   "description":  "Theme section title"
+                               },
+    "optionsAppearanceLight":  {
+                                   "message":  "Светлая",
+                                   "description":  "Light theme option"
+                               },
+    "optionsAppearanceDark":  {
+                                  "message":  "Тёмная",
+                                  "description":  "Dark theme option"
+                              },
+    "optionsAppearanceSystem":  {
+                                    "message":  "Системная",
+                                    "description":  "System theme option"
+                                },
+    "optionsAppearanceLanguage":  {
+                                      "message":  "Язык",
+                                      "description":  "Language section title"
+                                  },
+    "optionsBack":  {
+                        "message":  "← Вернуться",
+                        "description":  "Back to main page button"
+                    },
+    "optionsSave":  {
+                        "message":  "Сохранить",
+                        "description":  "Save button"
+                    },
+    "optionsSaved":  {
+                         "message":  "Сохранено!",
+                         "description":  "Saved confirmation"
+                     },
+    "optionsAboutVersion":  {
+                                "message":  "Версия {version}",
+                                "description":  "Version info"
+                            },
+    "optionsAboutDesc":  {
+                             "message":  "Панель закладок и канбан-доска для новой вкладки Chrome.",
+                             "description":  "About description"
+                         },
+    "optionsAboutStorage":  {
+                                "message":  "Данные доски хранятся локально в localStorage (без синхронизации) или в облаке (Google Drive / Яндекс.Диск) при активной синхронизации. Настройки и ключи API — в chrome.storage.sync.",
+                                "description":  "Storage info"
+                            },
+    "optionsSupportTitle":  {
+                                "message":  "Поддержать проект",
+                                "description":  "Support section title"
+                            },
+    "optionsSupportDesc":  {
+                               "message":  "Если расширение вам полезно, вы можете поддержать его развитие:",
+                               "description":  "Support section description"
+                           },
+    "optionsSupportOkx":  {
+                              "message":  "OKX (крипта)",
+                              "description":  "OKX donate button label"
+                          },
+    "optionsSupportOkxHint":  {
+                                  "message":  "QR-код для перевода",
+                                  "description":  "OKX donate hint"
+                              },
+    "optionsSupportOkxModalTitle":  {
+                                        "message":  "Поддержать через OKX",
+                                        "description":  "OKX QR modal title"
+                                    },
+    "optionsSupportOkxModalDesc":  {
+                                       "message":  "Отсканируйте QR-код в приложении OKX для перевода:",
+                                       "description":  "OKX QR modal description"
+                                   },
+    "cardOldTooltip":  {
+                           "message":  "Задача висит больше 7 дней",
+                           "description":  "Snail tooltip for old cards in first column"
+                       },
+    "cardFireTooltip":  {
+                            "message":  "Задача висит больше 22 дней",
+                            "description":  "Fire tooltip for very old cards in first column"
+                        },
+    "cardTagsPlaceholder":  {
+                                "message":  "Все теги",
+                                "description":  "Card tags placeholder"
+                            },
+    "cardTagsDropdownHeader":  {
+                                   "message":  "Выберите теги",
+                                   "description":  "Tags dropdown header"
+                               },
+    "cardTagsDropdownClear":  {
+                                  "message":  "Очистить",
+                                  "description":  "Clear tags button"
+                              },
+    "cardTagsRemoveTitle":  {
+                                "message":  "Удалить тег",
+                                "description":  "Remove tag tooltip"
+                            },
+    "widgetsClock":  {
+                         "message":  "Часы",
+                         "description":  "Clock widget label"
+                     },
+    "widgetsWeather":  {
+                           "message":  "Погода",
+                           "description":  "Weather widget label"
+                       },
+    "weatherCity":  {
+                        "message":  "Город",
+                        "description":  "Weather city label"
+                    },
+    "weatherCityPlaceholder":  {
+                                   "message":  "Например: Москва",
+                                   "description":  "Weather city placeholder"
+                               },
+    "weatherUnit":  {
+                        "message":  "Единицы",
+                        "description":  "Weather unit label"
+                    },
+    "weatherCelsius":  {
+                           "message":  "°C",
+                           "description":  "Celsius option"
+                       },
+    "weatherFahrenheit":  {
+                              "message":  "°F",
+                              "description":  "Fahrenheit option"
+                          },
+    "weatherError":  {
+                         "message":  "Нет данных",
+                         "description":  "Weather error message"
+                     },
+    "weatherLoading":  {
+                           "message":  "Загрузка...",
+                           "description":  "Weather loading message"
+                       },
+    "optionsWidgetsTitle":  {
+                                "message":  "Виджеты",
+                                "description":  "Widgets section title"
+                            },
+    "optionsBookmarksTitle":  {
+                                  "message":  "Закладки",
+                                  "description":  "Bookmarks section title"
+                              },
+    "optionsBookmarksSlots":  {
+                                  "message":  "Количество закладок:",
+                                  "description":  "Bookmark slots label"
+                              },
+    "optionsBookmarksSlotsHint":  {
+                                      "message":  "Максимум 22. Должно быть чётным числом.",
+                                      "description":  "Bookmark slots hint"
+                                  },
+    "homepageModalTitle":  {
+                               "message":  "Установка страницы быстрого доступа",
+                               "description":  "Homepage modal title"
+                           },
+    "homepageModalDesc":  {
+                              "message":  "Скопируйте URL и вставьте его в настройках браузера как страницу быстрого доступа или домашнюю страницу.",
+                              "description":  "Homepage modal description"
+                          },
+    "homepageModalCopy":  {
+                              "message":  "Копировать",
+                              "description":  "Copy button"
+                          },
+    "homepageModalCopied":  {
+                                "message":  "Скопировано!",
+                                "description":  "Copied confirmation"
+                            },
+    "homepageModalClose":  {
+                               "message":  "Закрыть",
+                               "description":  "Close button"
+                           },
+    "homepageHint":  {
+                         "message":  "Установить как домашнюю страницу",
+                         "description":  "Homepage info button tooltip"
+                     },
+    "storageErrorQuota":  {
+                              "message":  "Превышен лимит хранилища. Удалите старые карточки или очистите данные.",
+                              "description":  "Storage quota exceeded error"
+                          },
+    "storageErrorGeneral":  {
+                                "message":  "Не удалось сохранить данные. Попробуйте ещё раз.",
+                                "description":  "General storage error"
+                            },
+    "storageIndicator":  {
+                             "message":  "Хранилище:",
+                             "description":  "Storage indicator label"
+                         },
+    "filterDateFrom":  {
+                           "message":  "Дата от",
+                           "description":  "Date from filter title"
+                       },
+    "filterDateTo":  {
+                         "message":  "Дата до",
+                         "description":  "Date to filter title"
+                     },
+    "optionsStorageUsage":  {
+                                "message":  "Использовано: {used} КБ / {total} КБ ({pct}%)",
+                                "description":  "Storage usage in options sync tab"
+                            },
+    "optionsStorageLocal":  {
+                                "message":  "Локальное хранилище",
+                                "description":  "Local storage label in options sync tab"
+                            },
+    "storageWarningFull":  {
+                               "message":  "Хранилище почти заполнено (90%+). Включите облачную синхронизацию или удалите старые задачи.",
+                               "description":  "Storage warning tooltip when localStorage is near full"
+                           },
+    "modalNoTitle":  {
+                         "message":  "Без названия",
+                         "description":  "Fallback title when card has no title"
+                     },
+    "optionsSyncCspError":  {
+                                "message":  "Возможно, запросы к Яндекс.Диску заблокированы политикой безопасности.",
+                                "description":  "CSP error"
+                            },
+    "optionsSyncTokenInvalid":  {
+                                    "message":  "Проверьте правильность токена и права доступа.",
+                                    "description":  "Invalid token"
+                                },
+    "optionsSyncTokenForbidden":  {
+                                      "message":  "Недостаточно прав доступа.",
+                                      "description":  "Token forbidden"
+                                  },
+    "migrationOverflowLost":  {
+                                  "message":  "$count$ из $total$ карточек будут безвозвратно потеряны, так как не помещаются в локальное хранилище. Продолжить и потерять их?",
+                                  "description":  "Предупреждение при миграции из облака, когда карточки не помещаются в localStorage",
+                                  "placeholders":  {
+                                                       "count":  {
+                                                                     "content":  "$1"
+                                                                 },
+                                                       "total":  {
+                                                                     "content":  "$2"
+                                                                 }
+                                                   }
+                              },
+    "cardDescHeading":  {
+                            "message":  "Описание"
+                        },
+    "cardChecklistHeading":  {
+                                 "message":  "Чек-лист"
+                             },
+    "cardChecklistAdd":  {
+                             "message":  "+ Добавить пункт"
+                         },
+    "cardDescBoldTooltip":  {
+                                "message":  "Жирный (Ctrl+B)"
+                            },
+    "cardDescItalicTooltip":  {
+                                  "message":  "Курсив (Ctrl+I)"
+                              },
+    "cardDescUlTooltip":  {
+                              "message":  "Маркированный список"
+                          },
+    "cardDescOlTooltip":  {
+                              "message":  "Нумерованный список"
+                          },
+    "cardDescQuoteTooltip":  {
+                                 "message":  "Цитата"
+                             },
+    "widgetsQuotes":  {
+                          "message":  "Цитаты",
+                          "description":  "Quotes widget label"
+                      },
+    "quotesLoading":  {
+                          "message":  "Загрузка...",
+                          "description":  "Quotes loading message"
+                      },
+    "quotesError":  {
+                        "message":  "Нет данных",
+                        "description":  "Quotes error message"
+                    }
 }

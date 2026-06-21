@@ -7,11 +7,9 @@ const BookmarksManager = (() => {
   let _displayedBookmarks = [];
   let _responsiveObserver = null;
   let _widgetsForcedHidden = false;
-  let _stocksHidden = false;
-  let _currencyHidden = false;
-  let _cachedStocksWidth = 0;
-  let _cachedCurrencyWidth = 0;
+  let _quotesHidden = false;
   let _cachedZoneWidth = 0;
+  let _cachedQuotesWidth = 0;
 
   // Min container width to fit the bookmark grid without overflow
   function _minFitWidth(cols) {
@@ -115,17 +113,12 @@ const BookmarksManager = (() => {
 
     var children = Array.from(container.children);
     if (children.length === 0) {
-      // No bookmarks — show all widgets
       widgetsZone.classList.add('active');
       _widgetsForcedHidden = false;
       _cachedZoneWidth = 0;
-      if (_stocksHidden) {
-        var se = document.getElementById('stocks-widget');
-        if (se) { se.style.display = ''; _stocksHidden = false; _cachedStocksWidth = 0; }
-      }
-      if (_currencyHidden) {
-        var ce = document.getElementById('currency-widget');
-        if (ce) { ce.style.display = ''; _currencyHidden = false; _cachedCurrencyWidth = 0; }
+      if (_quotesHidden) {
+        var qe = document.getElementById('quotes-widget');
+        if (qe) { qe.style.display = ''; _quotesHidden = false; _cachedQuotesWidth = 0; }
       }
       _updateCompactMode(container);
       return;
@@ -140,22 +133,14 @@ const BookmarksManager = (() => {
     var slotWidth = firstSlot ? firstSlot.offsetWidth : 0;
     var containerW = containerRect.width;
 
-    var stocksEl = document.getElementById('stocks-widget');
-    var currencyEl = document.getElementById('currency-widget');
+    var quotesEl = document.getElementById('quotes-widget');
 
     if (overflowed) {
-      // --- CASCADE HIDE (low priority first) ---
-      // currency → stocks → widgets-zone
-      if (currencyEl && currencyEl.style.display !== 'none') {
-        _cachedCurrencyWidth = currencyEl.offsetWidth;
-        currencyEl.style.display = 'none';
-        _currencyHidden = true;
-        return;
-      }
-      if (stocksEl && stocksEl.style.display !== 'none') {
-        _cachedStocksWidth = stocksEl.offsetWidth;
-        stocksEl.style.display = 'none';
-        _stocksHidden = true;
+      // Cascade hide: quotes → widgets-zone
+      if (quotesEl && quotesEl.style.display !== 'none') {
+        _cachedQuotesWidth = quotesEl.offsetWidth;
+        quotesEl.style.display = 'none';
+        _quotesHidden = true;
         return;
       }
       if (widgetsZone.classList.contains('active')) {
@@ -164,12 +149,10 @@ const BookmarksManager = (() => {
         _widgetsForcedHidden = true;
         return;
       }
-      // Everything already hidden — fall through
     }
 
-    // --- RESTORE by priority (high priority first) ---
-    // widgets-zone → stocks → currency
     if (!overflowed) {
+      // Restore: widgets-zone → quotes
       if (_widgetsForcedHidden) {
         if (_canRestore(containerW, _cachedZoneWidth, cols, slotWidth)) {
           widgetsZone.classList.add('active');
@@ -178,21 +161,11 @@ const BookmarksManager = (() => {
           return;
         }
       }
-
-      if (!_widgetsForcedHidden && _stocksHidden && stocksEl) {
-        if (_canRestore(containerW, _cachedStocksWidth, cols, slotWidth)) {
-          stocksEl.style.display = '';
-          _stocksHidden = false;
-          _cachedStocksWidth = 0;
-          return;
-        }
-      }
-
-      if (!_widgetsForcedHidden && !_stocksHidden && _currencyHidden && currencyEl) {
-        if (_canRestore(containerW, _cachedCurrencyWidth, cols, slotWidth)) {
-          currencyEl.style.display = '';
-          _currencyHidden = false;
-          _cachedCurrencyWidth = 0;
+      if (!_widgetsForcedHidden && _quotesHidden && quotesEl) {
+        if (_canRestore(containerW, _cachedQuotesWidth, cols, slotWidth)) {
+          quotesEl.style.display = '';
+          _quotesHidden = false;
+          _cachedQuotesWidth = 0;
           return;
         }
       }

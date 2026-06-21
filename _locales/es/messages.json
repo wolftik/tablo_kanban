@@ -1,628 +1,696 @@
 {
-  "appName": {
-    "message": "Tablo Kanban",
-    "description": "Extension name"
-  },
-  "appDescription": {
-    "message": "Barra de marcadores y tablero Kanban como pР“РЋgina de nueva pestaР“В±a",
-    "description": "Extension description"
-  },
-  "bookmarkAddTitle": {
-    "message": "AР“В±adir Marcador",
-    "description": "Add bookmark dialog title"
-  },
-  "bookmarkUrlPlaceholder": {
-    "message": "URL (https://ejemplo.com)",
-    "description": "Bookmark URL input placeholder"
-  },
-  "bookmarkTitlePlaceholder": {
-    "message": "TР“В­tulo",
-    "description": "Bookmark title input placeholder"
-  },
-  "bookmarkCancel": {
-    "message": "Cancelar",
-    "description": "Cancel button"
-  },
-  "bookmarkSave": {
-    "message": "Guardar",
-    "description": "Save button"
-  },
-  "bookmarkEditTitle": {
-    "message": "Editar Marcador",
-    "description": "Edit bookmark dialog title"
-  },
-  "bookmarkEditUrlPlaceholder": {
-    "message": "URL",
-    "description": "Edit bookmark URL placeholder"
-  },
-  "bookmarkEditTitlePlaceholder": {
-    "message": "TР“В­tulo",
-    "description": "Edit bookmark title placeholder"
-  },
-  "bookmarkContextEdit": {
-    "message": "Editar",
-    "description": "Context menu edit action"
-  },
-  "bookmarkContextDelete": {
-    "message": "Eliminar",
-    "description": "Context menu delete action"
-  },
-  "cardPlaceholderAddSite": {
-    "message": "AР“В±adir sitio",
-    "description": "Add site placeholder"
-  },
-  "filterAllAssignees": {
-    "message": "Todos los asignados",
-    "description": "Filter: all assignees option"
-  },
-  "filterAllAuthors": {
-    "message": "Todos los autores",
-    "description": "Filter: all authors option"
-  },
-  "filterAllPriorities": {
-    "message": "Todas las prioridades",
-    "description": "Filter: all priorities option"
-  },
-  "filterSearchPlaceholder": {
-    "message": "Buscar tareas...",
-    "description": "Filter search placeholder"
-  },
-  "filterClearTitle": {
-    "message": "Limpiar filtros",
-    "description": "Clear filters button title"
-  },
-  "priorityLow": {
-    "message": "Baja",
-    "description": "Low priority"
-  },
-  "priorityMedium": {
-    "message": "Media",
-    "description": "Medium priority"
-  },
-  "priorityHigh": {
-    "message": "Alta",
-    "description": "High priority"
-  },
-  "priorityUrgent": {
-    "message": "Urgente",
-    "description": "Urgent priority"
-  },
-  "tagsFilterAll": {
-    "message": "Todas las etiquetas",
-    "description": "Tags filter: all"
-  },
-  "tagsFilterSelected": {
-    "message": "$count$ seleccionadas",
-    "description": "Tags filter: selected count",
-    "placeholders": {
-      "count": {
-        "content": "$1"
-      }
-    }
-  },
-  "tagsRemoveTitle": {
-    "message": "Eliminar filtro",
-    "description": "Remove tag filter tooltip"
-  },
-  "modalTask": {
-    "message": "Tarea",
-    "description": "Modal title"
-  },
-  "modalTitlePlaceholder": {
-    "message": "TР“В­tulo de la tarea",
-    "description": "Modal title input placeholder"
-  },
-  "modalDescPlaceholder": {
-    "message": "DescripciР“С–n",
-    "description": "Modal description placeholder"
-  },
-  "modalAssignee": {
-    "message": "Asignado:",
-    "description": "Assignee label"
-  },
-  "modalNotAssigned": {
-    "message": "Sin asignar",
-    "description": "Not assigned option"
-  },
-  "modalAuthor": {
-    "message": "Autor:",
-    "description": "Author label"
-  },
-  "modalNotSpecified": {
-    "message": "No especificado",
-    "description": "Not specified option"
-  },
-  "modalTags": {
-    "message": "Etiquetas:",
-    "description": "Tags label"
-  },
-  "modalTagsSelect": {
-    "message": "Seleccionar etiquetas",
-    "description": "Tags select tooltip"
-  },
-  "modalPriority": {
-    "message": "Prioridad:",
-    "description": "Priority label"
-  },
-  "modalNoPriority": {
-    "message": "Sin prioridad",
-    "description": "No priority option"
-  },
-  "modalDelete": {
-    "message": "Eliminar",
-    "description": "Delete button"
-  },
-  "modalCancel": {
-    "message": "Cancelar",
-    "description": "Cancel button"
-  },
-  "modalSave": {
-    "message": "Guardar",
-    "description": "Save button"
-  },
-  "modalNewTask": {
-    "message": "Nueva Tarea",
-    "description": "New task modal title"
-  },
-  "modalEditTask": {
-    "message": "Editar Tarea",
-    "description": "Edit task modal title"
-  },
-  "columnAddCard": {
-    "message": "+ AР“В±adir Tarjeta",
-    "description": "Add card button"
-  },
-  "columnAddColumn": {
-    "message": "+ AР“В±adir Columna",
-    "description": "Add column button"
-  },
-  "columnAddTitle": {
-    "message": "Nueva Columna",
-    "description": "Add column dialog title"
-  },
-  "columnAddCreate": {
-    "message": "Crear",
-    "description": "Create column button"
-  },
-  "columnNewColumn": {
-    "message": "Nueva Columna",
-    "description": "New column default name"
-  },
-  "columnNewPlaceholder": {
-    "message": "Nombre de la columna",
-    "description": "New column input placeholder"
-  },
-  "columnNewColor": {
-    "message": "Color:",
-    "description": "Color picker label"
-  },
-  "columnDelete": {
-    "message": "Eliminar",
-    "description": "Delete column button"
-  },
-  "columnDeleteConfirm": {
-    "message": "Р’С—Eliminar la columna \"$title$\" y todas sus tarjetas?",
-    "description": "Column delete confirmation",
-    "placeholders": {
-      "title": {
-        "content": "$1"
-      }
-    }
-  },
-  "columnDeleteCardConfirm": {
-    "message": "Р’С—Eliminar la tarea \"$title$\"?",
-    "description": "Card delete confirmation",
-    "placeholders": {
-      "title": {
-        "content": "$1"
-      }
-    }
-  },
-  "columnNoTags": {
-    "message": "Sin etiquetas",
-    "description": "No tags fallback"
-  },
-  "columnClearCards": {
-    "message": "Limpiar todas las tarjetas",
-    "description": "Clear cards button"
-  },
-  "columnClearCardsConfirm": {
-    "message": "Escriba \"$phrase$\" para confirmar",
-    "description": "Clear cards prompt",
-    "placeholders": {
-      "phrase": {
-        "content": "$1"
-      }
-    }
-  },
-  "columnClearCardsPhrase": {
-    "message": "vaciar",
-    "description": "Clear cards prompt phrase"
-  },
-  "columnClearCardsWrong": {
-    "message": "Frase incorrecta",
-    "description": "Clear cards wrong phrase error"
-  },
-  "settingsTitle": {
-    "message": "Ajustes",
-    "description": "Settings button title"
-  },
-  "settingsOpen": {
-    "message": "Abrir Tablo Kanban",
-    "description": "Open extension text"
-  },
-  "optionsTitle": {
-    "message": "Ajustes РІР‚вЂќ Tablo Kanban",
-    "description": "Options page title"
-  },
-  "optionsTabColumns": {
-    "message": "Columnas",
-    "description": "Columns tab button"
-  },
-  "optionsTabTags": {
-    "message": "Etiquetas",
-    "description": "Tags tab button"
-  },
-  "optionsTabPerformers": {
-    "message": "Ejecutores",
-    "description": "Performers tab button"
-  },
-  "optionsTabAuthors": {
-    "message": "Autores",
-    "description": "Authors tab button"
-  },
-  "optionsTabAppearance": {
-    "message": "Apariencia",
-    "description": "Appearance tab button"
-  },
-  "optionsTabSync": {
-    "message": "SincronizaciР“С–n",
-    "description": "Sync tab button"
-  },
-  "optionsSyncTitle": {
-    "message": "SincronizaciР“С–n",
-    "description": "Sync section title"
-  },
-  "optionsSyncProvider": {
-    "message": "Proveedor de sincronizaciР“С–n:",
-    "description": "Sync provider label"
-  },
-  "optionsSyncProviderGoogle": {
-    "message": "Google Drive",
-    "description": "Google Drive option"
-  },
-  "optionsSyncProviderYandex": {
-    "message": "Yandex Disk",
-    "description": "Yandex Disk option"
-  },
-  "optionsSyncDescGoogle": {
-    "message": "Los datos del tablero Kanban se sincronizarР“РЋn entre dispositivos a travР“В©s de tu Google Drive. La sincronizaciР“С–n de Google Drive solo funciona en Chrome.",
-    "description": "Google Drive sync description"
-  },
-  "optionsSyncDescYandex": {
-    "message": "Los datos del tablero Kanban se sincronizarР“РЋn entre dispositivos a travР“В©s de tu Yandex Disk.",
-    "description": "Yandex Disk sync description"
-  },
-  "optionsSyncChecking": {
-    "message": "Verificando estado...",
-    "description": "Sync status checking"
-  },
-  "optionsSyncConnected": {
-    "message": "SincronizaciР“С–n conectada",
-    "description": "Sync connected status"
-  },
-  "optionsSyncDisconnected": {
-    "message": "SincronizaciР“С–n no conectada",
-    "description": "Sync disconnected status"
-  },
-  "optionsSyncSignin": {
-    "message": "Conectar",
-    "description": "Sign in button"
-  },
-  "optionsSyncSignout": {
-    "message": "Desconectar sincronizaciР“С–n",
-    "description": "Sign out button"
-  },
-  "optionsSyncFailed": {
-    "message": "ConexiР“С–n fallida",
-    "description": "Sync failed status"
-  },
-  "optionsSyncError": {
-    "message": "VerificaciР“С–n de estado fallida",
-    "description": "Sync error status"
-  },
-  "optionsSyncTokenExpired": {
-    "message": "El token de Yandex Disk ha expirado o no es vР“РЋlido. Ingrese un nuevo token.",
-    "description": "Token expired message"
-  },
-  "optionsSyncYadiskApply": {
-    "message": "Guardar token",
-    "description": "Save token button"
-  },
-  "optionsSyncYadiskClear": {
-    "message": "Limpiar token",
-    "description": "Clear token button"
-  },
-  "optionsSyncYadiskOauthGet": {
-    "message": "Obtener token OAuth",
-    "description": "Get OAuth token button"
-  },
-  "optionsSyncYadiskOauthOpened": {
-    "message": "La pР“РЋgina de autorizaciР“С–n de Yandex se abriР“С– en una nueva pestaР“В±a. DespuР“В©s de autorizar, copie el token de la barra de direcciones, pР“В©guelo en el campo 'Token OAuth' a continuaciР“С–n y haga clic en 'Guardar token'.",
-    "description": "OAuth page opened message"
-  },
-  "optionsSyncYadiskClientHint": {
-    "message": "Para conectar Yandex Disk, registre una aplicaciР“С–n en oauth.yandex.ru e ingrese ClientID:",
-    "description": "Client ID hint text"
-  },
-  "optionsSyncYadiskClientStep2": {
-    "message": "Cree una aplicaciР“С–n РІвЂ вЂ™ tipo Р’В«Web serviceР’В»",
-    "description": "Step 2"
-  },
-  "optionsSyncYadiskClientStep4": {
-    "message": "Agregue permisos cloud_api:disk.write y cloud_api:disk.read",
-    "description": "Step 4"
-  },
-  "optionsSyncYadiskClientStep5": {
-    "message": "Copie ClientID (Р’РЋno Client Secret!) y pР“В©guelo abajo",
-    "description": "Step 5"
-  },
-  "optionsSyncYadiskClientSave": {
-    "message": "Guardar ClientID",
-    "description": "Save client ID button"
-  },
-  "optionsColumnsTitle": {
-    "message": "Columnas del Tablero",
-    "description": "Columns section title"
-  },
-  "optionsColumnsDesc": {
-    "message": "Arrastre para reordenar. Haga clic en Р“вЂ” para eliminar.",
-    "description": "Columns section description"
-  },
-  "optionsColumnsAdd": {
-    "message": "AР“В±adir Columna",
-    "description": "Add column button"
-  },
-  "optionsColumnsNew": {
-    "message": "Nueva Columna",
-    "description": "New column placeholder"
-  },
-  "optionsTagsTitle": {
-    "message": "Etiquetas",
-    "description": "Tags section title"
-  },
-  "optionsTagsAdd": {
-    "message": "AР“В±adir Etiqueta",
-    "description": "Add tag button"
-  },
-  "optionsTagsNew": {
-    "message": "Nueva Etiqueta",
-    "description": "New tag placeholder"
-  },
-  "optionsPerformersTitle": {
-    "message": "Ejecutores",
-    "description": "Performers section title"
-  },
-  "optionsPerformersAdd": {
-    "message": "AР“В±adir Ejecutor",
-    "description": "Add performer button"
-  },
-  "optionsPerformersNew": {
-    "message": "Nuevo Ejecutor",
-    "description": "New performer placeholder"
-  },
-  "optionsAuthorsTitle": {
-    "message": "Autores",
-    "description": "Authors section title"
-  },
-  "optionsAuthorsAdd": {
-    "message": "AР“В±adir Autor",
-    "description": "Add author button"
-  },
-  "optionsAuthorsNew": {
-    "message": "Nuevo Autor",
-    "description": "New author placeholder"
-  },
-  "optionsAppearanceTheme": {
-    "message": "Tema",
-    "description": "Theme section title"
-  },
-  "optionsAppearanceLight": {
-    "message": "Claro",
-    "description": "Light theme option"
-  },
-  "optionsAppearanceDark": {
-    "message": "Oscuro",
-    "description": "Dark theme option"
-  },
-  "optionsAppearanceSystem": {
-    "message": "Sistema",
-    "description": "System theme option"
-  },
-  "optionsAppearanceLanguage": {
-    "message": "Idioma",
-    "description": "Language section title"
-  },
-  "optionsBack": {
-    "message": "РІвЂ С’ Volver",
-    "description": "Back to main page button"
-  },
-  "optionsSave": {
-    "message": "Guardar",
-    "description": "Save button"
-  },
-  "optionsSaved": {
-    "message": "Р’РЋGuardado!",
-    "description": "Saved confirmation"
-  },
-  "optionsAboutVersion": {
-    "message": "VersiР“С–n {version}",
-    "description": "Version info"
-  },
-  "optionsAboutDesc": {
-    "message": "Barra de marcadores y tablero Kanban para la pР“РЋgina de nueva pestaР“В±a de Chrome.",
-    "description": "About description"
-  },
-  "optionsAboutStorage": {
-    "message": "Los datos del tablero se almacenan localmente en chrome.storage.local. Los ajustes y claves de API se almacenan en chrome.storage.sync (sincronizados entre dispositivos). Los datos del tablero se sincronizan a travР“В©s de un proveedor elegido (Google Drive o Yandex Disk).",
-    "description": "Storage info"
-  },
-  "optionsSupportTitle": {
-    "message": "Apoyar el Proyecto",
-    "description": "Support section title"
-  },
-  "optionsSupportDesc": {
-    "message": "Si encuentra Р“С”til esta extensiР“С–n, puede apoyar su desarrollo:",
-    "description": "Support section description"
-  },
-  "optionsSupportOkx": {
-    "message": "OKX (cripto)",
-    "description": "OKX donate button label"
-  },
-  "optionsSupportOkxHint": {
-    "message": "CР“С–digo QR para transferencia",
-    "description": "OKX donate hint"
-  },
-  "optionsSupportOkxModalTitle": {
-    "message": "Apoyar vР“В­a OKX",
-    "description": "OKX QR modal title"
-  },
-  "optionsSupportOkxModalDesc": {
-    "message": "Escanee el cР“С–digo QR en la aplicaciР“С–n OKX para transferir:",
-    "description": "OKX QR modal description"
-  },
-  "cardOldTooltip": {
-    "message": "La tarea tiene mР“РЋs de 7 dР“В­as",
-    "description": "Snail tooltip for old cards in first column"
-  },
-  "cardFireTooltip": {
-    "message": "La tarea tiene mР“РЋs de 22 dР“В­as",
-    "description": "Fire tooltip for very old cards in first column"
-  },
-  "cardTagsPlaceholder": {
-    "message": "Todas las etiquetas",
-    "description": "Card tags placeholder"
-  },
-  "cardTagsDropdownHeader": {
-    "message": "Seleccionar etiquetas",
-    "description": "Tags dropdown header"
-  },
-  "cardTagsDropdownClear": {
-    "message": "Limpiar",
-    "description": "Clear tags button"
-  },
-  "cardTagsRemoveTitle": {
-    "message": "Eliminar etiqueta",
-    "description": "Remove tag tooltip"
-  },
-  "widgetsClock": {
-    "message": "Reloj",
-    "description": "Clock widget label"
-  },
-  "widgetsWeather": {
-    "message": "Clima",
-    "description": "Weather widget label"
-  },
-  "weatherCity": {
-    "message": "Ciudad",
-    "description": "Weather city label"
-  },
-  "weatherCityPlaceholder": {
-    "message": "ej. Madrid",
-    "description": "Weather city placeholder"
-  },
-  "weatherUnit": {
-    "message": "Unidades",
-    "description": "Weather unit label"
-  },
-  "weatherCelsius": {
-    "message": "Р’В°C",
-    "description": "Celsius option"
-  },
-  "weatherFahrenheit": {
-    "message": "Р’В°F",
-    "description": "Fahrenheit option"
-  },
-  "weatherError": {
-    "message": "Sin datos",
-    "description": "Weather error message"
-  },
-  "weatherLoading": {
-    "message": "Cargando...",
-    "description": "Weather loading message"
-  },
-  "optionsWidgetsTitle": {
-    "message": "Widgets",
-    "description": "Widgets section title"
-  },
-  "optionsBookmarksTitle": {
-    "message": "Marcadores",
-    "description": "Bookmarks section title"
-  },
-  "optionsBookmarksSlots": {
-    "message": "NР“С”mero de marcadores:",
-    "description": "Bookmark slots label"
-  },
-  "optionsBookmarksSlotsHint": {
-    "message": "MР“РЋximo 22. Debe ser un nР“С”mero par.",
-    "description": "Bookmark slots hint"
-  },
-  "homepageModalTitle": {
-    "message": "Establecer como PР“РЋgina de Inicio",
-    "description": "Homepage modal title"
-  },
-  "homepageModalDesc": {
-    "message": "Copie esta URL y pР“В©guela en la configuraciР“С–n de su navegador como pР“РЋgina de acceso rР“РЋpido o pР“РЋgina de inicio.",
-    "description": "Homepage modal description"
-  },
-  "homepageModalCopy": {
-    "message": "Copiar",
-    "description": "Copy button"
-  },
-  "homepageModalCopied": {
-    "message": "Р’РЋCopiado!",
-    "description": "Copied confirmation"
-  },
-  "homepageModalClose": {
-    "message": "Cerrar",
-    "description": "Close button"
-  },
-  "homepageHint": {
-    "message": "Establecer como pР“РЋgina de inicio",
-    "description": "Homepage info button tooltip"
-  },
-  "modalNoTitle": { "message": "Sin tР“В­tulo", "description": "Fallback title when card has no title" },
-  "storageWarningFull": { "message": "El almacenamiento está casi lleno (90%+). Active la sincronización en la nube o elimine tarjetas antiguas para liberar espacio.", "description": "Storage warning tooltip when localStorage is near full" },
-  "optionsSyncCspError": { "message": "Es posible que las solicitudes a Yandex Disk estР“В©n bloqueadas por la polР“В­tica de seguridad.", "description": "CSP error" },
-  "optionsSyncTokenInvalid": { "message": "Verifique el token y los derechos de acceso.", "description": "Invalid token" },
-  "optionsSyncTokenForbidden": { "message": "Derechos de acceso insuficientes.", "description": "Token forbidden" },
-  "storageErrorQuota": { "message": "Cuota de almacenamiento excedida. Elimine tarjetas antiguas o borre datos.", "description": "Storage quota exceeded error" },
-  "storageErrorGeneral": { "message": "Error al guardar los datos. IntР“В©ntelo de nuevo.", "description": "General storage error" },
-  "storageIndicator": { "message": "Almacenamiento:", "description": "Storage indicator label" },
-  "filterDateFrom": { "message": "Desde fecha", "description": "Date from filter title" },
-  "filterDateTo": { "message": "Hasta fecha", "description": "Date to filter title" },
-  "optionsStorageUsage": { "message": "Uso de almacenamiento: {used} KB / {total} KB ({pct}%)", "description": "Storage usage in options sync tab" },
-  "optionsStorageLocal": { "message": "Almacenamiento local", "description": "Local storage label in options sync tab" },
-  "migrationOverflowLost": { "message": "Se perderán permanentemente $count$ de $total$ tarjetas porque no caben en el almacenamiento local. ¿Continuar y perderlas?", "description": "Warning when cloud-to-local migration cannot fit all cards", "placeholders": { "count": { "content": "$1" }, "total": { "content": "$2" } } },
-  "cardDescHeading": { "message": "Descripción" },
-  "cardChecklistHeading": { "message": "Checklist" },
-  "cardChecklistAdd": { "message": "+ Add item" },
-  "cardDescBoldTooltip": { "message": "Negrita (Ctrl+B)" },
-  "cardDescItalicTooltip": { "message": "Cursiva (Ctrl+I)" },
-  "cardDescUlTooltip": { "message": "Lista con viñetas" },
-  "cardDescOlTooltip": { "message": "Lista numerada" },
-  "cardDescQuoteTooltip": { "message": "Cita" },
-  "modalEdit": { "message": "Editar" },
-  "modalHide": { "message": "Ocultar" },
-  "widgetsCurrency": { "message": "Tipos de cambio", "description": "Currency widget label" },
-  "currencyLoading": { "message": "Cargando...", "description": "Currency loading message" },
-  "currencyError": { "message": "Sin datos", "description": "Currency error message" },
-  "stocksLoading": { "message": "Cargando...", "description": "Stocks loading message" },
-  "stocksError": { "message": "Sin datos", "description": "Stocks error message" },
-  "stocksAll": { "message": "Todos", "description": "All stocks selected" },
-  "stocksSelectedCount": { "message": "$count$ seleccionados", "description": "Number of selected stocks (e.g., 5 selected)", "placeholders": { "count": { "content": "$1" } } },
-  "widgetsStocksCurrencyTitle": { "message": "Divisas y bolsas", "description": "Combined section title for options" },
-  "widgetsStocks": { "message": "Datos de mercado", "description": "Stocks and commodities widget label" },
-  "widgetsStocksSymbols": { "message": "Índices y materias primas", "description": "Section title for choosing which indices to display" },
-  "currencyBase": { "message": "Moneda base:", "description": "Base currency label" }
+    "appName":  {
+                    "message":  "Tablo Kanban",
+                    "description":  "Extension name"
+                },
+    "appDescription":  {
+                           "message":  "Barra de marcadores y tablero Kanban como pР“РЋgina de nueva pestaР“В±a",
+                           "description":  "Extension description"
+                       },
+    "bookmarkAddTitle":  {
+                             "message":  "AР“В±adir Marcador",
+                             "description":  "Add bookmark dialog title"
+                         },
+    "bookmarkUrlPlaceholder":  {
+                                   "message":  "URL (https://ejemplo.com)",
+                                   "description":  "Bookmark URL input placeholder"
+                               },
+    "bookmarkTitlePlaceholder":  {
+                                     "message":  "TР“В­tulo",
+                                     "description":  "Bookmark title input placeholder"
+                                 },
+    "bookmarkCancel":  {
+                           "message":  "Cancelar",
+                           "description":  "Cancel button"
+                       },
+    "bookmarkSave":  {
+                         "message":  "Guardar",
+                         "description":  "Save button"
+                     },
+    "bookmarkEditTitle":  {
+                              "message":  "Editar Marcador",
+                              "description":  "Edit bookmark dialog title"
+                          },
+    "bookmarkEditUrlPlaceholder":  {
+                                       "message":  "URL",
+                                       "description":  "Edit bookmark URL placeholder"
+                                   },
+    "bookmarkEditTitlePlaceholder":  {
+                                         "message":  "TР“В­tulo",
+                                         "description":  "Edit bookmark title placeholder"
+                                     },
+    "bookmarkContextEdit":  {
+                                "message":  "Editar",
+                                "description":  "Context menu edit action"
+                            },
+    "bookmarkContextDelete":  {
+                                  "message":  "Eliminar",
+                                  "description":  "Context menu delete action"
+                              },
+    "cardPlaceholderAddSite":  {
+                                   "message":  "AР“В±adir sitio",
+                                   "description":  "Add site placeholder"
+                               },
+    "filterAllAssignees":  {
+                               "message":  "Todos los asignados",
+                               "description":  "Filter: all assignees option"
+                           },
+    "filterAllAuthors":  {
+                             "message":  "Todos los autores",
+                             "description":  "Filter: all authors option"
+                         },
+    "filterAllPriorities":  {
+                                "message":  "Todas las prioridades",
+                                "description":  "Filter: all priorities option"
+                            },
+    "filterSearchPlaceholder":  {
+                                    "message":  "Buscar tareas...",
+                                    "description":  "Filter search placeholder"
+                                },
+    "filterClearTitle":  {
+                             "message":  "Limpiar filtros",
+                             "description":  "Clear filters button title"
+                         },
+    "priorityLow":  {
+                        "message":  "Baja",
+                        "description":  "Low priority"
+                    },
+    "priorityMedium":  {
+                           "message":  "Media",
+                           "description":  "Medium priority"
+                       },
+    "priorityHigh":  {
+                         "message":  "Alta",
+                         "description":  "High priority"
+                     },
+    "priorityUrgent":  {
+                           "message":  "Urgente",
+                           "description":  "Urgent priority"
+                       },
+    "tagsFilterAll":  {
+                          "message":  "Todas las etiquetas",
+                          "description":  "Tags filter: all"
+                      },
+    "tagsFilterSelected":  {
+                               "message":  "$count$ seleccionadas",
+                               "description":  "Tags filter: selected count",
+                               "placeholders":  {
+                                                    "count":  {
+                                                                  "content":  "$1"
+                                                              }
+                                                }
+                           },
+    "tagsRemoveTitle":  {
+                            "message":  "Eliminar filtro",
+                            "description":  "Remove tag filter tooltip"
+                        },
+    "modalTask":  {
+                      "message":  "Tarea",
+                      "description":  "Modal title"
+                  },
+    "modalTitlePlaceholder":  {
+                                  "message":  "TР“В­tulo de la tarea",
+                                  "description":  "Modal title input placeholder"
+                              },
+    "modalDescPlaceholder":  {
+                                 "message":  "DescripciР“С–n",
+                                 "description":  "Modal description placeholder"
+                             },
+    "modalAssignee":  {
+                          "message":  "Asignado:",
+                          "description":  "Assignee label"
+                      },
+    "modalNotAssigned":  {
+                             "message":  "Sin asignar",
+                             "description":  "Not assigned option"
+                         },
+    "modalAuthor":  {
+                        "message":  "Autor:",
+                        "description":  "Author label"
+                    },
+    "modalNotSpecified":  {
+                              "message":  "No especificado",
+                              "description":  "Not specified option"
+                          },
+    "modalTags":  {
+                      "message":  "Etiquetas:",
+                      "description":  "Tags label"
+                  },
+    "modalTagsSelect":  {
+                            "message":  "Seleccionar etiquetas",
+                            "description":  "Tags select tooltip"
+                        },
+    "modalPriority":  {
+                          "message":  "Prioridad:",
+                          "description":  "Priority label"
+                      },
+    "modalNoPriority":  {
+                            "message":  "Sin prioridad",
+                            "description":  "No priority option"
+                        },
+    "modalDelete":  {
+                        "message":  "Eliminar",
+                        "description":  "Delete button"
+                    },
+    "modalCancel":  {
+                        "message":  "Cancelar",
+                        "description":  "Cancel button"
+                    },
+    "modalSave":  {
+                      "message":  "Guardar",
+                      "description":  "Save button"
+                  },
+    "modalNewTask":  {
+                         "message":  "Nueva Tarea",
+                         "description":  "New task modal title"
+                     },
+    "modalEditTask":  {
+                          "message":  "Editar Tarea",
+                          "description":  "Edit task modal title"
+                      },
+    "columnAddCard":  {
+                          "message":  "+ AР“В±adir Tarjeta",
+                          "description":  "Add card button"
+                      },
+    "columnAddColumn":  {
+                            "message":  "+ AР“В±adir Columna",
+                            "description":  "Add column button"
+                        },
+    "columnAddTitle":  {
+                           "message":  "Nueva Columna",
+                           "description":  "Add column dialog title"
+                       },
+    "columnAddCreate":  {
+                            "message":  "Crear",
+                            "description":  "Create column button"
+                        },
+    "columnNewColumn":  {
+                            "message":  "Nueva Columna",
+                            "description":  "New column default name"
+                        },
+    "columnNewPlaceholder":  {
+                                 "message":  "Nombre de la columna",
+                                 "description":  "New column input placeholder"
+                             },
+    "columnNewColor":  {
+                           "message":  "Color:",
+                           "description":  "Color picker label"
+                       },
+    "columnDelete":  {
+                         "message":  "Eliminar",
+                         "description":  "Delete column button"
+                     },
+    "columnDeleteConfirm":  {
+                                "message":  "Р’С—Eliminar la columna \"$title$\" y todas sus tarjetas?",
+                                "description":  "Column delete confirmation",
+                                "placeholders":  {
+                                                     "title":  {
+                                                                   "content":  "$1"
+                                                               }
+                                                 }
+                            },
+    "columnDeleteCardConfirm":  {
+                                    "message":  "Р’С—Eliminar la tarea \"$title$\"?",
+                                    "description":  "Card delete confirmation",
+                                    "placeholders":  {
+                                                         "title":  {
+                                                                       "content":  "$1"
+                                                                   }
+                                                     }
+                                },
+    "columnNoTags":  {
+                         "message":  "Sin etiquetas",
+                         "description":  "No tags fallback"
+                     },
+    "columnClearCards":  {
+                             "message":  "Limpiar todas las tarjetas",
+                             "description":  "Clear cards button"
+                         },
+    "columnClearCardsConfirm":  {
+                                    "message":  "Escriba \"$phrase$\" para confirmar",
+                                    "description":  "Clear cards prompt",
+                                    "placeholders":  {
+                                                         "phrase":  {
+                                                                        "content":  "$1"
+                                                                    }
+                                                     }
+                                },
+    "columnClearCardsPhrase":  {
+                                   "message":  "vaciar",
+                                   "description":  "Clear cards prompt phrase"
+                               },
+    "columnClearCardsWrong":  {
+                                  "message":  "Frase incorrecta",
+                                  "description":  "Clear cards wrong phrase error"
+                              },
+    "settingsTitle":  {
+                          "message":  "Ajustes",
+                          "description":  "Settings button title"
+                      },
+    "settingsOpen":  {
+                         "message":  "Abrir Tablo Kanban",
+                         "description":  "Open extension text"
+                     },
+    "optionsTitle":  {
+                         "message":  "Ajustes РІР‚вЂќ Tablo Kanban",
+                         "description":  "Options page title"
+                     },
+    "optionsTabColumns":  {
+                              "message":  "Columnas",
+                              "description":  "Columns tab button"
+                          },
+    "optionsTabTags":  {
+                           "message":  "Etiquetas",
+                           "description":  "Tags tab button"
+                       },
+    "optionsTabPerformers":  {
+                                 "message":  "Ejecutores",
+                                 "description":  "Performers tab button"
+                             },
+    "optionsTabAuthors":  {
+                              "message":  "Autores",
+                              "description":  "Authors tab button"
+                          },
+    "optionsTabAppearance":  {
+                                 "message":  "Apariencia",
+                                 "description":  "Appearance tab button"
+                             },
+    "optionsTabSync":  {
+                           "message":  "SincronizaciР“С–n",
+                           "description":  "Sync tab button"
+                       },
+    "optionsSyncTitle":  {
+                             "message":  "SincronizaciР“С–n",
+                             "description":  "Sync section title"
+                         },
+    "optionsSyncProvider":  {
+                                "message":  "Proveedor de sincronizaciР“С–n:",
+                                "description":  "Sync provider label"
+                            },
+    "optionsSyncProviderGoogle":  {
+                                      "message":  "Google Drive",
+                                      "description":  "Google Drive option"
+                                  },
+    "optionsSyncProviderYandex":  {
+                                      "message":  "Yandex Disk",
+                                      "description":  "Yandex Disk option"
+                                  },
+    "optionsSyncDescGoogle":  {
+                                  "message":  "Los datos del tablero Kanban se sincronizarР“РЋn entre dispositivos a travР“В©s de tu Google Drive. La sincronizaciР“С–n de Google Drive solo funciona en Chrome.",
+                                  "description":  "Google Drive sync description"
+                              },
+    "optionsSyncDescYandex":  {
+                                  "message":  "Los datos del tablero Kanban se sincronizarР“РЋn entre dispositivos a travР“В©s de tu Yandex Disk.",
+                                  "description":  "Yandex Disk sync description"
+                              },
+    "optionsSyncChecking":  {
+                                "message":  "Verificando estado...",
+                                "description":  "Sync status checking"
+                            },
+    "optionsSyncConnected":  {
+                                 "message":  "SincronizaciР“С–n conectada",
+                                 "description":  "Sync connected status"
+                             },
+    "optionsSyncDisconnected":  {
+                                    "message":  "SincronizaciР“С–n no conectada",
+                                    "description":  "Sync disconnected status"
+                                },
+    "optionsSyncSignin":  {
+                              "message":  "Conectar",
+                              "description":  "Sign in button"
+                          },
+    "optionsSyncSignout":  {
+                               "message":  "Desconectar sincronizaciР“С–n",
+                               "description":  "Sign out button"
+                           },
+    "optionsSyncFailed":  {
+                              "message":  "ConexiР“С–n fallida",
+                              "description":  "Sync failed status"
+                          },
+    "optionsSyncError":  {
+                             "message":  "VerificaciР“С–n de estado fallida",
+                             "description":  "Sync error status"
+                         },
+    "optionsSyncTokenExpired":  {
+                                    "message":  "El token de Yandex Disk ha expirado o no es vР“РЋlido. Ingrese un nuevo token.",
+                                    "description":  "Token expired message"
+                                },
+    "optionsSyncYadiskApply":  {
+                                   "message":  "Guardar token",
+                                   "description":  "Save token button"
+                               },
+    "optionsSyncYadiskClear":  {
+                                   "message":  "Limpiar token",
+                                   "description":  "Clear token button"
+                               },
+    "optionsSyncYadiskOauthGet":  {
+                                      "message":  "Obtener token OAuth",
+                                      "description":  "Get OAuth token button"
+                                  },
+    "optionsSyncYadiskOauthOpened":  {
+                                         "message":  "La pР“РЋgina de autorizaciР“С–n de Yandex se abriР“С– en una nueva pestaР“В±a. DespuР“В©s de autorizar, copie el token de la barra de direcciones, pР“В©guelo en el campo \u0027Token OAuth\u0027 a continuaciР“С–n y haga clic en \u0027Guardar token\u0027.",
+                                         "description":  "OAuth page opened message"
+                                     },
+    "optionsSyncYadiskClientHint":  {
+                                        "message":  "Para conectar Yandex Disk, registre una aplicaciР“С–n en oauth.yandex.ru e ingrese ClientID:",
+                                        "description":  "Client ID hint text"
+                                    },
+    "optionsSyncYadiskClientStep2":  {
+                                         "message":  "Cree una aplicaciР“С–n РІвЂ вЂ™ tipo Р’В«Web serviceР’В»",
+                                         "description":  "Step 2"
+                                     },
+    "optionsSyncYadiskClientStep4":  {
+                                         "message":  "Agregue permisos cloud_api:disk.write y cloud_api:disk.read",
+                                         "description":  "Step 4"
+                                     },
+    "optionsSyncYadiskClientStep5":  {
+                                         "message":  "Copie ClientID (Р’РЋno Client Secret!) y pР“В©guelo abajo",
+                                         "description":  "Step 5"
+                                     },
+    "optionsSyncYadiskClientSave":  {
+                                        "message":  "Guardar ClientID",
+                                        "description":  "Save client ID button"
+                                    },
+    "optionsColumnsTitle":  {
+                                "message":  "Columnas del Tablero",
+                                "description":  "Columns section title"
+                            },
+    "optionsColumnsDesc":  {
+                               "message":  "Arrastre para reordenar. Haga clic en Р“вЂ” para eliminar.",
+                               "description":  "Columns section description"
+                           },
+    "optionsColumnsAdd":  {
+                              "message":  "AР“В±adir Columna",
+                              "description":  "Add column button"
+                          },
+    "optionsColumnsNew":  {
+                              "message":  "Nueva Columna",
+                              "description":  "New column placeholder"
+                          },
+    "optionsTagsTitle":  {
+                             "message":  "Etiquetas",
+                             "description":  "Tags section title"
+                         },
+    "optionsTagsAdd":  {
+                           "message":  "AР“В±adir Etiqueta",
+                           "description":  "Add tag button"
+                       },
+    "optionsTagsNew":  {
+                           "message":  "Nueva Etiqueta",
+                           "description":  "New tag placeholder"
+                       },
+    "optionsPerformersTitle":  {
+                                   "message":  "Ejecutores",
+                                   "description":  "Performers section title"
+                               },
+    "optionsPerformersAdd":  {
+                                 "message":  "AР“В±adir Ejecutor",
+                                 "description":  "Add performer button"
+                             },
+    "optionsPerformersNew":  {
+                                 "message":  "Nuevo Ejecutor",
+                                 "description":  "New performer placeholder"
+                             },
+    "optionsAuthorsTitle":  {
+                                "message":  "Autores",
+                                "description":  "Authors section title"
+                            },
+    "optionsAuthorsAdd":  {
+                              "message":  "AР“В±adir Autor",
+                              "description":  "Add author button"
+                          },
+    "optionsAuthorsNew":  {
+                              "message":  "Nuevo Autor",
+                              "description":  "New author placeholder"
+                          },
+    "optionsAppearanceTheme":  {
+                                   "message":  "Tema",
+                                   "description":  "Theme section title"
+                               },
+    "optionsAppearanceLight":  {
+                                   "message":  "Claro",
+                                   "description":  "Light theme option"
+                               },
+    "optionsAppearanceDark":  {
+                                  "message":  "Oscuro",
+                                  "description":  "Dark theme option"
+                              },
+    "optionsAppearanceSystem":  {
+                                    "message":  "Sistema",
+                                    "description":  "System theme option"
+                                },
+    "optionsAppearanceLanguage":  {
+                                      "message":  "Idioma",
+                                      "description":  "Language section title"
+                                  },
+    "optionsBack":  {
+                        "message":  "РІвЂ С’ Volver",
+                        "description":  "Back to main page button"
+                    },
+    "optionsSave":  {
+                        "message":  "Guardar",
+                        "description":  "Save button"
+                    },
+    "optionsSaved":  {
+                         "message":  "Р’РЋGuardado!",
+                         "description":  "Saved confirmation"
+                     },
+    "optionsAboutVersion":  {
+                                "message":  "VersiР“С–n {version}",
+                                "description":  "Version info"
+                            },
+    "optionsAboutDesc":  {
+                             "message":  "Barra de marcadores y tablero Kanban para la pР“РЋgina de nueva pestaР“В±a de Chrome.",
+                             "description":  "About description"
+                         },
+    "optionsAboutStorage":  {
+                                "message":  "Los datos del tablero se almacenan localmente en chrome.storage.local. Los ajustes y claves de API se almacenan en chrome.storage.sync (sincronizados entre dispositivos). Los datos del tablero se sincronizan a travР“В©s de un proveedor elegido (Google Drive o Yandex Disk).",
+                                "description":  "Storage info"
+                            },
+    "optionsSupportTitle":  {
+                                "message":  "Apoyar el Proyecto",
+                                "description":  "Support section title"
+                            },
+    "optionsSupportDesc":  {
+                               "message":  "Si encuentra Р“С”til esta extensiР“С–n, puede apoyar su desarrollo:",
+                               "description":  "Support section description"
+                           },
+    "optionsSupportOkx":  {
+                              "message":  "OKX (cripto)",
+                              "description":  "OKX donate button label"
+                          },
+    "optionsSupportOkxHint":  {
+                                  "message":  "CР“С–digo QR para transferencia",
+                                  "description":  "OKX donate hint"
+                              },
+    "optionsSupportOkxModalTitle":  {
+                                        "message":  "Apoyar vР“В­a OKX",
+                                        "description":  "OKX QR modal title"
+                                    },
+    "optionsSupportOkxModalDesc":  {
+                                       "message":  "Escanee el cР“С–digo QR en la aplicaciР“С–n OKX para transferir:",
+                                       "description":  "OKX QR modal description"
+                                   },
+    "cardOldTooltip":  {
+                           "message":  "La tarea tiene mР“РЋs de 7 dР“В­as",
+                           "description":  "Snail tooltip for old cards in first column"
+                       },
+    "cardFireTooltip":  {
+                            "message":  "La tarea tiene mР“РЋs de 22 dР“В­as",
+                            "description":  "Fire tooltip for very old cards in first column"
+                        },
+    "cardTagsPlaceholder":  {
+                                "message":  "Todas las etiquetas",
+                                "description":  "Card tags placeholder"
+                            },
+    "cardTagsDropdownHeader":  {
+                                   "message":  "Seleccionar etiquetas",
+                                   "description":  "Tags dropdown header"
+                               },
+    "cardTagsDropdownClear":  {
+                                  "message":  "Limpiar",
+                                  "description":  "Clear tags button"
+                              },
+    "cardTagsRemoveTitle":  {
+                                "message":  "Eliminar etiqueta",
+                                "description":  "Remove tag tooltip"
+                            },
+    "widgetsClock":  {
+                         "message":  "Reloj",
+                         "description":  "Clock widget label"
+                     },
+    "widgetsWeather":  {
+                           "message":  "Clima",
+                           "description":  "Weather widget label"
+                       },
+    "weatherCity":  {
+                        "message":  "Ciudad",
+                        "description":  "Weather city label"
+                    },
+    "weatherCityPlaceholder":  {
+                                   "message":  "ej. Madrid",
+                                   "description":  "Weather city placeholder"
+                               },
+    "weatherUnit":  {
+                        "message":  "Unidades",
+                        "description":  "Weather unit label"
+                    },
+    "weatherCelsius":  {
+                           "message":  "Р’В°C",
+                           "description":  "Celsius option"
+                       },
+    "weatherFahrenheit":  {
+                              "message":  "Р’В°F",
+                              "description":  "Fahrenheit option"
+                          },
+    "weatherError":  {
+                         "message":  "Sin datos",
+                         "description":  "Weather error message"
+                     },
+    "weatherLoading":  {
+                           "message":  "Cargando...",
+                           "description":  "Weather loading message"
+                       },
+    "optionsWidgetsTitle":  {
+                                "message":  "Widgets",
+                                "description":  "Widgets section title"
+                            },
+    "optionsBookmarksTitle":  {
+                                  "message":  "Marcadores",
+                                  "description":  "Bookmarks section title"
+                              },
+    "optionsBookmarksSlots":  {
+                                  "message":  "NР“С”mero de marcadores:",
+                                  "description":  "Bookmark slots label"
+                              },
+    "optionsBookmarksSlotsHint":  {
+                                      "message":  "MР“РЋximo 22. Debe ser un nР“С”mero par.",
+                                      "description":  "Bookmark slots hint"
+                                  },
+    "homepageModalTitle":  {
+                               "message":  "Establecer como PР“РЋgina de Inicio",
+                               "description":  "Homepage modal title"
+                           },
+    "homepageModalDesc":  {
+                              "message":  "Copie esta URL y pР“В©guela en la configuraciР“С–n de su navegador como pР“РЋgina de acceso rР“РЋpido o pР“РЋgina de inicio.",
+                              "description":  "Homepage modal description"
+                          },
+    "homepageModalCopy":  {
+                              "message":  "Copiar",
+                              "description":  "Copy button"
+                          },
+    "homepageModalCopied":  {
+                                "message":  "Р’РЋCopiado!",
+                                "description":  "Copied confirmation"
+                            },
+    "homepageModalClose":  {
+                               "message":  "Cerrar",
+                               "description":  "Close button"
+                           },
+    "homepageHint":  {
+                         "message":  "Establecer como pР“РЋgina de inicio",
+                         "description":  "Homepage info button tooltip"
+                     },
+    "modalNoTitle":  {
+                         "message":  "Sin tР“В­tulo",
+                         "description":  "Fallback title when card has no title"
+                     },
+    "storageWarningFull":  {
+                               "message":  "El almacenamiento está casi lleno (90%+). Active la sincronización en la nube o elimine tarjetas antiguas para liberar espacio.",
+                               "description":  "Storage warning tooltip when localStorage is near full"
+                           },
+    "optionsSyncCspError":  {
+                                "message":  "Es posible que las solicitudes a Yandex Disk estР“В©n bloqueadas por la polР“В­tica de seguridad.",
+                                "description":  "CSP error"
+                            },
+    "optionsSyncTokenInvalid":  {
+                                    "message":  "Verifique el token y los derechos de acceso.",
+                                    "description":  "Invalid token"
+                                },
+    "optionsSyncTokenForbidden":  {
+                                      "message":  "Derechos de acceso insuficientes.",
+                                      "description":  "Token forbidden"
+                                  },
+    "storageErrorQuota":  {
+                              "message":  "Cuota de almacenamiento excedida. Elimine tarjetas antiguas o borre datos.",
+                              "description":  "Storage quota exceeded error"
+                          },
+    "storageErrorGeneral":  {
+                                "message":  "Error al guardar los datos. IntР“В©ntelo de nuevo.",
+                                "description":  "General storage error"
+                            },
+    "storageIndicator":  {
+                             "message":  "Almacenamiento:",
+                             "description":  "Storage indicator label"
+                         },
+    "filterDateFrom":  {
+                           "message":  "Desde fecha",
+                           "description":  "Date from filter title"
+                       },
+    "filterDateTo":  {
+                         "message":  "Hasta fecha",
+                         "description":  "Date to filter title"
+                     },
+    "optionsStorageUsage":  {
+                                "message":  "Uso de almacenamiento: {used} KB / {total} KB ({pct}%)",
+                                "description":  "Storage usage in options sync tab"
+                            },
+    "optionsStorageLocal":  {
+                                "message":  "Almacenamiento local",
+                                "description":  "Local storage label in options sync tab"
+                            },
+    "migrationOverflowLost":  {
+                                  "message":  "Se perderán permanentemente $count$ de $total$ tarjetas porque no caben en el almacenamiento local. ¿Continuar y perderlas?",
+                                  "description":  "Warning when cloud-to-local migration cannot fit all cards",
+                                  "placeholders":  {
+                                                       "count":  {
+                                                                     "content":  "$1"
+                                                                 },
+                                                       "total":  {
+                                                                     "content":  "$2"
+                                                                 }
+                                                   }
+                              },
+    "cardDescHeading":  {
+                            "message":  "Descripción"
+                        },
+    "cardChecklistHeading":  {
+                                 "message":  "Checklist"
+                             },
+    "cardChecklistAdd":  {
+                             "message":  "+ Add item"
+                         },
+    "cardDescBoldTooltip":  {
+                                "message":  "Negrita (Ctrl+B)"
+                            },
+    "cardDescItalicTooltip":  {
+                                  "message":  "Cursiva (Ctrl+I)"
+                              },
+    "cardDescUlTooltip":  {
+                              "message":  "Lista con viñetas"
+                          },
+    "cardDescOlTooltip":  {
+                              "message":  "Lista numerada"
+                          },
+    "cardDescQuoteTooltip":  {
+                                 "message":  "Cita"
+                             },
+    "modalEdit":  {
+                      "message":  "Editar"
+                  },
+    "modalHide":  {
+                      "message":  "Ocultar"
+                  },
+    "widgetsQuotes":  {
+                          "message":  "Citas",
+                          "description":  "Quotes widget label"
+                      },
+    "quotesLoading":  {
+                          "message":  "Cargando...",
+                          "description":  "Quotes loading message"
+                      },
+    "quotesError":  {
+                        "message":  "Sin datos",
+                        "description":  "Quotes error message"
+                    }
 }

@@ -118,36 +118,12 @@
               </select>
             </span>
           </div>
-          <div class="switch-label currency-switch">
+          <div class="switch-label weather-switch">
             <label class="switch-toggle">
-              <input type="checkbox" id="widget-currency">
+              <input type="checkbox" id="widget-quotes">
               <span class="switch"></span>
             </label>
-            <span data-i18n="widgets.currency">Курсы валют</span>
-            <span id="currency-settings" class="weather-settings">
-              <select id="currency-base">
-                <option value="USD">USD</option>
-                <option value="RUB">RUB</option>
-                <option value="EUR">EUR</option>
-                <option value="CNY">CNY</option>
-                <option value="JPY">JPY</option>
-              </select>
-            </span>
-          </div>
-          <div class="switch-label stocks-switch">
-            <label class="switch-toggle">
-              <input type="checkbox" id="widget-stocks">
-              <span class="switch"></span>
-            </label>
-            <span data-i18n="widgets.stocks">Биржевые данные</span>
-            <span id="stocks-settings" class="stocks-settings">
-              <div class="stocks-wrapper">
-                <span id="stocks-label" class="stocks-label"></span>
-                <div id="stocks-dropdown" class="stocks-dropdown" style="display:none">
-                  <div id="stocks-dropdown-list" class="stocks-dropdown-list"></div>
-                </div>
-              </div>
-            </span>
+            <span data-i18n="widgets.quotes">Цитаты</span>
           </div>
         </div>
 
@@ -285,7 +261,6 @@
   <script defer src="../js/storage-manager.js"></script>
   <script defer src="../js/kanban-constants.js"></script>
   <script defer src="../js/kanban-store.js"></script>
-  <script defer src="../js/stock-providers.js"></script>
   <script defer src="../js/options.js"></script>
 </body>
 </html>
