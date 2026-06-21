@@ -53,6 +53,7 @@
 
 #bookmarks-container.single-row {
   grid-template-rows: repeat(1, var(--bookmark-slot-height));
+  align-content: center;
 }
 
 #head-bar::-webkit-scrollbar,
@@ -455,6 +456,18 @@
 
 #head-bar.no-bookmarks #bookmarks-container {
   display: none;
+}
+
+#head-bar.no-bookmarks:not(.no-widgets) {
+  justify-content: flex-end;
+}
+
+#head-bar.no-bookmarks:not(.no-widgets) #quotes-widget {
+  margin-right: auto;
+}
+
+#head-bar.no-bookmarks:not(.no-widgets) #settings-btn-wrapper {
+  margin-left: 0;
 }
 
 #head-bar.no-bookmarks.no-widgets {

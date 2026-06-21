@@ -19,9 +19,15 @@ document.addEventListener('DOMContentLoaded', async () => {
   _initBookmarkModal();
 
   KanbanBoard.init();
-  WidgetSystem.initAll();
+  WidgetSystem.initAll().then(() => {
+    const headBar = document.getElementById('head-bar');
+    const zone = document.getElementById('widgets-zone');
+    if (headBar && headBar.classList.contains('no-bookmarks')) {
+      headBar.classList.toggle('no-widgets', !(zone && zone.classList.contains('active')));
+    }
+  });
 
-  // centered class on bookmarks-container managed in BookmarksManager._renderBookmarks()
+  // centered class on bookmarks-container always added in BookmarksManager._renderBookmarks()
 
   const settingsBtn = document.getElementById('settings-btn');
   if (settingsBtn) {

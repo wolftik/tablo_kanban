@@ -120,6 +120,10 @@ const BookmarksManager = (() => {
         var qe = document.getElementById('quotes-widget');
         if (qe) { qe.style.display = ''; _quotesHidden = false; _cachedQuotesWidth = 0; }
       }
+      var hb = document.getElementById('head-bar');
+      if (hb && hb.classList.contains('no-bookmarks')) {
+        hb.classList.remove('no-widgets');
+      }
       _updateCompactMode(container);
       return;
     }
@@ -207,9 +211,7 @@ const BookmarksManager = (() => {
       }
     }
 
-    // Toggle centered: center bookmarks bar when widgets zone is NOT active
-    const wz = document.getElementById('widgets-zone');
-    container.classList.toggle('centered', !(wz && wz.classList.contains('active')));
+    container.classList.add('centered');
 
     if (_bookmarkSlots === 0) {
       container.innerHTML = '';
