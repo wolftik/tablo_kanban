@@ -164,11 +164,12 @@
 
 .bookmark-slot.filled {
   border: 2px solid transparent;
+  background: var(--board-bg);
 }
 
 .bookmark-slot.empty {
   border: 2px dashed var(--bookmarks-border);
-  background: transparent;
+  background: var(--board-bg);
   color: #94a3b8;
 }
 
