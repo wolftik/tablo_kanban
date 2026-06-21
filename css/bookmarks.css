@@ -28,8 +28,8 @@
   background: var(--bookmarks-bg);
   border-bottom: 1px solid var(--bookmarks-border);
   padding: 12px;
-  overflow: visible;
-  overflow-x: auto;
+  overflow-x: auto;   /* horizontal scroll for bookmarks that overflow head-bar */
+  overflow-y: hidden;  /* prevent vertical scrollbar */
   flex-shrink: 0;
   justify-content: center;
 }
@@ -55,19 +55,23 @@
   grid-template-rows: repeat(1, var(--bookmark-slot-height));
 }
 
+#head-bar::-webkit-scrollbar,
 #bookmarks-container::-webkit-scrollbar {
   height: 6px;
 }
 
+#head-bar::-webkit-scrollbar-track,
 #bookmarks-container::-webkit-scrollbar-track {
   background: transparent;
 }
 
+#head-bar::-webkit-scrollbar-thumb,
 #bookmarks-container::-webkit-scrollbar-thumb {
   background-color: #cbd5e1;
   border-radius: 3px;
 }
 
+#head-bar::-webkit-scrollbar-thumb:hover,
 #bookmarks-container::-webkit-scrollbar-thumb:hover {
   background-color: #94a3b8;
 }

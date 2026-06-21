@@ -225,6 +225,21 @@ const WeatherWidget = {
 
 // register moved to end of file
 
+// Market widgets (stocks, currency) are inserted directly into #head-bar
+// before #bookmarks-container rather than into #widgets-zone.
+// This means they are NOT hidden by the responsive layout logic in
+// bookmarks.js that hides #widgets-zone when bookmarks overflow.
+// This is intentional: market data is compact and should remain visible.
+function _insertMarketWidget(el, zone) {
+  const headBar = document.getElementById('head-bar');
+  const bm = document.getElementById('bookmarks-container');
+  if (headBar && bm) {
+    headBar.insertBefore(el, bm);
+  } else {
+    zone.appendChild(el);
+  }
+}
+
 const CurrencyWidget = {
   _interval: null,
   _el: null,
@@ -241,13 +256,7 @@ const CurrencyWidget = {
     this._el.id = 'currency-widget';
     this._el.className = 'widget currency-widget';
     this._el.innerHTML = '<div class="market-loading">' + I18n.t('currency.loading') + '</div>';
-    const headBar = document.getElementById('head-bar');
-    const bm = document.getElementById('bookmarks-container');
-    if (headBar && bm) {
-      headBar.insertBefore(this._el, bm);
-    } else {
-      zone.appendChild(this._el);
-    }
+    _insertMarketWidget(this._el, zone);
     zone.classList.add('active');
     zone.dataset.enabled = 'true';
 
@@ -353,13 +362,7 @@ const StocksWidget = {
     this._el.id = 'stocks-widget';
     this._el.className = 'widget stocks-widget';
     this._el.innerHTML = '<div class="market-loading">' + I18n.t('stocks.loading') + '</div>';
-    const headBar = document.getElementById('head-bar');
-    const bm = document.getElementById('bookmarks-container');
-    if (headBar && bm) {
-      headBar.insertBefore(this._el, bm);
-    } else {
-      zone.appendChild(this._el);
-    }
+    _insertMarketWidget(this._el, zone);
     zone.classList.add('active');
     zone.dataset.enabled = 'true';
 
@@ -451,9 +454,10 @@ const StocksWidget = {
   }
 };
 
-// Init order = DOM order in widgets-zone flex row.
-// stocks → currency → weather → clock
-// stocks and currency in widgets-zone; weather and clock in widgets-sidebar
+// Init order = DOM order in #head-bar flex row.
+// stocks → currency → bookmarks → widgets-zone → settings
+// stocks and currency are inserted directly into #head-bar before #bookmarks-container.
+// weather and clock go into #widgets-sidebar inside #widgets-zone.
 WidgetSystem.register('stocks', StocksWidget);
 WidgetSystem.register('currency', CurrencyWidget);
 WidgetSystem.register('weather', WeatherWidget);

@@ -54,6 +54,7 @@ const BookmarksManager = (() => {
   }
 
   let _dragDropInitialized = false;
+  let _responsiveInitialized = false;
   let _rafId = null;
 
   function _initResponsive(container) {
@@ -113,7 +114,10 @@ const BookmarksManager = (() => {
     const container = document.getElementById('bookmarks-container');
     if (!container) return;
 
-    _initResponsive(container);
+    if (!_responsiveInitialized) {
+      _initResponsive(container);
+      _responsiveInitialized = true;
+    }
 
     if (!_dragDropInitialized) {
       _initDragDrop(container);
@@ -138,6 +142,10 @@ const BookmarksManager = (() => {
         headBar.classList.remove('no-widgets');
       }
     }
+
+    // Toggle centered: center bookmarks bar when widgets zone is NOT active
+    const wz = document.getElementById('widgets-zone');
+    container.classList.toggle('centered', !(wz && wz.classList.contains('active')));
 
     if (_bookmarkSlots === 0) {
       container.innerHTML = '';
@@ -373,19 +381,11 @@ const BookmarksManager = (() => {
     return targetIndex < children.length ? parseInt(children[targetIndex].dataset.slotIndex) : null;
   }
 
-  function updateHeadBarCompactState() {
-    const headBar = document.getElementById('head-bar');
-    if (!headBar || !headBar.classList.contains('no-bookmarks')) return;
-    const wz = document.getElementById('widgets-zone');
-    headBar.classList.toggle('no-widgets', !(wz && wz.classList.contains('active')));
-  }
-
   return {
     render,
     loadDisplayedBookmarks,
     saveDisplayedBookmarks,
     addDisplayedBookmark,
-    removeDisplayedBookmark,
-    updateHeadBarCompactState
+    removeDisplayedBookmark
   };
 })();

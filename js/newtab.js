@@ -21,11 +21,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   KanbanBoard.init();
   WidgetSystem.initAll();
 
-  const widgetsZone = document.getElementById('widgets-zone');
-  if (widgetsZone && bmContainer && !widgetsZone.classList.contains('active')) {
-    bmContainer.classList.add('centered');
-  }
-  BookmarksManager.updateHeadBarCompactState();
+  // centered class on bookmarks-container managed in BookmarksManager._renderBookmarks()
 
   const settingsBtn = document.getElementById('settings-btn');
   if (settingsBtn) {
@@ -102,7 +98,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             location.reload();
             return;
           }
-          BookmarksManager.render();
           const zone = document.getElementById('widgets-zone');
           if (zone) {
             zone.innerHTML = '';
@@ -115,7 +110,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           WidgetSystem.register('weather', WeatherWidget);
           WidgetSystem.register('clock', ClockWidget);
           WidgetSystem.initAll();
-          BookmarksManager.updateHeadBarCompactState();
+          BookmarksManager.render();
         }
       }
       if (areaName === 'sync' && changes.bookmarks_display) {
