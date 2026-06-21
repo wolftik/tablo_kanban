@@ -7,6 +7,29 @@ const BookmarksManager = (() => {
   let _displayedBookmarks = [];
   let _responsiveObserver = null;
   let _widgetsForcedHidden = false;
+  let _stocksHidden = false;
+  let _currencyHidden = false;
+  let _cachedStocksWidth = 0;
+  let _cachedCurrencyWidth = 0;
+  let _cachedZoneWidth = 0;
+
+  // Min container width to fit the bookmark grid without overflow
+  function _minFitWidth(cols) {
+    return cols * 60 + (cols - 1) * 8;
+  }
+
+  // Update compact/minimal display mode based on slot width
+  function _updateCompactMode(container) {
+    var firstSlot = container.querySelector('.bookmark-slot');
+    if (!firstSlot) return;
+    var slotWidth = firstSlot.offsetWidth;
+    container.classList.remove('compact', 'minimal');
+    if (slotWidth < 80) {
+      container.classList.add('minimal');
+    } else if (slotWidth < 100) {
+      container.classList.add('compact');
+    }
+  }
 
   async function _loadSettings() {
     const settings = await StorageSync.get('settings') || getDefaultSettings();
@@ -70,44 +93,112 @@ const BookmarksManager = (() => {
     _updateResponsiveLayout(container);
   }
 
+  // Predictive check: would restoring a hidden widget cause overflow?
+  // Returns true if the widget can be safely restored.
+  function _canRestore(containerW, cachedWidth, cols, slotWidth) {
+    if (slotWidth < 80) return false;
+    var minFit = _minFitWidth(cols);
+    var predictedW = containerW - (cachedWidth || 150); // fallback estimate
+    return predictedW >= minFit;
+  }
+
   function _updateResponsiveLayout(container) {
     if (!container || !container.isConnected) return;
 
-    const widgetsZone = document.getElementById('widgets-zone');
+    var widgetsZone = document.getElementById('widgets-zone');
+    var hasWidgets = widgetsZone && widgetsZone.dataset.enabled === 'true';
 
-    if (widgetsZone && widgetsZone.dataset.enabled === 'true') {
-      const children = Array.from(container.children);
-      if (children.length > 0) {
-        const lastRect = children[children.length - 1].getBoundingClientRect();
-        const containerRect = container.getBoundingClientRect();
-        const lastRight = lastRect.left + lastRect.width;
-        const overflowed = lastRight > containerRect.right + 2;
+    if (!hasWidgets) {
+      _updateCompactMode(container);
+      return;
+    }
 
-        if (overflowed) {
-          widgetsZone.classList.remove('active');
-          _widgetsForcedHidden = true;
-        } else if (_widgetsForcedHidden) {
-          const firstSlot = container.querySelector('.bookmark-slot');
-          const slotWidth = firstSlot ? firstSlot.offsetWidth : 0;
-          if (slotWidth >= 80) {
-            widgetsZone.classList.add('active');
-            _widgetsForcedHidden = false;
-          }
+    var children = Array.from(container.children);
+    if (children.length === 0) {
+      // No bookmarks — show all widgets
+      widgetsZone.classList.add('active');
+      _widgetsForcedHidden = false;
+      _cachedZoneWidth = 0;
+      if (_stocksHidden) {
+        var se = document.getElementById('stocks-widget');
+        if (se) { se.style.display = ''; _stocksHidden = false; _cachedStocksWidth = 0; }
+      }
+      if (_currencyHidden) {
+        var ce = document.getElementById('currency-widget');
+        if (ce) { ce.style.display = ''; _currencyHidden = false; _cachedCurrencyWidth = 0; }
+      }
+      _updateCompactMode(container);
+      return;
+    }
+
+    var lastRect = children[children.length - 1].getBoundingClientRect();
+    var containerRect = container.getBoundingClientRect();
+    var overflowed = lastRect.left + lastRect.width > containerRect.right + 2;
+
+    var cols = _bookmarkGridColumns;
+    var firstSlot = container.querySelector('.bookmark-slot');
+    var slotWidth = firstSlot ? firstSlot.offsetWidth : 0;
+    var containerW = containerRect.width;
+
+    var stocksEl = document.getElementById('stocks-widget');
+    var currencyEl = document.getElementById('currency-widget');
+
+    if (overflowed) {
+      // --- CASCADE HIDE (low priority first) ---
+      // currency → stocks → widgets-zone
+      if (currencyEl && currencyEl.style.display !== 'none') {
+        _cachedCurrencyWidth = currencyEl.offsetWidth;
+        currencyEl.style.display = 'none';
+        _currencyHidden = true;
+        return;
+      }
+      if (stocksEl && stocksEl.style.display !== 'none') {
+        _cachedStocksWidth = stocksEl.offsetWidth;
+        stocksEl.style.display = 'none';
+        _stocksHidden = true;
+        return;
+      }
+      if (widgetsZone.classList.contains('active')) {
+        _cachedZoneWidth = widgetsZone.offsetWidth;
+        widgetsZone.classList.remove('active');
+        _widgetsForcedHidden = true;
+        return;
+      }
+      // Everything already hidden — fall through
+    }
+
+    // --- RESTORE by priority (high priority first) ---
+    // widgets-zone → stocks → currency
+    if (!overflowed) {
+      if (_widgetsForcedHidden) {
+        if (_canRestore(containerW, _cachedZoneWidth, cols, slotWidth)) {
+          widgetsZone.classList.add('active');
+          _widgetsForcedHidden = false;
+          _cachedZoneWidth = 0;
+          return;
         }
-      } else {
-        widgetsZone.classList.add('active');
+      }
+
+      if (!_widgetsForcedHidden && _stocksHidden && stocksEl) {
+        if (_canRestore(containerW, _cachedStocksWidth, cols, slotWidth)) {
+          stocksEl.style.display = '';
+          _stocksHidden = false;
+          _cachedStocksWidth = 0;
+          return;
+        }
+      }
+
+      if (!_widgetsForcedHidden && !_stocksHidden && _currencyHidden && currencyEl) {
+        if (_canRestore(containerW, _cachedCurrencyWidth, cols, slotWidth)) {
+          currencyEl.style.display = '';
+          _currencyHidden = false;
+          _cachedCurrencyWidth = 0;
+          return;
+        }
       }
     }
 
-    const firstSlot = container.querySelector('.bookmark-slot');
-    if (!firstSlot) return;
-    const slotWidth = firstSlot.offsetWidth;
-    container.classList.remove('compact', 'minimal');
-    if (slotWidth < 80) {
-      container.classList.add('minimal');
-    } else if (slotWidth < 100) {
-      container.classList.add('compact');
-    }
+    _updateCompactMode(container);
   }
 
   async function render() {

@@ -227,9 +227,8 @@ const WeatherWidget = {
 
 // Market widgets (stocks, currency) are inserted directly into #head-bar
 // before #bookmarks-container rather than into #widgets-zone.
-// This means they are NOT hidden by the responsive layout logic in
-// bookmarks.js that hides #widgets-zone when bookmarks overflow.
-// This is intentional: market data is compact and should remain visible.
+// They are hidden by the responsive layout logic in bookmarks.js
+// alongside #widgets-zone when bookmarks overflow.
 function _insertMarketWidget(el, zone) {
   const headBar = document.getElementById('head-bar');
   const bm = document.getElementById('bookmarks-container');
