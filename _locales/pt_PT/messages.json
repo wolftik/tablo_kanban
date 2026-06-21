@@ -177,7 +177,10 @@
   "currencyError": { "message": "Sem dados", "description": "Currency error message" },
   "stocksLoading": { "message": "A carregar...", "description": "Stocks loading message" },
   "stocksError": { "message": "Sem dados", "description": "Stocks error message" },
+  "stocksAll": { "message": "Todos", "description": "All stocks selected" },
+  "stocksSelectedCount": { "message": "$count$ selecionados", "description": "Number of selected stocks (e.g., 5 selected)", "placeholders": { "count": { "content": "$1" } } },
   "widgetsStocksCurrencyTitle": { "message": "Moedas e bolsas", "description": "Combined section title for options" },
-  "currencyBase": { "message": "Moeda base:", "description": "Base currency label" },
-  "widgetsStocks": { "message": "Dados de mercado", "description": "Stocks and commodities widget label" }
+  "widgetsStocks": { "message": "Dados de mercado", "description": "Stocks and commodities widget label" },
+  "widgetsStocksSymbols": { "message": "Índices e matérias-primas", "description": "Section title for choosing which indices to display" },
+  "currencyBase": { "message": "Moeda base:", "description": "Base currency label" }
 }

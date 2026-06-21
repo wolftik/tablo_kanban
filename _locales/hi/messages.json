@@ -642,7 +642,10 @@
   "currencyError": { "message": "कोई डेटा नहीं", "description": "Currency error message" },
   "stocksLoading": { "message": "लोड हो रहा है...", "description": "Stocks loading message" },
   "stocksError": { "message": "कोई डेटा नहीं", "description": "Stocks error message" },
+  "stocksAll": { "message": "सभी", "description": "All stocks selected" },
+  "stocksSelectedCount": { "message": "$count$ चयनित", "description": "Number of selected stocks (e.g., 5 selected)", "placeholders": { "count": { "content": "$1" } } },
   "widgetsStocksCurrencyTitle": { "message": "मुद्राएं और स्टॉक", "description": "Combined section title for options" },
-  "currencyBase": { "message": "आधार मुद्रा:", "description": "Base currency label" },
-  "widgetsStocks": { "message": "बाजार डेटा", "description": "Stocks and commodities widget label" }
+  "widgetsStocks": { "message": "बाजार डेटा", "description": "Stocks and commodities widget label" },
+  "widgetsStocksSymbols": { "message": "सूचकांक और कच्चा माल", "description": "Section title for choosing which indices to display" },
+  "currencyBase": { "message": "आधार मुद्रा:", "description": "Base currency label" }
 }

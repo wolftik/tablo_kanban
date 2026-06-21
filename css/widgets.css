@@ -92,14 +92,9 @@
 
 .stocks-widget .market-row {
   display: grid;
-  grid-template-columns: auto 1fr auto auto;
+  grid-template-columns: 1fr auto auto;
   gap: 2px 10px;
   align-items: center;
-}
-
-.stocks-widget .market-flag {
-  font-size: 16px;
-  line-height: 1.2;
 }
 
 .stocks-widget .market-price {

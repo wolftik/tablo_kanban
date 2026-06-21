@@ -178,5 +178,8 @@
   "currencyBase": { "message": "Базовая валюта:", "description": "Base currency label" },
   "stocksLoading": { "message": "Загрузка...", "description": "Stocks loading message" },
   "stocksError": { "message": "Нет данных", "description": "Stocks error message" },
-  "widgetsStocksCurrencyTitle": { "message": "Валюты и биржи", "description": "Combined section title for options" }
+  "stocksAll": { "message": "Все", "description": "All stocks selected" },
+  "stocksSelectedCount": { "message": "Выбрано: $count$", "description": "Number of selected stocks (e.g., 5 selected)", "placeholders": { "count": { "content": "$1" } } },
+  "widgetsStocksCurrencyTitle": { "message": "Валюты и биржи", "description": "Combined section title for options" },
+  "widgetsStocksSymbols": { "message": "Индексы и сырьё", "description": "Section title for choosing which indices to display" }
 }

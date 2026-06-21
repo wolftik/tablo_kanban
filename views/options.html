@@ -97,14 +97,18 @@
 
         <div class="setting-group">
           <h3 data-i18n="options.widgets.title">Виджеты</h3>
-          <label class="switch-label">
-            <input type="checkbox" id="widget-clock">
-            <span class="switch"></span>
+          <div class="switch-label">
+            <label class="switch-toggle">
+              <input type="checkbox" id="widget-clock">
+              <span class="switch"></span>
+            </label>
             <span style="margin-left:10px" data-i18n="widgets.clock">Часы</span>
-          </label>
-          <label class="switch-label weather-switch">
-            <input type="checkbox" id="widget-weather">
-            <span class="switch"></span>
+          </div>
+          <div class="switch-label weather-switch">
+            <label class="switch-toggle">
+              <input type="checkbox" id="widget-weather">
+              <span class="switch"></span>
+            </label>
             <span data-i18n="widgets.weather">Погода</span>
             <span id="weather-settings" class="weather-settings">
               <input type="text" id="weather-city" data-i18n-placeholder="weather.city.placeholder" placeholder="Например: Москва">
@@ -113,10 +117,12 @@
                 <option value="imperial" data-i18n="weather.fahrenheit">°F</option>
               </select>
             </span>
-          </label>
-          <label class="switch-label currency-switch">
-            <input type="checkbox" id="widget-currency">
-            <span class="switch"></span>
+          </div>
+          <div class="switch-label currency-switch">
+            <label class="switch-toggle">
+              <input type="checkbox" id="widget-currency">
+              <span class="switch"></span>
+            </label>
             <span data-i18n="widgets.currency">Курсы валют</span>
             <span id="currency-settings" class="weather-settings">
               <select id="currency-base">
@@ -127,12 +133,22 @@
                 <option value="JPY">JPY</option>
               </select>
             </span>
-          </label>
-          <label class="switch-label stocks-switch">
-            <input type="checkbox" id="widget-stocks">
-            <span class="switch"></span>
+          </div>
+          <div class="switch-label stocks-switch">
+            <label class="switch-toggle">
+              <input type="checkbox" id="widget-stocks">
+              <span class="switch"></span>
+            </label>
             <span data-i18n="widgets.stocks">Биржевые данные</span>
-          </label>
+            <span id="stocks-settings" class="stocks-settings">
+              <div class="stocks-wrapper">
+                <span id="stocks-label" class="stocks-label"></span>
+                <div id="stocks-dropdown" class="stocks-dropdown" style="display:none">
+                  <div id="stocks-dropdown-list" class="stocks-dropdown-list"></div>
+                </div>
+              </div>
+            </span>
+          </div>
         </div>
 
         <div class="setting-group">
@@ -269,6 +285,7 @@
   <script defer src="../js/storage-manager.js"></script>
   <script defer src="../js/kanban-constants.js"></script>
   <script defer src="../js/kanban-store.js"></script>
+  <script defer src="../js/stock-providers.js"></script>
   <script defer src="../js/options.js"></script>
 </body>
 </html>

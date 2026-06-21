@@ -82,18 +82,27 @@ const StockProviders = (() => {
     return fetchYahooViaSW(symbol);
   }
 
-  async function fetchAllIndices() {
-    const results = await Promise.allSettled(INDICES.map(idx => fetchIndex(idx.symbol)));
+  async function _fetchList(list) {
+    const results = await Promise.allSettled(list.map(idx => fetchIndex(idx.symbol)));
     const output = [];
     results.forEach((res, i) => {
       if (res.status === 'fulfilled' && res.value) {
         output.push({
-          ...INDICES[i],
+          ...list[i],
           ...res.value
         });
       }
     });
     return output;
+  }
+
+  async function fetchAllIndices() {
+    return _fetchList(INDICES);
+  }
+
+  async function fetchSelectedIndices(selectedSymbols) {
+    const filtered = INDICES.filter(idx => selectedSymbols.includes(idx.symbol));
+    return _fetchList(filtered);
   }
 
   function getIndexList() {
@@ -126,6 +135,7 @@ const StockProviders = (() => {
 
   return {
     fetchAllIndices,
+    fetchSelectedIndices,
     fetchIndex,
     getIndexList,
     formatPrice,

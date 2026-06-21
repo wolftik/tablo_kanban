@@ -396,6 +396,14 @@ document.addEventListener('DOMContentLoaded', async () => {
     if ($stocksChk) {
       $stocksChk.checked = settings.widgets?.stocks === true;
     }
+    const stocksSettings = document.getElementById('stocks-settings');
+    if ($stocksChk && stocksSettings) {
+      stocksSettings.style.display = $stocksChk.checked ? 'block' : 'none';
+      $stocksChk.addEventListener('change', () => {
+        stocksSettings.style.display = $stocksChk.checked ? 'block' : 'none';
+      });
+    }
+    _renderStocksSymbols(settings.widgets?.stocksSymbols);
     if ($weatherCity) {
       $weatherCity.value = settings.widgets?.weatherCity || 'Moscow';
     }
@@ -414,6 +422,79 @@ document.addEventListener('DOMContentLoaded', async () => {
         $bookmarkSlots.value = val;
       });
     }
+  }
+
+  function _renderStocksSymbols(selectedSymbols) {
+    const label = document.getElementById('stocks-label');
+    const dropdown = document.getElementById('stocks-dropdown');
+    const list = document.getElementById('stocks-dropdown-list');
+    if (!label || !dropdown || !list) return;
+
+    const indices = StockProviders.getIndexList();
+    const selected = selectedSymbols && selectedSymbols.length > 0 ? selectedSymbols : indices.map(i => i.symbol);
+
+    function _updateLabel() {
+      const checked = list.querySelectorAll('.stock-tag-item.selected');
+      if (checked.length === 0) {
+        label.textContent = '---';
+      } else if (checked.length === indices.length) {
+        label.textContent = I18n.t('stocks.all');
+      } else if (checked.length <= 3) {
+        const names = [];
+        checked.forEach(item => {
+          const idx = indices.find(i => i.symbol === item.dataset.symbol);
+          if (idx) names.push(idx.label);
+        });
+        label.textContent = names.join(', ');
+      } else {
+        label.textContent = I18n.t('stocks.selectedCount', { count: checked.length });
+      }
+    }
+
+    list.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+    indices.forEach(idx => {
+      const item = document.createElement('div');
+      item.className = 'stock-tag-item' + (selected.includes(idx.symbol) ? ' selected' : '');
+      item.dataset.symbol = idx.symbol;
+
+      const checkbox = document.createElement('span');
+      checkbox.className = 'stock-tag-checkbox';
+
+      const nameSpan = document.createElement('span');
+      nameSpan.className = 'stock-tag-name';
+      nameSpan.textContent = idx.label;
+
+      item.appendChild(checkbox);
+      item.appendChild(nameSpan);
+      item.addEventListener('click', (e) => {
+        item.classList.toggle('selected');
+        _updateLabel();
+      });
+      fragment.appendChild(item);
+    });
+    list.appendChild(fragment);
+    _updateLabel();
+
+    label.removeEventListener('click', label._toggleHandler);
+    label._toggleHandler = function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      const isVisible = dropdown.style.display === 'block';
+      dropdown.style.display = isVisible ? 'none' : 'block';
+      label.classList.toggle('active', !isVisible);
+    };
+    label.addEventListener('click', label._toggleHandler);
+
+    document.removeEventListener('click', label._docHandler);
+    label._docHandler = function (e) {
+      const wrapper = document.querySelector('.stocks-wrapper');
+      if (wrapper && !wrapper.contains(e.target)) {
+        dropdown.style.display = 'none';
+        label.classList.remove('active');
+      }
+    };
+    document.addEventListener('click', label._docHandler);
   }
 
   // ===== Sync tab =====
@@ -634,7 +715,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         weatherUnit: $weatherUnit ? $weatherUnit.value : 'metric',
         currency: $currencyChk ? $currencyChk.checked : false,
         currencyBase: $currencyBase ? $currencyBase.value : 'USD',
-        stocks: $stocksChk ? $stocksChk.checked : false
+        stocks: $stocksChk ? $stocksChk.checked : false,
+        stocksSymbols: Array.from(document.querySelectorAll('#stocks-dropdown-list .stock-tag-item.selected')).map(item => item.dataset.symbol)
       }
     };
 

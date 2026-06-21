@@ -363,7 +363,8 @@ const StocksWidget = {
     zone.classList.add('active');
     zone.dataset.enabled = 'true';
 
-    const cached = await this._readCache();
+    const selectedSymbols = settings.widgets?.stocksSymbols;
+    const cached = await this._readCache(selectedSymbols);
     if (cached) {
       this._render(cached.indices);
     } else {
@@ -384,7 +385,6 @@ const StocksWidget = {
       const pctStr = StockProviders.formatChangePercent(idx.changePercent);
       const cls = StockProviders.getChangeClass(idx.change);
       html += '<div class="market-row">';
-      html += '<span class="market-flag">' + idx.flag + '</span>';
       html += '<span class="market-label">' + idx.label + '</span>';
       html += '<span class="market-price">' + priceStr + '</span>';
       html += '<span class="market-change ' + cls + '">' + changeStr + ' (' + pctStr + ')</span>';
@@ -393,9 +393,14 @@ const StocksWidget = {
     this._el.innerHTML = html;
   },
 
-  async _readCache() {
+  _cacheKey(selectedSymbols) {
+    const key = selectedSymbols && selectedSymbols.length > 0 ? selectedSymbols.slice().sort().join(',') : 'all';
+    return 'stocks_cache_' + key;
+  },
+
+  async _readCache(selectedSymbols) {
     try {
-      const cached = await StorageLocal.get('stocks_cache');
+      const cached = await StorageLocal.get(this._cacheKey(selectedSymbols));
       if (!cached) return null;
       if (Date.now() - cached.timestamp < 300000) {
         return cached;
@@ -406,9 +411,9 @@ const StocksWidget = {
     }
   },
 
-  async _writeCache(indices) {
+  async _writeCache(indices, selectedSymbols) {
     try {
-      await StorageLocal.set('stocks_cache', {
+      await StorageLocal.set(this._cacheKey(selectedSymbols), {
         indices: indices,
         timestamp: Date.now()
       });
@@ -418,7 +423,11 @@ const StocksWidget = {
   },
 
   async _fetchAndRender() {
-    const indices = await StockProviders.fetchAllIndices();
+    const settings = await StorageSync.get('settings') || getDefaultSettings();
+    const selectedSymbols = settings.widgets?.stocksSymbols;
+    const indices = selectedSymbols && selectedSymbols.length > 0
+      ? await StockProviders.fetchSelectedIndices(selectedSymbols)
+      : await StockProviders.fetchAllIndices();
     if (!this._el) return;
 
     if (!indices || indices.length === 0) {
@@ -427,7 +436,7 @@ const StocksWidget = {
     }
 
     this._render(indices);
-    this._writeCache(indices);
+    this._writeCache(indices, selectedSymbols);
   },
 
   destroy() {

@@ -642,7 +642,10 @@
   "currencyError": { "message": "Geen gegevens", "description": "Currency error message" },
   "stocksLoading": { "message": "Laden...", "description": "Stocks loading message" },
   "stocksError": { "message": "Geen gegevens", "description": "Stocks error message" },
+  "stocksAll": { "message": "Alle", "description": "All stocks selected" },
+  "stocksSelectedCount": { "message": "$count$ geselecteerd", "description": "Number of selected stocks (e.g., 5 selected)", "placeholders": { "count": { "content": "$1" } } },
   "widgetsStocksCurrencyTitle": { "message": "Valuta en beurzen", "description": "Combined section title for options" },
-  "currencyBase": { "message": "Basisvaluta:", "description": "Base currency label" },
-  "widgetsStocks": { "message": "Marktgegevens", "description": "Stocks and commodities widget label" }
+  "widgetsStocks": { "message": "Marktgegevens", "description": "Stocks and commodities widget label" },
+  "widgetsStocksSymbols": { "message": "Indexen & grondstoffen", "description": "Section title for choosing which indices to display" },
+  "currencyBase": { "message": "Basisvaluta:", "description": "Base currency label" }
 }

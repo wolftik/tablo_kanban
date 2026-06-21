@@ -176,7 +176,10 @@
   "currencyError": { "message": "No data", "description": "Currency error message" },
   "stocksLoading": { "message": "Loading...", "description": "Stocks loading message" },
   "stocksError": { "message": "No data", "description": "Stocks error message" },
+  "stocksAll": { "message": "All", "description": "All stocks selected" },
+  "stocksSelectedCount": { "message": "$count$ selected", "description": "Number of selected stocks (e.g., 5 selected)", "placeholders": { "count": { "content": "$1" } } },
   "widgetsStocksCurrencyTitle": { "message": "Currencies & Stocks", "description": "Combined section title for options" },
-  "currencyBase": { "message": "Base currency:", "description": "Base currency label" },
-  "widgetsStocks": { "message": "Market Data", "description": "Stocks and commodities widget label" }
+  "widgetsStocks": { "message": "Market Data", "description": "Stocks and commodities widget label" },
+  "widgetsStocksSymbols": { "message": "Indices & Commodities", "description": "Section title for choosing which indices to display" },
+  "currencyBase": { "message": "Base currency:", "description": "Base currency label" }
 }
