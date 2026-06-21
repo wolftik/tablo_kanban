@@ -12,11 +12,11 @@ const CurrencyProviders = (() => {
     { base: 'EUR', quote: 'CNY' },
     { base: 'USD', quote: 'JPY' },
     { base: 'EUR', quote: 'JPY' },
-    { base: 'RUB', quote: 'JPY' }
+    { base: 'RUB', quote: 'JPY' },
+    { base: 'JPY', quote: 'CNY' }
   ];
 
   function filterPairs(baseCurrency) {
-    if (baseCurrency === 'ALL') return FIXED_PAIRS;
     return FIXED_PAIRS.filter(p => p.base === baseCurrency || p.quote === baseCurrency);
   }
 
