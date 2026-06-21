@@ -1,4 +1,4 @@
-'use strict';
+﻿'use strict';
 
 const WeatherProviders = (() => {
   const GEOCODING_URL = 'https://geocoding-api.open-meteo.com/v1/search';
@@ -175,13 +175,26 @@ const WeatherProviders = (() => {
     }
   }
 
+    async function _fetchWithTimeout(promiseFn, timeoutMs) {
+    return await Promise.race([
+      promiseFn(),
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('timeout')), timeoutMs)
+      )
+    ]).catch(() => null);
+  }
+
   async function fetchWeather(city, unit, lang) {
     var coords = await _geocode(city, lang);
     if (!coords) return null;
 
-    var result = await _fetchOpenMeteo(coords.latitude, coords.longitude, unit)
-              || await _fetchMetNorway(coords.latitude, coords.longitude, unit)
-              || await _fetch7Timer(coords.latitude, coords.longitude, unit);
+    var result = await _fetchWithTimeout(
+        () => _fetchOpenMeteo(coords.latitude, coords.longitude, unit),
+        3000
+      ) || await _fetchWithTimeout(
+        () => _fetchMetNorway(coords.latitude, coords.longitude, unit),
+        3000
+      ) || await _fetch7Timer(coords.latitude, coords.longitude);
 
     if (result) {
       console.log('[WeatherProviders] Using provider:', result.provider);
@@ -194,3 +207,4 @@ const WeatherProviders = (() => {
 
   return { fetchWeather: fetchWeather };
 })();
+
