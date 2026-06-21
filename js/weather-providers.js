@@ -194,7 +194,7 @@ const WeatherProviders = (() => {
       ) || await _fetchWithTimeout(
         () => _fetchMetNorway(coords.latitude, coords.longitude, unit),
         3000
-      ) || await _fetch7Timer(coords.latitude, coords.longitude);
+      ) || await _fetch7Timer(coords.latitude, coords.longitude, unit);
 
     if (result) {
       console.log('[WeatherProviders] Using provider:', result.provider);
