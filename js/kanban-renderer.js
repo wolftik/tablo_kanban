@@ -117,6 +117,7 @@ const KanbanRenderer = (() => {
   function _syncCardsContainer(container, col) {
     const filteredCards = KanbanFilter.filterCards(KanbanStore.getCardsForColumn(col.id));
     const existingCards = container.querySelectorAll(':scope > .kanban-card');
+    container.querySelectorAll(':scope > .drop-placeholder').forEach(p => p.remove());
     const existingMap = new Map();
     existingCards.forEach(el => existingMap.set(el.dataset.cardId, el));
 

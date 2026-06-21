@@ -356,13 +356,17 @@ html, body {
   background: rgba(99,102,241,0.05);
 }
 
-/* Drop placeholder (cards) */
+/* Drop placeholder (cards) — hidden by default, shown only during active drag over column */
 .drop-placeholder {
+  display: none;
   border: 2px dashed #6366f1;
   border-radius: var(--card-radius);
   background: var(--drop-highlight);
   min-height: 40px;
   transition: all 0.15s;
+}
+.kanban-column.drag-over-column .drop-placeholder {
+  display: block;
 }
 
 /* Column drop target — left edge highlight (insert BEFORE this column) */
