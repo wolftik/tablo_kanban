@@ -10,6 +10,7 @@ const BookmarksManager = (() => {
   let _quotesHidden = false;
   let _cachedZoneWidth = 0;
   let _cachedQuotesWidth = 0;
+  let _editingBookmark = null;
 
   // Min container width to fit the bookmark grid without overflow
   function _minFitWidth(cols) {
@@ -18,9 +19,9 @@ const BookmarksManager = (() => {
 
   // Update compact/minimal display mode based on slot width
   function _updateCompactMode(container) {
-    var firstSlot = container.querySelector('.bookmark-slot');
+    const firstSlot = container.querySelector('.bookmark-slot');
     if (!firstSlot) return;
-    var slotWidth = firstSlot.offsetWidth;
+    const slotWidth = firstSlot.offsetWidth;
     container.classList.remove('compact', 'minimal');
     if (slotWidth < 80) {
       container.classList.add('minimal');
@@ -95,49 +96,54 @@ const BookmarksManager = (() => {
   // Returns true if the widget can be safely restored.
   function _canRestore(containerW, cachedWidth, cols, slotWidth) {
     if (slotWidth < 80) return false;
-    var minFit = _minFitWidth(cols);
-    var predictedW = containerW - (cachedWidth || 150); // fallback estimate
+    const minFit = _minFitWidth(cols);
+    const predictedW = containerW - (cachedWidth || 150); // fallback estimate
     return predictedW >= minFit;
   }
 
   function _updateResponsiveLayout(container) {
     if (!container || !container.isConnected) return;
 
-    var widgetsZone = document.getElementById('widgets-zone');
-    var hasWidgets = widgetsZone && widgetsZone.dataset.enabled === 'true';
+    const headBar = document.getElementById('head-bar');
+    const widgetsZone = document.getElementById('widgets-zone');
+    const hasWidgets = widgetsZone && widgetsZone.dataset.enabled === 'true';
 
     if (!hasWidgets) {
+      _widgetsForcedHidden = false;
+      _quotesHidden = false;
+      _cachedZoneWidth = 0;
+      _cachedQuotesWidth = 0;
       _updateCompactMode(container);
       return;
     }
 
-    var children = Array.from(container.children);
-    if (children.length === 0) {
+    const childCount = container.children.length;
+    if (childCount === 0) {
       widgetsZone.classList.add('active');
       _widgetsForcedHidden = false;
       _cachedZoneWidth = 0;
       if (_quotesHidden) {
-        var qe = document.getElementById('quotes-widget');
+        const qe = document.getElementById('quotes-widget');
         if (qe) { qe.style.display = ''; _quotesHidden = false; _cachedQuotesWidth = 0; }
       }
-      var hb = document.getElementById('head-bar');
-      if (hb && hb.classList.contains('no-bookmarks')) {
-        hb.classList.remove('no-widgets');
+      if (headBar && headBar.classList.contains('no-bookmarks')) {
+        headBar.classList.remove('no-widgets');
       }
       _updateCompactMode(container);
       return;
     }
 
-    var lastRect = children[children.length - 1].getBoundingClientRect();
-    var containerRect = container.getBoundingClientRect();
-    var overflowed = lastRect.left + lastRect.width > containerRect.right + 2;
+    const lastChild = container.children[childCount - 1];
+    const lastRect = lastChild.getBoundingClientRect();
+    const containerRect = container.getBoundingClientRect();
+    const overflowed = lastRect.left + lastRect.width > containerRect.right + 2;
 
-    var cols = _bookmarkGridColumns;
-    var firstSlot = container.querySelector('.bookmark-slot');
-    var slotWidth = firstSlot ? firstSlot.offsetWidth : 0;
-    var containerW = containerRect.width;
+    const cols = _bookmarkGridColumns;
+    const firstSlot = container.querySelector('.bookmark-slot');
+    const slotWidth = firstSlot ? firstSlot.offsetWidth : 0;
+    const containerW = containerRect.width;
 
-    var quotesEl = document.getElementById('quotes-widget');
+    const quotesEl = document.getElementById('quotes-widget');
 
     if (overflowed) {
       // Cascade hide: quotes → widgets-zone
@@ -151,6 +157,7 @@ const BookmarksManager = (() => {
         _cachedZoneWidth = widgetsZone.offsetWidth;
         widgetsZone.classList.remove('active');
         _widgetsForcedHidden = true;
+        if (headBar) headBar.classList.add('no-widgets');
         return;
       }
     }
@@ -162,6 +169,7 @@ const BookmarksManager = (() => {
           widgetsZone.classList.add('active');
           _widgetsForcedHidden = false;
           _cachedZoneWidth = 0;
+          if (headBar) headBar.classList.remove('no-widgets');
           return;
         }
       }
@@ -267,22 +275,6 @@ const BookmarksManager = (() => {
         const menuBtn = document.createElement('button');
         menuBtn.className = 'bookmark-menu-btn';
         menuBtn.innerHTML = '&#8942;';
-        menuBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          BookmarksContextMenu.show(e.clientX, e.clientY, bm, container, {
-            onEdit: _openEditModal,
-            onDelete: async (bookmark) => {
-              await removeDisplayedBookmark(bookmark.id);
-              render();
-            }
-          });
-        });
-
-        slot.addEventListener('click', (e) => {
-          if (e.target.closest('.bookmark-menu-btn')) return;
-          _openUrl(bm.url);
-        });
 
         slot.appendChild(favicon);
         slot.appendChild(titleEl);
@@ -293,22 +285,48 @@ const BookmarksManager = (() => {
           <span class="placeholder-icon">⁂</span>
           <span class="placeholder-text">${I18n.t('card.placeholder.add.site')}</span>
         `;
-        slot.addEventListener('click', (e) => {
-          if (e.target.closest('.bookmark-menu-btn')) return;
-          const modal = document.getElementById('add-bookmark-modal');
-          const urlInput = document.getElementById('bookmark-url');
-          if (modal && urlInput) {
-            container.querySelectorAll('.bookmark-slot.empty.active').forEach(p => p.classList.remove('active'));
-            slot.classList.add('active');
-            modal.dataset.targetIndex = i;
-            modal.style.display = 'flex';
-            urlInput.focus();
-          }
-        });
       }
 
       container.appendChild(slot);
     }
+
+    // Delegated click handler (avoids memory leaks from per-slot listeners)
+    container.onclick = (e) => {
+      const menuBtn = e.target.closest('.bookmark-menu-btn');
+      const slot = e.target.closest('.bookmark-slot');
+      if (!slot) return;
+
+      if (menuBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const bm = bookmarks[parseInt(slot.dataset.slotIndex)];
+        if (bm) {
+          BookmarksContextMenu.show(e.clientX, e.clientY, bm, container, {
+            onEdit: _openEditModal,
+            onDelete: async (bookmark) => {
+              await removeDisplayedBookmark(bookmark.id);
+              render();
+            }
+          });
+        }
+        return;
+      }
+
+      if (slot.classList.contains('filled')) {
+        const bm = bookmarks[parseInt(slot.dataset.slotIndex)];
+        if (bm) _openUrl(bm.url);
+      } else if (slot.classList.contains('empty')) {
+        const modal = document.getElementById('add-bookmark-modal');
+        const urlInput = document.getElementById('bookmark-url');
+        if (modal && urlInput) {
+          container.querySelectorAll('.bookmark-slot.empty.active').forEach(p => p.classList.remove('active'));
+          slot.classList.add('active');
+          modal.dataset.targetIndex = slot.dataset.slotIndex;
+          modal.style.display = 'flex';
+          urlInput.focus();
+        }
+      }
+    };
   }
 
   function _createRafBookmarkSlotFinder(container) {
@@ -403,11 +421,17 @@ const BookmarksManager = (() => {
     const modal = document.getElementById('bookmark-edit-modal');
     if (!modal) return;
 
+    _editingBookmark = bookmark;
+    // Keep DOM properties for backward compat with newtab.js edit handler
     modal._currentBookmark = bookmark;
     modal._displayedBookmarks = _displayedBookmarks;
 
-    document.getElementById('bookmark-edit-url').value = bookmark.url;
-    document.getElementById('bookmark-edit-title').value = bookmark.title;
+    const urlInput = document.getElementById('bookmark-edit-url');
+    const titleInput = document.getElementById('bookmark-edit-title');
+    if (!urlInput || !titleInput) return;
+
+    urlInput.value = bookmark.url;
+    titleInput.value = bookmark.title;
     modal.style.display = 'flex';
   }
 
@@ -452,6 +476,18 @@ const BookmarksManager = (() => {
     loadDisplayedBookmarks,
     saveDisplayedBookmarks,
     addDisplayedBookmark,
-    removeDisplayedBookmark
+    removeDisplayedBookmark,
+    destroy() {
+      if (_responsiveObserver) {
+        _responsiveObserver.disconnect();
+        _responsiveObserver = null;
+      }
+      _responsiveInitialized = false;
+      _dragDropInitialized = false;
+      _widgetsForcedHidden = false;
+      _quotesHidden = false;
+      _cachedZoneWidth = 0;
+      _cachedQuotesWidth = 0;
+    }
   };
 })();

@@ -13,12 +13,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   const bmContainer = document.getElementById('bookmarks-container');
   if (bmContainer) {
-    BookmarksManager.render();
+    await BookmarksManager.render();
   }
 
   _initBookmarkModal();
 
   KanbanBoard.init();
+  // Sync no-widgets class after widget init (also synced in bookmarks.js _updateResponsiveLayout)
   WidgetSystem.initAll().then(() => {
     const headBar = document.getElementById('head-bar');
     const zone = document.getElementById('widgets-zone');
@@ -193,6 +194,7 @@ function _initBookmarkModal() {
 }
 
 function _initBookmarkEditModal() {
+  if (document.getElementById('bookmark-edit-modal')) return;
   let editModal = document.createElement('div');
   editModal.id = 'bookmark-edit-modal';
   editModal.className = 'modal-overlay';
@@ -222,10 +224,13 @@ function _initBookmarkEditModal() {
   const saveBtn = document.getElementById('bookmark-edit-save');
   const cancelBtn = document.getElementById('bookmark-edit-cancel');
 
+  if (!urlInput || !titleInput || !saveBtn || !cancelBtn) return;
+
   cancelBtn.addEventListener('click', () => { editModal.style.display = 'none'; });
   saveBtn.addEventListener('click', async () => {
     const newUrl = urlInput.value.trim();
     const newTitle = titleInput.value.trim();
+    // TODO: use BookmarksManager._editingBookmark instead of editModal._currentBookmark
     const bookmark = editModal._currentBookmark;
     if (!newUrl || !bookmark) return;
 

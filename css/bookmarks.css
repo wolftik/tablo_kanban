@@ -9,6 +9,8 @@
   --add-btn-color: #fff;
   --bookmark-grid-columns: 11;
   --bookmark-slot-height: 100px;
+  --card-bg: #ffffff;
+  --accent-color: #6366f1;
 }
 
 [data-theme="dark"] {
@@ -17,6 +19,8 @@
   --bookmark-hover-bg: #334155;
   --bookmark-text: #f1f5f9;
   --bookmark-favicon-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  --card-bg: #334155;
+  --accent-color: #818cf8;
 }
 
 #head-bar {
@@ -45,10 +49,10 @@
   grid-template-columns: repeat(var(--bookmark-grid-columns), minmax(60px, 120px));
   grid-template-rows: repeat(2, var(--bookmark-slot-height));
   gap: 8px;
-  overflow-x: auto;
+  overflow-x: visible;
   overflow-y: hidden;
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 transparent;
+  scrollbar-color: var(--bookmarks-border) transparent;
 }
 
 #bookmarks-container.single-row {
@@ -68,13 +72,13 @@
 
 #head-bar::-webkit-scrollbar-thumb,
 #bookmarks-container::-webkit-scrollbar-thumb {
-  background-color: #cbd5e1;
+  background-color: var(--bookmarks-border);
   border-radius: 3px;
 }
 
 #head-bar::-webkit-scrollbar-thumb:hover,
 #bookmarks-container::-webkit-scrollbar-thumb:hover {
-  background-color: #94a3b8;
+  background-color: var(--bookmark-hover-bg);
 }
 
 #bookmarks-container.centered {
@@ -109,8 +113,8 @@
 
 #settings-btn:hover {
   background: var(--bookmark-hover-bg);
-  border-color: #6366f1;
-  color: #6366f1;
+  border-color: var(--accent-color);
+  color: var(--accent-color);
 }
 
 .settings-icon {
@@ -137,8 +141,8 @@
 
 #homepage-info-btn:hover {
   background: var(--bookmark-hover-bg);
-  border-color: #6366f1;
-  color: #6366f1;
+  border-color: var(--accent-color);
+  color: var(--accent-color);
 }
 
 .bookmark-slot {
