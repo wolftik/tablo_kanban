@@ -28,17 +28,6 @@ All data stays in your browser. Kanban board data in `localStorage` is not synce
 | `storage` | Required for `chrome.storage.sync` (settings, bookmarks display, Yandex Disk OAuth token and Client ID, sync provider preference). Kanban board data uses `localStorage` and does not require this permission. |
 | `identity` | Used solely for Google Drive OAuth (optional cloud sync). Authenticates you to your own Google Drive. |
 
-### Host Permissions (External Domains Accessed)
-
-| Host | Justification |
-|---|---|
-| `https://translate.googleapis.com/*` | Used by the optional Quotes widget to translate quotes into the user's language. |
-| `https://zenquotes.io/*` | Used by the optional Quotes widget to fetch inspirational quotes. |
-| `https://api.met.no/*` | Weather fallback provider (MET Norway) — used when Open-Meteo is unavailable. |
-| `https://www.7timer.info/*` | Weather fallback provider (7Timer) — used as last-resort when both Open-Meteo and MET Norway are unavailable. |
-| `https://geocoding-api.open-meteo.com/*` | Weather widget geocoding — converts city name to coordinates. |
-| `https://api.open-meteo.com/*` | Weather widget forecast — fetches temperature and weather conditions. |
-
 ### External Services (Optional)
 
 #### Google Drive Sync
