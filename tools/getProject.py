@@ -5,7 +5,7 @@ from datetime import datetime
 
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 MANIFEST_PATH = os.path.join(PROJECT_DIR, "manifest.json")
-OUT_DIR = 'tools'
+OUT_DIR = os.path.join(PROJECT_DIR, 'tools')
 
 EXCLUDE_DIRS = {
     ".git",
@@ -65,6 +65,8 @@ def main() -> None:
     archive_path = os.path.join(OUT_DIR, archive_name)
 
     files = collect_files()
+
+    os.makedirs(OUT_DIR, exist_ok=True)
 
     print(f"Creating archive: {archive_name}")
     print(f"Found {len(files)} files to include")
