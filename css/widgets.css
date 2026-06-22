@@ -116,3 +116,87 @@
   color: var(--bookmark-text);
   opacity: 0.55;
 }
+
+.mini-widget-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--bookmarks-border);
+  border-radius: 8px;
+  background: var(--card-bg, #fff);
+  color: var(--bookmark-text);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  font-size: 18px;
+  font-family: inherit;
+  padding: 0;
+}
+
+.mini-widget-btn:hover {
+  background: var(--bookmark-hover-bg);
+  border-color: var(--accent-color);
+  color: var(--accent-color);
+}
+
+.widget-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.widget-modal-overlay.active {
+  display: flex;
+}
+
+.widget-modal {
+  background: var(--bookmarks-bg, #f8fafc);
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 300px;
+  max-width: 400px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+[data-theme="dark"] .widget-modal {
+  background: #1e293b;
+}
+
+.widget-modal h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--bookmark-text);
+}
+
+.widget-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 28px;
+  height: 28px;
+  border: none;
+  background: transparent;
+  color: var(--bookmark-text);
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1;
+  border-radius: 6px;
+  transition: background 0.15s;
+}
+
+.widget-modal-close:hover {
+  background: var(--bookmark-hover-bg);
+}

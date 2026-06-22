@@ -115,6 +115,9 @@ document.addEventListener('DOMContentLoaded', async () => {
           WidgetSystem.register('quotes', QuotesWidget);
           WidgetSystem.register('weather', WeatherWidget);
           WidgetSystem.register('clock', ClockWidget);
+          WidgetSystem.register('coin', CoinWidget);
+          WidgetSystem.register('pomodoro', PomodoroWidget);
+          WidgetSystem.register('8ball', EightBallWidget);
           WidgetSystem.initAll();
           BookmarksManager.render();
         }

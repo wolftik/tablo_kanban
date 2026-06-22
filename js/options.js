@@ -386,6 +386,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     if ($quotesChk) {
       $quotesChk.checked = settings.widgets?.quotes !== false;
     }
+    const $coinChk = document.getElementById('widget-coin');
+    if ($coinChk) {
+      $coinChk.checked = settings.widgets?.coin !== false;
+    }
+    const $pomodoroChk = document.getElementById('widget-pomodoro');
+    if ($pomodoroChk) {
+      $pomodoroChk.checked = settings.widgets?.pomodoro !== false;
+    }
+    const $8ballChk = document.getElementById('widget-8ball');
+    if ($8ballChk) {
+      $8ballChk.checked = settings.widgets?.eightball !== false;
+    }
     if ($weatherCity) {
       $weatherCity.value = settings.widgets?.weatherCity || 'Moscow';
     }
@@ -620,7 +632,10 @@ document.addEventListener('DOMContentLoaded', async () => {
         weather: $weatherChk ? $weatherChk.checked : false,
         weatherCity: $weatherCity ? $weatherCity.value.trim() || 'Moscow' : 'Moscow',
         weatherUnit: $weatherUnit ? $weatherUnit.value : 'metric',
-        quotes: document.getElementById('widget-quotes') ? document.getElementById('widget-quotes').checked : true
+        quotes: document.getElementById('widget-quotes') ? document.getElementById('widget-quotes').checked : true,
+        coin: document.getElementById('widget-coin') ? document.getElementById('widget-coin').checked : true,
+        pomodoro: document.getElementById('widget-pomodoro') ? document.getElementById('widget-pomodoro').checked : true,
+        eightball: document.getElementById('widget-8ball') ? document.getElementById('widget-8ball').checked : true
       }
     };
 
