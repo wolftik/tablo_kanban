@@ -1,7 +1,7 @@
 ﻿{
   "manifest_version": 3,
   "name": "__MSG_appName__",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "__MSG_appDescription__",
   "default_locale": "en",
   "action": {
@@ -18,7 +18,11 @@
   ],
   "host_permissions": [
     "https://translate.googleapis.com/*",
-    "https://zenquotes.io/*"
+    "https://zenquotes.io/*",
+    "https://api.met.no/*",
+    "https://www.7timer.info/*",
+    "https://geocoding-api.open-meteo.com/*",
+    "https://api.open-meteo.com/*"
   ],
   "oauth2": {
     "client_id": "1043800479318-eia8n50tct7i8bd80f443ah5pvb22qro.apps.googleusercontent.com",

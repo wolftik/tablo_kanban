@@ -1,6 +1,6 @@
 # Privacy Policy — Tablo Kanban
 
-**Last updated:** May 7, 2026
+**Last updated:** June 22, 2026
 
 ## Overview
 
@@ -24,10 +24,20 @@ All data stays in your browser. Kanban board data in `localStorage` is not synce
 ### Permissions Used
 
 | Permission | Justification |
-|---|---|---|
+|---|---|
 | `storage` | Required for `chrome.storage.sync` (settings, bookmarks display, Yandex Disk OAuth token and Client ID, sync provider preference). Kanban board data uses `localStorage` and does not require this permission. |
 | `identity` | Used solely for Google Drive OAuth (optional cloud sync). Authenticates you to your own Google Drive. |
 
+### Host Permissions (External Domains Accessed)
+
+| Host | Justification |
+|---|---|
+| `https://translate.googleapis.com/*` | Used by the optional Quotes widget to translate quotes into the user's language. |
+| `https://zenquotes.io/*` | Used by the optional Quotes widget to fetch inspirational quotes. |
+| `https://api.met.no/*` | Weather fallback provider (MET Norway) — used when Open-Meteo is unavailable. |
+| `https://www.7timer.info/*` | Weather fallback provider (7Timer) — used as last-resort when both Open-Meteo and MET Norway are unavailable. |
+| `https://geocoding-api.open-meteo.com/*` | Weather widget geocoding — converts city name to coordinates. |
+| `https://api.open-meteo.com/*` | Weather widget forecast — fetches temperature and weather conditions. |
 
 ### External Services (Optional)
 
@@ -37,8 +47,13 @@ When enabled, your Kanban board data is uploaded to **your personal Google Drive
 #### Yandex Disk Sync
 When enabled, your Kanban board data is uploaded to **your personal Yandex Disk** as `app:/kanban_data.json` (in the App folder). Your OAuth token is stored in `chrome.storage.sync`. **We do not have access to your Yandex account or your other files.**
 
-#### Weather Widget (Open-Meteo)
+#### Quotes Widget
+The optional quotes widget fetches inspirational quotes from [ZenQuotes](https://zenquotes.io/) and, for non-English languages, translates them using Google Translate's public API (`translate.googleapis.com`). ZenQuotes does not require authentication. The extension sends only the quote text for translation — no personal data.
+
+#### Weather Widget
 The optional weather widget sends your configured city name to the [Open-Meteo](https://open-meteo.com/) geocoding and forecast APIs. Open-Meteo is a free, privacy-friendly service that does not require an API key and does not log requests.
+
+If Open-Meteo is unreachable (network timeout or error), the widget falls back to [MET Norway](https://api.met.no/) and then to [7Timer](https://www.7timer.info/) as secondary weather providers. None of these services receive personal data — only coordinates derived from your city name.
 
 #### Favicon Services
 The extension loads favicon images for your bookmarks via Google's favicon service (`www.google.com/s2/favicons`), falling back to DuckDuckGo's favicon service (`icons.duckduckgo.com`). If both fail, a local SVG placeholder is shown.
