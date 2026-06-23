@@ -26,6 +26,7 @@ const PomodoroWidget = (() => {
   let _startBtn = null;
   let _pauseBtn = null;
   let _resetBtn = null;
+  let _beepInterval = null;
 
   function _defaultState() {
     return {
@@ -64,7 +65,7 @@ const PomodoroWidget = (() => {
     _pill = document.createElement('div');
     _pill.id = 'pomodoro-pill';
     _pill.className = 'widget pomodoro-pill';
-    _pill.addEventListener('click', () => { _showModal(); });
+    _pill.addEventListener('click', () => { _stopBeepLoop(); _showModal(); });
     sidebar.appendChild(_pill);
     const zone = document.getElementById('widgets-zone');
     if (zone) {
@@ -144,6 +145,7 @@ const PomodoroWidget = (() => {
   }
 
   function _startInterval() {
+    _stopBeepLoop();
     if (_interval) clearInterval(_interval);
     _state.running = true;
     _saveState();
@@ -173,6 +175,7 @@ const PomodoroWidget = (() => {
   }
 
   function _resetTimer() {
+    _stopBeepLoop();
     if (_interval) {
       clearInterval(_interval);
       _interval = null;
@@ -205,14 +208,7 @@ const PomodoroWidget = (() => {
       clearInterval(_interval);
       _interval = null;
     }
-    _beep();
-    _flashModal();
-    _hidePill();
-    _advancePhase();
-    _state.running = false;
-    _state.updatedAt = Date.now();
-    _saveState();
-    _updateDisplay();
+    _startBeepLoop();
   }
 
   let _audioCtx = null;
@@ -230,7 +226,7 @@ const PomodoroWidget = (() => {
       osc.type = 'sine';
       osc.frequency.setValueAtTime(220, now);
       osc.frequency.exponentialRampToValueAtTime(55, now + dur);
-      oscGain.gain.setValueAtTime(0.16, now);
+      oscGain.gain.setValueAtTime(0.10, now);
       oscGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
       osc.connect(oscGain);
       oscGain.connect(_audioCtx.destination);
@@ -246,7 +242,7 @@ const PomodoroWidget = (() => {
       const noise = _audioCtx.createBufferSource();
       noise.buffer = noiseBuf;
       const noiseGain = _audioCtx.createGain();
-      noiseGain.gain.setValueAtTime(0.04, now);
+      noiseGain.gain.setValueAtTime(0.03, now);
       noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
       noise.connect(noiseGain);
       noiseGain.connect(_audioCtx.destination);
@@ -255,6 +251,33 @@ const PomodoroWidget = (() => {
     } catch (e) {
       // Audio unavailable
     }
+  }
+
+  function _startBeepLoop() {
+    _beep();
+    _beepInterval = setInterval(_beep, 2300);
+    if (_pill) {
+      _pill.classList.add('blink');
+    }
+  }
+
+  function _stopBeepLoop() {
+    if (_beepInterval) {
+      clearInterval(_beepInterval);
+      _beepInterval = null;
+    }
+    if (_pill) {
+      _pill.classList.remove('blink');
+    }
+  }
+
+  function _finishCycle() {
+    _stopBeepLoop();
+    _advancePhase();
+    _state.running = false;
+    _state.updatedAt = Date.now();
+    _saveState();
+    _updateDisplay();
   }
 
   function _flashModal() {
@@ -374,7 +397,11 @@ const PomodoroWidget = (() => {
     document.body.appendChild(_overlay);
 
     _btn.addEventListener('click', () => {
-      _showModal();
+      if (_beepInterval) {
+        _finishCycle();
+      } else {
+        _showModal();
+      }
     });
 
     document.addEventListener('keydown', _onKeyDown);
@@ -384,6 +411,7 @@ const PomodoroWidget = (() => {
   }
 
   function destroy() {
+    _stopBeepLoop();
     if (_interval) {
       clearInterval(_interval);
       _interval = null;

@@ -136,8 +136,8 @@
   background: color-mix(in srgb, var(--accent-color, #4f46e5) 8%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent-color, #4f46e5) 16%, transparent);
   transition: background 0.15s, border-color 0.15s;
-  max-width: 90px;
-  word-break: break-word;
+  max-width: 86px;
+  box-sizing: border-box;
 }
 
 .pomodoro-pill:hover {
@@ -153,6 +153,8 @@
   letter-spacing: 0.4px;
   text-align: center;
   line-height: 1.2;
+  max-width: 68px;
+  overflow-wrap: break-word;
 }
 
 .pomodoro-pill-timer {
@@ -181,6 +183,15 @@
   color: var(--bookmark-text);
   opacity: 0.5;
   font-weight: 500;
+}
+
+.pomodoro-pill.blink {
+  animation: pomodoro-blink 1s ease-in-out infinite alternate;
+}
+
+@keyframes pomodoro-blink {
+  0% { background: color-mix(in srgb, var(--accent-color, #4f46e5) 8%, transparent); }
+  100% { background: color-mix(in srgb, var(--accent-color, #4f46e5) 22%, transparent); }
 }
 
 .mini-widget-btn {
