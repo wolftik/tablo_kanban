@@ -23,9 +23,9 @@ const BookmarksManager = (() => {
     if (!firstSlot) return;
     const slotWidth = firstSlot.offsetWidth;
     container.classList.remove('compact', 'minimal');
-    if (slotWidth < 80) {
+    if (slotWidth < 60) {
       container.classList.add('minimal');
-    } else if (slotWidth < 100) {
+    } else if (slotWidth < 80) {
       container.classList.add('compact');
     }
   }
@@ -95,7 +95,7 @@ const BookmarksManager = (() => {
   // Predictive check: would restoring a hidden widget cause overflow?
   // Returns true if the widget can be safely restored.
   function _canRestore(containerW, cachedWidth, cols, slotWidth) {
-    if (slotWidth < 80) return false;
+    if (slotWidth < 60) return false;
     const minFit = _minFitWidth(cols);
     const predictedW = containerW - (cachedWidth || 150); // fallback estimate
     return predictedW >= minFit;
