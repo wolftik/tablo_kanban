@@ -52,6 +52,7 @@ const ClockWidget = {
 
     if (!enabled) {
       zone.classList.remove('active');
+      this.destroy();
       return;
     }
 
@@ -134,7 +135,7 @@ const WeatherWidget = {
     const zone = document.getElementById('widgets-zone');
     if (!zone) return;
 
-    if (!enabled) return;
+    if (!enabled) { this.destroy(); return; }
 
     let sidebar = document.getElementById('widgets-sidebar');
     if (!sidebar) {
@@ -254,7 +255,7 @@ const QuotesWidget = {
     const zone = document.getElementById('widgets-zone');
     if (!zone) return;
 
-    if (!enabled) return;
+    if (!enabled) { this.destroy(); return; }
 
     this._el = document.createElement('div');
     this._el.id = 'quotes-widget';

@@ -268,7 +268,12 @@ const PomodoroWidget = (() => {
   async function init() {
     const settings = await StorageSync.get('settings') || getDefaultSettings();
     const enabled = settings.widgets?.pomodoro !== false;
-    if (!enabled) return;
+    if (!enabled) {
+      destroy();
+      _state = _defaultState();
+      StorageLocal.remove(STORAGE_KEY);
+      return;
+    }
 
     const wrapper = document.getElementById('mini-widgets-group');
     if (!wrapper) return;

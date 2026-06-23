@@ -14,7 +14,7 @@ const CoinWidget = (() => {
   async function init() {
     const settings = await StorageSync.get('settings') || getDefaultSettings();
     const enabled = settings.widgets?.coin !== false;
-    if (!enabled) return;
+    if (!enabled) { destroy(); return; }
 
     const css = `
       .coin-flip-container {

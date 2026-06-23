@@ -174,7 +174,9 @@ const AlarmTimerWidget = (() => {
     }
 
     if (!_dot) {
-      _dot = document.createTextNode('.');
+      _dot = document.createElement('span');
+      _dot.textContent = '.';
+      _dot.style.cssText = 'display:inline-block;width:0;overflow:visible;font-size:inherit;line-height:inherit;font-weight:inherit;';
       timeEl.appendChild(_dot);
     }
   }
@@ -251,9 +253,12 @@ const AlarmTimerWidget = (() => {
   async function init() {
     const settings = await StorageSync.get('settings') || getDefaultSettings();
     const enabled = settings.widgets?.alarmtimer !== false;
-    if (!enabled) return;
-
-    await _loadState();
+    if (!enabled) {
+      destroy();
+      _state = _defaultState();
+      StorageLocal.remove(STORAGE_KEY);
+      return;
+    }
 
     const wrapper = document.getElementById('mini-widgets-group');
     if (!wrapper) return;
@@ -265,6 +270,8 @@ const AlarmTimerWidget = (() => {
     wrapper.appendChild(_btn);
 
     _buildModal();
+
+    await _loadState();
     _btn.addEventListener('click', _showModal);
 
     document.addEventListener('keydown', (e) => {

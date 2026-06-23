@@ -187,7 +187,7 @@ const EightBallWidget = (() => {
     async init() {
       const settings = await StorageSync.get('settings') || getDefaultSettings();
       const enabled = settings.widgets?.eightball !== false;
-      if (!enabled) return;
+      if (!enabled) { this.destroy(); return; }
 
       const wrapper = document.getElementById('mini-widgets-group');
       if (!wrapper) return;
