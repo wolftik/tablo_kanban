@@ -78,17 +78,20 @@ const PomodoroWidget = (() => {
       _pill.remove();
       _pill = null;
     }
+    const sidebar = document.getElementById('widgets-sidebar');
+    if (sidebar && !sidebar.children.length) {
+      const zone = document.getElementById('widgets-zone');
+      if (zone) zone.classList.remove('active');
+    }
   }
 
   function _renderPill() {
     if (!_pill) return;
     _pill.innerHTML = ''
-      + '<div class="pomodoro-pill-top">'
+      + '<div class="pomodoro-pill-phase">' + I18n.t('pomodoro.' + _state.phase) + '</div>'
+      + '<div class="pomodoro-pill-timer">' + _formatTime(_state.remaining) + '</div>'
+      + '<div class="pomodoro-pill-footer">'
         + '<span class="pomodoro-pill-icon">\uD83C\uDF45</span>'
-        + '<span class="pomodoro-pill-phase">' + I18n.t('pomodoro.' + _state.phase) + '</span>'
-      + '</div>'
-      + '<div class="pomodoro-pill-bottom">'
-        + '<span class="pomodoro-pill-timer">' + _formatTime(_state.remaining) + '</span>'
         + '<span class="pomodoro-pill-count">×' + _state.pomodoroCount + '</span>'
       + '</div>';
   }

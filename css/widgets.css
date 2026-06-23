@@ -1,15 +1,22 @@
 .widgets-zone {
-  display: none;
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 24px;
-  padding: 0 16px;
   flex-shrink: 0;
+  box-sizing: border-box;
+  width: 0;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+  border: none;
 }
 
 .widgets-zone.active {
-  display: flex;
+  width: auto;
+  padding: 0 16px;
+  gap: 24px;
+  overflow: visible;
 }
 
 .widgets-sidebar {
@@ -121,58 +128,56 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 3px;
+  gap: 2px;
   cursor: pointer;
   user-select: none;
-  padding: 5px 14px;
-  border-radius: 24px;
+  padding: 6px 14px;
+  border-radius: 12px;
   background: color-mix(in srgb, var(--accent-color, #4f46e5) 8%, transparent);
   border: 1px solid color-mix(in srgb, var(--accent-color, #4f46e5) 16%, transparent);
-  transition: background 0.15s, border-color 0.15s, transform 0.15s;
-  white-space: nowrap;
-}
-
-.pomodoro-pill-top {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-
-.pomodoro-pill-bottom {
-  display: flex;
-  align-items: baseline;
-  gap: 5px;
+  transition: background 0.15s, border-color 0.15s;
+  max-width: 90px;
+  word-break: break-word;
 }
 
 .pomodoro-pill:hover {
   background: color-mix(in srgb, var(--accent-color, #4f46e5) 16%, transparent);
   border-color: color-mix(in srgb, var(--accent-color, #4f46e5) 30%, transparent);
-  transform: scale(1.03);
-}
-
-.pomodoro-pill-icon {
-  font-size: 16px;
-  line-height: 1;
 }
 
 .pomodoro-pill-phase {
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 600;
   color: color-mix(in srgb, var(--accent-color, #4f46e5) 90%, var(--bookmark-text));
   text-transform: uppercase;
   letter-spacing: 0.4px;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .pomodoro-pill-timer {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  line-height: 1;
+  line-height: 1.1;
   color: var(--bookmark-text);
+  text-align: center;
+}
+
+.pomodoro-pill-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+}
+
+.pomodoro-pill-icon {
+  font-size: 12px;
+  line-height: 1;
 }
 
 .pomodoro-pill-count {
-  font-size: 13px;
+  font-size: 11px;
   color: var(--bookmark-text);
   opacity: 0.5;
   font-weight: 500;
