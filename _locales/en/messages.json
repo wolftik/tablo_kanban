@@ -894,5 +894,17 @@
     "alarmtimerReset":  {
                             "message":  "Reset",
                             "description":  "Reset timer button"
-                        }
+                        },
+    "alarmtimerTurnOff":  {
+                              "message":  "Turn off",
+                              "description":  "Turn off alarm button"
+                          },
+    "alarmtimerSoundOn":  {
+                              "message":  "Sound: ON",
+                              "description":  "Alarm sound enabled"
+                          },
+    "alarmtimerSoundOff":  {
+                               "message":  "Sound: OFF",
+                               "description":  "Alarm sound disabled"
+                           }
 }

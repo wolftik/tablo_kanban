@@ -18,7 +18,7 @@ const AlarmTimerWidget = (() => {
   let _timerSection = null;
   let _alarmH = null;
   let _alarmM = null;
-  let _alarmToggle = null;
+  let _alarmSoundBtn = null;
   let _alarmStatus = null;
   let _alarmSetBtn = null;
   let _timerH = null;
@@ -31,6 +31,7 @@ const AlarmTimerWidget = (() => {
 
   function _defaultState() {
     return {
+      beep: true,
       alarm: { time: '', active: false },
       timer: { duration: 0, remaining: 0, running: false, updatedAt: 0 }
     };
@@ -121,22 +122,32 @@ const AlarmTimerWidget = (() => {
   }
 
   function _beep() {
+    if (_state.beep === false) return;
     try {
       if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-      const beeps = [
-        { s: 0, e: 0.2 }, { s: 0.3, e: 0.5 }, { s: 0.6, e: 0.8 },
-        { s: 1.5, e: 1.7 }, { s: 1.8, e: 2.0 }, { s: 2.1, e: 2.3 }
+      const t = _audioCtx.currentTime;
+      const fund = 880;
+      const partials = [
+        { ratio: 1.000, gain: 0.08, decay: 1.8 },
+        { ratio: 1.006, gain: 0.06, decay: 1.5 },
+        { ratio: 1.980, gain: 0.04, decay: 1.1 },
+        { ratio: 2.480, gain: 0.025, decay: 0.7 },
+        { ratio: 3.120, gain: 0.012, decay: 0.45 },
+        { ratio: 4.150, gain: 0.006, decay: 0.25 }
       ];
-      for (const b of beeps) {
+      for (const p of partials) {
         const osc = _audioCtx.createOscillator();
         const gain = _audioCtx.createGain();
         osc.type = 'sine';
-        osc.frequency.value = 440;
-        gain.gain.value = 0.3;
+        osc.frequency.value = fund * p.ratio;
+        gain.gain.setValueAtTime(0, t);
+        gain.gain.linearRampToValueAtTime(p.gain, t + 0.04);
+        gain.gain.setValueAtTime(p.gain, t + 0.06);
+        gain.gain.exponentialRampToValueAtTime(0.001, t + p.decay);
         osc.connect(gain);
         gain.connect(_audioCtx.destination);
-        osc.start(_audioCtx.currentTime + b.s);
-        osc.stop(_audioCtx.currentTime + b.e);
+        osc.start(t);
+        osc.stop(t + p.decay + 0.01);
       }
     } catch (e) { /* audio unavailable */ }
   }
@@ -186,12 +197,16 @@ const AlarmTimerWidget = (() => {
 
   function _renderAlarmSection() {
     const active = _state.alarm.active;
-    _alarmH.value = _state.alarm.time ? _state.alarm.time.split(':')[0] : '';
-    _alarmM.value = _state.alarm.time ? _state.alarm.time.split(':')[1] : '';
+    if (active && _state.alarm.time) {
+      _alarmH.value = _state.alarm.time.split(':')[0];
+      _alarmM.value = _state.alarm.time.split(':')[1];
+    }
+    _alarmSetBtn.textContent = active ? I18n.t('alarmtimer.turnOff') : I18n.t('alarmtimer.set');
+    _alarmSoundBtn.textContent = _state.beep ? '\uD83D\uDD14' : '\uD83D\uDD15';
+    _alarmSoundBtn.title = _state.beep ? I18n.t('alarmtimer.soundOn') : I18n.t('alarmtimer.soundOff');
     _alarmStatus.textContent = active
       ? I18n.t('alarmtimer.alarmSet') + ' ' + _state.alarm.time
       : '';
-    _alarmToggle.textContent = active ? I18n.t('alarmtimer.off') : I18n.t('alarmtimer.on');
   }
 
   function _renderTimerSection() {
@@ -218,7 +233,13 @@ const AlarmTimerWidget = (() => {
   function _showModal() {
     if (!_modal) return;
     _overlay.classList.add('active');
+    _switchTab('alarm');
     _renderModalContent();
+    if (_state && !_state.alarm.active) {
+      const now = new Date();
+      _alarmH.value = _formatTwo(now.getHours());
+      _alarmM.value = _formatTwo(now.getMinutes());
+    }
   }
 
   function _hideModal() {
@@ -309,35 +330,46 @@ const AlarmTimerWidget = (() => {
     alarmInputRow.appendChild(_alarmM);
     _alarmSection.appendChild(alarmInputRow);
 
-    _alarmSetBtn = document.createElement('button');
-    _alarmSetBtn.textContent = I18n.t('alarmtimer.set');
-    _alarmSetBtn.className = 'alarm-timer-btn primary';
-    _alarmSetBtn.style.cssText = 'flex:none;padding:8px 32px;';
-    _alarmSetBtn.addEventListener('click', () => {
-      const h = parseInt(_alarmH.value) || 0;
-      const m = parseInt(_alarmM.value) || 0;
-      if (h < 0 || h > 23 || m < 0 || m > 59) return;
-      _state.alarm.time = _formatTwo(h) + ':' + _formatTwo(m);
-      _state.alarm.active = true;
-      _startPoll();
-      _updateDot();
-      _saveState();
-      _renderAlarmSection();
-    });
-    _alarmSection.appendChild(_alarmSetBtn);
+    const alarmBtnRow = document.createElement('div');
+    alarmBtnRow.className = 'alarm-timer-btn-row';
+    alarmBtnRow.style.cssText = 'justify-content:center;';
 
-    _alarmToggle = document.createElement('button');
-    _alarmToggle.className = 'alarm-timer-btn danger';
-    _alarmToggle.style.cssText = 'flex:none;padding:8px 24px;';
-    _alarmToggle.addEventListener('click', () => {
-      _state.alarm.active = !_state.alarm.active;
-      if (_state.alarm.active) _startPoll(); else _stopPoll();
-      _updateDot();
+    _alarmSetBtn = document.createElement('button');
+    _alarmSetBtn.className = 'alarm-timer-btn primary';
+    _alarmSetBtn.style.cssText = 'flex:none;padding:8px 28px;';
+    _alarmSetBtn.addEventListener('click', () => {
+      if (_state.alarm.active) {
+        _state.alarm.active = false;
+        _updateDot();
+        _saveState();
+        _renderAlarmSection();
+        if (!_state.timer.running) _stopPoll();
+      } else {
+        const h = parseInt(_alarmH.value) || 0;
+        const m = parseInt(_alarmM.value) || 0;
+        if (h < 0 || h > 23 || m < 0 || m > 59) return;
+        _state.alarm.time = _formatTwo(h) + ':' + _formatTwo(m);
+        _state.alarm.active = true;
+        _startPoll();
+        _updateDot();
+        _saveState();
+        _renderAlarmSection();
+      }
+    });
+    alarmBtnRow.appendChild(_alarmSetBtn);
+
+    _alarmSoundBtn = document.createElement('button');
+    _alarmSoundBtn.className = 'alarm-timer-btn danger';
+    _alarmSoundBtn.style.cssText = 'flex:none;padding:6px 10px;font-size:18px;line-height:1;min-width:unset;';
+    _alarmSoundBtn.title = I18n.t('alarmtimer.soundOn');
+    _alarmSoundBtn.addEventListener('click', () => {
+      _state.beep = !_state.beep;
       _saveState();
       _renderAlarmSection();
-      if (!_state.alarm.active && !_state.timer.running) _stopPoll();
     });
-    _alarmSection.appendChild(_alarmToggle);
+    alarmBtnRow.appendChild(_alarmSoundBtn);
+
+    _alarmSection.appendChild(alarmBtnRow);
 
     _alarmStatus = document.createElement('div');
     _alarmStatus.className = 'alarm-timer-status';

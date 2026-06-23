@@ -216,7 +216,10 @@ const I18n = (() => {
     'alarmtimer.off': 'alarmtimerOff',
     'alarmtimer.start': 'alarmtimerStart',
     'alarmtimer.pause': 'alarmtimerPause',
-    'alarmtimer.reset': 'alarmtimerReset'
+    'alarmtimer.reset': 'alarmtimerReset',
+    'alarmtimer.turnOff': 'alarmtimerTurnOff',
+    'alarmtimer.soundOn': 'alarmtimerSoundOn',
+    'alarmtimer.soundOff': 'alarmtimerSoundOff'
   };
 
   let _currentLang = null;

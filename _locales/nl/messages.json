@@ -836,5 +836,17 @@
     "8ballAnswers19": {
         "message": "Very doubtful",
         "description": "8-Ball answer 19"
+    },
+    "alarmtimerTurnOff": {
+        "message": "Uitschakelen",
+        "description": "Turn off alarm button"
+    },
+    "alarmtimerSoundOn": {
+        "message": "Geluid: AAN",
+        "description": "Alarm sound enabled"
+    },
+    "alarmtimerSoundOff": {
+        "message": "Geluid: UIT",
+        "description": "Alarm sound disabled"
     }
 }

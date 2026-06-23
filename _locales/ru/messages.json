@@ -894,5 +894,17 @@
     "alarmtimerReset":  {
                             "message":  "Сброс",
                             "description":  "Reset timer button"
-                        }
+                        },
+    "alarmtimerTurnOff":  {
+                              "message":  "Выключить",
+                              "description":  "Turn off alarm button"
+                          },
+    "alarmtimerSoundOn":  {
+                              "message":  "Звук: ВКЛ",
+                              "description":  "Alarm sound enabled"
+                          },
+    "alarmtimerSoundOff":  {
+                               "message":  "Звук: ВЫКЛ",
+                               "description":  "Alarm sound disabled"
+                           }
 }
