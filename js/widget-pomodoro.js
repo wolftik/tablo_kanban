@@ -222,22 +222,36 @@ const PomodoroWidget = (() => {
       if (!_audioCtx) {
         _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
       }
-      const beepTimings = [
-        { start: 0, stop: 0.2 },
-        { start: 0.3, stop: 0.5 },
-        { start: 0.6, stop: 0.8 }
-      ];
-      for (const t of beepTimings) {
-        const osc = _audioCtx.createOscillator();
-        const gain = _audioCtx.createGain();
-        osc.type = 'sine';
-        osc.frequency.value = 440;
-        gain.gain.value = 0.3;
-        osc.connect(gain);
-        gain.connect(_audioCtx.destination);
-        osc.start(_audioCtx.currentTime + t.start);
-        osc.stop(_audioCtx.currentTime + t.stop);
+      const now = _audioCtx.currentTime;
+      const dur = 0.30;
+
+      const osc = _audioCtx.createOscillator();
+      const oscGain = _audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(220, now);
+      osc.frequency.exponentialRampToValueAtTime(55, now + dur);
+      oscGain.gain.setValueAtTime(0.16, now);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+      osc.connect(oscGain);
+      oscGain.connect(_audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + dur);
+
+      const noiseLen = Math.floor(_audioCtx.sampleRate * 0.06);
+      const noiseBuf = _audioCtx.createBuffer(1, noiseLen, _audioCtx.sampleRate);
+      const data = noiseBuf.getChannelData(0);
+      for (let i = 0; i < noiseLen; i++) {
+        data[i] = (Math.random() * 2 - 1) * 0.25;
       }
+      const noise = _audioCtx.createBufferSource();
+      noise.buffer = noiseBuf;
+      const noiseGain = _audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(0.04, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+      noise.connect(noiseGain);
+      noiseGain.connect(_audioCtx.destination);
+      noise.start(now);
+      noise.stop(now + 0.06);
     } catch (e) {
       // Audio unavailable
     }
