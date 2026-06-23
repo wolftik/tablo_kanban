@@ -294,8 +294,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 3px;
-  margin-bottom: 14px;
+  gap: 6px;
+  margin-bottom: 10px;
 }
 
 .alarm-timer-time-input {

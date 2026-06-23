@@ -23,10 +23,8 @@ const AlarmTimerWidget = (() => {
   let _alarmSetBtn = null;
   let _timerH = null;
   let _timerM = null;
-  let _timerS = null;
   let _timerDisplay = null;
-  let _timerStartBtn = null;
-  let _timerPauseBtn = null;
+  let _timerToggleBtn = null;
   let _timerResetBtn = null;
 
   function _defaultState() {
@@ -210,16 +208,20 @@ const AlarmTimerWidget = (() => {
   }
 
   function _renderTimerSection() {
-    if (_state.timer.running) {
-      _timerDisplay.textContent = _formatHMS(_state.timer.remaining);
-      _timerStartBtn.disabled = true;
-      _timerPauseBtn.disabled = false;
+    const running = _state.timer.running;
+    _timerDisplay.textContent = _state.timer.remaining > 0 || running
+      ? _formatHMS(_state.timer.remaining)
+      : '00:00:00';
+    if (running) {
+      _timerToggleBtn.textContent = I18n.t('alarmtimer.pause');
+      _timerToggleBtn.className = 'alarm-timer-btn';
+      _timerToggleBtn.disabled = false;
+      _timerResetBtn.disabled = false;
     } else {
-      _timerDisplay.textContent = _state.timer.remaining > 0
-        ? _formatHMS(_state.timer.remaining)
-        : '00:00:00';
-      _timerStartBtn.disabled = _state.timer.remaining <= 0;
-      _timerPauseBtn.disabled = true;
+      _timerToggleBtn.textContent = I18n.t('alarmtimer.start');
+      _timerToggleBtn.className = 'alarm-timer-btn primary';
+      _timerToggleBtn.disabled = false;
+      _timerResetBtn.disabled = _state.timer.remaining <= 0;
     }
   }
 
@@ -309,7 +311,7 @@ const AlarmTimerWidget = (() => {
     _modal.appendChild(tabRow);
 
     _alarmSection = document.createElement('div');
-    _alarmSection.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:12px;width:100%;';
+    _alarmSection.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:16px;width:100%;';
 
     const alarmInputRow = document.createElement('div');
     alarmInputRow.className = 'alarm-timer-input-row';
@@ -377,7 +379,7 @@ const AlarmTimerWidget = (() => {
     _modal.appendChild(_alarmSection);
 
     _timerSection = document.createElement('div');
-    _timerSection.style.cssText = 'display:none;flex-direction:column;align-items:center;gap:12px;width:100%;';
+    _timerSection.style.cssText = 'display:none;flex-direction:column;align-items:center;gap:16px;width:100%;';
 
     const timerInputRow = document.createElement('div');
     timerInputRow.className = 'alarm-timer-input-row';
@@ -385,7 +387,6 @@ const AlarmTimerWidget = (() => {
     _timerH.type = 'number'; _timerH.min = '0'; _timerH.max = '99';
     _timerH.placeholder = I18n.t('alarmtimer.hours');
     _timerH.className = 'alarm-timer-time-input';
-    _timerH.style.cssText = 'width:46px;font-size:13px;padding:6px 4px;';
     timerInputRow.appendChild(_timerH);
     const colon2 = document.createElement('span');
     colon2.className = 'alarm-timer-colon';
@@ -395,18 +396,7 @@ const AlarmTimerWidget = (() => {
     _timerM.type = 'number'; _timerM.min = '0'; _timerM.max = '59';
     _timerM.placeholder = I18n.t('alarmtimer.minutes');
     _timerM.className = 'alarm-timer-time-input';
-    _timerM.style.cssText = 'width:46px;font-size:13px;padding:6px 4px;';
     timerInputRow.appendChild(_timerM);
-    const colon3 = document.createElement('span');
-    colon3.className = 'alarm-timer-colon';
-    colon3.textContent = ':';
-    timerInputRow.appendChild(colon3);
-    _timerS = document.createElement('input');
-    _timerS.type = 'number'; _timerS.min = '0'; _timerS.max = '59';
-    _timerS.placeholder = I18n.t('alarmtimer.seconds');
-    _timerS.className = 'alarm-timer-time-input';
-    _timerS.style.cssText = 'width:46px;font-size:13px;padding:6px 4px;';
-    timerInputRow.appendChild(_timerS);
     _timerSection.appendChild(timerInputRow);
 
     _timerDisplay = document.createElement('div');
@@ -417,37 +407,39 @@ const AlarmTimerWidget = (() => {
     const btnRow = document.createElement('div');
     btnRow.className = 'alarm-timer-btn-row';
 
-    _timerStartBtn = document.createElement('button');
-    _timerStartBtn.textContent = I18n.t('alarmtimer.start');
-    _timerStartBtn.className = 'alarm-timer-btn primary';
-    _timerStartBtn.addEventListener('click', () => {
-      const h = parseInt(_timerH.value) || 0;
-      const m = parseInt(_timerM.value) || 0;
-      const s = parseInt(_timerS.value) || 0;
-      const dur = (h * 3600 + m * 60 + s) * 1000;
-      if (dur <= 0) return;
-      _state.timer.duration = dur;
-      _state.timer.remaining = dur;
-      _state.timer.running = true;
-      _startPoll();
-      _updateDot();
-      _saveState();
-      _renderTimerSection();
+    _timerToggleBtn = document.createElement('button');
+    _timerToggleBtn.textContent = I18n.t('alarmtimer.start');
+    _timerToggleBtn.className = 'alarm-timer-btn primary';
+    _timerToggleBtn.addEventListener('click', () => {
+      if (_state.timer.running) {
+        _state.timer.running = false;
+        _stopPoll();
+        _updateDot();
+        _saveState();
+        _renderTimerSection();
+      } else if (_state.timer.remaining > 0) {
+        _state.timer.running = true;
+        _startPoll();
+        _updateDot();
+        _saveState();
+        _renderTimerSection();
+      } else {
+        const h = parseInt(_timerH.value) || 0;
+        const m = parseInt(_timerM.value) || 0;
+        const dur = (h * 3600 + m * 60) * 1000;
+        if (dur <= 0) return;
+        _state.timer.duration = dur;
+        _state.timer.remaining = dur;
+        _timerH.value = '';
+        _timerM.value = '';
+        _state.timer.running = true;
+        _startPoll();
+        _updateDot();
+        _saveState();
+        _renderTimerSection();
+      }
     });
-    btnRow.appendChild(_timerStartBtn);
-
-    _timerPauseBtn = document.createElement('button');
-    _timerPauseBtn.textContent = I18n.t('alarmtimer.pause');
-    _timerPauseBtn.className = 'alarm-timer-btn';
-    _timerPauseBtn.disabled = true;
-    _timerPauseBtn.addEventListener('click', () => {
-      _state.timer.running = false;
-      _stopPoll();
-      _updateDot();
-      _saveState();
-      _renderTimerSection();
-    });
-    btnRow.appendChild(_timerPauseBtn);
+    btnRow.appendChild(_timerToggleBtn);
 
     _timerResetBtn = document.createElement('button');
     _timerResetBtn.textContent = I18n.t('alarmtimer.reset');
@@ -455,6 +447,8 @@ const AlarmTimerWidget = (() => {
     _timerResetBtn.addEventListener('click', () => {
       _state.timer.running = false;
       _state.timer.remaining = 0;
+      _timerH.value = '';
+      _timerM.value = '';
       _stopPoll();
       _updateDot();
       _saveState();
