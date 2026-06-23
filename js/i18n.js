@@ -202,7 +202,21 @@ const I18n = (() => {
     '8ball.answers.16': '8ballAnswers16',
     '8ball.answers.17': '8ballAnswers17',
     '8ball.answers.18': '8ballAnswers18',
-    '8ball.answers.19': '8ballAnswers19'
+    '8ball.answers.19': '8ballAnswers19',
+    'widgets.alarmTimer': 'widgetsAlarmTimer',
+    'alarmtimer.title': 'alarmtimerTitle',
+    'alarmtimer.alarm': 'alarmtimerAlarm',
+    'alarmtimer.timer': 'alarmtimerTimer',
+    'alarmtimer.hours': 'alarmtimerHours',
+    'alarmtimer.minutes': 'alarmtimerMinutes',
+    'alarmtimer.seconds': 'alarmtimerSeconds',
+    'alarmtimer.set': 'alarmtimerSet',
+    'alarmtimer.alarmSet': 'alarmtimerAlarmSet',
+    'alarmtimer.on': 'alarmtimerOn',
+    'alarmtimer.off': 'alarmtimerOff',
+    'alarmtimer.start': 'alarmtimerStart',
+    'alarmtimer.pause': 'alarmtimerPause',
+    'alarmtimer.reset': 'alarmtimerReset'
   };
 
   let _currentLang = null;

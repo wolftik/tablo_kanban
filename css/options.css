@@ -131,6 +131,7 @@ header h1 {
 .switch-label {
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .switch-toggle {
@@ -456,10 +457,6 @@ footer {
 }
 
 /* Widget switches with extra settings */
-.weather-switch {
-  gap: 10px;
-}
-
 .weather-switch > span:not(.switch) {
   margin-left: 0;
 }

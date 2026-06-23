@@ -66,7 +66,18 @@ const ClockWidget = {
     const el = document.createElement('div');
     el.id = 'clock-widget';
     el.className = 'widget clock-widget';
-    el.innerHTML = '<div class="clock-time">--:--</div><div class="clock-date">---</div>';
+
+    const timeEl = document.createElement('div');
+    timeEl.className = 'clock-time';
+    const timeTextNode = document.createTextNode('--:--');
+    timeEl.appendChild(timeTextNode);
+
+    const dateEl = document.createElement('div');
+    dateEl.className = 'clock-date';
+    dateEl.textContent = '---';
+
+    el.appendChild(timeEl);
+    el.appendChild(dateEl);
     sidebar.appendChild(el);
     zone.classList.add('active');
     zone.dataset.enabled = 'true';
@@ -75,8 +86,8 @@ const ClockWidget = {
       const now = new Date();
       const lang = I18n.getLang();
       const locale = I18n.localeToBCP47(lang);
-      el.querySelector('.clock-time').textContent = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
-      el.querySelector('.clock-date').textContent = now.toLocaleDateString(locale, { day: 'numeric', month: 'long', weekday: 'short' });
+      timeTextNode.textContent = now.toLocaleTimeString(locale, { hour: '2-digit', minute: '2-digit' });
+      dateEl.textContent = now.toLocaleDateString(locale, { day: 'numeric', month: 'long', weekday: 'short' });
     };
     update();
     this._interval = setInterval(update, 1000);

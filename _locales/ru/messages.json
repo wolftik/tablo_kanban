@@ -836,7 +836,63 @@
                           "description":  "8-Ball answer 18"
                       },
     "8ballAnswers19":  {
-                          "message":  "Весьма сомнительно",
-                          "description":  "8-Ball answer 19"
-                      }
+                           "message":  "Весьма сомнительно",
+                           "description":  "8-Ball answer 19"
+                       },
+    "widgetsAlarmTimer":  {
+                              "message":  "Будильник / Таймер",
+                              "description":  "Alarm / Timer widget toggle label"
+                          },
+    "alarmtimerTitle":  {
+                            "message":  "Будильник / Таймер",
+                            "description":  "Alarm/Timer widget title"
+                        },
+    "alarmtimerAlarm":  {
+                            "message":  "Будильник",
+                            "description":  "Alarm tab"
+                        },
+    "alarmtimerTimer":  {
+                            "message":  "Таймер",
+                            "description":  "Timer tab"
+                        },
+    "alarmtimerHours":  {
+                            "message":  "ЧЧ",
+                            "description":  "Hours input placeholder"
+                        },
+    "alarmtimerMinutes":  {
+                              "message":  "ММ",
+                              "description":  "Minutes input placeholder"
+                          },
+    "alarmtimerSeconds":  {
+                              "message":  "СС",
+                              "description":  "Seconds input placeholder"
+                          },
+    "alarmtimerSet":  {
+                          "message":  "Установить",
+                          "description":  "Set alarm button"
+                      },
+    "alarmtimerAlarmSet":  {
+                               "message":  "Будильник на",
+                               "description":  "Alarm set status text"
+                           },
+    "alarmtimerOn":  {
+                         "message":  "Вкл",
+                         "description":  "Turn alarm on"
+                     },
+    "alarmtimerOff":  {
+                          "message":  "Выкл",
+                          "description":  "Turn alarm off"
+                      },
+    "alarmtimerStart":  {
+                            "message":  "Старт",
+                            "description":  "Start timer button"
+                        },
+    "alarmtimerPause":  {
+                            "message":  "Пауза",
+                            "description":  "Pause timer button"
+                        },
+    "alarmtimerReset":  {
+                            "message":  "Сброс",
+                            "description":  "Reset timer button"
+                        }
 }

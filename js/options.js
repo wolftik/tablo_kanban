@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
     const weatherSettings = document.getElementById('weather-settings');
     if ($weatherChk && weatherSettings) {
-      $weatherChk.checked = settings.widgets?.weather === true;
+      $weatherChk.checked = settings.widgets?.weather !== false;
       weatherSettings.style.display = $weatherChk.checked ? 'block' : 'none';
       $weatherChk.addEventListener('change', () => {
         weatherSettings.style.display = $weatherChk.checked ? 'block' : 'none';
@@ -397,6 +397,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     const $8ballChk = document.getElementById('widget-8ball');
     if ($8ballChk) {
       $8ballChk.checked = settings.widgets?.eightball !== false;
+    }
+    const $alarmtimerChk = document.getElementById('widget-alarmtimer');
+    if ($alarmtimerChk) {
+      $alarmtimerChk.checked = settings.widgets?.alarmtimer !== false;
     }
     if ($weatherCity) {
       $weatherCity.value = settings.widgets?.weatherCity || 'Moscow';
@@ -629,13 +633,14 @@ document.addEventListener('DOMContentLoaded', async () => {
       bookmarkSlots: Math.min(22, Math.max(0, parseInt(document.getElementById('bookmark-slots')?.value) || 0)),
       widgets: {
         clock: $clockChk ? $clockChk.checked : true,
-        weather: $weatherChk ? $weatherChk.checked : false,
+        weather: $weatherChk ? $weatherChk.checked : true,
         weatherCity: $weatherCity ? $weatherCity.value.trim() || 'Moscow' : 'Moscow',
         weatherUnit: $weatherUnit ? $weatherUnit.value : 'metric',
         quotes: document.getElementById('widget-quotes') ? document.getElementById('widget-quotes').checked : true,
         coin: document.getElementById('widget-coin') ? document.getElementById('widget-coin').checked : true,
         pomodoro: document.getElementById('widget-pomodoro') ? document.getElementById('widget-pomodoro').checked : true,
-        eightball: document.getElementById('widget-8ball') ? document.getElementById('widget-8ball').checked : true
+        eightball: document.getElementById('widget-8ball') ? document.getElementById('widget-8ball').checked : true,
+        alarmtimer: document.getElementById('widget-alarmtimer') ? document.getElementById('widget-alarmtimer').checked : false
       }
     };
 

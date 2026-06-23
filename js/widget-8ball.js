@@ -189,7 +189,7 @@ const EightBallWidget = (() => {
       const enabled = settings.widgets?.eightball !== false;
       if (!enabled) return;
 
-      const wrapper = document.getElementById('settings-btn-wrapper');
+      const wrapper = document.getElementById('mini-widgets-group');
       if (!wrapper) return;
 
       _style();

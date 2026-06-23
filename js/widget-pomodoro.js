@@ -16,6 +16,7 @@ const PomodoroWidget = (() => {
   let _interval = null;
   let _state = null;
   let _btn = null;
+  let _pill = null;
   let _overlay = null;
   let _modal = null;
   let _phaseLabel = null;
@@ -41,6 +42,55 @@ const PomodoroWidget = (() => {
     const m = Math.floor(totalSec / 60);
     const s = totalSec % 60;
     return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  }
+
+  function _ensureSidebar() {
+    let sidebar = document.getElementById('widgets-sidebar');
+    if (!sidebar) {
+      const zone = document.getElementById('widgets-zone');
+      if (!zone) return null;
+      sidebar = document.createElement('div');
+      sidebar.id = 'widgets-sidebar';
+      sidebar.className = 'widgets-sidebar';
+      zone.appendChild(sidebar);
+    }
+    return sidebar;
+  }
+
+  function _showPill() {
+    if (_pill) return;
+    const sidebar = _ensureSidebar();
+    if (!sidebar) return;
+    _pill = document.createElement('div');
+    _pill.id = 'pomodoro-pill';
+    _pill.className = 'widget pomodoro-pill';
+    _pill.addEventListener('click', () => { _showModal(); });
+    sidebar.appendChild(_pill);
+    const zone = document.getElementById('widgets-zone');
+    if (zone) {
+      zone.classList.add('active');
+      zone.dataset.enabled = 'true';
+    }
+  }
+
+  function _hidePill() {
+    if (_pill) {
+      _pill.remove();
+      _pill = null;
+    }
+  }
+
+  function _renderPill() {
+    if (!_pill) return;
+    _pill.innerHTML = ''
+      + '<div class="pomodoro-pill-top">'
+        + '<span class="pomodoro-pill-icon">\uD83C\uDF45</span>'
+        + '<span class="pomodoro-pill-phase">' + I18n.t('pomodoro.' + _state.phase) + '</span>'
+      + '</div>'
+      + '<div class="pomodoro-pill-bottom">'
+        + '<span class="pomodoro-pill-timer">' + _formatTime(_state.remaining) + '</span>'
+        + '<span class="pomodoro-pill-count">×' + _state.pomodoroCount + '</span>'
+      + '</div>';
   }
 
   async function _saveState() {
@@ -76,22 +126,25 @@ const PomodoroWidget = (() => {
   }
 
   function _updateDisplay() {
-    if (!_modal) return;
-    const duration = _getPhaseDuration();
-    const pct = duration > 0 ? ((duration - _state.remaining) / duration) * 100 : 0;
+    if (_modal) {
+      const duration = _getPhaseDuration();
+      const pct = duration > 0 ? ((duration - _state.remaining) / duration) * 100 : 0;
 
-    _phaseLabel.textContent = I18n.t('pomodoro.' + _state.phase);
-    _timerDisplay.textContent = _formatTime(_state.remaining);
-    _countDisplay.textContent = '\uD83C\uDF45\u00D7' + _state.pomodoroCount;
-    _progressFill.style.width = Math.min(100, Math.max(0, pct)) + '%';
-    _startBtn.disabled = _state.running;
-    _pauseBtn.disabled = !_state.running;
+      _phaseLabel.textContent = I18n.t('pomodoro.' + _state.phase);
+      _timerDisplay.textContent = _formatTime(_state.remaining);
+      _countDisplay.textContent = '\uD83C\uDF45\u00D7' + _state.pomodoroCount;
+      _progressFill.style.width = Math.min(100, Math.max(0, pct)) + '%';
+      _startBtn.disabled = _state.running;
+      _pauseBtn.disabled = !_state.running;
+    }
+    _renderPill();
   }
 
   function _startInterval() {
     if (_interval) clearInterval(_interval);
     _state.running = true;
     _saveState();
+    _showPill();
     _updateDisplay();
     _interval = setInterval(() => {
       _state.remaining -= 1000;
@@ -111,6 +164,7 @@ const PomodoroWidget = (() => {
       _interval = null;
     }
     _state.running = false;
+    _hidePill();
     _saveState();
     _updateDisplay();
   }
@@ -122,6 +176,7 @@ const PomodoroWidget = (() => {
     }
     _state.remaining = _getPhaseDuration();
     _state.running = false;
+    _hidePill();
     _saveState();
     _updateDisplay();
   }
@@ -149,6 +204,7 @@ const PomodoroWidget = (() => {
     }
     _beep();
     _flashModal();
+    _hidePill();
     _advancePhase();
     _state.running = false;
     _state.updatedAt = Date.now();
@@ -214,14 +270,14 @@ const PomodoroWidget = (() => {
     const enabled = settings.widgets?.pomodoro !== false;
     if (!enabled) return;
 
-    const wrapper = document.getElementById('settings-btn-wrapper');
+    const wrapper = document.getElementById('mini-widgets-group');
     if (!wrapper) return;
 
     _btn = document.createElement('button');
     _btn.className = 'mini-widget-btn';
     _btn.dataset.i18nTitle = 'pomodoro.title';
     _btn.title = I18n.t('pomodoro.title');
-    _btn.textContent = '\u23F1';
+    _btn.textContent = '\uD83C\uDF45';
     wrapper.appendChild(_btn);
 
     _overlay = document.createElement('div');
@@ -322,6 +378,10 @@ const PomodoroWidget = (() => {
     if (_btn) {
       _btn.remove();
       _btn = null;
+    }
+    if (_pill) {
+      _pill.remove();
+      _pill = null;
     }
     if (_overlay) {
       _overlay.remove();

@@ -91,23 +91,30 @@
   align-items: center;
   margin-left: auto;
   flex-shrink: 0;
-  padding: 4px;
-  gap: 4px;
+  padding: 3px;
+  gap: 6px;
+}
+
+#mini-widgets-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
 }
 
 #settings-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border: 1px solid var(--bookmarks-border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--card-bg, #fff);
   color: var(--bookmark-text);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
-  font-size: 18px;
+  font-size: 14px;
   font-family: inherit;
 }
 
@@ -125,14 +132,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border: 1px solid var(--bookmarks-border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--card-bg, #fff);
   color: var(--bookmark-text);
   cursor: pointer;
-  font-size: 18px;
+  font-size: 14px;
   font-family: inherit;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
   padding: 0;
@@ -482,7 +489,7 @@
 #head-bar.no-bookmarks.no-widgets #settings-btn-wrapper {
   flex-direction: row;
   margin-left: 0;
-  gap: 8px;
+  gap: 6px;
 }
 
 @media (max-width: 600px) {

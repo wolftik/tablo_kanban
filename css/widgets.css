@@ -117,19 +117,80 @@
   opacity: 0.55;
 }
 
+.pomodoro-pill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  cursor: pointer;
+  user-select: none;
+  padding: 5px 14px;
+  border-radius: 24px;
+  background: color-mix(in srgb, var(--accent-color, #4f46e5) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent-color, #4f46e5) 16%, transparent);
+  transition: background 0.15s, border-color 0.15s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.pomodoro-pill-top {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.pomodoro-pill-bottom {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+}
+
+.pomodoro-pill:hover {
+  background: color-mix(in srgb, var(--accent-color, #4f46e5) 16%, transparent);
+  border-color: color-mix(in srgb, var(--accent-color, #4f46e5) 30%, transparent);
+  transform: scale(1.03);
+}
+
+.pomodoro-pill-icon {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.pomodoro-pill-phase {
+  font-size: 10px;
+  font-weight: 600;
+  color: color-mix(in srgb, var(--accent-color, #4f46e5) 90%, var(--bookmark-text));
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.pomodoro-pill-timer {
+  font-size: 20px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--bookmark-text);
+}
+
+.pomodoro-pill-count {
+  font-size: 13px;
+  color: var(--bookmark-text);
+  opacity: 0.5;
+  font-weight: 500;
+}
+
 .mini-widget-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   border: 1px solid var(--bookmarks-border);
-  border-radius: 8px;
+  border-radius: 6px;
   background: var(--card-bg, #fff);
   color: var(--bookmark-text);
   cursor: pointer;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
-  font-size: 18px;
+  font-size: 14px;
   font-family: inherit;
   padding: 0;
 }
@@ -199,4 +260,128 @@
 
 .widget-modal-close:hover {
   background: var(--bookmark-hover-bg);
+}
+
+.alarm-timer-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--bookmark-text) 6%, transparent);
+}
+
+.alarm-timer-tab {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  background: transparent;
+  color: var(--bookmark-text);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  border-radius: 8px;
+  transition: background 0.15s, color 0.15s;
+}
+
+.alarm-timer-tab.active {
+  background: var(--card-bg, #fff);
+  color: var(--accent-color, #4f46e5);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.alarm-timer-input-row {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.alarm-timer-time-input {
+  width: 52px;
+  padding: 8px 4px;
+  border: 1px solid var(--bookmarks-border);
+  border-radius: 8px;
+  font-size: 15px;
+  text-align: center;
+  font-family: inherit;
+  font-variant-numeric: tabular-nums;
+  background: var(--card-bg);
+  color: var(--bookmark-text);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.alarm-timer-time-input:focus {
+  border-color: var(--accent-color, #4f46e5);
+}
+
+.alarm-timer-colon {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--bookmark-text);
+  opacity: 0.4;
+}
+
+.alarm-timer-display {
+  font-size: 52px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--bookmark-text);
+  line-height: 1.1;
+  letter-spacing: 2px;
+}
+
+.alarm-timer-btn-row {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+}
+
+.alarm-timer-btn {
+  flex: 1;
+  padding: 9px 14px;
+  border: 1px solid color-mix(in srgb, var(--bookmark-text) 18%, transparent);
+  border-radius: 8px;
+  background: var(--card-bg);
+  color: var(--bookmark-text);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.alarm-timer-btn:hover {
+  background: color-mix(in srgb, var(--bookmark-text) 6%, transparent);
+}
+
+.alarm-timer-btn:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.alarm-timer-btn.primary {
+  background: var(--accent-color, #4f46e5);
+  color: #fff;
+  border-color: var(--accent-color, #4f46e5);
+}
+
+.alarm-timer-btn.primary:hover {
+  opacity: 0.85;
+}
+
+.alarm-timer-btn.danger {
+  background: color-mix(in srgb, #ef4444 12%, transparent);
+  border-color: color-mix(in srgb, #ef4444 30%, transparent);
+  color: #ef4444;
+}
+
+.alarm-timer-btn.danger:hover {
+  background: color-mix(in srgb, #ef4444 20%, transparent);
+}
+
+.alarm-timer-status {
+  font-size: 13px;
+  color: var(--bookmark-text);
+  opacity: 0.65;
+  min-height: 18px;
 }

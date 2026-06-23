@@ -59,7 +59,7 @@ const CoinWidget = (() => {
     _styleEl.textContent = css;
     document.head.appendChild(_styleEl);
 
-    const wrapper = document.getElementById('settings-btn-wrapper');
+    const wrapper = document.getElementById('mini-widgets-group');
     if (!wrapper) return;
 
     _btn = document.createElement('button');
