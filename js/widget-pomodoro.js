@@ -65,16 +65,24 @@ const PomodoroWidget = (() => {
     _pill = document.createElement('div');
     _pill.id = 'pomodoro-pill';
     _pill.className = 'widget pomodoro-pill';
-    _pill.addEventListener('click', () => { _stopBeepLoop(); _showModal(); });
+    _pill.addEventListener('click', () => {
+      if (_beepInterval) {
+        _finishCycle();
+      } else {
+        _showModal();
+      }
+    });
     sidebar.appendChild(_pill);
     const zone = document.getElementById('widgets-zone');
     if (zone) {
+      console.log('[pomodoro] _showPill: adding active to widgets-zone');
       zone.classList.add('active');
       zone.dataset.enabled = 'true';
     }
   }
 
   function _hidePill() {
+    console.log('[pomodoro] _hidePill called', new Error().stack);
     if (_pill) {
       _pill.remove();
       _pill = null;
@@ -82,7 +90,10 @@ const PomodoroWidget = (() => {
     const sidebar = document.getElementById('widgets-sidebar');
     if (sidebar && !sidebar.children.length) {
       const zone = document.getElementById('widgets-zone');
-      if (zone) zone.classList.remove('active');
+      if (zone) {
+        console.log('[pomodoro] removing active from widgets-zone (sidebar empty)');
+        zone.classList.remove('active');
+      }
     }
   }
 
@@ -141,6 +152,7 @@ const PomodoroWidget = (() => {
       _startBtn.disabled = _state.running;
       _pauseBtn.disabled = !_state.running;
     }
+    console.log('[pomodoro] _updateDisplay: _pill=' + (!!_pill) + ', phase=' + _state.phase + ', running=' + _state.running + ', remaining=' + _state.remaining);
     _renderPill();
   }
 
@@ -204,6 +216,7 @@ const PomodoroWidget = (() => {
   }
 
   function _onComplete() {
+    console.log('[pomodoro] _onComplete: timer reached 0, phase=' + _state.phase, '_pill in DOM=' + (!!_pill));
     if (_interval) {
       clearInterval(_interval);
       _interval = null;
@@ -226,7 +239,7 @@ const PomodoroWidget = (() => {
       osc.type = 'sine';
       osc.frequency.setValueAtTime(220, now);
       osc.frequency.exponentialRampToValueAtTime(55, now + dur);
-      oscGain.gain.setValueAtTime(0.10, now);
+      oscGain.gain.setValueAtTime(0.07, now);
       oscGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
       osc.connect(oscGain);
       oscGain.connect(_audioCtx.destination);
@@ -242,7 +255,7 @@ const PomodoroWidget = (() => {
       const noise = _audioCtx.createBufferSource();
       noise.buffer = noiseBuf;
       const noiseGain = _audioCtx.createGain();
-      noiseGain.gain.setValueAtTime(0.03, now);
+      noiseGain.gain.setValueAtTime(0.02, now);
       noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
       noise.connect(noiseGain);
       noiseGain.connect(_audioCtx.destination);
@@ -272,6 +285,7 @@ const PomodoroWidget = (() => {
   }
 
   function _finishCycle() {
+    console.log('[pomodoro] _finishCycle called, advancing phase from=' + _state.phase);
     _stopBeepLoop();
     _advancePhase();
     _state.running = false;
