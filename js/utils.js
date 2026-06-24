@@ -133,7 +133,7 @@ function getDefaultSettings() {
     showFavicon: true,
 
     bookmarkSlots: 22,
-    widgets: { clock: true, weather: true, weatherCity: 'Moscow', weatherUnit: 'metric', quotes: false, coin: false, pomodoro: false, eightball: false, alarmtimer: false }
+    widgets: { clock: true, weather: true, weatherCity: 'Moscow', weatherUnit: 'metric', quotes: false, coin: false, pomodoro: false, alarmtimer: false }
   };
 }
 

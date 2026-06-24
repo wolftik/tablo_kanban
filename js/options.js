@@ -394,10 +394,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if ($pomodoroChk) {
       $pomodoroChk.checked = settings.widgets?.pomodoro !== false;
     }
-    const $8ballChk = document.getElementById('widget-8ball');
-    if ($8ballChk) {
-      $8ballChk.checked = settings.widgets?.eightball !== false;
-    }
     const $alarmtimerChk = document.getElementById('widget-alarmtimer');
     if ($alarmtimerChk) {
       $alarmtimerChk.checked = settings.widgets?.alarmtimer !== false;
@@ -639,7 +635,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         quotes: document.getElementById('widget-quotes') ? document.getElementById('widget-quotes').checked : true,
         coin: document.getElementById('widget-coin') ? document.getElementById('widget-coin').checked : true,
         pomodoro: document.getElementById('widget-pomodoro') ? document.getElementById('widget-pomodoro').checked : true,
-        eightball: document.getElementById('widget-8ball') ? document.getElementById('widget-8ball').checked : true,
         alarmtimer: document.getElementById('widget-alarmtimer') ? document.getElementById('widget-alarmtimer').checked : false
       }
     };
