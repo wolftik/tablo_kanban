@@ -755,10 +755,6 @@
                       "message":  "Шар судьбы",
                       "description":  "Magic 8-Ball title"
                   },
-    "8ballAsk":  {
-                    "message":  "Спросить шар",
-                    "description":  "8-Ball ask button"
-                },
     "8ballAnswers0":  {
                          "message":  "Бесспорно",
                          "description":  "8-Ball answer 0"

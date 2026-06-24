@@ -117,7 +117,7 @@ document.addEventListener('DOMContentLoaded', async () => {
           WidgetSystem.register('clock', ClockWidget);
           WidgetSystem.register('coin', CoinWidget);
           WidgetSystem.register('pomodoro', PomodoroWidget);
-          WidgetSystem.register('8ball', EightBallWidget);
+          if (typeof EightBallWidget !== 'undefined') WidgetSystem.register('8ball', EightBallWidget);
           WidgetSystem.register('alarmtimer', AlarmTimerWidget);
           WidgetSystem.initAll();
           BookmarksManager.render();

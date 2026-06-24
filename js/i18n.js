@@ -182,7 +182,6 @@ const I18n = (() => {
     'pomodoro.reset': 'pomodoroReset',
     'widgets.8ball': 'widgets8ball',
     '8ball.title': '8ballTitle',
-    '8ball.ask': '8ballAsk',
     '8ball.answers.0': '8ballAnswers0',
     '8ball.answers.1': '8ballAnswers1',
     '8ball.answers.2': '8ballAnswers2',
