@@ -744,9 +744,66 @@
                          "description":  "Pomodoro pause button"
                      },
     "pomodoroReset":  {
-                         "message":  "Reset",
-                         "description":  "Pomodoro reset button"
+                           "message":  "Reset",
+                           "description":  "Pomodoro reset button"
+                       },
+
+    "widgetsAlarmTimer":  {
+                              "message":  "闹钟 / 计时器",
+                              "description":  "Alarm / Timer widget toggle label"
+                          },
+    "alarmtimerTitle":  {
+                            "message":  "闹钟 / 计时器",
+                            "description":  "Alarm/Timer widget title"
+                        },
+    "alarmtimerAlarm":  {
+                            "message":  "闹钟",
+                            "description":  "Alarm tab"
+                        },
+    "alarmtimerTimer":  {
+                            "message":  "计时器",
+                            "description":  "Timer tab"
+                        },
+    "alarmtimerHours":  {
+                            "message":  "时",
+                            "description":  "Hours input placeholder"
+                        },
+    "alarmtimerMinutes":  {
+                              "message":  "分",
+                              "description":  "Minutes input placeholder"
+                          },
+    "alarmtimerSeconds":  {
+                              "message":  "秒",
+                              "description":  "Seconds input placeholder"
+                          },
+    "alarmtimerSet":  {
+                          "message":  "设置",
+                          "description":  "Set alarm button"
+                      },
+    "alarmtimerAlarmSet":  {
+                               "message":  "闹钟于",
+                               "description":  "Alarm set status text"
+                           },
+    "alarmtimerOn":  {
+                         "message":  "开",
+                         "description":  "Turn alarm on"
                      },
+    "alarmtimerOff":  {
+                          "message":  "关",
+                          "description":  "Turn alarm off"
+                      },
+    "alarmtimerStart":  {
+                            "message":  "开始",
+                            "description":  "Start timer button"
+                        },
+    "alarmtimerPause":  {
+                            "message":  "暂停",
+                            "description":  "Pause timer button"
+                        },
+    "alarmtimerReset":  {
+                            "message":  "重置",
+                            "description":  "Reset timer button"
+                        },
 
     "alarmtimerTurnOff":  {
                               "message":  "关闭",

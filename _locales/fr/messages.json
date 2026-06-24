@@ -244,7 +244,7 @@
         "description": "Clear cards wrong phrase error"
     },
     "settingsTitle": {
-        "message": "ParamÃtres",
+        "message": "Paramètres",
         "description": "Settings button title"
     },
     "settingsOpen": {
@@ -252,7 +252,7 @@
         "description": "Open extension text"
     },
     "optionsTitle": {
-        "message": "ParamÃtres — Tablo Kanban",
+        "message": "Paramètres — Tablo Kanban",
         "description": "Options page title"
     },
     "optionsTabColumns": {
@@ -348,7 +348,7 @@
         "description": "Get OAuth token button"
     },
     "optionsSyncYadiskOauthOpened": {
-        "message": "La page d'autorisation Yandex s'est ouverte dans un nouvel onglet. AprÃs l'autorisation, copiez le jeton depuis la barre d'adresse, collez-le dans le champ \"Jeton OAuth\" ci-dessous, puis cliquez sur \"Enregistrer le jeton\".",
+        "message": "La page d'autorisation Yandex s'est ouverte dans un nouvel onglet. Après l'autorisation, copiez le jeton depuis la barre d'adresse, collez-le dans le champ \"Jeton OAuth\" ci-dessous, puis cliquez sur \"Enregistrer le jeton\".",
         "description": "OAuth page opened message"
     },
     "optionsSyncYadiskClientHint": {
@@ -424,7 +424,7 @@
         "description": "New author placeholder"
     },
     "optionsAppearanceTheme": {
-        "message": "ThÃme",
+        "message": "Thème",
         "description": "Theme section title"
     },
     "optionsAppearanceLight": {
@@ -436,7 +436,7 @@
         "description": "Dark theme option"
     },
     "optionsAppearanceSystem": {
-        "message": "SystÃme",
+        "message": "Système",
         "description": "System theme option"
     },
     "optionsAppearanceLanguage": {
@@ -464,7 +464,7 @@
         "description": "About description"
     },
     "optionsAboutStorage": {
-        "message": "Les données du tableau sont stockées localement dans chrome.storage.local. Les paramÃtres et clés API sont dans chrome.storage.sync (synchronisés entre appareils). Les données du tableau sont synchronisées via un fournisseur choisi (Google Drive ou Yandex Disk).",
+        "message": "Les données du tableau sont stockées localement dans localStorage (sans synchronisation) ou dans le cloud (Google Drive / Yandex Disk) lorsque la synchronisation est active. Les paramètres et clés API sont dans chrome.storage.sync.",
         "description": "Storage info"
     },
     "optionsSupportTitle": {
@@ -572,7 +572,7 @@
         "description": "Homepage modal title"
     },
     "homepageModalDesc": {
-        "message": "Copiez cette URL et collez-la dans les paramÃtres de votre navigateur comme page d'accÃs rapide ou page d'accueil.",
+        "message": "Copiez cette URL et collez-la dans les paramètres de votre navigateur comme page d'accès rapide ou page d'accueil.",
         "description": "Homepage modal description"
     },
     "homepageModalCopy": {
@@ -604,11 +604,11 @@
         "description": "CSP error"
     },
     "optionsSyncTokenInvalid": {
-        "message": "Vérifiez le jeton et les droits d'accÃs.",
+        "message": "Vérifiez le jeton et les droits d'accès.",
         "description": "Invalid token"
     },
     "optionsSyncTokenForbidden": {
-        "message": "Droits d'accÃs insuffisants.",
+        "message": "Droits d'accès insuffisants.",
         "description": "Token forbidden"
     },
     "storageErrorQuota": {
@@ -744,6 +744,62 @@
     "pomodoroReset": {
         "message": "Reset",
         "description": "Pomodoro reset button"
+    },
+    "widgetsAlarmTimer": {
+        "message": "Alarme / Minuteur",
+        "description": "Alarm / Timer widget toggle label"
+    },
+    "alarmtimerTitle": {
+        "message": "Alarme / Minuteur",
+        "description": "Alarm/Timer widget title"
+    },
+    "alarmtimerAlarm": {
+        "message": "Alarme",
+        "description": "Alarm tab"
+    },
+    "alarmtimerTimer": {
+        "message": "Minuteur",
+        "description": "Timer tab"
+    },
+    "alarmtimerHours": {
+        "message": "HH",
+        "description": "Hours input placeholder"
+    },
+    "alarmtimerMinutes": {
+        "message": "MM",
+        "description": "Minutes input placeholder"
+    },
+    "alarmtimerSeconds": {
+        "message": "SS",
+        "description": "Seconds input placeholder"
+    },
+    "alarmtimerSet": {
+        "message": "Définir",
+        "description": "Set alarm button"
+    },
+    "alarmtimerAlarmSet": {
+        "message": "Alarme à",
+        "description": "Alarm set status text"
+    },
+    "alarmtimerOn": {
+        "message": "On",
+        "description": "Turn alarm on"
+    },
+    "alarmtimerOff": {
+        "message": "Off",
+        "description": "Turn alarm off"
+    },
+    "alarmtimerStart": {
+        "message": "Démarrer",
+        "description": "Start timer button"
+    },
+    "alarmtimerPause": {
+        "message": "Pause",
+        "description": "Pause timer button"
+    },
+    "alarmtimerReset": {
+        "message": "Réinitialiser",
+        "description": "Reset timer button"
     },
     "alarmtimerTurnOff": {
         "message": "Éteindre",

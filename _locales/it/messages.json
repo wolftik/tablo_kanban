@@ -4,695 +4,695 @@
                     "description":  "Extension name"
                 },
     "appDescription":  {
-                           "message":  "Barra dei segnalibri e bacheca Kanban come pagina della nuova scheda",
-                           "description":  "Extension description"
-                       },
-    "bookmarkAddTitle":  {
-                             "message":  "Aggiungi Segnalibro",
-                             "description":  "Add bookmark dialog title"
-                         },
-    "bookmarkUrlPlaceholder":  {
-                                   "message":  "URL (https://esempio.com)",
-                                   "description":  "Bookmark URL input placeholder"
-                               },
-    "bookmarkTitlePlaceholder":  {
-                                     "message":  "Titolo",
-                                     "description":  "Bookmark title input placeholder"
-                                 },
-    "bookmarkCancel":  {
-                           "message":  "Annulla",
-                           "description":  "Cancel button"
-                       },
-    "bookmarkSave":  {
-                         "message":  "Salva",
-                         "description":  "Save button"
-                     },
-    "bookmarkEditTitle":  {
-                              "message":  "Modifica Segnalibro",
-                              "description":  "Edit bookmark dialog title"
-                          },
-    "bookmarkEditUrlPlaceholder":  {
-                                       "message":  "URL",
-                                       "description":  "Edit bookmark URL placeholder"
-                                   },
-    "bookmarkEditTitlePlaceholder":  {
-                                         "message":  "Titolo",
-                                         "description":  "Edit bookmark title placeholder"
-                                     },
-    "bookmarkContextEdit":  {
-                                "message":  "Modifica",
-                                "description":  "Context menu edit action"
-                            },
-    "bookmarkContextDelete":  {
-                                  "message":  "Elimina",
-                                  "description":  "Context menu delete action"
-                              },
-    "cardPlaceholderAddSite":  {
-                                   "message":  "Aggiungi sito",
-                                   "description":  "Add site placeholder"
-                               },
-    "filterAllAssignees":  {
-                               "message":  "Tutti gli assegnatari",
-                               "description":  "Filter: all assignees option"
-                           },
-    "filterAllAuthors":  {
-                             "message":  "Tutti gli autori",
-                             "description":  "Filter: all authors option"
-                         },
-    "filterAllPriorities":  {
-                                "message":  "Tutte le priorità",
-                                "description":  "Filter: all priorities option"
-                            },
-    "filterSearchPlaceholder":  {
-                                    "message":  "Cerca attività...",
-                                    "description":  "Filter search placeholder"
-                                },
-    "filterClearTitle":  {
-                             "message":  "Cancella filtri",
-                             "description":  "Clear filters button title"
-                         },
-    "priorityLow":  {
-                        "message":  "Bassa",
-                        "description":  "Low priority"
-                    },
-    "priorityMedium":  {
-                           "message":  "Media",
-                           "description":  "Medium priority"
-                       },
-    "priorityHigh":  {
-                         "message":  "Alta",
-                         "description":  "High priority"
-                     },
-    "priorityUrgent":  {
-                           "message":  "Urgente",
-                           "description":  "Urgent priority"
-                       },
-    "tagsFilterAll":  {
-                          "message":  "Tutti i tag",
-                          "description":  "Tags filter: all"
+                          "message":  "Barra dei segnalibri e bacheca Kanban come pagina della nuova scheda",
+                          "description":  "Extension description"
                       },
+    "bookmarkAddTitle":  {
+                            "message":  "Aggiungi Segnalibro",
+                            "description":  "Add bookmark dialog title"
+                        },
+    "bookmarkUrlPlaceholder":  {
+                                  "message":  "URL (https://esempio.com)",
+                                  "description":  "Bookmark URL input placeholder"
+                              },
+    "bookmarkTitlePlaceholder":  {
+                                    "message":  "Titolo",
+                                    "description":  "Bookmark title input placeholder"
+                                },
+    "bookmarkCancel":  {
+                          "message":  "Annulla",
+                          "description":  "Cancel button"
+                      },
+    "bookmarkSave":  {
+                        "message":  "Salva",
+                        "description":  "Save button"
+                    },
+    "bookmarkEditTitle":  {
+                             "message":  "Modifica Segnalibro",
+                             "description":  "Edit bookmark dialog title"
+                         },
+    "bookmarkEditUrlPlaceholder":  {
+                                      "message":  "URL",
+                                      "description":  "Edit bookmark URL placeholder"
+                                  },
+    "bookmarkEditTitlePlaceholder":  {
+                                        "message":  "Titolo",
+                                        "description":  "Edit bookmark title placeholder"
+                                    },
+    "bookmarkContextEdit":  {
+                               "message":  "Modifica",
+                               "description":  "Context menu edit action"
+                           },
+    "bookmarkContextDelete":  {
+                                 "message":  "Elimina",
+                                 "description":  "Context menu delete action"
+                             },
+    "cardPlaceholderAddSite":  {
+                                  "message":  "Aggiungi sito",
+                                  "description":  "Add site placeholder"
+                              },
+    "filterAllAssignees":  {
+                              "message":  "Tutti gli assegnatari",
+                              "description":  "Filter: all assignees option"
+                          },
+    "filterAllAuthors":  {
+                            "message":  "Tutti gli autori",
+                            "description":  "Filter: all authors option"
+                        },
+    "filterAllPriorities":  {
+                               "message":  "Tutte le priorità",
+                               "description":  "Filter: all priorities option"
+                           },
+    "filterSearchPlaceholder":  {
+                                   "message":  "Cerca attività...",
+                                   "description":  "Filter search placeholder"
+                               },
+    "filterClearTitle":  {
+                            "message":  "Cancella filtri",
+                            "description":  "Clear filters button title"
+                        },
+    "priorityLow":  {
+                       "message":  "Bassa",
+                       "description":  "Low priority"
+                   },
+    "priorityMedium":  {
+                          "message":  "Media",
+                          "description":  "Medium priority"
+                      },
+    "priorityHigh":  {
+                        "message":  "Alta",
+                        "description":  "High priority"
+                    },
+    "priorityUrgent":  {
+                          "message":  "Urgente",
+                          "description":  "Urgent priority"
+                      },
+    "tagsFilterAll":  {
+                         "message":  "Tutti i tag",
+                         "description":  "Tags filter: all"
+                     },
     "tagsFilterSelected":  {
-                               "message":  "$count$ selezionati",
-                               "description":  "Tags filter: selected count",
+                              "message":  "$count$ selezionati",
+                              "description":  "Tags filter: selected count",
+                              "placeholders":  {
+                                                   "count":  {
+                                                                 "content":  "$1"
+                                                             }
+                                               }
+                          },
+    "tagsRemoveTitle":  {
+                           "message":  "Rimuovi filtro",
+                           "description":  "Remove tag filter tooltip"
+                       },
+    "modalTask":  {
+                     "message":  "Attività",
+                     "description":  "Modal title"
+                 },
+    "modalTitlePlaceholder":  {
+                                 "message":  "Titolo attività",
+                                 "description":  "Modal title input placeholder"
+                             },
+    "modalDescPlaceholder":  {
+                                "message":  "Descrizione",
+                                "description":  "Modal description placeholder"
+                            },
+    "modalAssignee":  {
+                         "message":  "Assegnatario:",
+                         "description":  "Assignee label"
+                     },
+    "modalNotAssigned":  {
+                            "message":  "Non assegnato",
+                            "description":  "Not assigned option"
+                        },
+    "modalAuthor":  {
+                       "message":  "Autore:",
+                       "description":  "Author label"
+                   },
+    "modalNotSpecified":  {
+                             "message":  "Non specificato",
+                             "description":  "Not specified option"
+                         },
+    "modalTags":  {
+                     "message":  "Tag:",
+                     "description":  "Tags label"
+                 },
+    "modalTagsSelect":  {
+                           "message":  "Seleziona tag",
+                           "description":  "Tags select tooltip"
+                       },
+    "modalPriority":  {
+                         "message":  "Priorità:",
+                         "description":  "Priority label"
+                     },
+    "modalNoPriority":  {
+                           "message":  "Nessuna priorità",
+                           "description":  "No priority option"
+                       },
+    "modalDelete":  {
+                       "message":  "Elimina",
+                       "description":  "Delete button"
+                   },
+    "modalCancel":  {
+                       "message":  "Annulla",
+                       "description":  "Cancel button"
+                   },
+    "modalSave":  {
+                     "message":  "Salva",
+                     "description":  "Save button"
+                 },
+    "modalNewTask":  {
+                        "message":  "Nuova Attività",
+                        "description":  "New task modal title"
+                    },
+    "modalEditTask":  {
+                         "message":  "Modifica Attività",
+                         "description":  "Edit task modal title"
+                     },
+    "columnAddCard":  {
+                         "message":  "+ Aggiungi Scheda",
+                         "description":  "Add card button"
+                     },
+    "columnAddColumn":  {
+                           "message":  "+ Aggiungi Colonna",
+                           "description":  "Add column button"
+                       },
+    "columnAddTitle":  {
+                          "message":  "Nuova Colonna",
+                          "description":  "Add column dialog title"
+                      },
+    "columnAddCreate":  {
+                           "message":  "Crea",
+                           "description":  "Create column button"
+                       },
+    "columnNewColumn":  {
+                           "message":  "Nuova Colonna",
+                           "description":  "New column default name"
+                       },
+    "columnNewPlaceholder":  {
+                                "message":  "Nome colonna",
+                                "description":  "New column input placeholder"
+                            },
+    "columnNewColor":  {
+                          "message":  "Colore:",
+                          "description":  "Color picker label"
+                      },
+    "columnDelete":  {
+                        "message":  "Elimina",
+                        "description":  "Delete column button"
+                    },
+    "columnDeleteConfirm":  {
+                               "message":  "Eliminare la colonna \"$title$\" e tutte le sue schede?",
+                               "description":  "Column delete confirmation",
                                "placeholders":  {
-                                                    "count":  {
+                                                    "title":  {
                                                                   "content":  "$1"
                                                               }
                                                 }
                            },
-    "tagsRemoveTitle":  {
-                            "message":  "Rimuovi filtro",
-                            "description":  "Remove tag filter tooltip"
-                        },
-    "modalTask":  {
-                      "message":  "Attività",
-                      "description":  "Modal title"
-                  },
-    "modalTitlePlaceholder":  {
-                                  "message":  "Titolo attività",
-                                  "description":  "Modal title input placeholder"
-                              },
-    "modalDescPlaceholder":  {
-                                 "message":  "Descrizione",
-                                 "description":  "Modal description placeholder"
-                             },
-    "modalAssignee":  {
-                          "message":  "Assegnatario:",
-                          "description":  "Assignee label"
-                      },
-    "modalNotAssigned":  {
-                             "message":  "Non assegnato",
-                             "description":  "Not assigned option"
-                         },
-    "modalAuthor":  {
-                        "message":  "Autore:",
-                        "description":  "Author label"
-                    },
-    "modalNotSpecified":  {
-                              "message":  "Non specificato",
-                              "description":  "Not specified option"
-                          },
-    "modalTags":  {
-                      "message":  "Tag:",
-                      "description":  "Tags label"
-                  },
-    "modalTagsSelect":  {
-                            "message":  "Seleziona tag",
-                            "description":  "Tags select tooltip"
-                        },
-    "modalPriority":  {
-                          "message":  "Priorità:",
-                          "description":  "Priority label"
-                      },
-    "modalNoPriority":  {
-                            "message":  "Nessuna priorità",
-                            "description":  "No priority option"
-                        },
-    "modalDelete":  {
-                        "message":  "Elimina",
-                        "description":  "Delete button"
-                    },
-    "modalCancel":  {
-                        "message":  "Annulla",
-                        "description":  "Cancel button"
-                    },
-    "modalSave":  {
-                      "message":  "Salva",
-                      "description":  "Save button"
-                  },
-    "modalNewTask":  {
-                         "message":  "Nuova Attività",
-                         "description":  "New task modal title"
-                     },
-    "modalEditTask":  {
-                          "message":  "Modifica Attività",
-                          "description":  "Edit task modal title"
-                      },
-    "columnAddCard":  {
-                          "message":  "+ Aggiungi Scheda",
-                          "description":  "Add card button"
-                      },
-    "columnAddColumn":  {
-                            "message":  "+ Aggiungi Colonna",
-                            "description":  "Add column button"
-                        },
-    "columnAddTitle":  {
-                           "message":  "Nuova Colonna",
-                           "description":  "Add column dialog title"
-                       },
-    "columnAddCreate":  {
-                            "message":  "Crea",
-                            "description":  "Create column button"
-                        },
-    "columnNewColumn":  {
-                            "message":  "Nuova Colonna",
-                            "description":  "New column default name"
-                        },
-    "columnNewPlaceholder":  {
-                                 "message":  "Nome colonna",
-                                 "description":  "New column input placeholder"
-                             },
-    "columnNewColor":  {
-                           "message":  "Colore:",
-                           "description":  "Color picker label"
-                       },
-    "columnDelete":  {
-                         "message":  "Elimina",
-                         "description":  "Delete column button"
-                     },
-    "columnDeleteConfirm":  {
-                                "message":  "Eliminare la colonna \"$title$\" e tutte le sue schede?",
-                                "description":  "Column delete confirmation",
-                                "placeholders":  {
-                                                     "title":  {
-                                                                   "content":  "$1"
-                                                               }
-                                                 }
-                            },
     "columnDeleteCardConfirm":  {
-                                    "message":  "Eliminare l\u0027attività \"$title$\"?",
-                                    "description":  "Card delete confirmation",
-                                    "placeholders":  {
-                                                         "title":  {
+                                   "message":  "Eliminare l'attività \"$title$\"?",
+                                   "description":  "Card delete confirmation",
+                                   "placeholders":  {
+                                                        "title":  {
+                                                                      "content":  "$1"
+                                                                  }
+                                                    }
+                               },
+    "columnNoTags":  {
+                        "message":  "Nessun tag",
+                        "description":  "No tags fallback"
+                    },
+    "columnClearCards":  {
+                            "message":  "Cancella tutte le schede",
+                            "description":  "Clear cards button"
+                        },
+    "columnClearCardsConfirm":  {
+                                   "message":  "Digita \"$phrase$\" per confermare",
+                                   "description":  "Clear cards prompt",
+                                   "placeholders":  {
+                                                        "phrase":  {
                                                                        "content":  "$1"
                                                                    }
-                                                     }
-                                },
-    "columnNoTags":  {
-                         "message":  "Nessun tag",
-                         "description":  "No tags fallback"
-                     },
-    "columnClearCards":  {
-                             "message":  "Cancella tutte le schede",
-                             "description":  "Clear cards button"
-                         },
-    "columnClearCardsConfirm":  {
-                                    "message":  "Digita \"$phrase$\" per confermare",
-                                    "description":  "Clear cards prompt",
-                                    "placeholders":  {
-                                                         "phrase":  {
-                                                                        "content":  "$1"
-                                                                    }
-                                                     }
-                                },
+                                                    }
+                               },
     "columnClearCardsPhrase":  {
-                                   "message":  "svuota",
-                                   "description":  "Clear cards prompt phrase"
-                               },
+                                  "message":  "svuota",
+                                  "description":  "Clear cards prompt phrase"
+                              },
     "columnClearCardsWrong":  {
-                                  "message":  "Frase errata",
-                                  "description":  "Clear cards wrong phrase error"
-                              },
+                                 "message":  "Frase errata",
+                                 "description":  "Clear cards wrong phrase error"
+                             },
     "settingsTitle":  {
-                          "message":  "Impostazioni",
-                          "description":  "Settings button title"
-                      },
+                         "message":  "Impostazioni",
+                         "description":  "Settings button title"
+                     },
     "settingsOpen":  {
-                         "message":  "Apri Tablo Kanban",
-                         "description":  "Open extension text"
-                     },
+                        "message":  "Apri Tablo Kanban",
+                        "description":  "Open extension text"
+                    },
     "optionsTitle":  {
-                         "message":  "Impostazioni — Tablo Kanban",
-                         "description":  "Options page title"
-                     },
+                        "message":  "Impostazioni — Tablo Kanban",
+                        "description":  "Options page title"
+                    },
     "optionsTabColumns":  {
-                              "message":  "Colonne",
-                              "description":  "Columns tab button"
-                          },
+                             "message":  "Colonne",
+                             "description":  "Columns tab button"
+                         },
     "optionsTabTags":  {
-                           "message":  "Tag",
-                           "description":  "Tags tab button"
-                       },
+                          "message":  "Tag",
+                          "description":  "Tags tab button"
+                      },
     "optionsTabPerformers":  {
-                                 "message":  "Assegnatari",
-                                 "description":  "Performers tab button"
-                             },
+                                "message":  "Assegnatari",
+                                "description":  "Performers tab button"
+                            },
     "optionsTabAuthors":  {
-                              "message":  "Autori",
-                              "description":  "Authors tab button"
-                          },
+                             "message":  "Autori",
+                             "description":  "Authors tab button"
+                         },
     "optionsTabAppearance":  {
-                                 "message":  "Aspetto",
-                                 "description":  "Appearance tab button"
-                             },
+                                "message":  "Aspetto",
+                                "description":  "Appearance tab button"
+                            },
     "optionsTabSync":  {
-                           "message":  "Sincronizzazione",
-                           "description":  "Sync tab button"
-                       },
+                          "message":  "Sincronizzazione",
+                          "description":  "Sync tab button"
+                      },
     "optionsSyncTitle":  {
-                             "message":  "Sincronizzazione",
-                             "description":  "Sync section title"
-                         },
+                            "message":  "Sincronizzazione",
+                            "description":  "Sync section title"
+                        },
     "optionsSyncProvider":  {
-                                "message":  "Provider di sincronizzazione:",
-                                "description":  "Sync provider label"
-                            },
+                               "message":  "Provider di sincronizzazione:",
+                               "description":  "Sync provider label"
+                           },
     "optionsSyncProviderGoogle":  {
-                                      "message":  "Google Drive",
-                                      "description":  "Google Drive option"
-                                  },
+                                     "message":  "Google Drive",
+                                     "description":  "Google Drive option"
+                                 },
     "optionsSyncProviderYandex":  {
-                                      "message":  "Yandex Disk",
-                                      "description":  "Yandex Disk option"
-                                  },
+                                     "message":  "Yandex Disk",
+                                     "description":  "Yandex Disk option"
+                                 },
     "optionsSyncDescGoogle":  {
-                                  "message":  "I dati della bacheca Kanban verranno sincronizzati tra i dispositivi tramite Google Drive. La sincronizzazione di Google Drive funziona solo in Chrome.",
-                                  "description":  "Google Drive sync description"
-                              },
+                                 "message":  "I dati della bacheca Kanban verranno sincronizzati tra i dispositivi tramite Google Drive. La sincronizzazione di Google Drive funziona solo in Chrome.",
+                                 "description":  "Google Drive sync description"
+                             },
     "optionsSyncDescYandex":  {
-                                  "message":  "I dati della bacheca Kanban verranno sincronizzati tra i dispositivi tramite Yandex Disk.",
-                                  "description":  "Yandex Disk sync description"
-                              },
+                                 "message":  "I dati della bacheca Kanban verranno sincronizzati tra i dispositivi tramite Yandex Disk.",
+                                 "description":  "Yandex Disk sync description"
+                             },
     "optionsSyncChecking":  {
-                                "message":  "Verifica stato in corso...",
-                                "description":  "Sync status checking"
-                            },
+                               "message":  "Verifica stato in corso...",
+                               "description":  "Sync status checking"
+                           },
     "optionsSyncConnected":  {
-                                 "message":  "Sincronizzazione connessa",
-                                 "description":  "Sync connected status"
-                             },
+                                "message":  "Sincronizzazione connessa",
+                                "description":  "Sync connected status"
+                            },
     "optionsSyncDisconnected":  {
-                                    "message":  "Sincronizzazione non connessa",
-                                    "description":  "Sync disconnected status"
-                                },
+                                   "message":  "Sincronizzazione non connessa",
+                                   "description":  "Sync disconnected status"
+                               },
     "optionsSyncSignin":  {
-                              "message":  "Connetti",
-                              "description":  "Sign in button"
-                          },
+                             "message":  "Connetti",
+                             "description":  "Sign in button"
+                         },
     "optionsSyncSignout":  {
-                               "message":  "Disconnetti sincronizzazione",
-                               "description":  "Sign out button"
-                           },
+                              "message":  "Disconnetti sincronizzazione",
+                              "description":  "Sign out button"
+                          },
     "optionsSyncFailed":  {
-                              "message":  "Connessione fallita",
-                              "description":  "Sync failed status"
-                          },
+                             "message":  "Connessione fallita",
+                             "description":  "Sync failed status"
+                         },
     "optionsSyncError":  {
-                             "message":  "Controllo stato fallito",
-                             "description":  "Sync error status"
-                         },
+                            "message":  "Controllo stato fallito",
+                            "description":  "Sync error status"
+                        },
     "optionsSyncTokenExpired":  {
-                                    "message":  "Token Yandex Disk scaduto o non valido. Inserisci un nuovo token.",
-                                    "description":  "Token expired message"
-                                },
+                                   "message":  "Token Yandex Disk scaduto o non valido. Inserisci un nuovo token.",
+                                   "description":  "Token expired message"
+                               },
     "optionsSyncYadiskApply":  {
-                                   "message":  "Salva token",
-                                   "description":  "Save token button"
-                               },
+                                  "message":  "Salva token",
+                                  "description":  "Save token button"
+                              },
     "optionsSyncYadiskClear":  {
-                                   "message":  "Cancella token",
-                                   "description":  "Clear token button"
-                               },
+                                  "message":  "Cancella token",
+                                  "description":  "Clear token button"
+                              },
     "optionsSyncYadiskOauthGet":  {
-                                      "message":  "Ottieni token OAuth",
-                                      "description":  "Get OAuth token button"
-                                  },
+                                     "message":  "Ottieni token OAuth",
+                                     "description":  "Get OAuth token button"
+                                 },
     "optionsSyncYadiskOauthOpened":  {
-                                         "message":  "Pagina di autorizzazione Yandex aperta in una nuova scheda. Dopo l\u0027autorizzazione, copia il token dalla barra degli indirizzi, incollalo nel campo \u0027Token OAuth\u0027 qui sotto, quindi fai clic su \u0027Salva token\u0027.",
-                                         "description":  "OAuth page opened message"
-                                     },
+                                        "message":  "Pagina di autorizzazione Yandex aperta in una nuova scheda. Dopo l'autorizzazione, copia il token dalla barra degli indirizzi, incollalo nel campo 'Token OAuth' qui sotto, quindi fai clic su 'Salva token'.",
+                                        "description":  "OAuth page opened message"
+                                    },
     "optionsSyncYadiskClientHint":  {
-                                        "message":  "Per connettere Yandex Disk, registra un\u0027app su oauth.yandex.ru e inserisci ClientID:",
-                                        "description":  "Client ID hint text"
-                                    },
-    "optionsSyncYadiskClientStep2":  {
-                                         "message":  "Crea un\u0027app → tipo «Web service»",
-                                         "description":  "Step 2"
-                                     },
-    "optionsSyncYadiskClientStep4":  {
-                                         "message":  "Aggiungi le autorizzazioni cloud_api:disk.write e cloud_api:disk.read",
-                                         "description":  "Step 4"
-                                     },
-    "optionsSyncYadiskClientStep5":  {
-                                         "message":  "Copia ClientID (non Client Secret!) e incolla qui sotto",
-                                         "description":  "Step 5"
-                                     },
-    "optionsSyncYadiskClientSave":  {
-                                        "message":  "Salva ClientID",
-                                        "description":  "Save client ID button"
-                                    },
-    "optionsColumnsTitle":  {
-                                "message":  "Colonne della Bacheca",
-                                "description":  "Columns section title"
-                            },
-    "optionsColumnsDesc":  {
-                               "message":  "Trascina per riordinare. Fai clic su × per eliminare.",
-                               "description":  "Columns section description"
-                           },
-    "optionsColumnsAdd":  {
-                              "message":  "Aggiungi Colonna",
-                              "description":  "Add column button"
-                          },
-    "optionsColumnsNew":  {
-                              "message":  "Nuova Colonna",
-                              "description":  "New column placeholder"
-                          },
-    "optionsTagsTitle":  {
-                             "message":  "Tag",
-                             "description":  "Tags section title"
-                         },
-    "optionsTagsAdd":  {
-                           "message":  "Aggiungi Tag",
-                           "description":  "Add tag button"
-                       },
-    "optionsTagsNew":  {
-                           "message":  "Nuovo Tag",
-                           "description":  "New tag placeholder"
-                       },
-    "optionsPerformersTitle":  {
-                                   "message":  "Assegnatari",
-                                   "description":  "Performers section title"
-                               },
-    "optionsPerformersAdd":  {
-                                 "message":  "Aggiungi Assegnatario",
-                                 "description":  "Add performer button"
-                             },
-    "optionsPerformersNew":  {
-                                 "message":  "Nuovo Assegnatario",
-                                 "description":  "New performer placeholder"
-                             },
-    "optionsAuthorsTitle":  {
-                                "message":  "Autori",
-                                "description":  "Authors section title"
-                            },
-    "optionsAuthorsAdd":  {
-                              "message":  "Aggiungi Autore",
-                              "description":  "Add author button"
-                          },
-    "optionsAuthorsNew":  {
-                              "message":  "Nuovo Autore",
-                              "description":  "New author placeholder"
-                          },
-    "optionsAppearanceTheme":  {
-                                   "message":  "Tema",
-                                   "description":  "Theme section title"
-                               },
-    "optionsAppearanceLight":  {
-                                   "message":  "Chiaro",
-                                   "description":  "Light theme option"
-                               },
-    "optionsAppearanceDark":  {
-                                  "message":  "Scuro",
-                                  "description":  "Dark theme option"
-                              },
-    "optionsAppearanceSystem":  {
-                                    "message":  "Sistema",
-                                    "description":  "System theme option"
-                                },
-    "optionsAppearanceLanguage":  {
-                                      "message":  "Lingua",
-                                      "description":  "Language section title"
-                                  },
-    "optionsBack":  {
-                        "message":  "← Indietro",
-                        "description":  "Back to main page button"
-                    },
-    "optionsSave":  {
-                        "message":  "Salva",
-                        "description":  "Save button"
-                    },
-    "optionsSaved":  {
-                         "message":  "Salvato!",
-                         "description":  "Saved confirmation"
-                     },
-    "optionsAboutVersion":  {
-                                "message":  "Versione {version}",
-                                "description":  "Version info"
-                            },
-    "optionsAboutDesc":  {
-                             "message":  "Barra dei segnalibri e bacheca Kanban per la tua nuova scheda di Chrome.",
-                             "description":  "About description"
-                         },
-    "optionsAboutStorage":  {
-                                "message":  "I dati della bacheca sono memorizzati localmente in chrome.storage.local. Le impostazioni e le chiavi API sono in chrome.storage.sync (sincronizzate tra dispositivi). I dati della bacheca vengono sincronizzati tramite un provider scelto (Google Drive o Yandex Disk).",
-                                "description":  "Storage info"
-                            },
-    "optionsSupportTitle":  {
-                                "message":  "Supporta il Progetto",
-                                "description":  "Support section title"
-                            },
-    "optionsSupportDesc":  {
-                               "message":  "Se trovi utile questa estensione, puoi supportarne lo sviluppo:",
-                               "description":  "Support section description"
-                           },
-    "optionsSupportOkx":  {
-                              "message":  "OKX (crypto)",
-                              "description":  "OKX donate button label"
-                          },
-    "optionsSupportOkxHint":  {
-                                  "message":  "Codice QR per il trasferimento",
-                                  "description":  "OKX donate hint"
-                              },
-    "optionsSupportOkxModalTitle":  {
-                                        "message":  "Supporta tramite OKX",
-                                        "description":  "OKX QR modal title"
-                                    },
-    "optionsSupportOkxModalDesc":  {
-                                       "message":  "Scansiona il codice QR nell\u0027app OKX per trasferire:",
-                                       "description":  "OKX QR modal description"
+                                       "message":  "Per connettere Yandex Disk, registra un'app su oauth.yandex.ru e inserisci ClientID:",
+                                       "description":  "Client ID hint text"
                                    },
+    "optionsSyncYadiskClientStep2":  {
+                                        "message":  "Crea un'app → tipo «Web service»",
+                                        "description":  "Step 2"
+                                    },
+    "optionsSyncYadiskClientStep4":  {
+                                        "message":  "Aggiungi le autorizzazioni cloud_api:disk.write e cloud_api:disk.read",
+                                        "description":  "Step 4"
+                                    },
+    "optionsSyncYadiskClientStep5":  {
+                                        "message":  "Copia ClientID (non Client Secret!) e incolla qui sotto",
+                                        "description":  "Step 5"
+                                    },
+    "optionsSyncYadiskClientSave":  {
+                                       "message":  "Salva ClientID",
+                                       "description":  "Save client ID button"
+                                   },
+    "optionsColumnsTitle":  {
+                               "message":  "Colonne della Bacheca",
+                               "description":  "Columns section title"
+                           },
+    "optionsColumnsDesc":  {
+                              "message":  "Trascina per riordinare. Fai clic su × per eliminare.",
+                              "description":  "Columns section description"
+                          },
+    "optionsColumnsAdd":  {
+                             "message":  "Aggiungi Colonna",
+                             "description":  "Add column button"
+                         },
+    "optionsColumnsNew":  {
+                             "message":  "Nuova Colonna",
+                             "description":  "New column placeholder"
+                         },
+    "optionsTagsTitle":  {
+                            "message":  "Tag",
+                            "description":  "Tags section title"
+                        },
+    "optionsTagsAdd":  {
+                          "message":  "Aggiungi Tag",
+                          "description":  "Add tag button"
+                      },
+    "optionsTagsNew":  {
+                          "message":  "Nuovo Tag",
+                          "description":  "New tag placeholder"
+                      },
+    "optionsPerformersTitle":  {
+                                  "message":  "Assegnatari",
+                                  "description":  "Performers section title"
+                              },
+    "optionsPerformersAdd":  {
+                                "message":  "Aggiungi Assegnatario",
+                                "description":  "Add performer button"
+                            },
+    "optionsPerformersNew":  {
+                                "message":  "Nuovo Assegnatario",
+                                "description":  "New performer placeholder"
+                            },
+    "optionsAuthorsTitle":  {
+                               "message":  "Autori",
+                               "description":  "Authors section title"
+                           },
+    "optionsAuthorsAdd":  {
+                             "message":  "Aggiungi Autore",
+                             "description":  "Add author button"
+                         },
+    "optionsAuthorsNew":  {
+                             "message":  "Nuovo Autore",
+                             "description":  "New author placeholder"
+                         },
+    "optionsAppearanceTheme":  {
+                                  "message":  "Tema",
+                                  "description":  "Theme section title"
+                              },
+    "optionsAppearanceLight":  {
+                                  "message":  "Chiaro",
+                                  "description":  "Light theme option"
+                              },
+    "optionsAppearanceDark":  {
+                                 "message":  "Scuro",
+                                 "description":  "Dark theme option"
+                             },
+    "optionsAppearanceSystem":  {
+                                   "message":  "Sistema",
+                                   "description":  "System theme option"
+                               },
+    "optionsAppearanceLanguage":  {
+                                     "message":  "Lingua",
+                                     "description":  "Language section title"
+                                 },
+    "optionsBack":  {
+                       "message":  "← Indietro",
+                       "description":  "Back to main page button"
+                   },
+    "optionsSave":  {
+                       "message":  "Salva",
+                       "description":  "Save button"
+                   },
+    "optionsSaved":  {
+                        "message":  "Salvato!",
+                        "description":  "Saved confirmation"
+                    },
+    "optionsAboutVersion":  {
+                               "message":  "Versione {version}",
+                               "description":  "Version info"
+                           },
+    "optionsAboutDesc":  {
+                            "message":  "Barra dei segnalibri e bacheca Kanban per la tua nuova scheda di Chrome.",
+                            "description":  "About description"
+                        },
+    "optionsAboutStorage":  {
+                               "message":  "I dati della bacheca sono memorizzati localmente in localStorage (senza sincronizzazione) o nel cloud (Google Drive / Yandex Disk) quando la sincronizzazione è attiva. Le impostazioni e le chiavi API sono in chrome.storage.sync.",
+                               "description":  "Storage info"
+                           },
+    "optionsSupportTitle":  {
+                               "message":  "Supporta il Progetto",
+                               "description":  "Support section title"
+                           },
+    "optionsSupportDesc":  {
+                              "message":  "Se trovi utile questa estensione, puoi supportarne lo sviluppo:",
+                              "description":  "Support section description"
+                          },
+    "optionsSupportOkx":  {
+                             "message":  "OKX (crypto)",
+                             "description":  "OKX donate button label"
+                         },
+    "optionsSupportOkxHint":  {
+                                 "message":  "Codice QR per il trasferimento",
+                                 "description":  "OKX donate hint"
+                             },
+    "optionsSupportOkxModalTitle":  {
+                                       "message":  "Supporta tramite OKX",
+                                       "description":  "OKX QR modal title"
+                                   },
+    "optionsSupportOkxModalDesc":  {
+                                      "message":  "Scansiona il codice QR nell'app OKX per trasferire:",
+                                      "description":  "OKX QR modal description"
+                                  },
     "cardOldTooltip":  {
-                           "message":  "L\u0027attività Ã più vecchia di 7 giorni",
-                           "description":  "Snail tooltip for old cards in first column"
-                       },
+                          "message":  "L'attività è più vecchia di 7 giorni",
+                          "description":  "Snail tooltip for old cards in first column"
+                      },
     "cardFireTooltip":  {
-                            "message":  "L\u0027attività Ã più vecchia di 22 giorni",
-                            "description":  "Fire tooltip for very old cards in first column"
-                        },
+                           "message":  "L'attività è più vecchia di 22 giorni",
+                           "description":  "Fire tooltip for very old cards in first column"
+                       },
     "cardTagsPlaceholder":  {
-                                "message":  "Tutti i tag",
-                                "description":  "Card tags placeholder"
-                            },
+                               "message":  "Tutti i tag",
+                               "description":  "Card tags placeholder"
+                           },
     "cardTagsDropdownHeader":  {
-                                   "message":  "Seleziona tag",
-                                   "description":  "Tags dropdown header"
-                               },
+                                  "message":  "Seleziona tag",
+                                  "description":  "Tags dropdown header"
+                              },
     "cardTagsDropdownClear":  {
-                                  "message":  "Cancella",
-                                  "description":  "Clear tags button"
-                              },
+                                 "message":  "Cancella",
+                                 "description":  "Clear tags button"
+                             },
     "cardTagsRemoveTitle":  {
-                                "message":  "Rimuovi tag",
-                                "description":  "Remove tag tooltip"
-                            },
+                               "message":  "Rimuovi tag",
+                               "description":  "Remove tag tooltip"
+                           },
     "widgetsClock":  {
-                         "message":  "Orologio",
-                         "description":  "Clock widget label"
-                     },
+                        "message":  "Orologio",
+                        "description":  "Clock widget label"
+                    },
     "widgetsWeather":  {
-                           "message":  "Meteo",
-                           "description":  "Weather widget label"
-                       },
+                          "message":  "Meteo",
+                          "description":  "Weather widget label"
+                      },
     "weatherCity":  {
-                        "message":  "Città",
-                        "description":  "Weather city label"
-                    },
+                       "message":  "Città",
+                       "description":  "Weather city label"
+                   },
     "weatherCityPlaceholder":  {
-                                   "message":  "es. Roma",
-                                   "description":  "Weather city placeholder"
-                               },
+                                  "message":  "es. Roma",
+                                  "description":  "Weather city placeholder"
+                              },
     "weatherUnit":  {
-                        "message":  "Unità",
-                        "description":  "Weather unit label"
-                    },
+                       "message":  "Unità",
+                       "description":  "Weather unit label"
+                   },
     "weatherCelsius":  {
-                           "message":  "°C",
-                           "description":  "Celsius option"
-                       },
+                          "message":  "°C",
+                          "description":  "Celsius option"
+                      },
     "weatherFahrenheit":  {
-                              "message":  "°F",
-                              "description":  "Fahrenheit option"
-                          },
+                             "message":  "°F",
+                             "description":  "Fahrenheit option"
+                         },
     "weatherError":  {
-                         "message":  "Nessun dato",
-                         "description":  "Weather error message"
-                     },
-    "weatherLoading":  {
-                           "message":  "Caricamento...",
-                           "description":  "Weather loading message"
-                       },
-    "optionsWidgetsTitle":  {
-                                "message":  "Widget",
-                                "description":  "Widgets section title"
-                            },
-    "optionsBookmarksTitle":  {
-                                  "message":  "Segnalibri",
-                                  "description":  "Bookmarks section title"
-                              },
-    "optionsBookmarksSlots":  {
-                                  "message":  "Numero di segnalibri:",
-                                  "description":  "Bookmark slots label"
-                              },
-    "optionsBookmarksSlotsHint":  {
-                                      "message":  "Massimo 22. Deve essere un numero pari.",
-                                      "description":  "Bookmark slots hint"
-                                  },
-    "homepageModalTitle":  {
-                               "message":  "Imposta come Homepage",
-                               "description":  "Homepage modal title"
-                           },
-    "homepageModalDesc":  {
-                              "message":  "Copia questo URL e incollalo nelle impostazioni del browser come pagina di accesso rapido o homepage.",
-                              "description":  "Homepage modal description"
-                          },
-    "homepageModalCopy":  {
-                              "message":  "Copia",
-                              "description":  "Copy button"
-                          },
-    "homepageModalCopied":  {
-                                "message":  "Copiato!",
-                                "description":  "Copied confirmation"
-                            },
-    "homepageModalClose":  {
-                               "message":  "Chiudi",
-                               "description":  "Close button"
-                           },
-    "homepageHint":  {
-                         "message":  "Imposta come homepage",
-                         "description":  "Homepage info button tooltip"
-                     },
-    "modalNoTitle":  {
-                         "message":  "Senza titolo",
-                         "description":  "Fallback for empty card title"
-                     },
-    "storageWarningFull":  {
-                               "message":  "Lo spazio di archiviazione è quasi pieno (90%+). Attiva la sincronizzazione cloud o elimina le schede vecchie per liberare spazio.",
-                               "description":  "Storage warning tooltip when localStorage is near full"
-                           },
-    "optionsSyncCspError":  {
-                                "message":  "Errore CSP — verifica le autorizzazioni",
-                                "description":  "CSP error message for sync"
-                            },
-    "optionsSyncTokenInvalid":  {
-                                    "message":  "Token non valido",
-                                    "description":  "Invalid token error message"
-                                },
-    "optionsSyncTokenForbidden":  {
-                                      "message":  "Token con permessi insufficienti",
-                                      "description":  "Forbidden token error message"
-                                  },
-    "storageErrorQuota":  {
-                              "message":  "Quota di archiviazione superata. Elimina vecchie schede o cancella i dati.",
-                              "description":  "Storage quota exceeded error"
-                          },
-    "storageErrorGeneral":  {
-                                "message":  "Salvataggio dati non riuscito. Riprova.",
-                                "description":  "General storage error"
-                            },
-    "storageIndicator":  {
-                             "message":  "Archiviazione:",
-                             "description":  "Storage indicator label"
-                         },
-    "filterDateFrom":  {
-                           "message":  "Da data",
-                           "description":  "Date from filter title"
-                       },
-    "filterDateTo":  {
-                         "message":  "A data",
-                         "description":  "Date to filter title"
-                     },
-    "optionsStorageUsage":  {
-                                "message":  "Utilizzo archiviazione: {used} KB / {total} KB ({pct}%)",
-                                "description":  "Storage usage in options sync tab"
-                            },
-    "optionsStorageLocal":  {
-                                "message":  "Archiviazione locale",
-                                "description":  "Local storage label in options sync tab"
-                            },
-    "migrationOverflowLost":  {
-                                  "message":  "$count$ su $total$ schede andranno permanentemente perse perché non entrano nello storage locale. Procedere e perderle?",
-                                  "description":  "Warning when cloud-to-local migration cannot fit all cards",
-                                  "placeholders":  {
-                                                       "count":  {
-                                                                     "content":  "$1"
-                                                                 },
-                                                       "total":  {
-                                                                     "content":  "$2"
-                                                                 }
-                                                   }
-                              },
-    "cardDescHeading":  {
-                            "message":  "Descrizione"
-                        },
-    "cardChecklistHeading":  {
-                                 "message":  "Elenco di controllo"
-                             },
-    "cardChecklistAdd":  {
-                             "message":  "+ Aggiungi elemento"
-                         },
-    "cardDescBoldTooltip":  {
-                                "message":  "Grassetto (Ctrl+B)"
-                            },
-    "cardDescItalicTooltip":  {
-                                  "message":  "Corsivo (Ctrl+I)"
-                              },
-    "cardDescUlTooltip":  {
-                              "message":  "Elenco puntato"
-                          },
-    "cardDescOlTooltip":  {
-                              "message":  "Elenco numerato"
-                          },
-    "cardDescQuoteTooltip":  {
-                                 "message":  "Citazione"
-                             },
-    "modalEdit":  {
-                      "message":  "Modifica"
-                  },
-    "modalHide":  {
-                      "message":  "Nascondi"
-                  },
-    "widgetsQuotes":  {
-                          "message":  "Citazioni",
-                          "description":  "Quotes widget label"
-                      },
-    "quotesLoading":  {
-                          "message":  "Caricamento...",
-                          "description":  "Quotes loading message"
-                      },
-    "quotesError":  {
                         "message":  "Nessun dato",
-                        "description":  "Quotes error message"
+                        "description":  "Weather error message"
                     },
+    "weatherLoading":  {
+                          "message":  "Caricamento...",
+                          "description":  "Weather loading message"
+                      },
+    "optionsWidgetsTitle":  {
+                               "message":  "Widget",
+                               "description":  "Widgets section title"
+                           },
+    "optionsBookmarksTitle":  {
+                                 "message":  "Segnalibri",
+                                 "description":  "Bookmarks section title"
+                             },
+    "optionsBookmarksSlots":  {
+                                 "message":  "Numero di segnalibri:",
+                                 "description":  "Bookmark slots label"
+                             },
+    "optionsBookmarksSlotsHint":  {
+                                     "message":  "Massimo 22. Deve essere un numero pari.",
+                                     "description":  "Bookmark slots hint"
+                                 },
+    "homepageModalTitle":  {
+                              "message":  "Imposta come Homepage",
+                              "description":  "Homepage modal title"
+                          },
+    "homepageModalDesc":  {
+                             "message":  "Copia questo URL e incollalo nelle impostazioni del browser come pagina di accesso rapido o homepage.",
+                             "description":  "Homepage modal description"
+                         },
+    "homepageModalCopy":  {
+                             "message":  "Copia",
+                             "description":  "Copy button"
+                         },
+    "homepageModalCopied":  {
+                               "message":  "Copiato!",
+                               "description":  "Copied confirmation"
+                           },
+    "homepageModalClose":  {
+                              "message":  "Chiudi",
+                              "description":  "Close button"
+                          },
+    "homepageHint":  {
+                        "message":  "Imposta come homepage",
+                        "description":  "Homepage info button tooltip"
+                    },
+    "modalNoTitle":  {
+                        "message":  "Senza titolo",
+                        "description":  "Fallback for empty card title"
+                    },
+    "storageWarningFull":  {
+                              "message":  "Lo spazio di archiviazione è quasi pieno (90%+). Attiva la sincronizzazione cloud o elimina le schede vecchie per liberare spazio.",
+                              "description":  "Storage warning tooltip when localStorage is near full"
+                          },
+    "optionsSyncCspError":  {
+                               "message":  "Le richieste a Yandex Disk potrebbero essere bloccate dalle policy di sicurezza.",
+                               "description":  "CSP error message for sync"
+                           },
+    "optionsSyncTokenInvalid":  {
+                                   "message":  "Controlla il token e i diritti di accesso.",
+                                   "description":  "Invalid token error message"
+                               },
+    "optionsSyncTokenForbidden":  {
+                                     "message":  "Diritti di accesso insufficienti.",
+                                     "description":  "Forbidden token error message"
+                                 },
+    "storageErrorQuota":  {
+                             "message":  "Quota di archiviazione superata. Elimina vecchie schede o cancella i dati.",
+                             "description":  "Storage quota exceeded error"
+                         },
+    "storageErrorGeneral":  {
+                               "message":  "Salvataggio dati non riuscito. Riprova.",
+                               "description":  "General storage error"
+                           },
+    "storageIndicator":  {
+                            "message":  "Archiviazione:",
+                            "description":  "Storage indicator label"
+                        },
+    "filterDateFrom":  {
+                          "message":  "Da data",
+                          "description":  "Date from filter title"
+                      },
+    "filterDateTo":  {
+                        "message":  "A data",
+                        "description":  "Date to filter title"
+                    },
+    "optionsStorageUsage":  {
+                               "message":  "Utilizzo archiviazione: {used} KB / {total} KB ({pct}%)",
+                               "description":  "Storage usage in options sync tab"
+                           },
+    "optionsStorageLocal":  {
+                               "message":  "Archiviazione locale",
+                               "description":  "Local storage label in options sync tab"
+                           },
+    "migrationOverflowLost":  {
+                                 "message":  "$count$ su $total$ schede andranno permanentemente perse perché non entrano nello storage locale. Procedere e perderle?",
+                                 "description":  "Warning when cloud-to-local migration cannot fit all cards",
+                                 "placeholders":  {
+                                                      "count":  {
+                                                                    "content":  "$1"
+                                                                },
+                                                      "total":  {
+                                                                   "content":  "$2"
+                                                               }
+                                                  }
+                             },
+    "cardDescHeading":  {
+                           "message":  "Descrizione"
+                       },
+    "cardChecklistHeading":  {
+                                "message":  "Elenco di controllo"
+                            },
+    "cardChecklistAdd":  {
+                            "message":  "+ Aggiungi elemento"
+                        },
+    "cardDescBoldTooltip":  {
+                               "message":  "Grassetto (Ctrl+B)"
+                           },
+    "cardDescItalicTooltip":  {
+                                 "message":  "Corsivo (Ctrl+I)"
+                             },
+    "cardDescUlTooltip":  {
+                             "message":  "Elenco puntato"
+                         },
+    "cardDescOlTooltip":  {
+                             "message":  "Elenco numerato"
+                         },
+    "cardDescQuoteTooltip":  {
+                                "message":  "Citazione"
+                            },
+    "modalEdit":  {
+                     "message":  "Modifica"
+                 },
+    "modalHide":  {
+                     "message":  "Nascondi"
+                 },
+    "widgetsQuotes":  {
+                         "message":  "Citazioni",
+                         "description":  "Quotes widget label"
+                     },
+    "quotesLoading":  {
+                         "message":  "Caricamento...",
+                         "description":  "Quotes loading message"
+                     },
+    "quotesError":  {
+                       "message":  "Nessun dato",
+                       "description":  "Quotes error message"
+                   },
     "widgetsCoin":  {
                        "message":  "Coin Flip",
                        "description":  "Coin flip widget label"
@@ -746,16 +746,72 @@
                          "description":  "Pomodoro reset button"
                      },
 
+    "widgetsAlarmTimer":  {
+                             "message":  "Sveglia / Timer",
+                             "description":  "Alarm / Timer widget toggle label"
+                         },
+    "alarmtimerTitle":  {
+                           "message":  "Sveglia / Timer",
+                           "description":  "Alarm/Timer widget title"
+                       },
+    "alarmtimerAlarm":  {
+                           "message":  "Sveglia",
+                           "description":  "Alarm tab"
+                       },
+    "alarmtimerTimer":  {
+                           "message":  "Timer",
+                           "description":  "Timer tab"
+                       },
+    "alarmtimerHours":  {
+                           "message":  "HH",
+                           "description":  "Hours input placeholder"
+                       },
+    "alarmtimerMinutes":  {
+                             "message":  "MM",
+                             "description":  "Minutes input placeholder"
+                         },
+    "alarmtimerSeconds":  {
+                             "message":  "SS",
+                             "description":  "Seconds input placeholder"
+                         },
+    "alarmtimerSet":  {
+                         "message":  "Imposta",
+                         "description":  "Set alarm button"
+                     },
+    "alarmtimerAlarmSet":  {
+                              "message":  "Sveglia alle",
+                              "description":  "Alarm set status text"
+                          },
+    "alarmtimerOn":  {
+                        "message":  "Acceso",
+                        "description":  "Turn alarm on"
+                    },
+    "alarmtimerOff":  {
+                         "message":  "Spento",
+                         "description":  "Turn alarm off"
+                     },
+    "alarmtimerStart":  {
+                           "message":  "Avvia",
+                           "description":  "Start timer button"
+                       },
+    "alarmtimerPause":  {
+                           "message":  "Pausa",
+                           "description":  "Pause timer button"
+                       },
+    "alarmtimerReset":  {
+                           "message":  "Reimposta",
+                           "description":  "Reset timer button"
+                       },
     "alarmtimerTurnOff":  {
-                              "message":  "Spegni",
-                              "description":  "Turn off alarm button"
-                          },
+                             "message":  "Spegni",
+                             "description":  "Turn off alarm button"
+                         },
     "alarmtimerSoundOn":  {
-                              "message":  "Suono: ON",
-                              "description":  "Alarm sound enabled"
-                          },
+                             "message":  "Suono: ON",
+                             "description":  "Alarm sound enabled"
+                         },
     "alarmtimerSoundOff":  {
-                               "message":  "Suono: OFF",
-                               "description":  "Alarm sound disabled"
-                           }
+                              "message":  "Suono: OFF",
+                              "description":  "Alarm sound disabled"
+                          }
 }

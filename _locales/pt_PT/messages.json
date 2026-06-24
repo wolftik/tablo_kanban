@@ -464,7 +464,7 @@
                              "description":  "About description"
                          },
     "optionsAboutStorage":  {
-                                "message":  "Os dados do quadro são armazenados localmente no chrome.storage.local. As configurações e chaves de API estão no chrome.storage.sync (sincronizadas entre dispositivos). Os dados do quadro são sincronizados via um provedor escolhido (Google Drive ou Yandex Disk).",
+                                "message":  "Os dados do quadro são armazenados localmente no localStorage (sem sincronização) ou na nuvem (Google Drive / Yandex Disk) quando a sincronização está ativa. As configurações e chaves de API estão no chrome.storage.sync.",
                                 "description":  "Storage info"
                             },
     "optionsSupportTitle":  {
@@ -600,15 +600,15 @@
                                "description":  "Storage warning tooltip when localStorage is near full"
                            },
     "optionsSyncCspError":  {
-                                "message":  "Erro de CSP — verifique as permissões",
+                                "message":  "Os pedidos ao Yandex Disk podem estar bloqueados pela política de segurança.",
                                 "description":  "CSP error message for sync"
                             },
     "optionsSyncTokenInvalid":  {
-                                    "message":  "Token inválido",
+                                    "message":  "Verifique o token e os direitos de acesso.",
                                     "description":  "Invalid token error message"
                                 },
     "optionsSyncTokenForbidden":  {
-                                      "message":  "Token sem permissões suficientes",
+                                      "message":  "Direitos de acesso insuficientes.",
                                       "description":  "Forbidden token error message"
                                   },
     "storageErrorQuota":  {
@@ -745,7 +745,62 @@
                          "message":  "Reset",
                          "description":  "Pomodoro reset button"
                      },
-
+    "widgetsAlarmTimer":  {
+                              "message":  "Alarme / Temporizador",
+                              "description":  "Alarm / Timer widget toggle label"
+                          },
+    "alarmtimerTitle":  {
+                            "message":  "Alarme / Temporizador",
+                            "description":  "Alarm/Timer widget title"
+                        },
+    "alarmtimerAlarm":  {
+                            "message":  "Alarme",
+                            "description":  "Alarm tab"
+                        },
+    "alarmtimerTimer":  {
+                            "message":  "Temporizador",
+                            "description":  "Timer tab"
+                        },
+    "alarmtimerHours":  {
+                            "message":  "HH",
+                            "description":  "Hours input placeholder"
+                        },
+    "alarmtimerMinutes":  {
+                              "message":  "MM",
+                              "description":  "Minutes input placeholder"
+                          },
+    "alarmtimerSeconds":  {
+                              "message":  "SS",
+                              "description":  "Seconds input placeholder"
+                          },
+    "alarmtimerSet":  {
+                          "message":  "Definir",
+                          "description":  "Set alarm button"
+                      },
+    "alarmtimerAlarmSet":  {
+                               "message":  "Alarme para",
+                               "description":  "Alarm set status text"
+                           },
+    "alarmtimerOn":  {
+                         "message":  "Ligado",
+                         "description":  "Turn alarm on"
+                     },
+    "alarmtimerOff":  {
+                          "message":  "Desligado",
+                          "description":  "Turn alarm off"
+                      },
+    "alarmtimerStart":  {
+                            "message":  "Iniciar",
+                            "description":  "Start timer button"
+                        },
+    "alarmtimerPause":  {
+                            "message":  "Pausa",
+                            "description":  "Pause timer button"
+                        },
+    "alarmtimerReset":  {
+                            "message":  "Reiniciar",
+                            "description":  "Reset timer button"
+                        },
     "alarmtimerTurnOff":  {
                               "message":  "Desligar",
                               "description":  "Turn off alarm button"

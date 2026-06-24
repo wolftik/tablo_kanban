@@ -464,7 +464,7 @@
         "description": "About description"
     },
     "optionsAboutStorage": {
-        "message": "Bordgegevens worden lokaal opgeslagen in chrome.storage.local. Instellingen en API-sleutels staan in chrome.storage.sync (gesynchroniseerd tussen apparaten). Bordgegevens worden gesynchroniseerd via een gekozen provider (Google Drive of Yandex Disk).",
+        "message": "Bordgegevens worden lokaal opgeslagen in localStorage (zonder synchronisatie) of in de cloud (Google Drive / Yandex Disk) wanneer synchronisatie actief is. Instellingen en API-sleutels staan in chrome.storage.sync.",
         "description": "Storage info"
     },
     "optionsSupportTitle": {
@@ -600,15 +600,15 @@
         "description": "Storage warning tooltip when localStorage is near full"
     },
     "optionsSyncCspError": {
-        "message": "CSP-fout — controleer de machtigingen",
+        "message": "Verzoeken aan Yandex Disk kunnen worden geblokkeerd door het beveiligingsbeleid.",
         "description": "CSP error message for sync"
     },
     "optionsSyncTokenInvalid": {
-        "message": "Ongeldig token",
+        "message": "Controleer het token en de toegangsrechten.",
         "description": "Invalid token error message"
     },
     "optionsSyncTokenForbidden": {
-        "message": "Token heeft onvoldoende rechten",
+        "message": "Onvoldoende toegangsrechten.",
         "description": "Forbidden token error message"
     },
     "storageErrorQuota": {
@@ -744,6 +744,62 @@
     "pomodoroReset": {
         "message": "Reset",
         "description": "Pomodoro reset button"
+    },
+    "widgetsAlarmTimer": {
+        "message": "Wekker / Timer",
+        "description": "Alarm / Timer widget toggle label"
+    },
+    "alarmtimerTitle": {
+        "message": "Wekker / Timer",
+        "description": "Alarm/Timer widget title"
+    },
+    "alarmtimerAlarm": {
+        "message": "Wekker",
+        "description": "Alarm tab"
+    },
+    "alarmtimerTimer": {
+        "message": "Timer",
+        "description": "Timer tab"
+    },
+    "alarmtimerHours": {
+        "message": "UU",
+        "description": "Hours input placeholder"
+    },
+    "alarmtimerMinutes": {
+        "message": "MM",
+        "description": "Minutes input placeholder"
+    },
+    "alarmtimerSeconds": {
+        "message": "SS",
+        "description": "Seconds input placeholder"
+    },
+    "alarmtimerSet": {
+        "message": "Instellen",
+        "description": "Set alarm button"
+    },
+    "alarmtimerAlarmSet": {
+        "message": "Wekker om",
+        "description": "Alarm set status text"
+    },
+    "alarmtimerOn": {
+        "message": "Aan",
+        "description": "Turn alarm on"
+    },
+    "alarmtimerOff": {
+        "message": "Uit",
+        "description": "Turn alarm off"
+    },
+    "alarmtimerStart": {
+        "message": "Start",
+        "description": "Start timer button"
+    },
+    "alarmtimerPause": {
+        "message": "Pauze",
+        "description": "Pause timer button"
+    },
+    "alarmtimerReset": {
+        "message": "Resetten",
+        "description": "Reset timer button"
     },
     "alarmtimerTurnOff": {
         "message": "Uitschakelen",

@@ -464,7 +464,7 @@
                              "description":  "About description"
                          },
     "optionsAboutStorage":  {
-                                "message":  "Board-Daten werden lokal in chrome.storage.local gespeichert. Einstellungen und API-Schlüssel in chrome.storage.sync (geräteübergreifend synchronisiert). Board-Daten werden über einen gewählten Anbieter (Google Drive oder Yandex Disk) synchronisiert.",
+                                "message":  "Board-Daten werden lokal in localStorage (ohne Sync) oder in der Cloud (Google Drive / Yandex Disk) bei aktiver Synchronisierung gespeichert. Einstellungen und API-Schlüssel sind in chrome.storage.sync.",
                                 "description":  "Storage info"
                             },
     "optionsSupportTitle":  {
@@ -746,6 +746,62 @@
                          "description":  "Pomodoro reset button"
                      },
 
+    "widgetsAlarmTimer":  {
+                              "message":  "Wecker / Timer",
+                              "description":  "Alarm / Timer widget toggle label"
+                          },
+    "alarmtimerTitle":  {
+                            "message":  "Wecker / Timer",
+                            "description":  "Alarm/Timer widget title"
+                        },
+    "alarmtimerAlarm":  {
+                            "message":  "Wecker",
+                            "description":  "Alarm tab"
+                        },
+    "alarmtimerTimer":  {
+                            "message":  "Timer",
+                            "description":  "Timer tab"
+                        },
+    "alarmtimerHours":  {
+                            "message":  "HH",
+                            "description":  "Hours input placeholder"
+                        },
+    "alarmtimerMinutes":  {
+                              "message":  "MM",
+                              "description":  "Minutes input placeholder"
+                          },
+    "alarmtimerSeconds":  {
+                              "message":  "SS",
+                              "description":  "Seconds input placeholder"
+                          },
+    "alarmtimerSet":  {
+                          "message":  "Einstellen",
+                          "description":  "Set alarm button"
+                      },
+    "alarmtimerAlarmSet":  {
+                               "message":  "Wecker um",
+                               "description":  "Alarm set status text"
+                           },
+    "alarmtimerOn":  {
+                         "message":  "Ein",
+                         "description":  "Turn alarm on"
+                     },
+    "alarmtimerOff":  {
+                          "message":  "Aus",
+                          "description":  "Turn alarm off"
+                      },
+    "alarmtimerStart":  {
+                            "message":  "Start",
+                            "description":  "Start timer button"
+                        },
+    "alarmtimerPause":  {
+                            "message":  "Pause",
+                            "description":  "Pause timer button"
+                        },
+    "alarmtimerReset":  {
+                            "message":  "Zurücksetzen",
+                            "description":  "Reset timer button"
+                        },
     "alarmtimerTurnOff":  {
                               "message":  "Ausschalten",
                               "description":  "Turn off alarm button"

@@ -464,7 +464,7 @@
         "description": "About description"
     },
     "optionsAboutStorage": {
-        "message": "Los datos del tablero se almacenan localmente en chrome.storage.local. Los ajustes y claves de API se almacenan en chrome.storage.sync (sincronizados entre dispositivos). Los datos del tablero se sincronizan a través de un proveedor elegido (Google Drive o Yandex Disk).",
+        "message": "Los datos del tablero se almacenan localmente en localStorage (sin sincronización) o en la nube (Google Drive / Yandex Disk) cuando la sincronización está activa. Los ajustes y claves de API están en chrome.storage.sync.",
         "description": "Storage info"
     },
     "optionsSupportTitle": {
@@ -744,6 +744,63 @@
     "pomodoroReset": {
         "message": "Reset",
         "description": "Pomodoro reset button"
+    },
+
+    "widgetsAlarmTimer": {
+        "message": "Alarma / Temporizador",
+        "description": "Alarm / Timer widget toggle label"
+    },
+    "alarmtimerTitle": {
+        "message": "Alarma / Temporizador",
+        "description": "Alarm/Timer widget title"
+    },
+    "alarmtimerAlarm": {
+        "message": "Alarma",
+        "description": "Alarm tab"
+    },
+    "alarmtimerTimer": {
+        "message": "Temporizador",
+        "description": "Timer tab"
+    },
+    "alarmtimerHours": {
+        "message": "HH",
+        "description": "Hours input placeholder"
+    },
+    "alarmtimerMinutes": {
+        "message": "MM",
+        "description": "Minutes input placeholder"
+    },
+    "alarmtimerSeconds": {
+        "message": "SS",
+        "description": "Seconds input placeholder"
+    },
+    "alarmtimerSet": {
+        "message": "Establecer",
+        "description": "Set alarm button"
+    },
+    "alarmtimerAlarmSet": {
+        "message": "Alarma para",
+        "description": "Alarm set status text"
+    },
+    "alarmtimerOn": {
+        "message": "Encendido",
+        "description": "Turn alarm on"
+    },
+    "alarmtimerOff": {
+        "message": "Apagado",
+        "description": "Turn alarm off"
+    },
+    "alarmtimerStart": {
+        "message": "Iniciar",
+        "description": "Start timer button"
+    },
+    "alarmtimerPause": {
+        "message": "Pausa",
+        "description": "Pause timer button"
+    },
+    "alarmtimerReset": {
+        "message": "Reiniciar",
+        "description": "Reset timer button"
     },
     "alarmtimerTurnOff": {
         "message": "Apagar",
