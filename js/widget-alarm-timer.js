@@ -261,7 +261,8 @@ const AlarmTimerWidget = (() => {
     }
 
     const wrapper = document.getElementById('mini-widgets-group');
-    if (!wrapper) return;
+    if (!wrapper) { console.warn('[AlarmTimer] mini-widgets-group not found'); return; }
+    if (_btn) return;
 
     _btn = document.createElement('button');
     _btn.className = 'mini-widget-btn';

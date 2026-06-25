@@ -242,7 +242,7 @@ const CoinWidget = (() => {
     _addStyles();
 
     const wrapper = document.getElementById('mini-widgets-group');
-    if (!wrapper) return;
+    if (!wrapper) { console.warn('[Coin] mini-widgets-group not found'); return; }
 
     if (_btn) return;
 
