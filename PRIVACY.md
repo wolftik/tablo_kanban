@@ -1,6 +1,6 @@
 # Privacy Policy — Tablo Kanban
 
-**Last updated:** June 22, 2026
+**Last updated:** June 25, 2026
 
 ## Overview
 
@@ -15,6 +15,7 @@ Tablo Kanban is a Chrome/Edge/Yandex extension that provides a bookmarks bar and
  | Kanban board (columns, cards, tags, performers, authors) | `localStorage` (with `kanban_` prefix) | Core functionality — your task board |
 | Settings (theme, language, widget preferences, bookmark slots) | `chrome.storage.sync` | Settings sync across your Chrome devices |
 | Displayed bookmarks list | `chrome.storage.sync` | Which bookmarks you have placed on the board |
+| Widget preferences (clock, weather, quotes, coin, pomodoro, alarm/timer) | `chrome.storage.sync` | Toggle states and settings for optional widgets |
 | Yandex Disk OAuth token | `chrome.storage.sync` | Optional cloud sync via Yandex Disk |
 | Yandex Disk Client ID | `chrome.storage.sync` | Required for Yandex Disk OAuth flow |
 | Sync provider selection | `chrome.storage.sync` | Which sync provider is selected (Google Drive / Yandex Disk) |
@@ -37,12 +38,15 @@ When enabled, your Kanban board data is uploaded to **your personal Google Drive
 When enabled, your Kanban board data is uploaded to **your personal Yandex Disk** as `app:/kanban_data.json` (in the App folder). Your OAuth token is stored in `chrome.storage.sync`. **We do not have access to your Yandex account or your other files.**
 
 #### Quotes Widget
-The optional quotes widget fetches inspirational quotes from [ZenQuotes](https://zenquotes.io/) and, for non-English languages, translates them using Google Translate's public API (`translate.googleapis.com`). ZenQuotes does not require authentication. The extension sends only the quote text for translation — no personal data.
+The optional quotes widget fetches inspirational quotes from [ZenQuotes](https://zenquotes.io/) via the extension's background service worker (to bypass CORS restrictions) and, for non-English languages, translates them using Google Translate's public API (`translate.googleapis.com`). ZenQuotes does not require authentication. The extension sends only the quote text for translation — no personal data.
 
 #### Weather Widget
 The optional weather widget sends your configured city name to the [Open-Meteo](https://open-meteo.com/) geocoding and forecast APIs. Open-Meteo is a free, privacy-friendly service that does not require an API key and does not log requests.
 
 If Open-Meteo is unreachable (network timeout or error), the widget falls back to [MET Norway](https://api.met.no/) and then to [7Timer](https://www.7timer.info/) as secondary weather providers. None of these services receive personal data — only coordinates derived from your city name.
+
+#### Mini-Widgets (Coin, Pomodoro, Alarm/Timer)
+The optional mini-widgets — Coin Flip, Pomodoro Timer, and Alarm Clock/Timer — operate entirely locally in your browser. **They do not make any network requests.** The alarm and pomodoro timer use the Web Audio API (in-browser sound synthesis) — no audio files are loaded or fetched. Toggle states and preferences for these widgets are stored in `chrome.storage.sync` for cross-device convenience.
 
 #### Favicon Services
 The extension loads favicon images for your bookmarks via Google's favicon service (`www.google.com/s2/favicons`), falling back to DuckDuckGo's favicon service (`icons.duckduckgo.com`). If both fail, a local SVG placeholder is shown.
