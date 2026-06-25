@@ -97,54 +97,56 @@
 
         <div class="setting-group">
           <h3 data-i18n="options.widgets.title">Виджеты</h3>
-          <div class="switch-label">
-            <label class="switch-toggle">
-              <input type="checkbox" id="widget-clock">
-              <span class="switch"></span>
-            </label>
-            <span data-i18n="widgets.clock">Часы</span>
-          </div>
-          <div class="switch-label weather-switch">
-            <label class="switch-toggle">
-              <input type="checkbox" id="widget-weather">
-              <span class="switch"></span>
-            </label>
-            <span data-i18n="widgets.weather">Погода</span>
-            <span id="weather-settings" class="weather-settings">
-              <input type="text" id="weather-city" data-i18n-placeholder="weather.city.placeholder" placeholder="Например: Москва">
-              <select id="weather-unit">
-                <option value="metric" data-i18n="weather.celsius">°C</option>
-                <option value="imperial" data-i18n="weather.fahrenheit">°F</option>
-              </select>
-            </span>
-          </div>
-          <div class="switch-label weather-switch">
-            <label class="switch-toggle">
-              <input type="checkbox" id="widget-quotes">
-              <span class="switch"></span>
-            </label>
-            <span data-i18n="widgets.quotes">Цитаты</span>
-          </div>
-          <div class="switch-label">
-            <label class="switch-toggle">
-              <input type="checkbox" id="widget-coin">
-              <span class="switch"></span>
-            </label>
-            <span data-i18n="widgets.coin">Монетка</span>
-          </div>
-          <div class="switch-label">
-            <label class="switch-toggle">
-              <input type="checkbox" id="widget-pomodoro">
-              <span class="switch"></span>
-            </label>
-            <span data-i18n="widgets.pomodoro">Помидор</span>
-          </div>
-          <div class="switch-label">
-            <label class="switch-toggle">
-              <input type="checkbox" id="widget-alarmtimer">
-              <span class="switch"></span>
-            </label>
-            <span data-i18n="widgets.alarmTimer">Будильник / Таймер</span>
+          <div class="widget-tiles">
+            <div class="widget-tile">
+              <input type="checkbox" id="widget-clock" class="widget-tile-input">
+              <label for="widget-clock" class="widget-tile-label">
+                <span class="widget-tile-icon">🕐</span>
+                <span class="widget-tile-name" data-i18n="widgets.clock">Часы</span>
+              </label>
+            </div>
+            <div class="widget-tile widget-tile-weather">
+              <input type="checkbox" id="widget-weather" class="widget-tile-input">
+              <label for="widget-weather" class="widget-tile-label">
+                <span class="widget-tile-icon">🌤️</span>
+                <span class="widget-tile-name" data-i18n="widgets.weather">Погода</span>
+              </label>
+              <div id="weather-settings" class="widget-tile-extras">
+                <input type="text" id="weather-city" data-i18n-placeholder="weather.city.placeholder" placeholder="Например: Москва">
+                <select id="weather-unit">
+                  <option value="metric" data-i18n="weather.celsius">°C</option>
+                  <option value="imperial" data-i18n="weather.fahrenheit">°F</option>
+                </select>
+              </div>
+            </div>
+            <div class="widget-tile">
+              <input type="checkbox" id="widget-quotes" class="widget-tile-input">
+              <label for="widget-quotes" class="widget-tile-label">
+                <span class="widget-tile-icon">💬</span>
+                <span class="widget-tile-name" data-i18n="widgets.quotes">Цитаты</span>
+              </label>
+            </div>
+            <div class="widget-tile">
+              <input type="checkbox" id="widget-pomodoro" class="widget-tile-input">
+              <label for="widget-pomodoro" class="widget-tile-label">
+                <span class="widget-tile-icon">🍅</span>
+                <span class="widget-tile-name" data-i18n="widgets.pomodoro">Помидор</span>
+              </label>
+            </div>
+            <div class="widget-tile">
+              <input type="checkbox" id="widget-alarmtimer" class="widget-tile-input">
+              <label for="widget-alarmtimer" class="widget-tile-label">
+                <span class="widget-tile-icon">⏰</span>
+                <span class="widget-tile-name" data-i18n="widgets.alarmTimer">Будильник / Таймер</span>
+              </label>
+            </div>
+            <div class="widget-tile">
+              <input type="checkbox" id="widget-coin" class="widget-tile-input">
+              <label for="widget-coin" class="widget-tile-label">
+                <span class="widget-tile-icon">🪙</span>
+                <span class="widget-tile-name" data-i18n="widgets.coin">Монетка</span>
+              </label>
+            </div>
           </div>
         </div>
 

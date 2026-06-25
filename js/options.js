@@ -377,10 +377,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     const weatherSettings = document.getElementById('weather-settings');
     if ($weatherChk && weatherSettings) {
       $weatherChk.checked = settings.widgets?.weather !== false;
-      weatherSettings.style.display = $weatherChk.checked ? 'block' : 'none';
-      $weatherChk.addEventListener('change', () => {
-        weatherSettings.style.display = $weatherChk.checked ? 'block' : 'none';
-      });
     }
     const $quotesChk = document.getElementById('widget-quotes');
     if ($quotesChk) {
