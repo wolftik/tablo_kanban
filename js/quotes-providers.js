@@ -62,11 +62,11 @@ const QuotesProviders = (() => {
   }
 
   async function fetchQuote(lang) {
-    // Try Zenquotes API first
+    // Try Zenquotes API via service worker (SW bypasses CORS)
     try {
-      const response = await fetch('https://zenquotes.io/api/random');
-      if (!response.ok) throw new Error('Status ' + response.status);
-      const data = await response.json();
+      const resp = await chrome.runtime.sendMessage({ type: 'fetchQuote' });
+      if (!resp || !resp.ok) throw new Error(resp?.error || 'No response');
+      const data = resp.data;
       if (data && data.length > 0 && data[0].q) {
         let quoteText = data[0].q;
         const quoteAuthor = data[0].a || '';
